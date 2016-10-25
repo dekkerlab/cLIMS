@@ -1,0 +1,6 @@
+# ignore generated .pyc files
+*.pyc
+
+.project
+.pydevproject
+.settings/
