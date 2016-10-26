@@ -45,14 +45,15 @@ class HomeView(View):
 
 
 class AddProject(View): 
-    template_name = 'form.html'
+    template_name = 'form1.html'
     error_page = 'error.html'
     form_class = ProjectForm
-    ChoiceForm_set = formset_factory(ExperimentForm, extra=3, min_num=2, validate_min=True)
+    ChoiceForm_set = formset_factory(ExperimentForm, extra=0, min_num=1, validate_min=True)
     
     def get(self,request):
         form = self.form_class()
         formset = self.ChoiceForm_set()
+       
         return render(request, self.template_name,{'form':form,'formset':formset})
     
     def post(self,request):
@@ -72,7 +73,11 @@ class AddProject(View):
         
             
                 
-            
-    
-    
+def getJson(request, pk):
+    obj = JsonObjField.objects.get(pk=pk)
+    context = {
+        'object': obj,
+    }
+    return render(request, 'form1.html', context)
+ 
     

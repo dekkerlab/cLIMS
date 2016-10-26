@@ -10,12 +10,13 @@ class SequencingRun(models.Model):
         return self.run_name
  
 class SeqencingFile(models.Model):
-    SequencingFile_name = models.CharField(max_length=255, null=False, default="")
-    file_mainPath = models.CharField(max_length=500, null=False, default="")
-    file_backupPath = models.CharField(max_length=500, null=False, default="")
-    file_sha256sum = models.CharField(max_length=64, null=False, default="")
-    SequencingFile_md5sum = models.CharField(max_length=32, null=False, default="")
-    SequencingFile_run = models.ForeignKey(SequencingRun,related_name='fileRun', on_delete=models.CASCADE,)
+    sequencingFile_name = models.CharField(max_length=255, null=False, default="")
+    sequencingFile_mainPath = models.CharField(max_length=500, null=False, default="")
+    sequencingFile_backupPath = models.CharField(max_length=500, null=False, default="")
+    sequencingFile_sha256sum = models.CharField(max_length=64, null=False, default="")
+    sequencingFile_md5sum = models.CharField(max_length=32, null=False, default="")
+    sequencingFile_run = models.ForeignKey(SequencingRun,related_name='fileRun', on_delete=models.CASCADE,)
+    sequencingFile_exp = models.ForeignKey('organization.Experiment',related_name='fileExp', on_delete=models.CASCADE,)
     def __str__(self):
         return self.file_name
 
