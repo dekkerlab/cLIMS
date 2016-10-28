@@ -25,7 +25,7 @@
     <td><a href="/detailProject/{{fields.pk}}">{{ fields.project_name }}</a></td>
     <td>{{ fields.project_owner }}</td>
     <td>
-    	{% if not fields.members.all  %}
+    	{% if not fields.project_contributor.all  %}
     		<a href="/editProject/{{ fields.id }}">
 				<button type="button" class="btn btn-primary">Add Members</button>
 			</a>

@@ -62,6 +62,10 @@ class AddProject(View):
             result = form.save(commit= False)
             result.project_owner = request.user
             result.save()
+            project_contributor = request.POST.getlist('project_contributor')
+            for contributor in project_contributor:
+                user = User.objects.get(pk=contributor)
+                result.project_contributor.add(user)
             return HttpResponseRedirect('/showProject/')
         else:
             return render(request, self.error_page, {})
@@ -83,6 +87,33 @@ class ShowProject(View):
             'object': obj,
         }
         return render(request, self.template_name, context)
+    
+
+# class AddProject(View): 
+#     template_name = 'stepOneForm.html'
+#     error_page = 'error.html'
+#     form_class = ExperimentForm
+#     ChoiceForm_set = formset_factory(ExperimentForm, extra=0, min_num=1, validate_min=True)
+#     
+#     def get(self,request):
+#         form = self.form_class()
+#         return render(request, self.template_name,{'form':form})
+#     
+#     def post(self,request):
+#         form = self.form_class(request.POST)
+#         if form.is_valid():
+#             result = form.save(commit= False)
+#             result.project_owner = request.user
+#             result.save()
+#             project_contributor = request.POST.getlist('project_contributor')
+#             for contributor in project_contributor:
+#                 user = User.objects.get(pk=contributor)
+#                 result.project_contributor.add(user)
+#             return HttpResponseRedirect('/showProject/')
+#         else:
+#             return render(request, self.error_page, {})
+    
+
 
 class DetailProject(View):
     template_name = 'detailProject.html'
@@ -103,7 +134,7 @@ class DetailProject(View):
 class AddExperiment(View): 
     template_name = 'form1.html'
     error_page = 'error.html'
-    form_class = ProjectForm
+    form_class = ExperimentForm
     ChoiceForm_set = formset_factory(ExperimentForm, extra=0, min_num=1, validate_min=True)
     
     def get(self,request):

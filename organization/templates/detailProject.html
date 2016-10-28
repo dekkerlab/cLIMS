@@ -13,6 +13,9 @@
   <tr>
     <th class="tableHead">{{ project.project_name }} 
     <span class="pull-right">
+    <a href="/stepOne">
+		<button type="button" class="btn btn-success">STEP I</button>
+	</a>
      <a href="/addLane">
 		<button type="button" class="btn btn-success">Add Sequencing Units</button>
 	</a>
@@ -35,7 +38,7 @@
    </tr>
    <tr>
     <td><span class="rowHead">Project Members:</span><br/>
-          	{% for values in project.members.all %}
+          	{% for values in project.project_contributor.all %}
   		({{ forloop.counter }}) {{values}}<br/>
 		{% endfor %}
 		</td>

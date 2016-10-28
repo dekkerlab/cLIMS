@@ -1,17 +1,18 @@
 '''
-Created on Oct 25, 2016
+Created on Oct 28, 2016
 
 @author: nanda
 '''
+
 from django.forms.models import ModelForm
-from organization.models import *
+from wetLab.models import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
-class ProjectForm(ModelForm):
+class ModificationForm(ModelForm):
     class Meta:
-        model = Project
-        exclude = ('project_owner',)
+        model = Modification
+        exclude = ('',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -20,71 +21,104 @@ class ProjectForm(ModelForm):
         self.helper.form_action = 'submit_survey'
  
         self.helper.add_input(Submit('submit', 'Submit'))
-        super(ProjectForm, self).__init__(*args, **kwargs)
+        super(ModificationForm, self).__init__(*args, **kwargs)
 
+class IndividualForm(ModelForm):
+    class Meta:
+        model = Modification
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(IndividualForm, self).__init__(*args, **kwargs)
+
+class DocumentForm(ModelForm):
+    class Meta:
+        model = Document
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(DocumentForm, self).__init__(*args, **kwargs)
+
+class ProtocolForm(ModelForm):
+    class Meta:
+        model = Protocol
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(ProtocolForm, self).__init__(*args, **kwargs)
+
+class BiosourceForm(ModelForm):
+    class Meta:
+        model = Protocol
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(BiosourceForm, self).__init__(*args, **kwargs)
+
+class BiosampleForm(ModelForm):
+    class Meta:
+        model = Biosample
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(BiosampleForm, self).__init__(*args, **kwargs)
+
+class TreatmentForm(ModelForm):
+    class Meta:
+        model = Treatment
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(TreatmentForm, self).__init__(*args, **kwargs)
+
+class BarcodeForm(ModelForm):
+    class Meta:
+        model = Barcode
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(BarcodeForm, self).__init__(*args, **kwargs)
         
-class ExperimentForm(ModelForm):
-    class Meta:
-        model = Experiment
-        exclude = ('',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(ExperimentForm, self).__init__(*args, **kwargs)
-
-class ExperimentSetForm(ModelForm):
-    class Meta:
-        model = ExperimentSet
-        exclude = ('',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(ExperimentSetForm, self).__init__(*args, **kwargs)
-
-class PublicationForm(ModelForm):
-    class Meta:
-        model = Publication
-        exclude = ('',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(PublicationForm, self).__init__(*args, **kwargs)
-
-class AwardForm(ModelForm):
-    class Meta:
-        model = Award
-        exclude = ('',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(AwardForm, self).__init__(*args, **kwargs)
-
-class TagForm(ModelForm):
-    class Meta:
-        model = Tag
-        exclude = ('',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(TagForm, self).__init__(*args, **kwargs)
-
+        

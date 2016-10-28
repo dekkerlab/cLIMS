@@ -142,12 +142,7 @@
     {% endif %}
 	<form method="post" enctype="multipart/form-data">
 		{% csrf_token %}
-
-		<div>
-		<div>{{ form }}</div>
-			<div>{{ formset }}</div>
-		</div>	 
-			 <input type="submit" value="Submit" />
+{% crispy form %} 
 	</form>
 </div>
 {% endblock %} 

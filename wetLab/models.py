@@ -2,10 +2,16 @@ from django.db import models
 from django.contrib.postgres.fields import JSONField
 from organization.models import Choice
 from dryLab.models import SequencingRun
+from django.contrib.auth.models import User
  
 # Create your models here.
- 
-class Modification(models.Model):
+class UserOwner (models.Model):
+    userOwner = models.ForeignKey(User, on_delete=models.CASCADE,)
+    class Meta:
+        abstract = True
+    
+
+class Modification(UserOwner):
     modification_name = models.CharField(max_length=50, null=False, default="")
     modification_type = models.ForeignKey('organization.JsonObjField',related_name='modType', on_delete=models.CASCADE,)
     modification_fields = JSONField()
@@ -13,8 +19,6 @@ class Modification(models.Model):
      
     def __str__(self):
         return self.modification_name
- 
-
  
  
 class Individual(models.Model):
@@ -49,7 +53,7 @@ class Enzyme(models.Model):
         return self.enzyme_name
 
      
-class Protocol(models.Model):
+class Protocol(UserOwner):
     protocol_name =  models.CharField(max_length=50, null=False, default="")
     protocol_type = models.ForeignKey('organization.JsonObjField',related_name='proType', on_delete=models.CASCADE,)
     protocol_fields = JSONField()
@@ -75,7 +79,7 @@ class Biosource(models.Model):
     def __str__(self):
         return self.biosource_name
  
-class Biosample(models.Model):
+class Biosample(UserOwner):
     biosample_name = models.CharField(max_length=50, null=False, default="")
     biosample_biosource =  models.ForeignKey(Biosource,related_name='bioSource', on_delete=models.CASCADE,)
     biosample_individual =  models.ForeignKey(Individual,related_name='bioIndi', on_delete=models.CASCADE,)
