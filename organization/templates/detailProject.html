@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+<link rel="stylesheet" href="{% static "main/style.css" %}">
+<script src="{% static "main/show.js" %}"></script> 
+
+{% if project %}
+<div class="bodyContent container">
+<table class="table">
+<thead>
+  <tr>
+    <th class="tableHead">{{ project.project_name }} 
+    <span class="pull-right">
+     <a href="/addLane">
+		<button type="button" class="btn btn-success">Add Sequencing Units</button>
+	</a>
+	<a href="/addSample">
+		<button type="button" class="btn btn-success">Add Samples</button>
+	</a>
+	<a href="/addFiles">
+			<button type="button" class="btn btn-success">Add Files</button>
+	</a>
+	<a href="#">
+		<button  type="button" class="btn btn-warning edit">Edit</button>
+	</a>
+	</span>
+	</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><span class="rowHead">Project Owner:</span>{{ project.project_owner }}</td>
+   </tr>
+   <tr>
+    <td><span class="rowHead">Project Members:</span><br/>
+          	{% for values in project.members.all %}
+  		({{ forloop.counter }}) {{values}}<br/>
+		{% endfor %}
+		</td>
+  </tr>
+  <tr>
+    <td><span class="rowHead">Description:</span>{{ project.project_notes }}</td>
+  </tr>
+  <tr>
+    <td><span class="rowHead">Active:</span>{{ project.project_active }}
+    <a href="/deleteProject/{{ project.id }}">
+		<button type="button" class="btn btn-danger pull-right hidden show">Delete Project</button>
+	</a>
+   	<a href="/editProject/{{ project.id }}">
+		<button type="button" class="btn btn-warning pull-right hidden show">Edit Project</button>
+	</a>
+    </td>
+  </tr>
+ </tbody></table>
+ 
+ {% if samples %}
+ <hr/>
+<span class="tableHead">
+	Sample Details
+</span>
+<table class="table table-bordered table-hover table-responsive">
+  	<tr>
+		<td><span class="rowHead">Sample Name</span></td>
+  		<td><span class="rowHead">Organism</span></td>
+  		<td><span class="rowHead">Protocol</span></td>
+  		<td><span class="rowHead">Cell Line</span></td>
+  		<td><span class="rowHead">Condition</span></td>
+  		<td></td>
+  	</tr>
+    {% for sample in samples %}
+		<tr>
+			<td><a href="/detailSample/{{sample.id}}">{{ sample.name }}</a></td>
+			<td>{{ sample.organism }}</td>
+			<td>{{ sample.protocol }}</td>
+			<td>{{ sample.cell_line }}</td>
+			<td>{{ sample.condition }}</td>
+			<td>
+			<a href="/deleteSample/{{ sample.id }}">
+			<button type="button" class="btn btn-danger pull-right hidden show">Delete Sample</button>
+			</a>
+			<a href="/editSample/{{sample.id}}">
+				<button type="button" class="btn btn-warning pull-right hidden show">Edit Sample</button>
+			</a>
+			</td>
+    <!-- <td>
+    	<span class="rowHead">Sample Name:</span><a href="/detailSample/{{sample.id}}">{{ sample.name }}</a><br/>
+    	<span class="rowHead">Lane Name:</span> <br/>
+    	{% for values in sample.lane.all %}
+    		({{ forloop.counter }}) {{values}}<br/>
+  		{% endfor %}
+    	
+    	<span class="rowHead">Number of Reads:</span>{{ sample.number_of_reads }}&nbsp;&nbsp;
+    	<span class="rowHead">Organism:</span>{{ sample.organism }}&nbsp;&nbsp;
+    	<span class="rowHead">Cell Line:</span>{{ sample.cell_line }}&nbsp;&nbsp;
+    	<span class="rowHead">Condition:</span>{{ sample.condition }}&nbsp;&nbsp;
+    	<span class="rowHead">Genotype:</span>{{ sample.genotype }}&nbsp;&nbsp;
+    	<span class="rowHead">Protocol:</span>{{ sample.protocol }}&nbsp;&nbsp;
+    	<span class="rowHead">Gel Image:</span><a target="_blank" href="/media/{{ sample.gel_image }}">{{ sample.gel_image }}</a>&nbsp;&nbsp;
+    	<span class="rowHead">Sequencing Output File:</span><a target="_blank" href="/media/{{ sample.sequencing_output_file }}">{{ sample.sequencing_output_file }}</a>&nbsp;&nbsp;
+    	<a href="#" data-toggle="tooltip" data-placement="bottom" title="{{ sample.notes }}">Notes</a>&nbsp;&nbsp;
+   	<a href="/deleteSample/{{ sample.id }}">
+	<button type="button" class="btn btn-danger pull-right hidden show">Delete Sample</button>
+	</a>
+	<a href="/editSample/{{sample.id}}">
+		<button type="button" class="btn btn-warning pull-right hidden show">Edit Sample</button>
+	</a>
+    </td> -->
+  </tr>
+    {% endfor %}
+ </table>
+ <a href="/exportSample">
+		<button type="button" class="btn btn-success">Export sample meta data</button>
+	</a>
+	<a href="/exportAnalysis">
+		<button type="button" class="btn btn-success">Export Analysis</button>
+	</a>
+	<a href="/exportGEO">
+		<button type="button" class="btn btn-success">Export- GEO</button>
+	</a>
+{% endif %}
+ 
+ {% if units %}
+  <hr/>
+ <span class="tableHead">
+	Sequencing Unit Details
+</span>
+<table class="table table-bordered table-hover table-responsive">
+  	<tr>
+  		<td><span class="rowHead">Sequencing Unit</span></td>
+  		<td><span class="rowHead">Cost</span></td>
+  		<td><span class="rowHead">Read Length</span></td>
+  		<td><span class="rowHead">Submission Date</span></td>
+  		<td><span class="rowHead">Retrieval Date</span></td>
+   		<!-- <td><span class="rowHead">Approved</span></td>  -->
+  		<td><span class="rowHead">Submitted</span></td>
+  		<td></td>
+  	</tr>
+    {% for unit in units %}
+	<tr>
+	<td><a href="/showLane/{{unit.id}}">{{ unit.name }}</a></td>
+	<td>{{ unit.cost }}</td>
+	<td>{{ unit.read_length }}</td>
+	<td>{{ unit.submission_date }}</td>
+	<td>{{ unit.retrieval_date }}</td>
+	<!-- <td>{{ unit.approved }}</td> -->
+	<td>
+		{% if unit.submitted == False %}
+        <a href="/submitLane/{{ unit.id}}">
+			<button type="button" class="btn btn-info"> Submit Unit</button>
+		</a>
+		{% elif unit.submitted == True and unit.approved == True %}
+			<button type="button" class="btn btn-warning disabled">Approved</button> 
+		{% else %}
+			<button type="button" class="btn btn-primary disabled">Submitted</button>
+		{% endif %}
+	</td>
+	<td>
+	<a href="/deleteLane/{{ unit.id }}">
+		<button type="button" class="btn btn-danger pull-right hidden show">Delete Unit</button>
+		</a>
+	<a href="/editLane/{{unit.id}}">
+		<button type="button" class="btn btn-warning pull-right hidden show">Edit Unit</button>
+	</a>
+	</td>
+    <!-- <td>
+    	<span class="rowHead">Sequencing Unit:</span> {{ unit.name }}&nbsp;&nbsp;
+    	<span class="rowHead">Cost:</span>{{ unit.cost }}&nbsp;&nbsp;
+    	<span class="rowHead">Read Length:</span>{{ unit.read_length }}&nbsp;&nbsp;
+    	<span class="rowHead">Submission Date:</span>{{ unit.submission_date }}&nbsp;&nbsp;
+    	<span class="rowHead">Retrieval Date:</span>{{ unit.retrieval_date }}&nbsp;&nbsp;
+    	<span class="rowHead">Sequencing Platform:</span>{{ unit.sequencing_platform }}&nbsp;&nbsp;
+    	<span class="rowHead">Sequencing Center:</span>{{ unit.sequencing_center }}&nbsp;&nbsp;
+    	<span class="rowHead">Type:</span>{{ unit.type }}&nbsp;&nbsp;
+    	<a href="#" data-toggle="tooltip" data-placement="bottom" title="{{ unit.notes }}">Notes</a>&nbsp;&nbsp;
+    	<span class="rowHead">Approved:</span>{{ unit.approved }}&nbsp;&nbsp;
+    	{% if unit.submitted == False %}
+        <a href="/submitLane/{{ unit.id}}">
+			<button type="button" class="btn btn-info"> Submit Unit</button>
+		</a>
+		{% else %}
+			<button type="button" class="btn btn-primary disabled">Submitted</button>
+		{% endif %}
+		<a href="/deleteLane/{{ unit.id }}">
+		<button type="button" class="btn btn-danger pull-right hidden show">Delete Unit</button>
+		</a>
+	<a href="/editLane/{{unit.id}}">
+		<button type="button" class="btn btn-warning pull-right hidden show">Edit Unit</button>
+	</a>
+    </td> -->
+  </tr>
+    {% endfor %}
+     </table>
+{% endif %}
+
+{% if files %}
+ <hr/>
+    <span class="tableHead">
+    	Files Details
+    </span>
+<table class="table table-bordered table-hover table-responsive">
+	 <tr>
+		<td><span class="rowHead">File Name</span></td>
+  		<td><span class="rowHead">Sample Name</span></td>
+  		<td><span class="rowHead">Sequencing Unit</span></td>
+  		<td><span class="rowHead">Number Of Reads</span></td>
+  		<td></td>
+  	</tr>
+    {% for file in files %}
+	<tr>
+			<td><a href="/showFiles/{{ file.id }}">{{ file.name }}</a></td>
+			<td>{{ file.sample.name }}</td>
+			<td>{{ file.lane.name }}</td>
+			<td>{{ file.number_of_reads }}</td>
+			<td>
+			 <a href="/deleteFile/{{ file.id }}">
+				<button type="button" class="btn btn-danger pull-right hidden show">Delete File</button>
+			</a>
+		    <a href="/editFile/{{file.id}}">
+				<button type="button" class="btn btn-warning pull-right hidden show">Edit File</button>
+			</a>
+			</td>
+    <!-- <td>
+    	<span class="rowHead">Sample Name:</span> {{ file.sample.name }}<br/>
+    	<span class="rowHead">Sequencing Unit:</span> {{ file.lane.name }}<br/>
+    	<span class="rowHead">File Name:</span> {{ file.name }}<br/>
+    	<span class="rowHead">Main File Path:</span>{{ file.main_file_path }}<br/>
+    	<span class="rowHead">Backup Path:</span>{{ file.backup_path }}<br/>
+    	<span class="rowHead">s3 Path:</span>{{ file.s3_path }}<br/>
+    	<span class="rowHead">sha256sum:</span>{{ file.sha256sum }}<br/>
+    	<span class="rowHead">md5sum:</span>{{ file.md5sum }}<br/>
+    	<span class="rowHead">Number Of Reads :</span>{{ file.number_of_reads }}<br/>
+    	<span class="rowHead">Notes :</span>{{ file.notes }}<br/>
+    <a href="/deleteFile/{{ file.id }}">
+		<button type="button" class="btn btn-danger pull-right hidden show">Delete File</button>
+	</a>
+    <a href="/editFile/{{file.id}}">
+		<button type="button" class="btn btn-warning pull-right hidden show">Edit File</button>
+	</a>
+    </td> -->
+  </tr>
+    {% endfor %}
+{% endif %}
+</table>
+{% else %}
+    <p>No data available.</p>
+{% endif %}
+<br/><br/>
+</div>
+{% endblock %} 
+

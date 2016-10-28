@@ -176,15 +176,30 @@
     {{ f_form.experiment_name.label_tag }}
     {{ f_form.experiment_name}}
 </div>
+ <div class="fieldWrapper">
+    {{ f_form.experiment_name.errors }}
+    {{ f_form.experiment_name.label_tag }}
+    {{ f_form.experiment_name}}
+</div>
+ <div class="fieldWrapper">
+    {{ f_form.experiment_name.errors }}
+    {{ f_form.experiment_name.label_tag }}
+    {{ f_form.experiment_name}}
+</div>
+ <div class="fieldWrapper">
+    {{ f_form.experiment_name.errors }}
+    {{ f_form.experiment_name.label_tag }}
+    {{ f_form.experiment_name}}
+</div>
+
 		<div class="fieldWrapper">
     {{ f_form.experiment_type.errors }}
     {{ f_form.experiment_type.label_tag }}
     <span class="jsonForm">{{ f_form.experiment_type}}</span>
+    
 </div>
-{% if object %}
-
-    {% endif %}
     {% endfor %}
+      <div class="inner"></div>
 			<input type="submit" value="Submit" />
 		</div>
 		</div>

@@ -40,6 +40,8 @@ class Experiment(models.Model):
     experiment_biosample = models.ForeignKey('wetLab.Biosample',related_name='expBio', on_delete=models.CASCADE,)
     experiment_protocol = models.ForeignKey('wetLab.Protocol',related_name='expPro', on_delete=models.CASCADE,)
     experiment_description = models.CharField(max_length=200,  null=True, blank=True)
+    experiment_enzyme = models.ForeignKey('wetLab.Enzyme',related_name='expEnz', on_delete=models.CASCADE,)
+    
     def __str__(self):
         return self.exp_name
 

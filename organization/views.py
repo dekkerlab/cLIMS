@@ -1,13 +1,17 @@
 from django.contrib.auth.views import login as contrib_login
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic.base import View
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from organization.models import *
 from organization.forms import ProjectForm, ExperimentForm
 from django.forms.formsets import formset_factory
+import json
+from django.http.response import HttpResponse, HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ValidationError
 # Create your views here.
 
 def login(request, **kwargs):
@@ -43,8 +47,60 @@ class HomeView(View):
         else:
             return render(request, self.error_page)
 
-
 class AddProject(View): 
+    template_name = 'form.html'
+    error_page = 'error.html'
+    form_class = ProjectForm
+    
+    def get(self,request):
+        form = self.form_class()
+        return render(request, self.template_name,{'form':form})
+    
+    def post(self,request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            result = form.save(commit= False)
+            result.project_owner = request.user
+            result.save()
+            return HttpResponseRedirect('/showProject/')
+        else:
+            return render(request, self.error_page, {})
+
+class ShowProject(View):
+    template_name = 'showProject.html'
+    error_page = 'error.html'
+    
+    def get(self,request):
+        userType = request.session['currentGroup']
+        userId = request.user.id
+        if (userType == "member"):
+            obj = Project.objects.filter(Q(project_owner=userId) |  Q(project_contributor=userId))
+        elif (userType == "admin"):
+            obj = Project.objects.all()
+        else:
+            raise ValidationError
+        context = {
+            'object': obj,
+        }
+        return render(request, self.template_name, context)
+
+class DetailProject(View):
+    template_name = 'detailProject.html'
+    error_page = 'error.html'
+    def get(self,request,pk):
+        request.session['projectId'] = pk
+        context = {}
+        prj = Project.objects.get(pk=pk)
+    #     units = Lane.objects.filter(project=pk)
+    #     files = DeepSeqFile.objects.filter(project=pk)
+    #     samples = Sample.objects.filter(project=pk)
+        context['project']= prj
+    #     context['units']= units
+    #     context['files']= files
+    #     context['samples']= samples
+        return render(request, self.template_name, context)
+
+class AddExperiment(View): 
     template_name = 'form1.html'
     error_page = 'error.html'
     form_class = ProjectForm
@@ -72,12 +128,13 @@ class AddProject(View):
         
         
             
-                
-def getJson(request, pk):
-    obj = JsonObjField.objects.get(pk=pk)
-    context = {
-        'object': obj,
-    }
-    return render(request, 'form1.html', context)
+@csrf_exempt                
+def constructForm(request):
+    if request.method == 'POST' and request.is_ajax():
+        pk = request.POST.get('pk')
+        obj = JsonObjField.objects.get(pk=pk)
+        return HttpResponse(json.dumps({'field_set': obj.field_set}), content_type="application/json")
+    else :
+        return render_to_response('error.html', locals())
  
     
