@@ -1,6 +1,5 @@
 $(function() {
 	$('.jsonForm select').on('change', function() {
-		$(".inner").empty();
 	  var jsonObjPK = this.value;
 	  $.ajax({
 		    url: "constructForm/",
@@ -11,12 +10,14 @@ $(function() {
 		    cache:false,
 		    dataType: "json",
 		    success: function(obj){
-		    	jsObj = obj.field_set
-		    	form = constructForm(jsObj)
-		    	$( ".inner" ).append( form );
+		    	jsObj = obj.field_set;
+		    	model = obj.model;
+		    	form = constructForm(jsObj);
+		    	$("."+model).empty();
+		    	$("."+model).append( form );
 		    },
 		    error: function(ts) { 
-                alert("error");
+                alert("Incorrect Choice");
             }
 		});
 });
@@ -28,7 +29,7 @@ $(function() {
     		 if (text == "choices"){
     			 choices = jsObj[key].choices;
     			 len = Object.keys(choices).length;
-    			 form += "<select name='select'>";
+    			 form += "<select name="+key+">";
     			 for (i = 1; i <= len; i++) {
     				 optionValue = jsObj[key].choices[i]
     				 form += "<option value="+optionValue+">"+optionValue+"</option>";

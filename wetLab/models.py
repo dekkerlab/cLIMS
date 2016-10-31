@@ -21,13 +21,6 @@ class Modification(UserOwner):
         return self.modification_name
  
  
-class Individual(models.Model):
-    individual_name = models.CharField(max_length=50, null=False, default="")
-    individual_type = models.ForeignKey('organization.JsonObjField',related_name='indType', on_delete=models.CASCADE,)
-    individual_fields = JSONField()
-    def __str__(self):
-        return self.individual_type 
- 
  
 class Document(models.Model):
     document_description = models.CharField(max_length=200, null=False, default="")
@@ -42,6 +35,17 @@ class Vendor(models.Model):
     vendor_url =  models.URLField(max_length=200)
     def __str__(self):
         return self.vendor_name
+
+class Individual(models.Model):
+    individual_name = models.CharField(max_length=50, null=False, default="")
+    individual_vendor = models.ForeignKey(Vendor,related_name='indVen', on_delete=models.CASCADE,null=True, blank=True)
+    individual_documents = models.ForeignKey(Document,related_name='indDoc', on_delete=models.CASCADE,null=True, blank=True)
+    individual_url = models.URLField(max_length=200,null=True, blank=True)
+    individual_dbxrefs = models.CharField(max_length=100, null=True, blank=True)
+    individual_type = models.ForeignKey('organization.JsonObjField',related_name='indType', on_delete=models.CASCADE,)
+    individual_fields = JSONField(null=True, blank=True)
+    def __str__(self):
+        return self.individual_name 
      
 class Enzyme(models.Model):
     enzyme_name = models.CharField(max_length=50, null=False, default="")
@@ -57,15 +61,13 @@ class Protocol(UserOwner):
     protocol_name =  models.CharField(max_length=50, null=False, default="")
     protocol_type = models.ForeignKey('organization.JsonObjField',related_name='proType', on_delete=models.CASCADE,)
     protocol_fields = JSONField()
-    protocol_document = models.ForeignKey(Document,related_name='proDoc', on_delete=models.CASCADE,)
-    protocol_enzyme = models.ForeignKey(Enzyme,related_name='proEnzyme', on_delete=models.CASCADE,)
-    protocol_variation = models.TextField()
+    protocol_document = models.ForeignKey(Document,related_name='proDoc', on_delete=models.CASCADE, null=True, blank=True)
+    protocol_enzyme = models.ForeignKey(Enzyme,related_name='proEnzyme', on_delete=models.CASCADE, null=True, blank=True)
+    protocol_variation = models.TextField( null=True, blank=True)
     protocol_description = models.CharField(max_length=200,  null=True, blank=True)
     
     def __str__(self):
         return self.protocol_name
- 
-
 
  
 class Biosource(models.Model):

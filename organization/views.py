@@ -12,6 +12,7 @@ import json
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
+from wetLab.forms import *
 # Create your views here.
 
 def login(request, **kwargs):
@@ -68,7 +69,7 @@ class AddProject(View):
                 result.project_contributor.add(user)
             return HttpResponseRedirect('/showProject/')
         else:
-            return render(request, self.error_page, {})
+            return render(request, self.template_name,{'form':form})
 
 class ShowProject(View):
     template_name = 'showProject.html'
@@ -131,31 +132,93 @@ class DetailProject(View):
     #     context['samples']= samples
         return render(request, self.template_name, context)
 
-class AddExperiment(View): 
-    template_name = 'form1.html'
+
+def createJSON(request, fieldTypePk):
+    json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set
+    data = {}
+    for keys in json_object:
+        formVal = request.POST.get(keys)
+        data[keys] = formVal
+    json_data = json.dumps(data)
+    return(json_data)
+
+# 
+# class StepOne(View): 
+#     template_name = 'stepOneForm.html'
+#     error_page = 'error.html'
+#     form_class = IndividualForm
+#     biosourceForm_set = formset_factory(BiosourceForm)
+#     biosampleForm_set = formset_factory(BiosampleForm)
+#     
+#     def get(self,request):
+#         form = self.form_class()
+#         biosourceFormset = self.biosourceForm_set()
+#         biosampleFormset = self.biosampleForm_set()
+#         form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
+#         for f in biosourceFormset:
+#             f.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
+#         return render(request, self.template_name,{'form':form,'biosourceFormset':biosourceFormset,'biosampleFormset':biosampleFormset})
+#     
+#     def post(self,request):
+#         form = self.form_class(request.POST)
+#         biosourceFormset = self.biosourceForm_set(request.POST)
+#         biosampleFormset = self.biosampleForm_set(request.POST)
+#         if all([form.is_valid(), biosourceFormset.is_valid(),biosampleFormset.is_valid()]):
+#             result = form.save(commit= False)
+#             individual_type = request.POST.get('individual_type')
+#             result.individual_fields = createJSON(request, individual_type)
+#             result.save()
+#             for inline_form in biosourceFormset:
+#                 biosource = inline_form.save(commit=False)
+#                 biosource.biosource_individual = result
+#                 biosource.save()
+#             return HttpResponseRedirect('/showProject/')
+
+
+
+class StepOne(View): 
+    template_name = 'stepOneForm.html'
     error_page = 'error.html'
-    form_class = ExperimentForm
-    ChoiceForm_set = formset_factory(ExperimentForm, extra=0, min_num=1, validate_min=True)
+    form_class = IndividualForm
+    biosourceForm_class = BiosourceForm
+    biosampleForm_class  = BiosampleForm
     
     def get(self,request):
         form = self.form_class()
-        formset = self.ChoiceForm_set()
-       
-        return render(request, self.template_name,{'form':form,'formset':formset})
+        biosourceForm = self.biosourceForm_class()
+        biosampleForm = self.biosampleForm_class()
+        form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
+        biosourceForm.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
+        biosampleForm.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
+        return render(request, self.template_name,{'form':form,'biosourceForm':biosourceForm,'biosampleForm':biosampleForm})
     
     def post(self,request):
         form = self.form_class(request.POST)
-        formset = self.ChoiceForm_set(request.POST)
-        if all([form.is_valid(), formset.is_valid()]):
-            project = form.save()
-            for inline_form in formset:
-                experiment = inline_form.save(commit=False)
-                experiment.exp_project = project
-                experiment.save()
-                return redirect(project)
-        
+        biosourceForm = self.biosourceForm_class(request.POST)
+        biosampleForm = self.biosampleForm_class(request.POST)
+        if all([form.is_valid(), biosourceForm.is_valid(),biosampleForm.is_valid()]):
+            print(form)
+            result = form.save(commit= False)
+            individual_type = request.POST.get('individual_type')
+            result.individual_fields = createJSON(request, individual_type)
+            result.save()
+            
+            biosource = biosourceForm.save(commit=False)
+            biosource.biosource_individual = result
+            biosource.save()
+            
+            biosample = biosampleForm.save(commit= False)
+            biosample.userOwner = request.user
+            biosample.biosample_biosource = biosource
+            biosample.biosample_individual = result
+            biosample_type = request.POST.get('biosample_type')
+            biosample.biosample_fields = createJSON(request, biosample_type)
+            biosample.save()
+            
+            return HttpResponseRedirect('/showProject/')
         else:
-            return render(request, self.error_page, {})
+            return render(request, self.template_name,{'form':form,'biosourceForm':biosourceForm,'biosampleForm':biosampleForm})
+
         
         
             
@@ -164,7 +227,7 @@ def constructForm(request):
     if request.method == 'POST' and request.is_ajax():
         pk = request.POST.get('pk')
         obj = JsonObjField.objects.get(pk=pk)
-        return HttpResponse(json.dumps({'field_set': obj.field_set}), content_type="application/json")
+        return HttpResponse(json.dumps({'field_set': obj.field_set, 'model':obj.field_type}), content_type="application/json")
     else :
         return render_to_response('error.html', locals())
  

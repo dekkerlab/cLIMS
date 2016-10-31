@@ -25,8 +25,8 @@ class ModificationForm(ModelForm):
 
 class IndividualForm(ModelForm):
     class Meta:
-        model = Modification
-        exclude = ('',)
+        model = Individual
+        exclude = ('individual_fields',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -67,8 +67,8 @@ class ProtocolForm(ModelForm):
 
 class BiosourceForm(ModelForm):
     class Meta:
-        model = Protocol
-        exclude = ('',)
+        model = Biosource
+        exclude = ('biosource_individual',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -82,7 +82,7 @@ class BiosourceForm(ModelForm):
 class BiosampleForm(ModelForm):
     class Meta:
         model = Biosample
-        exclude = ('',)
+        exclude = ('biosample_fields','userOwner','biosample_biosource', 'biosample_individual',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'

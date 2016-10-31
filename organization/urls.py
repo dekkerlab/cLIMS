@@ -23,5 +23,5 @@ urlpatterns = [
     
     url(r'^stepOne/$', StepOne.as_view(), name='stepOne'),
     
-    url(r'^addProject/constructForm/$', views.constructForm, name='constructForm'), 
-    ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    url(r'^stepOne/constructForm/$', views.constructForm, name='constructForm'), 
+    ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

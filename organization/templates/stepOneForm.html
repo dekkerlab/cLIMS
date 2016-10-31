@@ -144,62 +144,48 @@
 	<form method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 	<div>
-		<div class="pull-left">
-		<h1>Project</h1>
+		<div>
+		<h1>Individual</h1>
 		{{ form.non_field_errors }}
-<div class="fieldWrapper">
-    {{ form.project_contributor.errors }}
-    {{ form.project_contributor.label_tag }}
-    {{ form.project_contributor}}
-</div>
-<div class="fieldWrapper">
-    {{ form.project_name.errors }}
-    {{ form.project_name.label_tag }}
-    {{ form.project_name}}
-</div>
-<div class="fieldWrapper">
-    {{ form.project_notes.errors }}
-    {{ form.project_notes.label_tag }}
-    {{ form.project_notes}}
-</div>	
-<div class="fieldWrapper">
-    {{ form.project_active.errors }}
-    {{ form.project_active.label_tag }}
-    {{ form.project_active}}
-</div>		
-		</div>
-		<div class="pull-right">
-		<h1>Experiment</h1>
-		{% for f_form in formset %}
-        <div class="fieldWrapper">
-    {{ f_form.experiment_name.errors }}
-    {{ f_form.experiment_name.label_tag }}
-    {{ f_form.experiment_name}}
-</div>
- <div class="fieldWrapper">
-    {{ f_form.experiment_name.errors }}
-    {{ f_form.experiment_name.label_tag }}
-    {{ f_form.experiment_name}}
-</div>
- <div class="fieldWrapper">
-    {{ f_form.experiment_name.errors }}
-    {{ f_form.experiment_name.label_tag }}
-    {{ f_form.experiment_name}}
-</div>
- <div class="fieldWrapper">
-    {{ f_form.experiment_name.errors }}
-    {{ f_form.experiment_name.label_tag }}
-    {{ f_form.experiment_name}}
-</div>
-
+		{% for field in form %}
 		<div class="fieldWrapper">
-    {{ f_form.experiment_type.errors }}
-    {{ f_form.experiment_type.label_tag }}
-    <span class="jsonForm">{{ f_form.experiment_type}}</span>
-    
-</div>
-    {% endfor %}
-      <div class="inner"></div>
+		 {{field.errors}}
+	  {{field.label}} {% if field.field.required %} * {% endif %}
+	   {% if field.label == "Individual type" %}
+	   <span class="jsonForm">{{field}}</span>
+	   {% else %}
+	  {{field}}
+	  {% endif %}
+  </div>
+{% endfor %}
+ <div class="Individual"></div>
+		</div>
+		<div>
+		<h1>Biosource</h1>
+		{{ biosourceForm.non_field_errors }}
+		{% for field in biosourceForm %}
+		<div class="fieldWrapper">
+		 {{field.errors}}
+	  {{field.label}} {% if field.field.required %} * {% endif %}
+	  {{field}}
+  </div>
+{% endfor %}
+
+     <h1>Biosample</h1>
+     {{ biosampleForm.non_field_errors }}
+		{% for field in biosampleForm %}
+		<div class="fieldWrapper">
+		 {{field.errors}}
+	  {{field.label}} {% if field.field.required %} * {% endif %}
+	  {% if field.label == "Biosample type" %}
+	   <span class="jsonForm">{{field}}</span>
+	   {% else %}
+	  {{field}}
+	  {% endif %}
+	 
+  </div>
+{% endfor %}
+ <div class="Biosample"></div>
 			<input type="submit" value="Submit" />
 		</div>
 		</div>
