@@ -3,8 +3,7 @@
 
 
 {% block content %}
-<link rel="stylesheet" href="{% static "main/style.css" %}">
-<script src="{% static "main/show.js" %}"></script> 
+ <script src="{% static "siteWide/js/show.js" %}"></script> 
 
 {% if project %}
 <div class="bodyContent container">
@@ -58,27 +57,28 @@
   </tr>
  </tbody></table>
  
- {% if samples %}
+ {% if experiments %}
  <hr/>
 <span class="tableHead">
-	Sample Details
+	Experiment Details
 </span>
 <table class="table table-bordered table-hover table-responsive">
   	<tr>
-		<td><span class="rowHead">Sample Name</span></td>
-  		<td><span class="rowHead">Organism</span></td>
+		<td><span class="rowHead">Experiment Name</span></td>
+  		<td><span class="rowHead">Type</span></td>
+  		<td><span class="rowHead">Biosample</span></td>
   		<td><span class="rowHead">Protocol</span></td>
-  		<td><span class="rowHead">Cell Line</span></td>
-  		<td><span class="rowHead">Condition</span></td>
+  		<td><span class="rowHead">Enzyme</span></td>
   		<td></td>
   	</tr>
-    {% for sample in samples %}
+    {% for exp in experiments %}
 		<tr>
-			<td><a href="/detailSample/{{sample.id}}">{{ sample.name }}</a></td>
-			<td>{{ sample.organism }}</td>
-			<td>{{ sample.protocol }}</td>
-			<td>{{ sample.cell_line }}</td>
-			<td>{{ sample.condition }}</td>
+			<td><a href="/detailExperiment/{{exp.id}}">{{exp.experiment_name}}</a></td>
+			<td>{{exp.experiment_type}}</td>
+			<td>{{exp.experiment_biosample}}</td>
+			<td>{{exp.experiment_protocol}}</td>
+			<td>{{exp.experiment_enzyme}}</td>
+			
 			<td>
 			<a href="/deleteSample/{{ sample.id }}">
 			<button type="button" class="btn btn-danger pull-right hidden show">Delete Sample</button>

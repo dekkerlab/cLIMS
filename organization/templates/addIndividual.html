@@ -144,17 +144,6 @@
 	<form method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 	<div>
-		<div>
-		<h1>Select</h1>
-		{{ selectForm.non_field_errors }}
-		{% for field in selectForm %}
-		<div class="fieldWrapper">
-		 {{field.errors}}
-	  {{field.label}} {% if field.field.required %} * {% endif %}
-	  {{field}}
-  </div>
-{% endfor %}
-  {% if form %}
 		<h1>Individual</h1>
 		<div class="indDiv">
 		{{ form.non_field_errors }}
@@ -172,46 +161,7 @@
 {% endfor %}
 <div class="Individual"></div>
 </div>
-
-		</div>
-	 {% endif %}
-	 
-		<div>
-		<h1>Biosource</h1>
-		<span class="selectValues">Already Selected Biosource</span>
-		<input type="checkbox" name="check_biosource" id="bioCheck">&nbsp;<br/><br/>
-		<div class="bioDiv">
-		{{ biosourceForm.non_field_errors }}
-		{% for field in biosourceForm %}
-		<div class="fieldWrapper">
-		 {{field.errors}}
-		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  {{field.label}} {% if field.field.required %} * {% endif %}
-	  {{field}}
-  </div>
-{% endfor %}
-</div>
-     <h1>Biosample</h1>
-     <span class="selectValues">Already Selected Biosample</span>
-		<input type="checkbox" name="check_sample" id="samCheck">&nbsp;<br/><br/>
-     <div class=" samDiv">
-     {{ biosampleForm.non_field_errors }}
-		{% for field in biosampleForm %}
-		<div class="fieldWrapper">
-		 {{field.errors}}
-		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  {{field.label}} {% if field.field.required %} * {% endif %}
-	  {% if field.label == "Biosample type" %}
-	   <span class="jsonForm">{{field}}</span>
-	   {% else %}
-	  {{field}}
-	  {% endif %}
-	 
-  </div>
-{% endfor %}
- <div class="Biosample"></div>
- </div>
-			<input type="submit" value="Submit" />
+			<input type="submit" value="Next" />
 		</div>
 		</div>
 			 

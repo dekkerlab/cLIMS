@@ -21,7 +21,12 @@ urlpatterns = [
     url(r'^showProject/$', ShowProject.as_view(), name='showProject'),
     url(r'^detailProject/(?P<pk>[0-9]+)/$', DetailProject.as_view(), name='detailProject'),
     
-    url(r'^stepOne/$', StepOne.as_view(), name='stepOne'),
+    url(r'^detailExperiment/(?P<pk>[0-9]+)/$', DetailExperiment.as_view(), name='detailExperiment'),
     
-    url(r'^stepOne/constructForm/$', views.constructForm, name='constructForm'), 
+#     url(r'^addIndividual/$', AddIndividual.as_view(), name='addIndividual'),
+#     url(r'^addIndividual/constructForm/$',  views.constructForm, name='constructIndividual'), 
+#     
+    url(r'^stepOne/$', AddIndividual.as_view(), name='stepOne'),
+    url(r'^stepOne/constructForm/$', views.constructForm, name='constructForm'),
+    
     ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

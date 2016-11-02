@@ -42,4 +42,18 @@ $(function() {
     		}
 	    return form;
 	}
+	
+	$('#indCheck').click(function() {
+	    $(".indDiv").toggleClass("hidden");
+	});
+	$('#bioCheck').click(function() {
+	    $(".bioDiv").toggleClass("hidden");
+	});
+	$('#samCheck').click(function() {
+	    $(".samDiv").toggleClass("hidden");
+	});
+	
+//	$("#indCheck").click(function(){
+//    	$('#indDiv').toggleClass("hidden");
+//	});	
 });

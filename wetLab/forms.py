@@ -8,6 +8,7 @@ from django.forms.models import ModelForm
 from wetLab.models import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from django import forms
 
 class ModificationForm(ModelForm):
     class Meta:
@@ -36,6 +37,11 @@ class IndividualForm(ModelForm):
  
         self.helper.add_input(Submit('submit', 'Submit'))
         super(IndividualForm, self).__init__(*args, **kwargs)
+
+class SelectForm(forms.Form):
+        individual = forms.ModelChoiceField(queryset=Individual.objects.all(), empty_label=None)
+        biosource = forms.ModelChoiceField(queryset=Biosource.objects.all(), empty_label=None)
+        biosample = forms.ModelChoiceField(queryset=Biosample.objects.all(), empty_label=None)
 
 class DocumentForm(ModelForm):
     class Meta:

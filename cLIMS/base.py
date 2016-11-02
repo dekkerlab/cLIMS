@@ -7,7 +7,7 @@ Created on Oct 7, 2016
 ###Python=3.5.2
 ###Django=1.9.7
 ###apache-tomcat-8.5.5
-DATABASE_NAME='lims_db'
+DATABASE_NAME='clims_db'
 DATABASE_USER='dekker_lab'
 DATABASE_PASSWORD='CHYYTS14#'
 HOST='localhost'
