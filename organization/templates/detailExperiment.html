@@ -42,8 +42,7 @@
     ({{ forloop.counter }}) {{values}}<br/>
   {% endfor %} -->
 <span class="rowHead">Project Name: </span>{{experiment.experiment_project}}<br/>
-<span class="rowHead">Experiment Type: </span>{{ experiment.experiment_type }}<br/>
-<span class="rowHead">Fields: </span>{{ experiment.experiment_fields }}<br/>
+<span class="rowHead">Biosource: </span>{{exp.experiment_biosample.biosample_biosource}}<br/>
 <span class="rowHead">Biosample: </span>{{ experiment.experiment_biosample }}<br/>
 <span class="rowHead">Protocol: </span>{{ experiment.experiment_protocol }}<br/>
 <span class="rowHead">Enzyme: </span>{{ experiment.experiment_enzyme }}<br/>

@@ -9,7 +9,7 @@ from wetLab.models import References
 class JsonObjField(models.Model):
     field_name = models.CharField(max_length=50, null=False, default="", db_index=True)
     field_type = models.CharField(max_length=50, null=False, default="")
-    field_set = JSONField()
+    field_set = JSONField(null=True, blank=True)
     jsonField_description = models.CharField(max_length=200, null=True, blank=True)
     
     def __str__(self):
@@ -35,13 +35,12 @@ class Project(models.Model):
 
 class Experiment(References):
     experiment_name = models.CharField(max_length=100, null=False, default="", db_index=True)
-    experiment_type = models.ForeignKey(JsonObjField,related_name='expType', on_delete=models.CASCADE,)
-    experiment_fields = JSONField()
     experiment_project = models.ForeignKey(Project,related_name='expProject', on_delete=models.CASCADE,)
     experiment_biosample = models.ForeignKey('wetLab.Biosample',related_name='expBio', on_delete=models.CASCADE,help_text="Starting biological material.")
     experiment_protocol = models.ForeignKey('wetLab.Protocol',related_name='expPro', on_delete=models.CASCADE,)
-    experiment_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A short description of the experiment")
     experiment_enzyme = models.ForeignKey('wetLab.Enzyme',related_name='expEnz', on_delete=models.CASCADE,help_text="The enzyme used for digestion of the DNA.")
+    experiment_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A short description of the experiment")
+    
     
     def __str__(self):
         return self.experiment_name
@@ -65,7 +64,7 @@ class Publication(models.Model):
     publication_issue = models.CharField(max_length=200, null=False, default="", help_text="The issue of the publication.")
     publication_journal = models.CharField(max_length=200, null=False, default="", help_text="The journal of the publication.")
     publication_supplementry = models.CharField(max_length=200,  null=True, blank=True)
-    publication_exp = models.ManyToManyField(Experiment, related_name='pubExp', help_text="List of experiment sets to be associated with the publication.")
+#     publication_exp = models.ManyToManyField(Experiment, related_name='pubExp', help_text="List of experiment sets to be associated with the publication.")
     publication_identifiers=models.CharField(max_length=200, null=True, blank=True, help_text="The identifiers that reference data found in the object.")
     publication_volume=models.CharField(max_length=200, null=True, blank=True, help_text="The volume of the publication.")
     

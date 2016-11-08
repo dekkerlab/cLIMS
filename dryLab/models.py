@@ -30,7 +30,7 @@ class FileSet(models.Model):
  
 class Analysis(models.Model):
     analysis_name = models.CharField(max_length=50, null=False, default="")
-    analysis_type = models.ForeignKey('organization.JsonObjField',related_name='analysisType', on_delete=models.CASCADE,)
+    analysis_type = models.ForeignKey('organization.JsonObjField',related_name='analysisType', on_delete=models.CASCADE, help_text="JsonObjField")
     analysis_fields = JSONField()
     analysis_file = models.ManyToManyField(SeqencingFile,related_name='analysisFile')
     analysis_exp = models.ForeignKey('organization.Experiment',related_name='analysisExp', on_delete=models.CASCADE,)

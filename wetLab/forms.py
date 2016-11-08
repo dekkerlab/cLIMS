@@ -13,7 +13,7 @@ from django import forms
 class ModificationForm(ModelForm):
     class Meta:
         model = Modification
-        exclude = ('',)
+        exclude = ('userOwner','modification_constructs','modification_genomicRegions','modification_target')
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -23,6 +23,48 @@ class ModificationForm(ModelForm):
  
         self.helper.add_input(Submit('submit', 'Submit'))
         super(ModificationForm, self).__init__(*args, **kwargs)
+
+class ConstructForm(ModelForm):
+    class Meta:
+        model = Construct
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(ConstructForm, self).__init__(*args, **kwargs)
+
+class GenomicRegionsForm(ModelForm):
+    class Meta:
+        model = GenomicRegions
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(GenomicRegionsForm, self).__init__(*args, **kwargs)
+
+class TargetForm(ModelForm):
+    class Meta:
+        model = Target
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+ 
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(TargetForm, self).__init__(*args, **kwargs)
 
 class IndividualForm(ModelForm):
     class Meta:
@@ -39,9 +81,9 @@ class IndividualForm(ModelForm):
         super(IndividualForm, self).__init__(*args, **kwargs)
 
 class SelectForm(forms.Form):
-        individual = forms.ModelChoiceField(queryset=Individual.objects.all(), empty_label=None)
-        biosource = forms.ModelChoiceField(queryset=Biosource.objects.all(), empty_label=None)
-        biosample = forms.ModelChoiceField(queryset=Biosample.objects.all(), empty_label=None)
+        Individual = forms.ModelChoiceField(queryset=Individual.objects.all(), empty_label=None)
+        Biosource = forms.ModelChoiceField(queryset=Biosource.objects.all(), empty_label=None)
+        Biosample = forms.ModelChoiceField(queryset=Biosample.objects.all(), empty_label=None)
 
 class DocumentForm(ModelForm):
     class Meta:
@@ -60,7 +102,7 @@ class DocumentForm(ModelForm):
 class ProtocolForm(ModelForm):
     class Meta:
         model = Protocol
-        exclude = ('',)
+        exclude = ('protocol_fields','userOwner')
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -98,10 +140,10 @@ class BiosampleForm(ModelForm):
  
         self.helper.add_input(Submit('submit', 'Submit'))
         super(BiosampleForm, self).__init__(*args, **kwargs)
-
-class TreatmentForm(ModelForm):
+ 
+class TreatmentRnaiForm(ModelForm):
     class Meta:
-        model = Treatment
+        model = TreatmentRnai
         exclude = ('',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -109,9 +151,37 @@ class TreatmentForm(ModelForm):
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
         self.helper.form_action = 'submit_survey'
- 
+  
         self.helper.add_input(Submit('submit', 'Submit'))
-        super(TreatmentForm, self).__init__(*args, **kwargs)
+        super(TreatmentRnaiForm, self).__init__(*args, **kwargs)
+
+class TreatmentChemicalForm(ModelForm):
+    class Meta:
+        model = TreatmentChemical
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+  
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(TreatmentChemicalForm, self).__init__(*args, **kwargs)
+
+class OtherForm(ModelForm):
+    class Meta:
+        model = Other
+        exclude = ('',)
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-exampleForm'
+        self.helper.form_class = 'blueForms'
+        self.helper.form_method = 'post'
+        self.helper.form_action = 'submit_survey'
+  
+        self.helper.add_input(Submit('submit', 'Submit'))
+        super(OtherForm, self).__init__(*args, **kwargs)
 
 class BarcodeForm(ModelForm):
     class Meta:

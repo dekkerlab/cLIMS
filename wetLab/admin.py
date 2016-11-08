@@ -3,7 +3,6 @@ from .models import *
 # Register your models here.
 
 admin.site.register(Modification)
-admin.site.register(Treatment)
 admin.site.register(Individual)
 admin.site.register(Document)
 admin.site.register(Protocol)

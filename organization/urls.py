@@ -27,6 +27,21 @@ urlpatterns = [
 #     url(r'^addIndividual/constructForm/$',  views.constructForm, name='constructIndividual'), 
 #     
     url(r'^stepOne/$', AddIndividual.as_view(), name='stepOne'),
-    url(r'^stepOne/constructForm/$', views.constructForm, name='constructForm'),
+    url(r'^constructForm/$', views.constructForm, name='constructForm'),
+    
+    url(r'^addBiosource/$', AddBiosource.as_view(), name='addBiosource'),
+    url(r'^addBiosample/$', AddBiosample.as_view(), name='addBiosample'),
+    url(r'^addModification/$', AddModification.as_view(), name='addModification'),
+    url(r'^addTarget/$', AddTarget.as_view(), name='addTarget'),
+    url(r'^addConstruct/$', AddConstruct.as_view(), name='addConstruct'),
+    url(r'^addProtocol/$', AddProtocol.as_view(), name='addProtocol'),
+    url(r'^addDocument/$', AddDocument.as_view(), name='addDocument'),
+    url(r'^addTreatmentRnai/$', AddTreatmentRnai.as_view(), name='addTreatmentRnai'),
+    url(r'^addTreatmentChemical/$', AddTreatmentChemical.as_view(), name='addTreatmentChemical'),
+    url(r'^addOther/$', AddOther.as_view(), name='addOther'),
+    url(r'^addPublication/$', AddPublication.as_view(), name='addPublication'),
+    url(r'^addExperiment/$', AddExperiment.as_view(), name='addExperiment'),
+    url(r'^addSequencingRun/$', AddSequencingRun.as_view(), name='addSequencingRun'),
+    
     
     ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

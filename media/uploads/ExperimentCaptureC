@@ -1,0 +1,58 @@
+ExperimentCaptureC
+Experiment
+{"ligation_time": {"data": "number", "help": "Time of ligation step in minutes", "required": "no"}, "average_fragment_size": {"data": "integer", "help": "Size of average fragment in base pairs after fragmentation step", "required": "no"}, "crosslinking_method": {"data": "choices", "help": "Term used for the method for crosslinking chromatin", "choices": {"1": "none", "3": "1.3% Formaldehyde", "2": "1% Formaldehyde"}, "required": "no"}, "fragment_size_selection_method": {"data": "choices", "help": "A short description or reference of the size selection protocol used in library preparation, if applicable.", "choices": {"1": "gel", "3": "SPRI beads", "2": "see document"}, "required": "no"}, "fragmentation_method": {"data": "choices", "help": "A short description or reference of the nucleic acid fragmentation protocol used in library preparation, if applicable.", "choices": {"2": "shearing", "1": "chemical", "6": "n/a", "3": "sonication", "4": "see protocol document", "5": "none"}, "required": "no"}, "library_preparation_date": {"data": "date", "help": "The date that the library was prepared - submitted", "required": "no", "Date": "YYYY-MM-DD"}, "crosslinking_temperature": {"data": "number", "help": "Temperature of crosslinking step in degrees Celsius", "required": "no"}, "digestion_temperature": {"data": "number", "help": "Temperature of digestion step in degrees Celsius", "required": "no"}, "experiment_type": {"data": "choices", "help": "A controlled term specifying the type of experiment.", "choices": {"1": "capture Hi-C"}, "required": "yes"}, "ligation_temperature": {"data": "number", "help": "Temperature of ligation step in degrees Celsius", "required": "no"}, "dbxrefs": {"data": "Array", "help": "Unique identifiers from external resources.", "required": "no"}, "digestion_time": {"data": "number", "help": "Time of digestion step in minutes", "required": "no"}, "enzyme_lot_number": {"data": "string", "help": "Lot number of batch of enzyme used to digest DNA", "required": "no"}, "crosslinking_time": {"data": "number", "help": "Time of crosslinking step in minutes", "required": "no"}, "ligation_volume": {"data": "number", "help": "Volume of ligation step in milliliters", "required": "no"}, "tagging_method": {"data": "string", "help": "Information on the biotinylated base used or other tagging info", "required": "no"}, "fragment_size_range": {"data": "string", "help": "The measured size range of the purified nucleic acid, in bp.", "required": "no"}}
+
+
+ExperimentHiC
+Experiment
+{"ligation_time": {"data": "number", "help": "Time of ligation step in minutes", "required": "no"}, "average_fragment_size": {"data": "integer", "help": "Size of average fragment in base pairs after fragmentation step", "required": "no"}, "crosslinking_method": {"data": "choices", "help": "Term used for the method for crosslinking chromatin", "choices": {"1": "none", "3": "1.3% Formaldehyde", "2": "1% Formaldehyde"}, "required": "no"}, "fragment_size_selection_method": {"data": "choices", "help": "A short description or reference of the size selection protocol used in library preparation, if applicable.", "choices": {"1": "gel", "3": "SPRI beads", "2": "see document"}, "required": "no"}, "fragmentation_method": {"data": "choices", "help": "A short description or reference of the nucleic acid fragmentation protocol used in library preparation, if applicable.", "choices": {"2": "shearing", "1": "chemical", "6": "n/a", "3": "sonication", "4": "see protocol document", "5": "none"}, "required": "no"}, "library_preparation_date": {"data": "date", "help": "The date that the library was prepared - submitted", "required": "no", "Date": "YYYY-MM-DD"}, "crosslinking_temperature": {"data": "number", "help": "Temperature of crosslinking step in degrees Celsius", "required": "no"}, "digestion_temperature": {"data": "number", "help": "Temperature of digestion step in degrees Celsius", "required": "no"}, "experiment_type": {"data": "choices", "help": "A controlled term specifying the type of experiment.", "choices": {"4": "DNase Hi-C", "1": "in situ Hi-C", "3": "micro-C", "2": "dilution Hi-C"}, "required": "yes"}, "ligation_temperature": {"data": "number", "help": "Temperature of ligation step in degrees Celsius", "required": "no"}, "dbxrefs": {"data": "Array", "help": "Unique identifiers from external resources.", "required": "no"}, "digestion_time": {"data": "number", "help": "Time of digestion step in minutes", "required": "no"}, "enzyme_lot_number": {"data": "string", "help": "Lot number of batch of enzyme used to digest DNA", "required": "no"}, "crosslinking_time": {"data": "number", "help": "Time of crosslinking step in minutes", "required": "no"}, "ligation_volume": {"data": "number", "help": "Volume of ligation step in milliliters", "required": "no"}, "tagging_method": {"data": "string", "help": "Information on the biotinylated base used or other tagging info", "required": "no"}, "fragment_size_range": {"data": "string", "help": "The measured size range of the purified nucleic acid, in bp.", "required": "no"}}
+
+
+
+BiosampleCellCulture
+Biosample
+{"dbxrefs": {"data": "array", "help": "Unique identifiers from external resources.", "required": "no"}, "culture_duration": {"data": "number", "help": "Time cells in culture since first thaw", "required": "no"}, "karyotype": {"data": "string", "help": "Chromosome count and any noted rearrangements or copy number variation", "required": "no"}, "differentiation_state": {"data": "string", "help": "Description of markers used to determine the differentiation state of embryonic stem cells.", "required": "no"}, "starting_amount_units": {"data": "integer", "choices": {"4": "\u03bcg", "1": "cells", "3": "mg", "2": "g"}, "required": "no"}, "starting_amount": {"data": "integer", "help": "The initial quantity of cells used for the culture.", "required": "no"}, "culture_start_date": {"data": "string", "help": "The date the culture was started.", "required": "yes"}, "passage_number": {"data": "integer", "help": "Number of passages of the cell culture", "required": "no"}, "synchronization_stage": {"data": "string", "help": "Cell cycle stage at which culture is synchronized", "required": "no"}, "culture_duration_units": {"data": "choices", "choices": {"2": "hours", "1": "minutes", "6": "years", "3": "days", "4": "weeks", "5": "months"}, "required": "no"}}
+
+
+IndividualHuman
+Individual
+{"age_units": {"data": "choices", "choices": {"4": "year", "1": "day", "3": "month", "2": "week"}, "required": "no"}, "health_status": {"data": "choices", "choices": {"2": "newborn", "1": "fetal", "6": "embryonic", "3": "child", "4": "adult", "7": "postnatal", "5": "unknown"}, "required": "no"}, "age": {"data": "number", "help": "The age of the individual when biological material was sampled.", "required": "no"}, "ethnicity": {"data": "string", "required": "no"}, "sex": {"data": "choices", "choices": {"4": "mixed", "1": "male", "3": "unknown", "2": "female"}, "required": "no"}}
+
+
+IndividualMouse
+Individual
+{"age_units": {"data": "choices", "choices": {"4": "year", "1": "day", "3": "month", "2": "week"}, "required": "no"}, "age": {"data": "number", "help": "The age of the individual when biological material was sampled.", "required": "no"}, "mouse_life_stage": {"data": "choices", "choices": {"1": "pup", "3": "adult", "2": "fetus"}, "required": "no"}, "sex": {"data": "choices", "choices": {"4": "mixed", "1": "male", "3": "unknown", "2": "female"}, "required": "no"}, "mouse_strain": {"data": "string", "help": "Can be an object of straing with dbxref for strain", "required": "no"}}
+
+
+
+
+document_type
+modification_type
+biosource_type
+construct_type
+
+
+Other
+	excision protocol
+	general protocol
+	treatment protocol
+	data sheet
+	dedifferentiation protocol
+	differentiation protocol
+	data QA
+	certificate of analysis
+	extraction protocol
+	growth protocol
+	tagging construct
+	rnai construct
+	crispr construct
+	Other
+	Stable Transfection
+	Crispr
+	stem cell
+	whole organisms
+	induced pluripotent stem cell line
+	in vitro differentiated cells
+	tissue
+	primary cell
+	immortalized cell line

@@ -16,7 +16,9 @@ class Document(models.Model):
     document_attachment = models.FileField(upload_to='uploads/')
     document_references = models.ForeignKey('organization.Publication', null=True, blank=True, on_delete=models.CASCADE, help_text="The publications that provide more information about the object.")
     document_url = models.URLField(max_length=200,  null=True, blank=True, help_text="An external resource with additional information about the object")
-
+    def __str__(self):
+        return self.document_description
+        
 class References(models.Model):
     documents = models.ForeignKey(Document, null=True, blank=True, on_delete=models.CASCADE, help_text="Documents that provide additional information (not data file).")
     references = models.ForeignKey('organization.Publication', null=True, blank=True, on_delete=models.CASCADE, help_text="The publications that provide more information about the object.")
@@ -33,7 +35,7 @@ class Vendor(models.Model):
     def __str__(self):
         return self.vendor_name    
     
-class Construct(References):
+class Construct(models.Model):
     construct_name = models.CharField(max_length=50, null=False, default="", help_text="Short name for construct - letters, numbers, hyphens or underscores allowed (no spaces)")
     construct_description = models.CharField(max_length=200, null=True, blank=True, help_text="A plain text description of the construct.")
     construct_type = models.ForeignKey('organization.Choice',related_name='conChoice', on_delete=models.CASCADE, help_text="The categorization of the construct.")
@@ -56,14 +58,16 @@ class  GenomicRegions(models.Model):
     genomicRegions_end_location = models.CharField(max_length=200, null=True, blank=True, help_text="If the exact end coordinate is not know a description of the start location")
     
     
-class  Target(References):
+class  Target(models.Model):
     target_genes = models.CharField(max_length=200,  null=False, default="", help_text="The genes that are specifically targeted - can also be derived from genomic region info")
-    target_region = models.ForeignKey(GenomicRegions, null=True, blank=True, on_delete=models.CASCADE, help_text="The genome assembly, chromosome and coordinates of the region that is targeted")
+    
+    def __str__(self):
+        return self.target_genes
 
 class Modification(UserOwner,References): 
     modification_name = models.CharField(max_length=50, null=False, default="")
     modification_type = models.ForeignKey('organization.Choice',related_name='modChoice',on_delete=models.CASCADE, help_text="The type of genomic modification.")
-    modification_constructs = models.ForeignKey(Construct,related_name='modConstructs', on_delete=models.CASCADE, help_text="Recombinant constructs used to make modification.")
+    modification_constructs = models.ForeignKey(Construct,related_name='modConstructs', on_delete=models.CASCADE, null=True, blank=True,help_text="Recombinant constructs used to make modification.")
     modification_vendor = models.ForeignKey(Vendor,related_name='modVendor',on_delete=models.CASCADE, null=True, blank=True, help_text="Lab or Company that produced the modfication")
     modification_gRNA = models.CharField(max_length=200, null=True, blank=True, help_text="The guide RNA sequences used in Crispr targetting.")
     modification_genomicRegions = models.ForeignKey(GenomicRegions,related_name='modGen', on_delete=models.CASCADE, null=True, blank=True, help_text="The genomic regions being modified.")
@@ -77,7 +81,7 @@ class Modification(UserOwner,References):
 class Individual(References):
     individual_name = models.CharField(max_length=50, null=False, default="")
     individual_vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='indVen',null=True, blank=True)
-    individual_type = models.ForeignKey('organization.JsonObjField',related_name='indType')
+    individual_type = models.ForeignKey('organization.JsonObjField',related_name='indType',  help_text="JsonObjField")
     individual_fields = JSONField(null=True, blank=True)
     def __str__(self):
         return self.individual_name 
@@ -96,8 +100,8 @@ class Enzyme(References):
      
 class Protocol(UserOwner):
     protocol_name =  models.CharField(max_length=50, null=False, default="")
-    protocol_type = models.ForeignKey('organization.JsonObjField',on_delete=models.CASCADE, related_name='proType')
-    protocol_fields = JSONField()
+    protocol_type = models.ForeignKey('organization.JsonObjField',on_delete=models.CASCADE, related_name='proType', help_text="JsonObjField")
+    protocol_fields = JSONField(null=True, blank=True)
     protocol_document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name='proDoc',null=True, blank=True)
     protocol_enzyme = models.ForeignKey(Enzyme, on_delete=models.CASCADE, related_name='proEnzyme',null=True, blank=True)
     protocol_variation = models.TextField( null=True, blank=True)
@@ -125,24 +129,50 @@ class Biosample(UserOwner, References):
     biosample_name = models.CharField(max_length=50, null=False, default="")
     biosample_biosource =  models.ForeignKey(Biosource, on_delete=models.CASCADE, related_name='bioSource', help_text="The cell lines or tissue types used in the experiment")
     biosample_individual =  models.ForeignKey(Individual,on_delete=models.CASCADE, related_name='bioIndi')
-    biosample_modification =  models.ForeignKey(Modification,on_delete=models.CASCADE, related_name='bioMod', help_text="Expression or targeting vectors stably transfected to generate Crispr'ed or other genomic modification")
+    biosample_modification =  models.ForeignKey(Modification,on_delete=models.CASCADE, related_name='bioMod', null=True, blank=True, help_text="Expression or targeting vectors stably transfected to generate Crispr'ed or other genomic modification")
     biosample_protocol =  models.ForeignKey(Protocol,on_delete=models.CASCADE, related_name='bioMod', help_text="Information about biosample preparation protocols.")
-    biosample_type =  models.ForeignKey('organization.JsonObjField',on_delete=models.CASCADE, related_name='biotype', null=True, blank=True)
+    biosample_treatment =  models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='biosamChoice', help_text="Select the treatment")
+    biosample_type =  models.ForeignKey('organization.JsonObjField',on_delete=models.CASCADE, related_name='biotype', null=True, blank=True, verbose_name="Other Details",help_text="JsonObjField")
     biosample_fields = JSONField(  null=True, blank=True)
     
     def __str__(self):
         return self.biosample_name
      
      
-class Treatment(References):
-    treatment_name = models.CharField(max_length=50, null=False, default="")
-    treatment_type = models.ForeignKey('organization.JsonObjField',related_name='treatType',on_delete=models.CASCADE)
-    treatment_fields = JSONField()
-    treatment_biosample = models.ForeignKey(Biosample,on_delete=models.CASCADE,related_name='treatBio')
-    treatment_description = models.CharField(max_length=200,  null=True, blank=True)
+class TreatmentRnai(References):
+    treatmentRnai_name = models.CharField(max_length=50, null=False, default="")
+    treatmentRnai_rnai_type = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, related_name='rnaiType')
+    treatmentRnai_rnai_constructs = models.ForeignKey(Construct, on_delete=models.CASCADE, related_name='rnaiType',null=True, blank=True, help_text="Recombinant constructs used for RNAi")
+    treatmentRnai_rnai_vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='rnaiVendor',null=True, blank=True, help_text="RNAi center that provided the RNAi.")
+    treatmentRnai_target = models.ForeignKey(Target, on_delete=models.CASCADE, related_name='rnaiVendor',null=True, blank=True, help_text="The targeted gene or genomic region that is targeted by the modification.")
+    treatmentRnai_nucleotide_seq =  models.CharField(max_length=50, null=True, blank=True, default="", help_text="The nucleotide sequence of the target region.")
+    treatmentRnai_biosample = models.ManyToManyField(Biosample, related_name='treatRnaiBio', help_text="Associated biosample")
+    treatmentRnai_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     
     def __str__(self):
-        return self.treatment_name 
+        return self.treatment_name
+
+class TreatmentChemical(References):
+    treatmentChemical_name = models.CharField(max_length=50, null=False, default="")
+    treatmentChemical_chemical = models.CharField(max_length=50, null=False, default="")
+    treatmentChemical_concentration = models.FloatField(max_length=10, null=True, blank=True)
+    treatmentChemical_concentration_units = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, null=True, blank=True, related_name='conUnits')
+    treatmentChemical_duration = models.FloatField(max_length=10,null=True, blank=True) 
+    treatmentChemical_duration_units = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, null=True, blank=True, related_name='timeUnits')
+    treatmentChemical_temperature = models.FloatField(max_length=10,null=True, blank=True)
+    treatmentChemical_biosample = models.ManyToManyField(Biosample, related_name='treatChemBio', help_text="Associated biosample")
+    treatmentChemical_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
+    
+    def __str__(self):
+        return self.treatmentChemical_name 
+
+class Other(References):
+    name = models.CharField(max_length=50, null=False, default="")
+    biosample = models.ManyToManyField(Biosample, related_name='otherBio')
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name 
      
 class Barcode(models.Model):
     barcode_name_1 = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, related_name='barChoice1')

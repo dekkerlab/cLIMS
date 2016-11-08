@@ -65,7 +65,7 @@
 <table class="table table-bordered table-hover table-responsive">
   	<tr>
 		<td><span class="rowHead">Experiment Name</span></td>
-  		<td><span class="rowHead">Type</span></td>
+  		<td><span class="rowHead">Biosource</span></td>
   		<td><span class="rowHead">Biosample</span></td>
   		<td><span class="rowHead">Protocol</span></td>
   		<td><span class="rowHead">Enzyme</span></td>
@@ -74,7 +74,7 @@
     {% for exp in experiments %}
 		<tr>
 			<td><a href="/detailExperiment/{{exp.id}}">{{exp.experiment_name}}</a></td>
-			<td>{{exp.experiment_type}}</td>
+			<td>{{exp.experiment_biosample.biosample_biosource}}</td>
 			<td>{{exp.experiment_biosample}}</td>
 			<td>{{exp.experiment_protocol}}</td>
 			<td>{{exp.experiment_enzyme}}</td>

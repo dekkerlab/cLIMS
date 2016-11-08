@@ -12,21 +12,12 @@ class ProjectForm(ModelForm):
     class Meta:
         model = Project
         exclude = ('project_owner',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(ProjectForm, self).__init__(*args, **kwargs)
 
         
 class ExperimentForm(ModelForm):
     class Meta:
         model = Experiment
-        exclude = ('',)
+        exclude = ('experiment_project','experiment_biosample',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
