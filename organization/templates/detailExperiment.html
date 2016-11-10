@@ -29,18 +29,14 @@
 <div>
 <div class="col-xs-6 pull-left">
 <span class="tableHead">Details of Experiment -- {{ experiment.experiment_name }}</span>
-<a href="/deleteSample/{{ sample.id }}">
-<button type="button" class="btn btn-danger pull-right hidden show">Delete Sample</button>
+<a href="/deleteExperiment/{{ experiment.id }}">
+<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
 </a>
-<a href="/editSample/{{sample.id}}">
-	<button type="button" class="btn btn-warning pull-right hidden show">Edit Sample</button>
+<a href="/editExperiment/{{experiment.id}}">
+	<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
 </a>
-
 <br/>
-<!-- <span class="rowHead">Lane Name:</span><br/>
-  {% for values in sample.lane.all %}
-    ({{ forloop.counter }}) {{values}}<br/>
-  {% endfor %} -->
+
 {% if experiment %}
 <span class="rowHead">Project Name: </span>{{experiment.experiment_project}}<br/>
 <span class="rowHead">Biosource: </span>{{experiment.experiment_biosample.biosample_biosource}}<br/>
@@ -52,8 +48,19 @@
 
 {% if individuals %}
 <hr/>
-<span class="tableHead">Associated Individual Details</span><br/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
+<span class="tableHead">Associated Individual Details</span>
+<br/>
+<div class="divData hidden">
 {% for individual in individuals %}
+<a href="/deleteIndividual/{{ individual.id }}">
+<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+</a>
+<a href="/editIndividual/{{individual.id}}">
+	<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+</a>
 <span class="rowHead">Individual Name: </span>{{individual.individual_name}}<br/>
 <span class="rowHead">Individual Vendor: </span>{{individual.individual_vendor}}<br/>
 <span class="rowHead">Individual URL: </span>{{individual.url}}<br/>
@@ -73,11 +80,23 @@
 	{% endfor %}
 </table>
 {% endfor %}
+</div>
+</div>
 {% endif %}
 
 {% if biosource %}
 <hr/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
 <span class="tableHead">Associated Biosource Details</span><br/>
+<div class="divData hidden">
+<a href="/deleteBiosource/{{ biosource.id }}">
+<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+</a>
+<a href="/editBiosource/{{biosource.id}}">
+	<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+</a>
 <span class="rowHead">Biosource Name: </span>{{biosource.biosource_name}}<br/>
 <span class="rowHead">Biosource Type: </span>{{biosource.biosource_type}}<br/>
 <span class="rowHead">Biosource Cell Line: </span>{{ biosource.biosource_cell_line }}<br/>
@@ -91,11 +110,23 @@
 <span class="rowHead">Biosource Documents: </span>{{biosource.documents}}<br/>
 <span class="rowHead">Biosource References: </span>{{biosource.references}}<br/>
 <span class="rowHead">Biosource DBxrefs: </span>{{biosource.dbxrefs}}<br/>
+</div>
+</div>
 {% endif %}
 
 {% if biosample %}
 <hr/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
 <span class="tableHead">Associated Biosample Details</span><br/>
+<div class="divData hidden">
+<a href="/deleteBiosample/{{ biosample.id }}">
+<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+</a>
+<a href="/editBiosample/{{biosample.id}}">
+	<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+</a>
 <span class="rowHead">Biosample Name: </span>{{biosample.biosample_name}}<br/>
 <span class="rowHead">Biosample Biosource: </span>{{biosample.biosample_biosource}}<br/>
 <span class="rowHead">Biosample Individual: </span>{{ biosample.biosample_individual }}<br/>
@@ -120,14 +151,25 @@
 	{% endfor %}
 </table>
 {% endif %}
+</div></div>
 {% endif %}
 
 
 {% if treatments %}
 <hr/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
 <span class="tableHead">Associated Biosample Treatment</span><br/>
+<div class="divData hidden">
 		{% for treatment in treatments %}
 			{% if treatment.treatmentRnai_name %}
+			<a href="/deleteTreatmentRnai/{{ treatment.id }}">
+				<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+			</a>
+			<a href="/editTreatmentRnai/{{treatment.id}}">
+				<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+			</a>
 			RNAi Treatment<br/>
 			<span class="rowHead">TreatmentRnai Name: </span>{{treatment.treatmentRnai_name}}<br/>
 			<span class="rowHead">TreatmentRnai RNAi Type: </span>{{treatment.treatmentRnai_rnai_type}}<br/>
@@ -143,6 +185,12 @@
 			{% endif %}
 			
 			{% if treatment.treatmentChemical_name %}
+			<a href="/deleteTreatmentChemical/{{ treatment.id }}">
+				<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+			</a>
+			<a href="/editTreatmentChemical/{{treatment.id}}">
+				<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+			</a>
 			Chemical Treatment<br/>
 			<span class="rowHead">TreatmentChemical Name: </span>{{treatment.treatmentChemical_name}}<br/>
 			<span class="rowHead">TreatmentChemical Chemical: </span>{{treatment.treatmentChemical_chemical}}<br/>
@@ -159,6 +207,12 @@
 			{% endif %}
 			
 			{% if treatment.name %}
+			<a href="/deleteOther/{{ treatment.id }}">
+				<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+			</a>
+			<a href="/editOther/{{treatment.id}}">
+				<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+			</a>
 			Other Treatment<br/>
 			<span class="rowHead">Treatment Name: </span>{{treatment.name}}<br/>
 			<span class="rowHead">Treatment Biosamples: </span><br/>
@@ -174,34 +228,113 @@
 			<span class="rowHead">Treatment DBxrefs: </span>{{treatment.dbxrefs}}<br/>
 			<hr/>
 		{% endfor %}
+</div></div>
 {% endif %}
 
-
-
-
-{% if files %}
+{% if modification %}
 <hr/>
-<span class="tableHead">Files Details</span>
-{% for file in files %}
-<hr/>
-    	<span class="rowHead">Sample Name:</span> {{ file.sample.name }}<br/>
-    	<span class="rowHead">Sequencing Unit:</span> {{ file.lane.name }}<br/>
-    	<span class="rowHead">File Name:</span> {{ file.name }}<br/>
-    	<span class="rowHead">Main File Path:</span>{{ file.main_file_path }}<br/>
-    	<span class="rowHead">Backup Path:</span>{{ file.backup_path }}<br/>
-    	<span class="rowHead">s3 Path:</span>{{ file.s3_path }}<br/>
-    	<span class="rowHead">sha256sum:</span>{{ file.sha256sum }}<br/>
-    	<span class="rowHead">md5sum:</span>{{ file.md5sum }}<br/>
-    	<span class="rowHead">Number Of Reads :</span>{{ file.number_of_reads }}<br/>
-    	<span class="rowHead">Notes :</span>{{ file.notes }}<br/>
-    <a href="/deleteFile/{{ file.id }}">
-		<button type="button" class="btn btn-danger pull-right hidden show">Delete File</button>
-	</a>
-    <a href="/editFile/{{file.id}}">
-		<button type="button" class="btn btn-warning pull-right hidden show">Edit File</button>
-	</a>
-{% endfor %}
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
+<span class="tableHead">Associated Biosample Modification</span><br/>
+<div class="divData hidden">
+<a href="/deleteModification/{{ modification.id }}">
+	<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+</a>
+<a href="/editModification/{{modification.id}}">
+	<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+</a>
+		<span class="rowHead">Modification Name: </span>{{modification.modification_name}}<br/>
+		<span class="rowHead">Modification Type: </span>{{modification.modification_type}}<br/>
+		<span class="rowHead">Modification Constructs: </span>{{modification.modification_constructs}}<br/>
+		<span class="rowHead">Modification Vendor: </span>{{modification.modification_vendor}}<br/>
+		<span class="rowHead">Modification gRNA: </span>{{modification.modification_gRNA}}<br/>
+		<span class="rowHead">Modification Genomic Regions: </span>{{modification.modification_genomicRegions}}<br/>
+		<span class="rowHead">Modification Target: </span>{{modification.modification_target}}<br/>
+		<span class="rowHead">Modification Description: </span>{{modification.modification_description}}<br/>
+		<span class="rowHead">Modification URL: </span>{{modification.url}}<br/>
+		<span class="rowHead">Modification Documents: </span>{{modification.documents}}<br/>
+		<span class="rowHead">Modification References: </span>{{modification.references}}<br/>
+		<span class="rowHead">Modification DBxrefs: </span>{{modification.dbxrefs}}<br/>
+</div></div>
 {% endif %}
+
+{% if constructs %}
+<hr/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
+<span class="tableHead">Associated Modification Construct</span><br/>
+<div class="divData hidden">
+		{% for construct in constructs %}
+		<a href="/deleteConstruct/{{ construct.id }}">
+			<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+		</a>
+		<a href="/editConstruct/{{construct.id}}">
+			<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+		</a>
+		<span class="rowHead">Construct Name: </span>{{construct.construct_name}}<br/>
+		<span class="rowHead">Construct Type: </span>{{construct.construct_type}}<br/>
+		<span class="rowHead">Construct Vendor: </span>{{construct.construct_vendor}}<br/>
+		<span class="rowHead">Construct Designed To Target: </span>{{construct.construct_designed_to_target}}<br/>
+		<span class="rowHead">Construct Insert Sequence: </span>{{construct.construct_insert_sequence}}<br/>
+		<span class="rowHead">Construct Map: </span>{{construct.construct_map}}<br/>
+		<span class="rowHead">Construct Tag: </span>{{construct.construct_tag}}<br/>
+		<span class="rowHead">Construct Vector Backbone: </span>{{construct.construct_vector_backbone}}<br/>
+		<span class="rowHead">Construct Description: </span>{{construct.construct_description}}<br/>
+		{% endfor %}
+</div></div>
+{% endif %}
+
+{% if targets %}
+<hr/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
+<span class="tableHead">Associated Modification Target</span><br/>
+<div class="divData hidden">
+		{% for target in targets %}
+		<a href="/deleteTarget/{{ target.id }}">
+			<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+		</a>
+		<a href="/editTarget/{{target.id}}">
+			<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+		</a>
+		<span class="rowHead">Target Genes: </span>{{target.target_genes}}<br/>
+		{% endfor %}
+</div></div>
+{% endif %}
+
+{% if genomicRegions %}
+<hr/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
+<span class="tableHead">Associated Modification Genomic Region</span><br/>
+<div class="divData hidden">
+		{% for genomicRegion in genomicRegions %}
+		<a href="/deleteGenomicRegions/{{ genomicRegion.id }}">
+			<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+		</a>
+		<a href="/editGenomicRegions/{{genomicRegion.id}}">
+			<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+		</a>
+		<span class="rowHead">Genomic Region Genome Assembly: </span>{{genomicRegion.genomicRegions_genome_assembly}}<br/>
+		<span class="rowHead">Genomic Region Chromosome: </span>{{genomicRegion.genomicRegions_chromosome}}<br/>
+		<span class="rowHead">Genomic Region Start Coordinate: </span>{{genomicRegion.genomicRegions_start_coordinate}}<br/>
+		<span class="rowHead">Genomic Region End Coordinate: </span>{{genomicRegion.genomicRegions_end_coordinate}}<br/>
+		<span class="rowHead">Genomic Region Location Description: </span>{{genomicRegion.genomicRegions_location_description}}<br/>
+		<span class="rowHead">Genomic Region Start Location: </span>{{genomicRegion.genomicRegions_start_location}}<br/>
+		<span class="rowHead">Genomic Region End Location: </span>{{genomicRegion.genomicRegions_end_location}}<br/>
+		{% endfor %}
+</div></div>
+{% endif %}
+
+<hr/>
+<br/>
+<br/>
+
+
 </div>
 
 <div class="col-xs-6 pull-right">

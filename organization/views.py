@@ -6,15 +6,14 @@ from django.views.generic.base import View
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from organization.models import *
-from organization.forms import ProjectForm, ExperimentForm, PublicationForm
+from organization.forms import *
 from django.forms.formsets import formset_factory
 import json
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ValidationError
 from wetLab.forms import *
-from dryLab.forms import SequencingRunForm, SeqencingFileForm, FileSetForm,\
-    AnalysisForm
+from dryLab.forms import *
 from django.apps.registry import apps
 # Create your views here.
 
@@ -148,6 +147,7 @@ class DetailExperiment(View):
     template_name = 'detailExperiment.html'
     error_page = 'error.html'
     def get(self,request,pk):
+        request.session['experimentId'] = pk
         context = {}
         experiment = Experiment.objects.get(pk=pk)
         individual = False
@@ -178,17 +178,6 @@ class DetailExperiment(View):
             if(GenomicRegions.objects.filter(modGen__pk=modification.pk)):
                 genomicRegions =GenomicRegions.objects.filter(modGen__pk=modification.pk)
 
-
-        print("biosample",biosample)
-        print("biosource",biosource)
-        print("experiment",experiment)
-        print("individuals",individual)
-        print("treatments",treatment)
-        print("modification",modification)
-        print("constructs",construct)
-        print("targets",target)
-        print("genomicRegions",genomicRegions)
-
         for i in individual:
             i.individual_fields = json.loads(i.individual_fields)
         if(biosample.biosample_fields):
@@ -199,18 +188,11 @@ class DetailExperiment(View):
         context['biosource']= biosource
         context['individuals']= individual
         context['treatments']= treatment
-        context['modifications']= modification
+        context['modification']= modification
         context['constructs']= construct
         context['targets']= target
         context['genomicRegions']= genomicRegions
         return render(request, self.template_name, context)
-
-
-
-
-
-
-
 
 def createJSON(request, fieldTypePk):
     json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set

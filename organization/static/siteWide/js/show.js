@@ -61,5 +61,18 @@ $(document).ready(function(){
 //        	val =  $( ".jsonObj" ).html();
 //        	  alert( val);
 //        	});
+        
+        $(".expand").click(function(){
+        	 $(this).toggleClass("hidden");
+        	 $(this).parent().parent().find('.collapse').toggleClass("hidden");
+        	 $(this).parent().parent().find('.divData').toggleClass("hidden");
+        	
+        });
+        $(".collapse").click(function(){
+        	 $(this).toggleClass("hidden");
+        	 $(this).parent().parent().find('.expand').toggleClass("hidden");
+        	 $(this).parent().parent().find('.divData').toggleClass("hidden");
+        });
+        
     
 });
