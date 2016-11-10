@@ -57,6 +57,9 @@ $(document).ready(function(){
 
         $('[data-toggle="tooltip"]').tooltip();
     
-        
+//        $( ".jsonObj" ).load( "ajax/test.html", function() {
+//        	val =  $( ".jsonObj" ).html();
+//        	  alert( val);
+//        	});
     
 });

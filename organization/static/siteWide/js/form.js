@@ -47,7 +47,7 @@ $(function() {
 	}
 	
 	$( "span:contains('Biosample modification')" ).append('<a href="/addModification/" title="Add another Modification"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
-	$( "span:contains('Biosample protocol ')" ).append('<a href="/addProtocol/" target="_blank" title="Add another Protocol"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+	$( "span:contains('protocol ')" ).append('<a href="/addProtocol/" target="_blank" title="Add another Protocol"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('document')" ).append('<a href="/addDocument/" target="_blank" title="Add another Document"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('Documents')" ).append('<a href="/addDocument/" target="_blank" title="Add another Document"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('References')" ).append('<a href="/addPublication/" target="_blank" title="Add another Publication"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');

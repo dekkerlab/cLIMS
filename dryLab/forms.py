@@ -11,7 +11,7 @@ from crispy_forms.layout import Submit
 class SequencingRunForm(ModelForm):
     class Meta:
         model = SequencingRun
-        exclude = ('project_owner',)
+        exclude = ('run_project',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -25,7 +25,7 @@ class SequencingRunForm(ModelForm):
 class SeqencingFileForm(ModelForm):
     class Meta:
         model = SeqencingFile
-        exclude = ('project_owner',)
+        exclude = ('',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -39,7 +39,7 @@ class SeqencingFileForm(ModelForm):
 class FileSetForm(ModelForm):
     class Meta:
         model = FileSet
-        exclude = ('project_owner',)
+        exclude = ('',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -53,7 +53,7 @@ class FileSetForm(ModelForm):
 class AnalysisForm(ModelForm):
     class Meta:
         model = Analysis
-        exclude = ('project_owner',)
+        exclude = ('',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'

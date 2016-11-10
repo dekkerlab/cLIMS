@@ -69,7 +69,7 @@ class TargetForm(ModelForm):
 class IndividualForm(ModelForm):
     class Meta:
         model = Individual
-        exclude = ('individual_fields',)
+        exclude = ('individual_fields','userOwner')
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -186,7 +186,7 @@ class OtherForm(ModelForm):
 class BarcodeForm(ModelForm):
     class Meta:
         model = Barcode
-        exclude = ('',)
+        exclude = ('barcode_run',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'

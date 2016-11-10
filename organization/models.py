@@ -69,7 +69,7 @@ class Publication(models.Model):
     publication_volume=models.CharField(max_length=200, null=True, blank=True, help_text="The volume of the publication.")
     
     def __str__(self):
-        return self.pub_title
+        return self.publication_title
     
     
 class Award(models.Model):

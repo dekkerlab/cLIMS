@@ -26,7 +26,7 @@ urlpatterns = [
 #     url(r'^addIndividual/$', AddIndividual.as_view(), name='addIndividual'),
 #     url(r'^addIndividual/constructForm/$',  views.constructForm, name='constructIndividual'), 
 #     
-    url(r'^stepOne/$', AddIndividual.as_view(), name='stepOne'),
+    url(r'^addIndividual/$', AddIndividual.as_view(), name='addIndividual'),
     url(r'^constructForm/$', views.constructForm, name='constructForm'),
     
     url(r'^addBiosource/$', AddBiosource.as_view(), name='addBiosource'),
@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^addOther/$', AddOther.as_view(), name='addOther'),
     url(r'^addPublication/$', AddPublication.as_view(), name='addPublication'),
     url(r'^addExperiment/$', AddExperiment.as_view(), name='addExperiment'),
-    url(r'^addSequencingRun/$', AddSequencingRun.as_view(), name='addSequencingRun'),
-    
+    url(r'^addSequencingRun/$', AddSequencingRun.as_view(), name='addSequencingRun'),   
+    url(r'^addBarcode/$', AddBarcode.as_view(), name='addBarcode'),
     
     ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

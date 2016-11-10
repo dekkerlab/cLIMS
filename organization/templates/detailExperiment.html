@@ -28,7 +28,7 @@
 <br/>
 <div>
 <div class="col-xs-6 pull-left">
-<span class="tableHead">Details of {{ experiment.experiment_name }}</span>
+<span class="tableHead">Details of Experiment -- {{ experiment.experiment_name }}</span>
 <a href="/deleteSample/{{ sample.id }}">
 <button type="button" class="btn btn-danger pull-right hidden show">Delete Sample</button>
 </a>
@@ -41,12 +41,142 @@
   {% for values in sample.lane.all %}
     ({{ forloop.counter }}) {{values}}<br/>
   {% endfor %} -->
+{% if experiment %}
 <span class="rowHead">Project Name: </span>{{experiment.experiment_project}}<br/>
-<span class="rowHead">Biosource: </span>{{exp.experiment_biosample.biosample_biosource}}<br/>
+<span class="rowHead">Biosource: </span>{{experiment.experiment_biosample.biosample_biosource}}<br/>
 <span class="rowHead">Biosample: </span>{{ experiment.experiment_biosample }}<br/>
 <span class="rowHead">Protocol: </span>{{ experiment.experiment_protocol }}<br/>
 <span class="rowHead">Enzyme: </span>{{ experiment.experiment_enzyme }}<br/>
 <span class="rowHead">Description: </span>{{ experiment.experiment_description }}<br/>
+{% endif %}
+
+{% if individuals %}
+<hr/>
+<span class="tableHead">Associated Individual Details</span><br/>
+{% for individual in individuals %}
+<span class="rowHead">Individual Name: </span>{{individual.individual_name}}<br/>
+<span class="rowHead">Individual Vendor: </span>{{individual.individual_vendor}}<br/>
+<span class="rowHead">Individual URL: </span>{{individual.url}}<br/>
+<span class="rowHead">Individual Documents: </span>{{individual.documents}}<br/>
+<span class="rowHead">Individual References: </span>{{individual.references}}<br/>
+<span class="rowHead">Individual DBxrefs: </span>{{individual.dbxrefs}}<br/>
+<span class="rowHead">Individual Type: </span>{{ individual.individual_type }}<br/>
+<span class="rowHead">Individual Details: </span><br/>
+<table class="table table-bordered table-hover table-responsive">
+<th><span class="rowHead">Field</span></th>
+<th><span class="rowHead">Value</span></th>
+	{% for keys,values in individual.individual_fields.items %}
+	<tr>
+		<td>{{ keys }}</td>
+		<td>{{ values }}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endfor %}
+{% endif %}
+
+{% if biosource %}
+<hr/>
+<span class="tableHead">Associated Biosource Details</span><br/>
+<span class="rowHead">Biosource Name: </span>{{biosource.biosource_name}}<br/>
+<span class="rowHead">Biosource Type: </span>{{biosource.biosource_type}}<br/>
+<span class="rowHead">Biosource Cell Line: </span>{{ biosource.biosource_cell_line }}<br/>
+<span class="rowHead">Biosource Cell Line Tire: </span>{{ biosource.biosource_cell_line_tier }}<br/>
+<span class="rowHead">Biosource Standard Operation Protocol (4DN): </span>{{ biosource.biosource_SOP_cell_line }}<br/>
+<span class="rowHead">Biosource Vendor: </span>{{ biosource.biosource_vendor }}<br/>
+<span class="rowHead">Biosource Individual: </span>{{ biosource.biosource_individual }}<br/>
+<span class="rowHead">Biosource Tissue: </span>{{ biosource.biosource_tissue }}<br/>
+<span class="rowHead">Biosource Description: </span>{{ biosource.biosource_description }}<br/>
+<span class="rowHead">Biosource URL: </span>{{biosource.url}}<br/>
+<span class="rowHead">Biosource Documents: </span>{{biosource.documents}}<br/>
+<span class="rowHead">Biosource References: </span>{{biosource.references}}<br/>
+<span class="rowHead">Biosource DBxrefs: </span>{{biosource.dbxrefs}}<br/>
+{% endif %}
+
+{% if biosample %}
+<hr/>
+<span class="tableHead">Associated Biosample Details</span><br/>
+<span class="rowHead">Biosample Name: </span>{{biosample.biosample_name}}<br/>
+<span class="rowHead">Biosample Biosource: </span>{{biosample.biosample_biosource}}<br/>
+<span class="rowHead">Biosample Individual: </span>{{ biosample.biosample_individual }}<br/>
+<span class="rowHead">Biosample Modification: </span>{{ biosample.biosample_modification }}<br/>
+<span class="rowHead">Biosample Protocol: </span>{{ biosample.biosample_protocol }}<br/>
+<span class="rowHead">Biosample Treatment: </span>{{ biosample.biosample_treatment }}<br/>
+<span class="rowHead">Biosample URL: </span>{{biosample.url}}<br/>
+<span class="rowHead">Biosample Documents: </span>{{biosample.documents}}<br/>
+<span class="rowHead">Biosample References: </span>{{biosample.references}}<br/>
+<span class="rowHead">Biosample DBxrefs: </span>{{biosample.dbxrefs}}<br/>
+<span class="rowHead">Biosample Other Details: </span>{{ biosample.biosample_type }}<br/>
+
+{% if biosample.biosample_fields %}
+<table class="table table-bordered table-hover table-responsive">
+<th><span class="rowHead">Field</span></th>
+<th><span class="rowHead">Value</span></th>
+	{% for keys,values in biosample.biosample_fields.items %}
+	<tr>
+		<td>{{ keys }}</td>
+		<td>{{ values }}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endif %}
+{% endif %}
+
+
+{% if treatments %}
+<hr/>
+<span class="tableHead">Associated Biosample Treatment</span><br/>
+		{% for treatment in treatments %}
+			{% if treatment.treatmentRnai_name %}
+			RNAi Treatment<br/>
+			<span class="rowHead">TreatmentRnai Name: </span>{{treatment.treatmentRnai_name}}<br/>
+			<span class="rowHead">TreatmentRnai RNAi Type: </span>{{treatment.treatmentRnai_rnai_type}}<br/>
+			<span class="rowHead">TreatmentRnai RNAi Vendor: </span>{{treatment.treatmentRnai_rnai_vendor}}<br/>
+			<span class="rowHead">TreatmentRnai RNAi Constructs: </span>{{treatment.treatmentRnai_rnai_constructs}}<br/>
+			<span class="rowHead">TreatmentRnai Target: </span>{{treatment.treatmentRnai_target}}<br/>
+			<span class="rowHead">TreatmentRnai Nucleotide Seq: </span>{{treatment.treatmentRnai_nucleotide_seq}}<br/>
+			<span class="rowHead">TreatmentRnai Biosamples: </span><br/>
+				{% for values in treatment.biosample.all %}
+	    			({{ forloop.counter }}) {{values}}<br/>
+	  			{% endfor %}
+			<span class="rowHead">TreatmentRnai Description: </span>{{treatment.treatmentRnai_description}}<br/>
+			{% endif %}
+			
+			{% if treatment.treatmentChemical_name %}
+			Chemical Treatment<br/>
+			<span class="rowHead">TreatmentChemical Name: </span>{{treatment.treatmentChemical_name}}<br/>
+			<span class="rowHead">TreatmentChemical Chemical: </span>{{treatment.treatmentChemical_chemical}}<br/>
+			<span class="rowHead">TreatmentChemical Concentration: </span>{{treatment.treatmentChemical_concentration}}<br/>
+			<span class="rowHead">TreatmentChemical Concentration Units: </span>{{treatment.treatmentChemical_concentration_units}}<br/>
+			<span class="rowHead">TreatmeTreatment Duration: </span>{{treatment.treatmentChemical_duration}}<br/>
+			<span class="rowHead">TreatmentChemical Duration Units: </span>{{treatment.treatmentChemical_duration_units}}<br/>
+			<span class="rowHead">TreatmentChemical Temperature: </span>{{treatment.treatmentChemical_temperature}}<br/>
+			<span class="rowHead">TreatmentChemical Biosamples: </span><br/>
+				{% for values in treatment.biosample.all %}
+	    			({{ forloop.counter }}) {{values}}<br/>
+	  			{% endfor %}
+			<span class="rowHead">TreatmentChemical Description: </span>{{treatment.treatmentChemical_description}}<br/>
+			{% endif %}
+			
+			{% if treatment.name %}
+			Other Treatment<br/>
+			<span class="rowHead">Treatment Name: </span>{{treatment.name}}<br/>
+			<span class="rowHead">Treatment Biosamples: </span><br/>
+				{% for values in treatment.biosample.all %}
+	    			({{ forloop.counter }}) {{values}}<br/>
+	  			{% endfor %}
+			<span class="rowHead">Treatment Description: </span>{{treatment.description}}<br/>
+			{% endif %}
+			
+			<span class="rowHead">Treatment URL: </span>{{treatment.url}}<br/>
+			<span class="rowHead">Treatment Documents: </span>{{treatment.documents}}<br/>
+			<span class="rowHead">Treatment References: </span>{{treatment.references}}<br/>
+			<span class="rowHead">Treatment DBxrefs: </span>{{treatment.dbxrefs}}<br/>
+			<hr/>
+		{% endfor %}
+{% endif %}
+
+
 
 
 {% if files %}

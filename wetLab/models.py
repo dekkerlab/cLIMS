@@ -78,7 +78,7 @@ class Modification(UserOwner,References):
         return self.modification_name
  
 
-class Individual(References):
+class Individual(References, UserOwner):
     individual_name = models.CharField(max_length=50, null=False, default="")
     individual_vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='indVen',null=True, blank=True)
     individual_type = models.ForeignKey('organization.JsonObjField',related_name='indType',  help_text="JsonObjField")
@@ -113,12 +113,12 @@ class Protocol(UserOwner):
  
 class Biosource(References):
     biosource_name = models.CharField(max_length=50, null=False, default="")
-    biosource_type =  models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='bioChoice', help_text="The categorization of the biosource.")
+    biosource_type =  models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='sourceChoice', help_text="The categorization of the biosource.")
     biosource_cell_line = models.CharField(max_length=200,  null=True, blank=True, help_text="Ontology term for the cell line used.")
     biosource_cell_line_tier = models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='bioCellChoice', help_text="Tier into which the cell line has been classified")
     biosource_SOP_cell_line = models.ForeignKey(Protocol, on_delete=models.CASCADE, related_name='bioProtocol', help_text="Standard operation protocol for the cell line as determined by 4DN Cells Working Group")
-    biosource_vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, help_text="The Lab or Vendor that provided the biosource.")
-    biosource_individual = models.ForeignKey(Individual,on_delete=models.CASCADE, related_name='docChoice', help_text="Information on donor or individual mouse or other organism.")
+    biosource_vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='sourceVendor',help_text="The Lab or Vendor that provided the biosource.")
+    biosource_individual = models.ForeignKey(Individual,on_delete=models.CASCADE, related_name='sourceInd', help_text="Information on donor or individual mouse or other organism.")
     biosource_tissue  = models.CharField(max_length=100,  null=True, blank=True, help_text="Anatomy (UBERON) Ontology term for the tissue used.")
     biosource_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     
@@ -146,11 +146,11 @@ class TreatmentRnai(References):
     treatmentRnai_rnai_vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='rnaiVendor',null=True, blank=True, help_text="RNAi center that provided the RNAi.")
     treatmentRnai_target = models.ForeignKey(Target, on_delete=models.CASCADE, related_name='rnaiVendor',null=True, blank=True, help_text="The targeted gene or genomic region that is targeted by the modification.")
     treatmentRnai_nucleotide_seq =  models.CharField(max_length=50, null=True, blank=True, default="", help_text="The nucleotide sequence of the target region.")
-    treatmentRnai_biosample = models.ManyToManyField(Biosample, related_name='treatRnaiBio', help_text="Associated biosample")
+    biosample = models.ManyToManyField(Biosample, related_name='treatRnaiBio', help_text="Associated biosample")
     treatmentRnai_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     
     def __str__(self):
-        return self.treatment_name
+        return self.treatmentRnai_name
 
 class TreatmentChemical(References):
     treatmentChemical_name = models.CharField(max_length=50, null=False, default="")
@@ -160,7 +160,7 @@ class TreatmentChemical(References):
     treatmentChemical_duration = models.FloatField(max_length=10,null=True, blank=True) 
     treatmentChemical_duration_units = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, null=True, blank=True, related_name='timeUnits')
     treatmentChemical_temperature = models.FloatField(max_length=10,null=True, blank=True)
-    treatmentChemical_biosample = models.ManyToManyField(Biosample, related_name='treatChemBio', help_text="Associated biosample")
+    biosample = models.ManyToManyField(Biosample, related_name='treatChemBio', help_text="Associated biosample")
     treatmentChemical_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     
     def __str__(self):
@@ -176,8 +176,11 @@ class Other(References):
      
 class Barcode(models.Model):
     barcode_name_1 = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, related_name='barChoice1')
-    barcode_name_2 = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, related_name='barChoice2')
+    barcode_name_2 = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, related_name='barChoice2',null=True, blank=True)
     barcode_run = models.ForeignKey('dryLab.SequencingRun',on_delete=models.CASCADE, related_name='barRun')
-    barcode_exp = models.ForeignKey('organization.Experiment',on_delete=models.CASCADE, related_name='barRun')
+    barcode_exp = models.ForeignKey('organization.Experiment',on_delete=models.CASCADE, related_name='barExp')
+    
+    def __str__(self):
+        return (str(self.barcode_run)+" "+str(self.barcode_exp))
     
     

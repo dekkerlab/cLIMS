@@ -4,8 +4,18 @@ from django.contrib.postgres.fields import JSONField
 # Create your models here.
  
 class SequencingRun(models.Model):
+    BARCODE_CHOICES = (
+        ('addBarcode', 'Yes'),
+        ('showProject', 'No'),
+    )
     run_name = models.CharField(max_length=100, null=False, default="")
     run_project =  models.ForeignKey('organization.Project',related_name='runProject', on_delete=models.CASCADE,)
+    run_Experiment = models.ManyToManyField('organization.Experiment',related_name='runExp')
+    run_Add_Barcode = models.CharField(
+        max_length=11,
+        choices=BARCODE_CHOICES,
+        default='showProject',
+    )
     def __str__(self):
         return self.run_name
  

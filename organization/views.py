@@ -15,6 +15,7 @@ from django.core.exceptions import ValidationError
 from wetLab.forms import *
 from dryLab.forms import SequencingRunForm, SeqencingFileForm, FileSetForm,\
     AnalysisForm
+from django.apps.registry import apps
 # Create your views here.
 
 def login(request, **kwargs):
@@ -149,7 +150,59 @@ class DetailExperiment(View):
     def get(self,request,pk):
         context = {}
         experiment = Experiment.objects.get(pk=pk)
+        individual = False
+        biosource = False
+        treatment = False
+        modification = False
+        construct = False
+        target = False
+        genomicRegions = False
+        
+        if (Biosample.objects.get(expBio__pk=pk)):
+            biosample = Biosample.objects.get(expBio__pk=pk)
+            if(Biosource.objects.get(bioSource__pk=biosample.pk)):
+                biosource = Biosource.objects.get(bioSource__pk=biosample.pk)
+                if(Individual.objects.filter(sourceInd__pk=biosource.pk)):
+                    individual = Individual.objects.filter(sourceInd__pk=biosource.pk)
+        if(str(biosample.biosample_treatment)  != "None"):
+            treatmentModel = apps.get_model('wetLab', str(biosample.biosample_treatment))
+            print(treatmentModel)
+            if(treatmentModel.objects.filter(biosample=biosample.pk)):
+                treatment = treatmentModel.objects.filter(biosample=biosample.pk)
+        if((Modification.objects.filter(bioMod__pk=biosample.pk))):
+            modification = Modification.objects.get(bioMod__pk=biosample.pk)
+            if(Construct.objects.filter(modConstructs__pk=modification.pk)):
+                construct = Construct.objects.filter(modConstructs__pk=modification.pk)
+            if(Target.objects.filter(modTarget__pk=modification.pk)):
+                target = Target.objects.filter(modTarget__pk=modification.pk)
+            if(GenomicRegions.objects.filter(modGen__pk=modification.pk)):
+                genomicRegions =GenomicRegions.objects.filter(modGen__pk=modification.pk)
+
+
+        print("biosample",biosample)
+        print("biosource",biosource)
+        print("experiment",experiment)
+        print("individuals",individual)
+        print("treatments",treatment)
+        print("modification",modification)
+        print("constructs",construct)
+        print("targets",target)
+        print("genomicRegions",genomicRegions)
+
+        for i in individual:
+            i.individual_fields = json.loads(i.individual_fields)
+        if(biosample.biosample_fields):
+            biosample.biosample_fields = json.loads(biosample.biosample_fields)    
+           
         context['experiment']= experiment
+        context['biosample']= biosample
+        context['biosource']= biosource
+        context['individuals']= individual
+        context['treatments']= treatment
+        context['modifications']= modification
+        context['constructs']= construct
+        context['targets']= target
+        context['genomicRegions']= genomicRegions
         return render(request, self.template_name, context)
 
 
@@ -208,10 +261,12 @@ class AddIndividual(View):
     
     def get(self,request):
         selectForm = self.selectForm_class()
+        selectForm.fields["Individual"].queryset = Individual.objects.filter(userOwner=request.user.pk)
+        isExisting = (selectForm.fields["Individual"].queryset.count() > 0)
         existing = selectForm['Individual']
         form = self.form_class()
         form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
-        return render(request, self.template_name,{'form':form, 'form_class':"Individual", 'existing':existing})
+        return render(request, self.template_name,{'form':form, 'form_class':"Individual", 'existing':existing,'isExisting':isExisting})
     
     def post(self,request):
         form = self.form_class(request.POST)
@@ -224,14 +279,18 @@ class AddIndividual(View):
             if form.is_valid():
                 individual = form.save(commit= False)
                 individual_type = request.POST.get('individual_type')
-                individual.individual_fields = createJSON(request, individual_type)
+                individual.userOwner = User.objects.get(pk=request.user.pk)
+                individual.individual_fields = createJSON(request, individual_type)  
                 individual.save()
                 request.session['individualPK'] = individual.pk
+                print(individual.pk)
                 return HttpResponseRedirect('/addBiosource/')
             else:
                 existing = selectForm['Individual']
+                selectForm.fields["Individual"].queryset = Individual.objects.filter(userOwner=request.user.pk)
+                isExisting = (selectForm.fields["Individual"].queryset.count() > 0)
                 form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
-                return render(request, self.template_name,{'form':form, 'form_class':"Individual", 'existing':existing})
+                return render(request, self.template_name,{'form':form, 'form_class':"Individual", 'existing':existing,'isExisting':isExisting})
 
 class AddBiosource(View): 
     template_name = 'customForm.html'
@@ -241,11 +300,13 @@ class AddBiosource(View):
     
     def get(self,request):
         selectForm = self.selectForm_class()
+        selectForm.fields["Biosource"].queryset = Biosource.objects.filter(biosource_individual=request.session['individualPK'])
+        isExisting = (selectForm.fields["Biosource"].queryset.count() > 0)
         existing = selectForm['Biosource']
         form = self.form_class()
         form.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
         form.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
-        return render(request, self.template_name,{'form':form, 'form_class':"Biosource", 'existing':existing})
+        return render(request, self.template_name,{'form':form, 'form_class':"Biosource", 'existing':existing,'isExisting':isExisting})
     
     def post(self,request):
         form = self.form_class(request.POST)
@@ -263,10 +324,12 @@ class AddBiosource(View):
                 request.session['biosourcePK'] = biosource.pk
                 return HttpResponseRedirect('/addBiosample/')
             else:
+                selectForm.fields["Biosource"].queryset = Biosource.objects.filter(biosource_individual=request.session['individualPK'])
+                isExisting = (selectForm.fields["Biosource"].queryset.count() > 0)
                 existing = selectForm['Biosource']
                 form.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
                 form.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
-                return render(request, self.template_name,{'form':form, 'form_class':"Biosource", 'existing':existing})
+                return render(request, self.template_name,{'form':form, 'form_class':"Biosource", 'existing':existing,'isExisting':isExisting})
 
 class AddBiosample(View): 
     template_name = 'customForm.html'
@@ -276,11 +339,13 @@ class AddBiosample(View):
     
     def get(self,request):
         selectForm = self.selectForm_class()
+        selectForm.fields["Biosample"].queryset = Biosample.objects.filter(biosample_biosource=request.session['biosourcePK'])
+        isExisting = (selectForm.fields["Biosample"].queryset.count() > 0)
         existing = selectForm['Biosample']
         form = self.form_class()
         form.fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
         form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
-        return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing})
+        return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
     
     def post(self,request):
         form = self.form_class(request.POST)
@@ -302,16 +367,42 @@ class AddBiosample(View):
                     biosample_type = request.POST.get('biosample_type')
                     biosample.biosample_fields = createJSON(request, biosample_type)
                 biosample.save()
+                request.session['biosamplePK'] = biosample.pk
                 if (treatmentModel == "None"):
                     return HttpResponseRedirect('/addExperiment/')
                 else:
                     return HttpResponseRedirect('/add'+treatmentModel)
             else:
+                selectForm.fields["Biosample"].queryset = Biosample.objects.filter(biosample_biosource=request.session['biosourcePK'])
+                isExisting = (selectForm.fields["Biosample"].queryset.count() > 0)
                 existing = selectForm['Biosample']
                 form.fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
                 form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
-                return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing})
+                return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
+
+
         
+class AddExperiment(View): 
+    template_name = 'customForm.html'
+    error_page = 'error.html'
+    form_class = ExperimentForm
+    
+    def get(self,request):
+        form = self.form_class()
+        return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
+    
+    def post(self,request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.experiment_project = Project.objects.get(pk=request.session['projectId'])
+            form.experiment_biosample = Biosample.objects.get(pk=request.session['biosamplePK'])
+            form.save()
+            return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
+        else:
+            return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
+
+
 class AddModification(View): 
     template_name = 'modificationForm.html'
     error_page = 'error.html'
@@ -434,7 +525,11 @@ class AddTreatmentRnai(View):
         if form.is_valid():
             treatment = form.save(commit= False)
             treatment.save()
-            return HttpResponseRedirect('/showProject/')
+            biosample = request.POST.getlist('biosample')
+            for bioPk in biosample:
+                bioSam = Biosample.objects.get(pk=bioPk)
+                treatment.biosample.add(bioSam)
+            return HttpResponseRedirect('/addExperiment/')
         else:
             form.fields["treatmentRnai_rnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_rnai_type")
             return render(request, self.template_name,{'form':form, 'form_class':"TreatmentRnai"})
@@ -455,7 +550,11 @@ class AddTreatmentChemical(View):
         if form.is_valid():
             treatment = form.save(commit= False)
             treatment.save()
-            return HttpResponseRedirect('/showProject/')
+            biosample = request.POST.getlist('biosample')
+            for bioPk in biosample:
+                bioSam = Biosample.objects.get(pk=bioPk)
+                treatment.biosample.add(bioSam)
+            return HttpResponseRedirect('/addExperiment/')
         else:
             form.fields["treatmentChemical_concentration_units"].queryset = Choice.objects.filter(choice_type="treatmentChemical_concentration_units")
             form.fields["treatmentChemical_duration_units"].queryset = Choice.objects.filter(choice_type="treatmentChemical_duration_units")
@@ -474,7 +573,11 @@ class AddOther(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/showProject/')
+            biosample = request.POST.getlist('biosample')
+            for bioPk in biosample:
+                bioSam = Biosample.objects.get(pk=bioPk)
+                form.biosample.add(bioSam)
+            return HttpResponseRedirect('/addExperiment/')
         else:
             return render(request, self.template_name,{'form':form, 'form_class':"Others"})
 
@@ -525,15 +628,56 @@ class AddSequencingRun(View):
     
     def get(self,request):
         form = self.form_class()
+        form.fields["run_Experiment"].queryset = Experiment.objects.filter(experiment_project=request.session['projectId'])
         return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
     
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
+            form = form.save(commit=False)
+            form.run_project = Project.objects.get(pk=request.session['projectId'])
             form.save()
+            run_Experiment = request.POST.getlist('run_Experiment')
+            for expsPk in run_Experiment:
+                exp = Experiment.objects.get(pk=expsPk)
+                form.run_Experiment.add(exp)
+            request.session['runId'] = form.pk
+            addBarcodeRedirect = form.run_Add_Barcode
+            return HttpResponseRedirect('/'+addBarcodeRedirect)
+        else:
+            form.fields["run_Experiment"].queryset = Experiment.objects.filter(experiment_project=request.session['projectId'])
+            return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
+
+class AddBarcode(View): 
+    template_name = 'barcodeForm.html'
+    error_page = 'error.html'
+    def get(self,request):
+        countForms = Experiment.objects.filter(runExp__pk=request.session['runId']).count()
+        formset= formset_factory(BarcodeForm,extra=countForms)
+        form = formset()
+        for f in form:
+            f.fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
+            f.fields["barcode_name_2"].queryset = Choice.objects.filter(choice_type="barcode")
+            f.fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=request.session['runId'])
+        return render(request, self.template_name,{'form':form, 'form_class':"Barcode"})
+    
+    def post(self,request):
+        countForms = Experiment.objects.filter(runExp__pk=request.session['runId']).count()
+        formset= formset_factory(BarcodeForm,extra=countForms)
+        form = formset(request.POST)
+        if all([form.is_valid()]):
+            for f in form: 
+                barcode = f.save(commit=False)
+                barcode.barcode_run = SequencingRun.objects.get(pk=request.session['runId'])
+                barcode.save()
             return HttpResponseRedirect('/showProject/')
         else:
-            return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
+            for f in form:
+                f.fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
+                f.fields["barcode_name_2"].queryset = Choice.objects.filter(choice_type="barcode")
+                f.fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=request.session['runId'])
+            return render(request, self.template_name,{'form':form, 'form_class':"Barcode"})
+
 
 class AddSeqencingFile(View): 
     template_name = 'customForm.html'
@@ -551,6 +695,7 @@ class AddSeqencingFile(View):
             return HttpResponseRedirect('/showProject/')
         else:
             return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
+
         
 class AddFileSet(View): 
     template_name = 'customForm.html'
@@ -590,109 +735,8 @@ class AddAnalysis(View):
         else:
             form.fields["analysis_type"].queryset = JsonObjField.objects.filter(field_type="Analysis")
             return render(request, self.template_name,{'form':form, 'form_class':"Analysis"})
-        
-class AddExperiment(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
-    form_class = ExperimentForm
-    
-    def get(self,request):
-        form = self.form_class()
-        return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
-    
-    def post(self,request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.experiment_project = Project.objects.get(pk=request.session['projectId'])
-            form.experiment_biosample = Biosample.objects.get(pk=request.session['biosamplePK'])
-            form.save()
-            return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
-        else:
-            return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
 
 
-
-
-class StepOne(View): 
-    template_name = 'stepOneForm.html'
-    error_page = 'error.html'
-    form_class = IndividualForm
-    biosourceForm_class = BiosourceForm
-    biosampleForm_class  = BiosampleForm
-    selectForm_class = SelectForm
-    
-    def get(self,request):
-        form = self.form_class()
-        biosourceForm = self.biosourceForm_class()
-        biosampleForm = self.biosampleForm_class()
-        selectForm = self.selectForm_class()
-        form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
-        biosourceForm.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
-        biosourceForm.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
-        biosampleForm.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
-        return render(request, self.template_name,{'form':form,'biosourceForm':biosourceForm,'biosampleForm':biosampleForm,'selectForm':selectForm})
-    
-    def post(self,request):
-        form = self.form_class(request.POST)
-        biosourceForm = self.biosourceForm_class(request.POST)
-        biosampleForm = self.biosampleForm_class(request.POST)
-        selectForm = self.selectForm_class(request.POST)
-        check_individual = request.POST.get('check_individual')
-        check_biosource = request.POST.get('check_biosource')
-        check_sample = request.POST.get('check_biosource')
-
-        if (check_individual):
-            individual = selectForm['individual']
-
-        elif(form.is_valid()):
-            individual = form.save(commit= False)
-            individual_type = request.POST.get('individual_type')
-            individual.individual_fields = createJSON(request, individual_type)
-            individual.save()
-        else:
-            form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
-            biosourceForm.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
-            biosourceForm.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
-            biosampleForm.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
-            return render(request, self.template_name,{'form':form,'biosourceForm':biosourceForm,'biosampleForm':biosampleForm,'selectForm':selectForm})
-        
-        if (check_biosource):
-            biosource = selectForm['biosource']
-
-        elif(biosourceForm.is_valid()):
-            biosource = biosourceForm.save(commit=False)
-            biosource.biosource_individual = individual
-            biosource.save()
-        else:
-            form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
-            biosourceForm.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
-            biosourceForm.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
-            biosampleForm.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
-            return render(request, self.template_name,{'form':form,'biosourceForm':biosourceForm,'biosampleForm':biosampleForm,'selectForm':selectForm})
-           
-        if (check_sample):
-            biosample = selectForm['biosample']
-        
-        elif(biosampleForm.is_valid()):
-            biosample = biosampleForm.save(commit= False)
-            biosample.userOwner = User.objects.get(pk=request.user.pk)
-            biosample.biosample_biosource = biosource
-            biosample.biosample_individual = individual
-            if(request.POST.get('biosample_type')):
-                biosample_type = request.POST.get('biosample_type')
-                biosample.biosample_fields = createJSON(request, biosample_type)
-            biosample.save()
-            return HttpResponseRedirect('/showProject/')
-        else:
-            form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
-            biosourceForm.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
-            biosourceForm.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
-            biosampleForm.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
-            return render(request, self.template_name,{'form':form,'biosourceForm':biosourceForm,'biosampleForm':biosampleForm,'selectForm':selectForm})
-        
-        
-        
             
 @csrf_exempt                
 def constructForm(request):
