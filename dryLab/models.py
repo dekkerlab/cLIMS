@@ -11,6 +11,10 @@ class SequencingRun(models.Model):
     run_name = models.CharField(max_length=100, null=False, default="")
     run_project =  models.ForeignKey('organization.Project',related_name='runProject', on_delete=models.CASCADE,)
     run_Experiment = models.ManyToManyField('organization.Experiment',related_name='runExp')
+    run_submission_date = models.DateField();
+    run_retrieval_date = models.DateField(null=True, blank=True,);
+    run_approved = models.BooleanField(default=False)
+    run_submitted = models.BooleanField(default=False)
     run_Add_Barcode = models.CharField(
         max_length=11,
         choices=BARCODE_CHOICES,

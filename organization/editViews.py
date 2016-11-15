@@ -9,6 +9,7 @@ from organization.models import *
 from wetLab.forms import *
 from dryLab.forms import *
 from organization.forms import *
+import json
 
 
 class EditProject(UpdateView):
@@ -54,19 +55,33 @@ class DeleteExperiment(DeleteView):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
 
+def createJSON(request, fieldTypePk):
+    json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set
+    data = {}
+    for keys in json_object:
+        formVal = request.POST.get(keys)
+        data[keys] = formVal
+    json_data = json.dumps(data)
+    return(json_data)
 
 class EditIndividual(UpdateView):
     form_class = IndividualForm
     model = Individual
-    template_name = 'customForm.html/'
+    template_name = 'editForm.html/'
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        individual = Individual.objects.get(pk=self.get_object().id)
+        individual_type = self.request.POST.get('individual_type')
+        individual.individual_fields = createJSON(self.request, individual_type)
+        individual.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
         context = super(EditIndividual , self).get_context_data(**kwargs)
         context['form'].fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
+        obj = Individual.objects.get(pk=self.get_object().id)
+        context['jsonObj']= json.loads(obj.individual_fields)
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    
@@ -106,14 +121,21 @@ class DeleteBiosource(DeleteView):
 class EditBiosample(UpdateView):
     form_class = BiosampleForm
     model = Biosample
-    template_name = 'customForm.html/'
+    template_name = 'editForm.html/'
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        biosample = Biosample.objects.get(pk=self.get_object().id)
+        if(self.request.POST.get('biosample_type')):
+            biosample_type = self.request.POST.get('biosample_type')
+            biosample.biosample_fields = createJSON(self.request, biosample_type)
+            biosample.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
         context = super(EditBiosample , self).get_context_data(**kwargs)
+        obj = Biosample.objects.get(pk=self.get_object().id)
+        context['jsonObj']= json.loads(obj.biosample_fields)
         context['form'].fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
         context['form'].fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
         context['action'] = reverse('detailExperiment',

@@ -87,29 +87,6 @@
 				<button type="button" class="btn btn-warning pull-right hidden show">Edit Experiment</button>
 			</a>
 			</td>
-    <!-- <td>
-    	<span class="rowHead">Sample Name:</span><a href="/detailSample/{{sample.id}}">{{ sample.name }}</a><br/>
-    	<span class="rowHead">Lane Name:</span> <br/>
-    	{% for values in sample.lane.all %}
-    		({{ forloop.counter }}) {{values}}<br/>
-  		{% endfor %}
-    	
-    	<span class="rowHead">Number of Reads:</span>{{ sample.number_of_reads }}&nbsp;&nbsp;
-    	<span class="rowHead">Organism:</span>{{ sample.organism }}&nbsp;&nbsp;
-    	<span class="rowHead">Cell Line:</span>{{ sample.cell_line }}&nbsp;&nbsp;
-    	<span class="rowHead">Condition:</span>{{ sample.condition }}&nbsp;&nbsp;
-    	<span class="rowHead">Genotype:</span>{{ sample.genotype }}&nbsp;&nbsp;
-    	<span class="rowHead">Protocol:</span>{{ sample.protocol }}&nbsp;&nbsp;
-    	<span class="rowHead">Gel Image:</span><a target="_blank" href="/media/{{ sample.gel_image }}">{{ sample.gel_image }}</a>&nbsp;&nbsp;
-    	<span class="rowHead">Sequencing Output File:</span><a target="_blank" href="/media/{{ sample.sequencing_output_file }}">{{ sample.sequencing_output_file }}</a>&nbsp;&nbsp;
-    	<a href="#" data-toggle="tooltip" data-placement="bottom" title="{{ sample.notes }}">Notes</a>&nbsp;&nbsp;
-   	<a href="/deleteSample/{{ sample.id }}">
-	<button type="button" class="btn btn-danger pull-right hidden show">Delete Sample</button>
-	</a>
-	<a href="/editSample/{{sample.id}}">
-		<button type="button" class="btn btn-warning pull-right hidden show">Edit Sample</button>
-	</a>
-    </td> -->
   </tr>
     {% endfor %}
  </table>
@@ -124,47 +101,50 @@
 	</a>
 {% endif %}
  
- {% if units %}
+ {% if sequencingRuns %}
   <hr/>
  <span class="tableHead">
 	Sequencing Unit Details
 </span>
 <table class="table table-bordered table-hover table-responsive">
   	<tr>
-  		<td><span class="rowHead">Sequencing Unit</span></td>
-  		<td><span class="rowHead">Cost</span></td>
-  		<td><span class="rowHead">Read Length</span></td>
+  		<td><span class="rowHead">Sequencing Run Name</span></td>
+  		<td><span class="rowHead">Experiments</span></td>
   		<td><span class="rowHead">Submission Date</span></td>
   		<td><span class="rowHead">Retrieval Date</span></td>
-   		<!-- <td><span class="rowHead">Approved</span></td>  -->
+  		<td><span class="rowHead">Barcode</span></td>
   		<td><span class="rowHead">Submitted</span></td>
+  		
   		<td></td>
   	</tr>
-    {% for unit in units %}
+    {% for run in sequencingRuns %}
 	<tr>
-	<td><a href="/showLane/{{unit.id}}">{{ unit.name }}</a></td>
-	<td>{{ unit.cost }}</td>
-	<td>{{ unit.read_length }}</td>
-	<td>{{ unit.submission_date }}</td>
-	<td>{{ unit.retrieval_date }}</td>
-	<!-- <td>{{ unit.approved }}</td> -->
+	<td><a href="/showLane/{{unit.id}}">{{ run.run_name }}</a></td>
 	<td>
-		{% if unit.submitted == False %}
+		{% for values in run.run_Experiment.all %}
+	    			({{ forloop.counter }}) {{values}}<br/>
+	  	{% endfor %}
+	</td>
+	<td>{{ run.run_submission_date }}</td>
+	<td>{{ run.run_retrieval_date }}</td>
+	<td>{{ run.run_Add_Barcode }}</td>
+	<td>
+		{% if run.submitted == False %}
         <a href="/submitLane/{{ unit.id}}">
 			<button type="button" class="btn btn-info"> Submit Unit</button>
 		</a>
-		{% elif unit.submitted == True and unit.approved == True %}
+		{% elif run.submitted == True and run.approved == True %}
 			<button type="button" class="btn btn-warning disabled">Approved</button> 
 		{% else %}
 			<button type="button" class="btn btn-primary disabled">Submitted</button>
 		{% endif %}
 	</td>
 	<td>
-	<a href="/deleteLane/{{ unit.id }}">
-		<button type="button" class="btn btn-danger pull-right hidden show">Delete Unit</button>
+	<a href="/deleteRun/{{ run.id }}">
+		<button type="button" class="btn btn-danger pull-right hidden show">Delete Run</button>
 		</a>
-	<a href="/editLane/{{unit.id}}">
-		<button type="button" class="btn btn-warning pull-right hidden show">Edit Unit</button>
+	<a href="/editRun/{{run.id}}">
+		<button type="button" class="btn btn-warning pull-right hidden show">Edit Run</button>
 	</a>
 	</td>
     <!-- <td>

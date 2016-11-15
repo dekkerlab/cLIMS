@@ -133,11 +133,13 @@ class DetailProject(View):
         request.session['projectId'] = pk
         context = {}
         prj = Project.objects.get(pk=pk)
+        
     #     units = Lane.objects.filter(project=pk)
     #     files = DeepSeqFile.objects.filter(project=pk)
         experiments = Experiment.objects.filter(experiment_project=pk)
+        sequencingRuns = SequencingRun.objects.filter(run_project=pk)
         context['project']= prj
-    #     context['units']= units
+        context['sequencingRuns']= sequencingRuns
     #     context['files']= files
         context['experiments']= experiments
         return render(request, self.template_name, context)
@@ -166,7 +168,6 @@ class DetailExperiment(View):
                     individual = Individual.objects.filter(sourceInd__pk=biosource.pk)
         if(str(biosample.biosample_treatment)  != "None"):
             treatmentModel = apps.get_model('wetLab', str(biosample.biosample_treatment))
-            print(treatmentModel)
             if(treatmentModel.objects.filter(biosample=biosample.pk)):
                 treatment = treatmentModel.objects.filter(biosample=biosample.pk)
         if((Modification.objects.filter(bioMod__pk=biosample.pk))):

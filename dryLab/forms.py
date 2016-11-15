@@ -11,7 +11,7 @@ from crispy_forms.layout import Submit
 class SequencingRunForm(ModelForm):
     class Meta:
         model = SequencingRun
-        exclude = ('run_project',)
+        exclude = ('run_project','run_approved','run_submitted')
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'

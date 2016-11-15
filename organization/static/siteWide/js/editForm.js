@@ -17,6 +17,11 @@ $(function() {
 //		    	$("."+model).append( form );
 		    	$(".inner").empty();
 		    	$(".inner").append( form );
+		    	var valuesJson = eval('(' +$( "#jsonForm").val() + ')');
+				for (var k in valuesJson) {
+					$( "select[name='"+k+"']" ).val(""+valuesJson[k]+"");
+					$( "input[name='"+k+"']" ).val(""+valuesJson[k]+"");
+				}
 		    },
 		    error: function(ts) { 
                 alert("Incorrect Choice");
@@ -46,7 +51,6 @@ $(function() {
 	    return form;
 	}
 	
-	
 	$( "span:contains('Biosample modification')" ).append('<a href="/addModification/" title="Add another Modification"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('protocol ')" ).append('<a href="/addProtocol/" target="_blank" title="Add another Protocol"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('document')" ).append('<a href="/addDocument/" target="_blank" title="Add another Document"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
@@ -55,17 +59,7 @@ $(function() {
 	$( "span:contains('constructs')" ).append('<a href="/addConstruct/" target="_blank" title="Add another Construct"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('target')" ).append('<a href="/addTarget/" target="_blank" title="Add another Target"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	
-//	$('#indCheck').click(function() {
-//	    $(".indDiv").toggleClass("hidden");
-//	});
-//	$('#bioCheck').click(function() {
-//	    $(".bioDiv").toggleClass("hidden");
-//	});
-//	$('#samCheck').click(function() {
-//	    $(".samDiv").toggleClass("hidden");
-//	});
 	
-//	$("#indCheck").click(function(){
-//    	$('#indDiv').toggleClass("hidden");
-//	});	
+	$( ".jsonForm select" ).change();
+		
 });
