@@ -7,6 +7,8 @@ from django.forms.models import ModelForm
 from dryLab.models import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
+from django.contrib.admin import widgets
+from django import forms
 
 class SequencingRunForm(ModelForm):
     class Meta:
@@ -21,11 +23,13 @@ class SequencingRunForm(ModelForm):
  
         self.helper.add_input(Submit('submit', 'Submit'))
         super(SequencingRunForm, self).__init__(*args, **kwargs)
+        self.fields['run_submission_date'].widget = widgets.AdminDateWidget()
+        self.fields['run_retrieval_date'].widget = widgets.AdminDateWidget()
 
 class SeqencingFileForm(ModelForm):
     class Meta:
         model = SeqencingFile
-        exclude = ('',)
+        exclude = ('sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -53,7 +57,7 @@ class FileSetForm(ModelForm):
 class AnalysisForm(ModelForm):
     class Meta:
         model = Analysis
-        exclude = ('',)
+        exclude = ('analysis_exp','analysis_fields')
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -63,6 +67,6 @@ class AnalysisForm(ModelForm):
  
         self.helper.add_input(Submit('submit', 'Submit'))
         super(AnalysisForm, self).__init__(*args, **kwargs)
-        
+
         
 

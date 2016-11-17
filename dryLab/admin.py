@@ -5,4 +5,5 @@ from .models import *
 admin.site.register(SequencingRun)
 admin.site.register(FileSet)
 admin.site.register(SeqencingFile)
-admin.site.register(Analysis)
+admin.site.register(Analysis)  
+admin.site.register(Images)

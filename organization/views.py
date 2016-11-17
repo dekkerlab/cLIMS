@@ -11,10 +11,15 @@ from django.forms.formsets import formset_factory
 import json
 from django.http.response import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, PermissionDenied
 from wetLab.forms import *
 from dryLab.forms import *
 from django.apps.registry import apps
+from _collections import defaultdict, OrderedDict
+import tarfile
+import os
+from cLIMS.base import WORKSPACEPATH
+from organization.extractAnalysis import extractHiCAnalysis
 # Create your views here.
 
 def login(request, **kwargs):
@@ -138,6 +143,8 @@ class DetailProject(View):
     #     files = DeepSeqFile.objects.filter(project=pk)
         experiments = Experiment.objects.filter(experiment_project=pk)
         sequencingRuns = SequencingRun.objects.filter(run_project=pk)
+        for run in sequencingRuns:
+            run.run_Add_Barcode = run.get_run_Add_Barcode_display()
         context['project']= prj
         context['sequencingRuns']= sequencingRuns
     #     context['files']= files
@@ -159,6 +166,8 @@ class DetailExperiment(View):
         construct = False
         target = False
         genomicRegions = False
+        seqencingFiles = False
+        analysis = False
         
         if (Biosample.objects.get(expBio__pk=pk)):
             biosample = Biosample.objects.get(expBio__pk=pk)
@@ -178,6 +187,10 @@ class DetailExperiment(View):
                 target = Target.objects.filter(modTarget__pk=modification.pk)
             if(GenomicRegions.objects.filter(modGen__pk=modification.pk)):
                 genomicRegions =GenomicRegions.objects.filter(modGen__pk=modification.pk)
+        if((SeqencingFile.objects.filter(sequencingFile_exp=pk))):
+            seqencingFiles = SeqencingFile.objects.filter(sequencingFile_exp=pk)
+        if((Analysis.objects.filter(analysis_exp=pk))):
+            analysis = Analysis.objects.filter(analysis_exp=pk)
 
         for i in individual:
             i.individual_fields = json.loads(i.individual_fields)
@@ -193,7 +206,40 @@ class DetailExperiment(View):
         context['constructs']= construct
         context['targets']= target
         context['genomicRegions']= genomicRegions
+        context['seqencingFiles']= seqencingFiles
+        context['analyses']= analysis
         return render(request, self.template_name, context)
+
+class DetailSequencingRun(View):
+    template_name = 'detailRun.html'
+    error_page = 'error.html'
+    def get(self,request,pk):
+        context = {}
+        sequencingRun = SequencingRun.objects.get(pk=pk)
+        barcodes = Barcode.objects.filter(barcode_run=pk)
+        sequencingRun.run_Add_Barcode = sequencingRun.get_run_Add_Barcode_display()
+        context['sequencingRun']= sequencingRun
+        context['barcodes']= barcodes
+        print(barcodes)
+        return render(request, self.template_name, context)
+
+
+class DetailAnalysis(View):
+    error_page = 'error.html'
+    def get(self,request,pk):
+        context = {}
+        analysis = Analysis.objects.get(pk=pk)
+        images = Images.objects.filter(image_analysis=pk)
+        analysis.analysis_fields = json.loads(analysis.analysis_fields)
+        if (str(analysis.analysis_type) == "Hi-C Analysis" ):
+            context['object']= analysis
+            context['images'] = images
+            template_name = 'detailAnalysisHiC.html'
+        
+        return render(request, template_name, context)
+
+
+
 
 def createJSON(request, fieldTypePk):
     json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set
@@ -610,8 +656,11 @@ class AddSequencingRun(View):
     form_class = SequencingRunForm
     
     def get(self,request):
+       
         form = self.form_class()
         form.fields["run_Experiment"].queryset = Experiment.objects.filter(experiment_project=request.session['projectId'])
+        form.fields["run_sequencing_platform"].queryset = Choice.objects.filter(choice_type="run_sequencing_platform")
+        form.fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
         return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
     
     def post(self,request):
@@ -626,9 +675,16 @@ class AddSequencingRun(View):
                 form.run_Experiment.add(exp)
             request.session['runId'] = form.pk
             addBarcodeRedirect = form.run_Add_Barcode
-            return HttpResponseRedirect('/'+addBarcodeRedirect)
+            if(addBarcodeRedirect == "addBarcode"):
+                return HttpResponseRedirect('/'+ addBarcodeRedirect)
+            elif(addBarcodeRedirect == "detailProject"):
+                return HttpResponseRedirect('/'+ addBarcodeRedirect +'/'+request.session['projectId'])
+            else:
+                return render(request, self.error_page, {})
         else:
             form.fields["run_Experiment"].queryset = Experiment.objects.filter(experiment_project=request.session['projectId'])
+            form.fields["run_sequencing_platform"].queryset = Choice.objects.filter(choice_type="run_sequencing_platform")
+            form.fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
             return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
 
 class AddBarcode(View): 
@@ -653,7 +709,7 @@ class AddBarcode(View):
                 barcode = f.save(commit=False)
                 barcode.barcode_run = SequencingRun.objects.get(pk=request.session['runId'])
                 barcode.save()
-            return HttpResponseRedirect('/showProject/')
+            return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
             for f in form:
                 f.fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
@@ -673,9 +729,15 @@ class AddSeqencingFile(View):
     
     def post(self,request):
         form = self.form_class(request.POST)
+        'sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp'
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/showProject/')
+            file = form.save(commit=False)
+            file.sequencingFile_backupPath = "/s4s/" + file.sequencingFile_mainPath
+            file.sequencingFile_sha256sum = "diuwdiued788798"
+            file.sequencingFile_md5sum = "hewifu9283ydhjhkj"
+            file.sequencingFile_exp = Experiment.objects.get(pk = self.request.session['experimentId'] )
+            file.save()
+            return HttpResponseRedirect('/detailExperiment/'+self.request.session['experimentId'])
         else:
             return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
 
@@ -697,6 +759,32 @@ class AddFileSet(View):
         else:
             return render(request, self.template_name,{'form':form, 'form_class':"FileSet"})
 
+def log_file(members):
+    for tarinfo in members:
+        fileExtension = os.path.splitext(tarinfo.name)[0]
+        if ((fileExtension.split('.', 1))[-1] == "end.mappingLog" ):
+            return tarinfo
+
+def png_files(members, analysisPk):
+    for tarinfo in members:
+        if (os.path.splitext(tarinfo.name)[1] == ".png"):
+            print(WORKSPACEPATH+"media/"+ tarinfo.name)
+            Images.objects.create(image_path="/media/"+ tarinfo.name,image_analysis=Analysis.objects.get(pk=analysisPk) )
+            yield tarinfo
+
+def importAnalysisGZ(analysis, analysisType):
+    analysisTarGz = str(analysis.analysis_import)
+    analysisPk = analysis.pk
+    tar = tarfile.open(WORKSPACEPATH+"media/"+analysisTarGz, "r|gz")
+    logFile = tar.extractfile(log_file(tar))
+    content = logFile.read()
+    json_data = extractHiCAnalysis(content, analysisType)
+    tar.extractall(path=WORKSPACEPATH+"media/", members=png_files(tar, analysisPk))
+    tar.close()
+    os.remove(WORKSPACEPATH+"media/"+analysisTarGz)
+    return json_data
+
+
 class AddAnalysis(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -705,20 +793,31 @@ class AddAnalysis(View):
     def get(self,request):
         form = self.form_class()
         form.fields["analysis_type"].queryset = JsonObjField.objects.filter(field_type="Analysis")
+        form.fields["analysis_file"].queryset = SeqencingFile.objects.filter(sequencingFile_exp=self.request.session['experimentId'] )
         return render(request, self.template_name,{'form':form, 'form_class':"Analysis"})
     
     def post(self,request):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             analysis = form.save(commit=False)
-            if(request.POST.get('analysis_type')):
-                analysis_type = request.POST.get('analysis_type')
-                analysis.treatment_fields = createJSON(request, analysis_type)
-            return HttpResponseRedirect('/showProject/')
+            analysis_type = request.POST.get('analysis_type')
+            analysis.analysis_exp = Experiment.objects.get(pk = self.request.session['experimentId'] )
+            analysis.save()
+            analysis_file = request.POST.getlist('analysis_file')
+            for files in analysis_file:
+                file = SeqencingFile.objects.get(pk=files)
+                analysis.analysis_file.add(file)
+            json_data = importAnalysisGZ(analysis, analysis_type)
+            analysis.analysis_import.delete()
+            analysis.analysis_fields = json_data
+            analysis.save()
+            
+            #analysis.analysis_fields = createJSON(request, analysis_type)
+            return HttpResponseRedirect('/detailExperiment/'+self.request.session['experimentId'])
         else:
             form.fields["analysis_type"].queryset = JsonObjField.objects.filter(field_type="Analysis")
+            form.fields["analysis_file"].queryset = SeqencingFile.objects.filter(sequencingFile_exp=self.request.session['experimentId'] )
             return render(request, self.template_name,{'form':form, 'form_class':"Analysis"})
-
 
             
 @csrf_exempt                
@@ -730,4 +829,53 @@ def constructForm(request):
     else :
         return render_to_response('error.html', locals())
  
+
+@login_required
+def submitSequencingRun(request,pk):
+    check= False
+    projectId = request.session['projectId']
+    if('Member' in map(str, request.user.groups.all())):
+        user=User.objects.get(pk=request.user.id)
+        projectObj = Project.objects.get(pk=projectId)
+        prjOwner = projectObj.project_owner
+        print(user)
+        print(prjOwner)
+        if(user ==  prjOwner):
+            check = True
+            print("User==Owner true")
+        
+    if ('Admin' in map(str, request.user.groups.all()) or 'Principal Investigator' in map(str, request.user.groups.all())):
+        check = True
+        print("Admin/PI")
+        
+    if (check== True):
+        obj = SequencingRun.objects.get(pk=pk)
+        obj.run_submitted=True
+        obj.save()
+        return HttpResponseRedirect('/detailProject/'+projectId)
+    else:
+        raise  PermissionDenied
+
+@login_required
+def approveSequencingRun(request,pk):
+    obj = SequencingRun.objects.get(pk=pk)
+    obj.run_approved=True
+    obj.save()
+    return redirect("/sequencingRunView")
+
+
+class SequencingRunView(View):
+    template_name = 'sequencingRuns.html'
     
+    def get(self,request):
+        sequencingRuns = SequencingRun.objects.all().order_by('-run_submission_date')
+        d = defaultdict(list)
+        for run in sequencingRuns:
+            run.run_Add_Barcode = run.get_run_Add_Barcode_display()
+            d[run.run_project.project_name].append(run)
+        context = {
+            'sequencingRuns': OrderedDict(d),
+        }
+        return render(request, self.template_name, context)
+    
+

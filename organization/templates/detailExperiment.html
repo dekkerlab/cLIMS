@@ -12,17 +12,11 @@
 	<a href="#">
 		<button type="button" class="btn btn-warning edit pull-right">Edit</button>
 	</a>
-	{% if request.session.protocol == "Hi-C" %}
-		<a href="/importAnalysis/{{sample.pk}}">
-		<button type="button" class="btn btn-success pull-right">Add Analysis</button>
+	<a href="/addAnalysis">
+			<button type="button" class="btn btn-success pull-right">Analysis Wizard</button>
 	</a>
-	{% else %}
-	<a href="/addAnalysis/">
-		<button type="button" class="btn btn-success pull-right">Add Analysis</button>
-	</a>
-	{%endif%}
-	<a href="/addFilesSample">
-			<button type="button" class="btn btn-success pull-right">Add Files</button>
+		<a href="/addSeqencingFile/">
+		<button type="button" class="btn btn-success pull-right">Files Wizard</button>
 	</a>
 </div>
 <br/>
@@ -338,62 +332,58 @@
 </div>
 
 <div class="col-xs-6 pull-right">
-{% if data %}
-<span class="tableHead">Analysis Details of {{ sample.protocol }}</span><br/>
-<table class="table table-bordered table-hover table-responsive">
- 
-{% if sample.protocol.name == "Hi-C"%}
-  	 <tr>
-		<td><span class="rowHead">Analysis Id</span></td>
-  		<td><span class="rowHead">Assembly</span></td>
-  		<td><span class="rowHead">Valid Pair</span></td>
-  		<td><span class="rowHead">Error</span></td>
-  		<td></td>
-  	</tr>
-  {% for fields in data %}
-  	<tr>
-		<td><a href="/detailAnalysis/{{fields.pk}}">{{fields.analysisId}}</a></td>
-  		<td>{{fields.genome}}</td>
-  		<td>{{fields.validPair}} ({{fields.validPairPer}}%)</td>
-  		<td>{{fields.error}} ({{fields.errorPer}}%)</td>
-  		<td>
-  		<a href="/deleteAnalysis/{{ fields.id }}">
-		<button type="button" class="btn btn-danger pull-right hidden show">Delete Analysis</button>
-	</a><br/><br/>
- 	<a href="/editAnalysis/{{fields.id}}">
-		<button type="button" class="btn btn-warning pull-right hidden show">Edit Analysis</button>
-	</a>
-  		</td>
-  	</tr>
-  {% endfor %}
-  {% else %}
-  {% for fields in data %}
-  <tr>
-  {% for name, value in fields.get_fields %}
-  {% if value %}
-	<td>
-		{% if name == "notes"%}
-			<a href="#" data-toggle="tooltip" data-placement="bottom" title="{{ value }}">{{ name }}</a>
-		{% else %}
-			<span class="rowHead">{{ name }}: </span>{{ value }}
-		{% endif %}
-    </td>
-	</td>
-  {% endif %}
- {% endfor %}
- 	<td>
- 	 <a href="/deleteAnalysis/{{ fields.id }}">
-		<button type="button" class="btn btn-danger pull-right hidden show">Delete Analysis</button>
-	</a><br/><br/>
- 	<a href="/editAnalysis/{{fields.id}}">
-		<button type="button" class="btn btn-warning pull-right hidden show">Edit Analysis</button>
-	</a>
-	</td>
- </tr> 
-{% endfor %} 
+{% if seqencingFiles %}
+
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
+<span class="tableHead">Associated Seqencing Files</span><br/>
+<div class="divData hidden">
+		{% for file in seqencingFiles %}
+		<a href="/deleteSeqencingFile/{{ file.id }}">
+			<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+		</a>
+		<a href="/editSeqencingFile/{{file.id}}">
+			<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+		</a>
+		<span class="rowHead">Sequencing File Name: </span>{{file.sequencingFile_name}}<br/>
+		<span class="rowHead">Sequencing File Main Path: </span>{{file.sequencingFile_mainPath}}<br/>
+		<span class="rowHead">Sequencing File Backup Path: </span>{{file.sequencingFile_backupPath}}<br/>
+		<span class="rowHead">Sequencing File sha256sum: </span>{{file.sequencingFile_sha256sum}}<br/>
+		<span class="rowHead">Sequencing File md5sum: </span>{{file.sequencingFile_md5sum}}<br/>
+		<span class="rowHead">Sequencing File Run: </span>{{file.sequencingFile_run}}<br/>
+		<span class="rowHead">Sequencing File Exp: </span>{{file.sequencingFile_exp}}<br/>
+		<hr/>
+		{% endfor %}
+</div></div>
 {% endif %}
-</table>
+
+
+{% if analyses %}
+<hr/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
+<span class="tableHead">Analysis Details</span><br/>
+<div class="divData hidden">
+		{% for analysis in analyses %}
+		<a href="/deleteAnalysis/{{ analysis.id }}">
+			<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
+		</a>
+		<a href="/editAnalysis/{{analysis.id}}">
+			<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
+		</a>
+		<span class="rowHead">Analysis Name: </span><a href="/detailAnalysis/{{ analysis.id }}">{{analysis.analysis_name}}</a><br/>
+		<span class="rowHead">Analysis Type: </span>{{analysis.analysis_type}}<br/>
+		<span class="rowHead">Analysis Files: </span><br/>
+		{% for values in analysis.analysis_file.all %}
+	    			({{ forloop.counter }}) {{values}}<br/>
+	  	{% endfor %}
+		<hr/>
+		{% endfor %}
+</div></div>
 {% endif %}
+
 </div>
 </div>
 {% else %}

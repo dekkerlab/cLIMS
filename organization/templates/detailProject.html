@@ -18,12 +18,6 @@
      <a href="/addSequencingRun">
 		<button type="button" class="btn btn-success">Sequencing Run Wizard</button>
 	</a>
-	<a href="/addSample">
-		<button type="button" class="btn btn-success">Add Samples</button>
-	</a>
-	<a href="/addFiles">
-			<button type="button" class="btn btn-success">Add Files</button>
-	</a>
 	<a href="#">
 		<button  type="button" class="btn btn-warning edit">Edit</button>
 	</a>
@@ -119,7 +113,7 @@
   	</tr>
     {% for run in sequencingRuns %}
 	<tr>
-	<td><a href="/showLane/{{unit.id}}">{{ run.run_name }}</a></td>
+	<td><a href="/detailSequencingRun/{{run.id}}">{{ run.run_name }}</a></td>
 	<td>
 		{% for values in run.run_Experiment.all %}
 	    			({{ forloop.counter }}) {{values}}<br/>
@@ -129,21 +123,21 @@
 	<td>{{ run.run_retrieval_date }}</td>
 	<td>{{ run.run_Add_Barcode }}</td>
 	<td>
-		{% if run.submitted == False %}
-        <a href="/submitLane/{{ unit.id}}">
+		{% if run.run_submitted == False %}
+        <a href="/submitSequencingRun/{{ run.id}}">
 			<button type="button" class="btn btn-info"> Submit Unit</button>
 		</a>
-		{% elif run.submitted == True and run.approved == True %}
+		{% elif run.run_submitted == True and run.run_approved == True %}
 			<button type="button" class="btn btn-warning disabled">Approved</button> 
 		{% else %}
 			<button type="button" class="btn btn-primary disabled">Submitted</button>
 		{% endif %}
 	</td>
 	<td>
-	<a href="/deleteRun/{{ run.id }}">
+	<a href="/deleteSequencingRun/{{ run.id }}">
 		<button type="button" class="btn btn-danger pull-right hidden show">Delete Run</button>
 		</a>
-	<a href="/editRun/{{run.id}}">
+	<a href="/editSequencingRun/{{run.id}}">
 		<button type="button" class="btn btn-warning pull-right hidden show">Edit Run</button>
 	</a>
 	</td>

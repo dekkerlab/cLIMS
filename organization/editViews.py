@@ -314,8 +314,60 @@ class DeleteTarget(DeleteView):
         return reverse('detailExperiment', kwargs={'pk': experimentId})
 
 
+class EditSequencingRun(UpdateView):
+    form_class = SequencingRunForm
+    model = SequencingRun
+    template_name = 'customForm.html/'
+    
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditSequencingRun , self).get_context_data(**kwargs)
+        context['form'].fields["run_Experiment"].queryset = Experiment.objects.filter(experiment_project=self.request.session['projectId'])
+        context['form'].fields["run_sequencing_platform"].queryset = Choice.objects.filter(choice_type="run_sequencing_platform")
+        context['form'].fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
+        context['action'] = reverse('detailProject',
+                                kwargs={'pk': self.get_object().id})
+        return context    
 
+class DeleteSequencingRun(DeleteView):
+    model = SequencingRun
+    template_name = 'delete.html'
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
 
+class EditAnalysis(UpdateView):
+    form_class = AnalysisForm
+    model = Analysis
+    template_name = 'editForm.html/'
+    
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        analysis = Analysis.objects.get(pk=self.get_object().id)
+        analysis_type = self.request.POST.get('analysis_type')
+        analysis.analysis_fields = createJSON(self.request, analysis_type)
+        analysis.save()
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditAnalysis , self).get_context_data(**kwargs)
+        context['form'].fields["analysis_type"].queryset = JsonObjField.objects.filter(field_type="Analysis")
+        context['form'].fields["analysis_file"].queryset = SeqencingFile.objects.filter(sequencingFile_exp=self.request.session['experimentId'] )
+        obj = Analysis.objects.get(pk=self.get_object().id)
+        context['jsonObj']= json.loads(obj.analysis_fields)
+        context['action'] = reverse('detailExperiment',
+                                kwargs={'pk': self.get_object().id})
+        return context    
+
+class DeleteAnalysis(DeleteView):
+    model = Analysis
+    template_name = 'deleteExperiment.html'
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
 
 
 

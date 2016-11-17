@@ -12,3 +12,4 @@ DATABASE_USER='dekker_lab'
 DATABASE_PASSWORD='CHYYTS14#'
 HOST='localhost'
 PORT='8000'
+WORKSPACEPATH = "/Users/nanda/Documents/EclipseWorkspace/clims/cLIMS/"

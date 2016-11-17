@@ -22,12 +22,14 @@ $(function() {
 					$( "select[name='"+k+"']" ).val(""+valuesJson[k]+"");
 					$( "input[name='"+k+"']" ).val(""+valuesJson[k]+"");
 				}
+				
 		    },
 		    error: function(ts) { 
                 alert("Incorrect Choice");
             }
 		});
 });
+	
 	function constructForm(jsObj) {
 		form = ""
 		for (var key in jsObj) {
@@ -61,5 +63,40 @@ $(function() {
 	
 	
 	$( ".jsonForm select" ).change();
+	
+	
+	if ( $( ".jsonAnalysis" ).length ) {
+		var jsonObjPK = $( ".jsonAnalysis select" ).val();
+		console.log(jsonObjPK)
+		  $.ajax({
+			    url: "/constructForm/",
+			    type: "POST",
+			    data: { 
+	                'pk': jsonObjPK,
+	            }, 
+			    cache:false,
+			    dataType: "json",
+			    success: function(obj){
+			    	jsObj = obj.field_set;
+			    	model = obj.model;
+			    	form = constructForm(jsObj);
+//			    	$("."+model).empty();
+//			    	$("."+model).append( form );
+			    	$(".inner").empty();
+			    	$(".inner").append( form );
+			    	var valuesJson = eval('(' +$( "#jsonForm").val() + ')');
+					for (var k in valuesJson) {
+						$( "select[name='"+k+"']" ).val(""+valuesJson[k]+"");
+						$( "input[name='"+k+"']" ).val(""+valuesJson[k]+"");
+					}
+					
+			    },
+			    error: function(ts) { 
+	                alert("Incorrect Choice");
+	            }
+			});
+		
+	}
+	
 		
 });

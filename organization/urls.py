@@ -21,9 +21,9 @@ urlpatterns = [
     url(r'^addProject/$', AddProject.as_view(), name='addProject'),
     url(r'^showProject/$', ShowProject.as_view(), name='showProject'),
     url(r'^detailProject/(?P<pk>[0-9]+)/$', DetailProject.as_view(), name='detailProject'),
-    
     url(r'^detailExperiment/(?P<pk>[0-9]+)/$', DetailExperiment.as_view(), name='detailExperiment'),
-    
+    url(r'^detailSequencingRun/(?P<pk>[0-9]+)/$', DetailSequencingRun.as_view(), name='detailSequencingRun'),
+    url(r'^detailAnalysis/(?P<pk>[0-9]+)/$', DetailAnalysis.as_view(), name='detailAnalysis'),
 #     url(r'^addIndividual/$', AddIndividual.as_view(), name='addIndividual'),
 #     url(r'^addIndividual/constructForm/$',  views.constructForm, name='constructIndividual'), 
 #     
@@ -44,6 +44,8 @@ urlpatterns = [
     url(r'^addExperiment/$', AddExperiment.as_view(), name='addExperiment'),
     url(r'^addSequencingRun/$', AddSequencingRun.as_view(), name='addSequencingRun'),   
     url(r'^addBarcode/$', AddBarcode.as_view(), name='addBarcode'),
+    url(r'^addSeqencingFile/$', AddSeqencingFile.as_view(), name='addSeqencingFile'),   
+    url(r'^addAnalysis/$', AddAnalysis.as_view(), name='addAnalysis'),    
     
     url(r'^editProject/(?P<pk>[0-9]+)/$', EditProject.as_view(), name='editProject'),
     url(r'^deleteProject/(?P<pk>[0-9]+)/$', DeleteProject.as_view(), name='deleteProject'),
@@ -69,7 +71,13 @@ urlpatterns = [
     url(r'^deleteGenomicRegions/(?P<pk>[0-9]+)/$', DeleteGenomicRegions.as_view(), name='deleteGenomicRegions'),
     url(r'^editTarget/(?P<pk>[0-9]+)/$', EditTarget.as_view(), name='editTarget'),
     url(r'^deleteTarget/(?P<pk>[0-9]+)/$', DeleteTarget.as_view(), name='deleteTarget'),
+    url(r'^editSequencingRun/(?P<pk>[0-9]+)/$', EditSequencingRun.as_view(), name='editSequencingRun'),
+    url(r'^deleteSequencingRun/(?P<pk>[0-9]+)/$', DeleteSequencingRun.as_view(), name='deleteSequencingRun'),
+    url(r'^editAnalysis/(?P<pk>[0-9]+)/$', EditAnalysis.as_view(), name='editAnalysis'),
+    url(r'^deleteAnalysis/(?P<pk>[0-9]+)/$', DeleteAnalysis.as_view(), name='deleteAnalysis'),
     
-    
+    url(r'^submitSequencingRun/(?P<pk>[0-9]+)/$', views.submitSequencingRun, name='submitSequencingRun'),
+    url(r'^approveSequencingRun/(?P<pk>[0-9]+)/$', views.approveSequencingRun, name='approveSequencingRun'),
+    url(r'^sequencingRunView/$', SequencingRunView.as_view(), name='sequencingRunView'),
     
     ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 
