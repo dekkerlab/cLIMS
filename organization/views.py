@@ -141,14 +141,21 @@ class DetailProject(View):
         
     #     units = Lane.objects.filter(project=pk)
     #     files = DeepSeqFile.objects.filter(project=pk)
-        experiments = Experiment.objects.filter(experiment_project=pk)
-        sequencingRuns = SequencingRun.objects.filter(run_project=pk)
+        experiments = Experiment.objects.filter(project=pk)
+        sequencingRuns = SequencingRun.objects.filter(project=pk)
+        experimentSets = ExperimentSet.objects.filter(project=pk)
+        fileSets = FileSet.objects.filter(project=pk)
+        tags = Tag.objects.filter(project=pk)
+        
         for run in sequencingRuns:
             run.run_Add_Barcode = run.get_run_Add_Barcode_display()
         context['project']= prj
         context['sequencingRuns']= sequencingRuns
     #     context['files']= files
         context['experiments']= experiments
+        context['experimentSets']= experimentSets
+        context['fileSets']= fileSets
+        context['tags']= tags
         return render(request, self.template_name, context)
 
 
@@ -239,7 +246,44 @@ class DetailAnalysis(View):
         return render(request, template_name, context)
 
 
+class DetailPublication(View):
+    template_name = 'detailPublication.html'
+    error_page = 'error.html'
+    def get(self,request,pk):
+        context = {}
+        publication = Publication.objects.get(pk=pk)
+        context['publication']= publication
+        return render(request, self.template_name, context)
 
+class DetailProtocol(View):
+    template_name = 'detailProtocol.html'
+    error_page = 'error.html'
+    def get(self,request,pk):
+        context = {}
+        protocol = Protocol.objects.get(pk=pk)
+        if(protocol.protocol_fields):
+            protocol.protocol_fields = json.loads(protocol.protocol_fields) 
+            print(protocol.protocol_fields)
+        context['protocol']= protocol
+        return render(request, self.template_name, context)
+
+class DetailDocument(View):
+    template_name = 'detailDocument.html'
+    error_page = 'error.html'
+    def get(self,request,pk):
+        context = {}
+        document = Document.objects.get(pk=pk)
+        context['document']= document
+        return render(request, self.template_name, context)
+
+class DetailEnzyme(View):
+    template_name = 'detailEnzyme.html'
+    error_page = 'error.html'
+    def get(self,request,pk):
+        context = {}
+        enzyme = Enzyme.objects.get(pk=pk)
+        context['enzyme']= enzyme
+        return render(request, self.template_name, context)
 
 def createJSON(request, fieldTypePk):
     json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set
@@ -249,38 +293,6 @@ def createJSON(request, fieldTypePk):
         data[keys] = formVal
     json_data = json.dumps(data)
     return(json_data)
-
-# 
-# class StepOne(View): 
-#     template_name = 'stepOneForm.html'
-#     error_page = 'error.html'
-#     form_class = IndividualForm
-#     biosourceForm_set = formset_factory(BiosourceForm)
-#     biosampleForm_set = formset_factory(BiosampleForm)
-#     
-#     def get(self,request):
-#         form = self.form_class()
-#         biosourceFormset = self.biosourceForm_set()
-#         biosampleFormset = self.biosampleForm_set()
-#         form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
-#         for f in biosourceFormset:
-#             f.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
-#         return render(request, self.template_name,{'form':form,'biosourceFormset':biosourceFormset,'biosampleFormset':biosampleFormset})
-#     
-#     def post(self,request):
-#         form = self.form_class(request.POST)
-#         biosourceFormset = self.biosourceForm_set(request.POST)
-#         biosampleFormset = self.biosampleForm_set(request.POST)
-#         if all([form.is_valid(), biosourceFormset.is_valid(),biosampleFormset.is_valid()]):
-#             result = form.save(commit= False)
-#             individual_type = request.POST.get('individual_type')
-#             result.individual_fields = createJSON(request, individual_type)
-#             result.save()
-#             for inline_form in biosourceFormset:
-#                 biosource = inline_form.save(commit=False)
-#                 biosource.biosource_individual = result
-#                 biosource.save()
-#             return HttpResponseRedirect('/showProject/')
 
 class AddIndividual(View): 
     template_name = 'customForm.html'
@@ -424,7 +436,7 @@ class AddExperiment(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             form = form.save(commit=False)
-            form.experiment_project = Project.objects.get(pk=request.session['projectId'])
+            form.project = Project.objects.get(pk=request.session['projectId'])
             form.experiment_biosample = Biosample.objects.get(pk=request.session['biosamplePK'])
             form.save()
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
@@ -532,7 +544,7 @@ class AddProtocol(View):
             protocol.userOwner = User.objects.get(pk=request.user.pk)
             if(request.POST.get('protocol_type')):
                 protocol_type = request.POST.get('protocol_type')
-                protocol.biosample_fields = createJSON(request, protocol_type)
+                protocol.protocol_fields = createJSON(request, protocol_type)
             protocol.save()
             return HttpResponseRedirect('/showProject/')
         else:
@@ -601,11 +613,11 @@ class AddOther(View):
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            other = form.save()
             biosample = request.POST.getlist('biosample')
             for bioPk in biosample:
                 bioSam = Biosample.objects.get(pk=bioPk)
-                form.biosample.add(bioSam)
+                other.biosample.add(bioSam)
             return HttpResponseRedirect('/addExperiment/')
         else:
             return render(request, self.template_name,{'form':form, 'form_class':"Others"})
@@ -623,7 +635,7 @@ class AddDocument(View):
         return render(request, self.template_name,{'form':form, 'form_class':"Document"})
     
     def post(self,request):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             document = form.save(commit= False)
             document.save()
@@ -658,7 +670,7 @@ class AddSequencingRun(View):
     def get(self,request):
        
         form = self.form_class()
-        form.fields["run_Experiment"].queryset = Experiment.objects.filter(experiment_project=request.session['projectId'])
+        form.fields["run_Experiment"].queryset = Experiment.objects.filter(project=request.session['projectId'])
         form.fields["run_sequencing_platform"].queryset = Choice.objects.filter(choice_type="run_sequencing_platform")
         form.fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
         return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
@@ -667,7 +679,7 @@ class AddSequencingRun(View):
         form = self.form_class(request.POST)
         if form.is_valid():
             form = form.save(commit=False)
-            form.run_project = Project.objects.get(pk=request.session['projectId'])
+            form.project = Project.objects.get(pk=request.session['projectId'])
             form.save()
             run_Experiment = request.POST.getlist('run_Experiment')
             for expsPk in run_Experiment:
@@ -682,7 +694,7 @@ class AddSequencingRun(View):
             else:
                 return render(request, self.error_page, {})
         else:
-            form.fields["run_Experiment"].queryset = Experiment.objects.filter(experiment_project=request.session['projectId'])
+            form.fields["run_Experiment"].queryset = Experiment.objects.filter(project=request.session['projectId'])
             form.fields["run_sequencing_platform"].queryset = Choice.objects.filter(choice_type="run_sequencing_platform")
             form.fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
             return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
@@ -732,6 +744,7 @@ class AddSeqencingFile(View):
         'sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp'
         if form.is_valid():
             file = form.save(commit=False)
+            file.project = Project.objects.get(pk=request.session['projectId'])
             file.sequencingFile_backupPath = "/s4s/" + file.sequencingFile_mainPath
             file.sequencingFile_sha256sum = "diuwdiued788798"
             file.sequencingFile_md5sum = "hewifu9283ydhjhkj"
@@ -749,15 +762,86 @@ class AddFileSet(View):
     
     def get(self,request):
         form = self.form_class()
+        form.fields["fileset_type"].queryset = Choice.objects.filter(choice_type="fileset_type")
+        form.fields["fileSet_file"].queryset = SeqencingFile.objects.filter(project=request.session['projectId'])
         return render(request, self.template_name,{'form':form, 'form_class':"FileSet"})
     
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
+            fileset = form.save(commit=False)
+            fileset.project = Project.objects.get(pk=request.session['projectId'])
+            fileset.save()
+            return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
+        else:
+            form.fields["fileset_type"].queryset = Choice.objects.filter(choice_type="fileset_type")
+            form.fields["fileSet_file"].queryset = SeqencingFile.objects.filter(project=request.session['projectId'])
+            return render(request, self.template_name,{'form':form, 'form_class':"FileSet"})
+        
+class AddExperimentSet(View): 
+    template_name = 'customForm.html'
+    error_page = 'error.html'
+    form_class = ExperimentSetForm
+    
+    def get(self,request):
+        form = self.form_class()  
+        form.fields["experimentSet_type"].queryset = Choice.objects.filter(choice_type="experimentSet_type")
+        form.fields["experimentSet_exp"].queryset = Experiment.objects.filter(project=request.session['projectId'])
+        return render(request, self.template_name,{'form':form, 'form_class':"ExperimentSet"})
+    
+    def post(self,request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            expSet = form.save(commit=False)
+            expSet.project = Project.objects.get(pk=request.session['projectId'])
+            expSet.save()
+            return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
+        else:
+            form.fields["experimentSet_type"].queryset = Choice.objects.filter(choice_type="experimentSet_type")
+            form.fields["experimentSet_exp"].queryset = Experiment.objects.filter(project=request.session['projectId'])
+            return render(request, self.template_name,{'form':form, 'form_class':"ExperimentSet"})
+
+class AddTag(View): 
+    template_name = 'customForm.html'
+    error_page = 'error.html'   
+    form_class = TagForm
+    
+    def get(self,request):
+        form = self.form_class()
+        return render(request, self.template_name,{'form':form, 'form_class':"Tag"})
+    
+    def post(self,request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            tag = form.save(commit=False)
+            tag.tag_user = User.objects.get(pk=request.user.id)
+            tag.project = Project.objects.get(pk=request.session['projectId'])
+            tag.save()
+            return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
+        else:
+            return render(request, self.template_name,{'form':form, 'form_class':"Tag"})
+
+
+class AddImageObjects(View): 
+    template_name = 'customForm.html'
+    error_page = 'error.html'
+    form_class = ImageObjectsForm
+    
+    def get(self,request):
+        form = self.form_class()
+        return render(request, self.template_name,{'form':form, 'form_class':"Images"})
+    
+    def post(self,request):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.save(commit=False)
+            image.project = Project.objects.get(pk=request.session['projectId'])
+            image.save()
             return HttpResponseRedirect('/showProject/')
         else:
-            return render(request, self.template_name,{'form':form, 'form_class':"FileSet"})
+            return render(request, self.template_name,{'form':form, 'form_class':"Images"})
+                
+
 
 def log_file(members):
     for tarinfo in members:
@@ -872,10 +956,31 @@ class SequencingRunView(View):
         d = defaultdict(list)
         for run in sequencingRuns:
             run.run_Add_Barcode = run.get_run_Add_Barcode_display()
-            d[run.run_project.project_name].append(run)
+            d[run.project.project_name].append(run)
         context = {
             'sequencingRuns': OrderedDict(d),
         }
         return render(request, self.template_name, context)
     
 
+
+def searchView(request):
+    context ={}
+    if request.GET:
+        for searchModelForm in [ProjectSearchForm,ExperimentSearchForm,SequencingRunSearchForm,SeqencingFileSearchForm]:
+            form = searchModelForm(request.GET,request=request )
+            if form.is_valid():
+                results = form.get_result_queryset()
+            else:
+                results = []
+            if ((results) and (searchModelForm == ProjectSearchForm)):
+                context['projects']=results
+            elif ((results) and (searchModelForm == ExperimentSearchForm)):
+                context['experiments']=results
+            elif ((results) and (searchModelForm == SequencingRunSearchForm)):
+                context['runs']=results
+            elif ((results) and (searchModelForm == SeqencingFileSearchForm)):
+                context['files']=results
+        if not bool(context):
+            context['results']="No result"
+    return render(request, 'searchResult.html', context)

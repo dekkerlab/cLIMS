@@ -35,23 +35,25 @@ class Project(models.Model):
 
 class Experiment(References):
     experiment_name = models.CharField(max_length=100, null=False, default="", db_index=True)
-    experiment_project = models.ForeignKey(Project,related_name='expProject', on_delete=models.CASCADE,)
+    project = models.ForeignKey(Project,related_name='expProject', on_delete=models.CASCADE,)
     experiment_biosample = models.ForeignKey('wetLab.Biosample',related_name='expBio', on_delete=models.CASCADE,help_text="Starting biological material.")
     experiment_protocol = models.ForeignKey('wetLab.Protocol',related_name='expPro', on_delete=models.CASCADE,)
     experiment_enzyme = models.ForeignKey('wetLab.Enzyme',related_name='expEnz', on_delete=models.CASCADE,help_text="The enzyme used for digestion of the DNA.")
     experiment_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A short description of the experiment")
-    
+    experiment_imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='expImg' , help_text="Lab gel and fragment analyzer images")
     
     def __str__(self):
         return self.experiment_name
 
 class ExperimentSet(models.Model):
-    experimentSet_type = models.CharField(max_length=50, null=False, default="", db_index=True)
+    experimentSet_name = models.CharField(max_length=100, null=False, default="")
+    project =  models.ForeignKey('organization.Project',related_name='expSetProject', on_delete=models.CASCADE,)
+    experimentSet_type = models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='setChoice', help_text="The categorization of the set of experiments.")
     experimentSet_exp = models.ManyToManyField(Experiment, related_name='setExp')
     experimentSet_description = models.CharField(max_length=200,  null=True, blank=True)
-
+  
     def __str__(self):
-        return self.experimentSet_type
+        return self.experimentSet_name
     
 class Publication(models.Model):
     publication_title = models.CharField(max_length=200, null=False, default="", help_text="Title of the publication or communication.")
@@ -63,7 +65,7 @@ class Publication(models.Model):
     publication_dateRevised = models.DateField( null=True, blank=True)
     publication_issue = models.CharField(max_length=200, null=False, default="", help_text="The issue of the publication.")
     publication_journal = models.CharField(max_length=200, null=False, default="", help_text="The journal of the publication.")
-    publication_supplementry = models.CharField(max_length=200,  null=True, blank=True)
+    publication_supplementary = models.CharField(max_length=200,  null=True, blank=True)
 #     publication_exp = models.ManyToManyField(Experiment, related_name='pubExp', help_text="List of experiment sets to be associated with the publication.")
     publication_identifiers=models.CharField(max_length=200, null=True, blank=True, help_text="The identifiers that reference data found in the object.")
     publication_volume=models.CharField(max_length=200, null=True, blank=True, help_text="The volume of the publication.")
@@ -82,7 +84,7 @@ class Award(models.Model):
 
 class Tag(models.Model):
     tag_name = models.CharField(max_length=100, null=False, default="", db_index=True)
-    tag_color = models.CharField(max_length=50, null=False, default="Red")
+    project =  models.ForeignKey('organization.Project',related_name='tagProject', on_delete=models.CASCADE,)
     tag_exp = models.ManyToManyField(Experiment, related_name='tagExp')
     tag_user = models.ForeignKey(User, related_name='tagUser', on_delete=models.CASCADE,)
     

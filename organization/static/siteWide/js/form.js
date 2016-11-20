@@ -54,6 +54,7 @@ $(function() {
 	$( "span:contains('References')" ).append('<a href="/addPublication/" target="_blank" title="Add another Publication"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('constructs')" ).append('<a href="/addConstruct/" target="_blank" title="Add another Construct"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('target')" ).append('<a href="/addTarget/" target="_blank" title="Add another Target"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+	$( "span:contains('imageObjects')" ).append('<a href="/addImageObjects/" target="_blank" title="Add another Image"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	
 //	$('#indCheck').click(function() {
 //	    $(".indDiv").toggleClass("hidden");

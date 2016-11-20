@@ -11,6 +11,7 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
 from organization.views import *
 from organization.editViews import *
+from organization.export import *
 
 urlpatterns = [
     url(r'^$', views.login,{'template_name': 'registration/login.html'},name='login'),
@@ -24,6 +25,11 @@ urlpatterns = [
     url(r'^detailExperiment/(?P<pk>[0-9]+)/$', DetailExperiment.as_view(), name='detailExperiment'),
     url(r'^detailSequencingRun/(?P<pk>[0-9]+)/$', DetailSequencingRun.as_view(), name='detailSequencingRun'),
     url(r'^detailAnalysis/(?P<pk>[0-9]+)/$', DetailAnalysis.as_view(), name='detailAnalysis'),
+    url(r'^detailPublication/(?P<pk>[0-9]+)/$', DetailPublication.as_view(), name='detailPublication'),
+    url(r'^detailProtocol/(?P<pk>[0-9]+)/$', DetailProtocol.as_view(), name='detailProtocol'),
+    url(r'^detailDocument/(?P<pk>[0-9]+)/$', DetailDocument.as_view(), name='detailDocument'),
+    url(r'^detailEnzyme/(?P<pk>[0-9]+)/$', DetailEnzyme.as_view(), name='detailEnzyme'),
+    
 #     url(r'^addIndividual/$', AddIndividual.as_view(), name='addIndividual'),
 #     url(r'^addIndividual/constructForm/$',  views.constructForm, name='constructIndividual'), 
 #     
@@ -45,7 +51,12 @@ urlpatterns = [
     url(r'^addSequencingRun/$', AddSequencingRun.as_view(), name='addSequencingRun'),   
     url(r'^addBarcode/$', AddBarcode.as_view(), name='addBarcode'),
     url(r'^addSeqencingFile/$', AddSeqencingFile.as_view(), name='addSeqencingFile'),   
-    url(r'^addAnalysis/$', AddAnalysis.as_view(), name='addAnalysis'),    
+    url(r'^addAnalysis/$', AddAnalysis.as_view(), name='addAnalysis'),
+    url(r'^addExperimentSet/$', AddExperimentSet.as_view(), name='addExperimentSet'),
+    url(r'^addFileSet/$', AddFileSet.as_view(), name='addFileSet'),
+    url(r'^addTag/$', AddTag.as_view(), name='addTag'),   
+    url(r'^addImageObjects/$', AddImageObjects.as_view(), name='addImageObjects'), 
+    
     
     url(r'^editProject/(?P<pk>[0-9]+)/$', EditProject.as_view(), name='editProject'),
     url(r'^deleteProject/(?P<pk>[0-9]+)/$', DeleteProject.as_view(), name='deleteProject'),
@@ -75,9 +86,29 @@ urlpatterns = [
     url(r'^deleteSequencingRun/(?P<pk>[0-9]+)/$', DeleteSequencingRun.as_view(), name='deleteSequencingRun'),
     url(r'^editAnalysis/(?P<pk>[0-9]+)/$', EditAnalysis.as_view(), name='editAnalysis'),
     url(r'^deleteAnalysis/(?P<pk>[0-9]+)/$', DeleteAnalysis.as_view(), name='deleteAnalysis'),
+    url(r'^editExperimentSet/(?P<pk>[0-9]+)/$', EditExperimentSet.as_view(), name='editExperimentSet'),
+    url(r'^deleteExperimentSet/(?P<pk>[0-9]+)/$', DeleteExperimentSet.as_view(), name='deleteExperimentSet'),
+    url(r'^editFileSet/(?P<pk>[0-9]+)/$', EditFileSet.as_view(), name='editFileSet'),
+    url(r'^deleteFileSet/(?P<pk>[0-9]+)/$', DeleteFileSet.as_view(), name='deleteFileSet'),
+    url(r'^editTag/(?P<pk>[0-9]+)/$', EditTag.as_view(), name='editTag'),
+    url(r'^deleteTag/(?P<pk>[0-9]+)/$', DeleteTag.as_view(), name='deleteTag'),
+    url(r'^editProtocol/(?P<pk>[0-9]+)/$', EditProtocol.as_view(), name='editProtocol'),
+    url(r'^deleteProtocol/(?P<pk>[0-9]+)/$', DeleteProtocol.as_view(), name='deleteProtocol'),
+    url(r'^editDocument/(?P<pk>[0-9]+)/$', EditDocument.as_view(), name='editDocument'),
+    url(r'^deleteDocument/(?P<pk>[0-9]+)/$', DeleteDocument.as_view(), name='deleteDocument'),
+    url(r'^editPublication/(?P<pk>[0-9]+)/$', EditPublication.as_view(), name='editPublication'),
+    url(r'^deletePublication/(?P<pk>[0-9]+)/$', DeletePublication.as_view(), name='deletePublication'),
+    url(r'^editImageObjects/(?P<pk>[0-9]+)/$', EditImageObjects.as_view(), name='editImageObjects'),
+    url(r'^deleteImageObjects/(?P<pk>[0-9]+)/$', DeleteImageObjects.as_view(), name='deleteImageObjects'),
+    
     
     url(r'^submitSequencingRun/(?P<pk>[0-9]+)/$', views.submitSequencingRun, name='submitSequencingRun'),
     url(r'^approveSequencingRun/(?P<pk>[0-9]+)/$', views.approveSequencingRun, name='approveSequencingRun'),
     url(r'^sequencingRunView/$', SequencingRunView.as_view(), name='sequencingRunView'),
+    url(r'^searchView/$', views.searchView, name='searchView'),
+    
+    url(r'^exportExperiment/$', exportExperiment, name='exportExperiment'),
+    url(r'^exportAnalysis/$', exportAnalysis, name='exportAnalysis'),
+    url(r'^exportGEO/$', exportGEO, name='exportGEO'),
     
     ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

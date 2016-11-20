@@ -39,8 +39,8 @@ class EditExperiment(UpdateView):
     template_name = 'customForm.html/'
     
     def get_success_url(self):
-        projectId = self.request.session['projectId']
-        return reverse('detailProject', kwargs={'pk': projectId})
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
         context = super(EditExperiment , self).get_context_data(**kwargs)
@@ -81,7 +81,8 @@ class EditIndividual(UpdateView):
         context = super(EditIndividual , self).get_context_data(**kwargs)
         context['form'].fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
         obj = Individual.objects.get(pk=self.get_object().id)
-        context['jsonObj']= json.loads(obj.individual_fields)
+        if (obj.individual_fields):
+            context['jsonObj']= json.loads(obj.individual_fields)
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    
@@ -135,7 +136,8 @@ class EditBiosample(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EditBiosample , self).get_context_data(**kwargs)
         obj = Biosample.objects.get(pk=self.get_object().id)
-        context['jsonObj']= json.loads(obj.biosample_fields)
+        if(obj.biosample_fields):
+            context['jsonObj']= json.loads(obj.biosample_fields)
         context['form'].fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
         context['form'].fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
         context['action'] = reverse('detailExperiment',
@@ -325,7 +327,7 @@ class EditSequencingRun(UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(EditSequencingRun , self).get_context_data(**kwargs)
-        context['form'].fields["run_Experiment"].queryset = Experiment.objects.filter(experiment_project=self.request.session['projectId'])
+        context['form'].fields["run_Experiment"].queryset = Experiment.objects.filter(project=self.request.session['projectId'])
         context['form'].fields["run_sequencing_platform"].queryset = Choice.objects.filter(choice_type="run_sequencing_platform")
         context['form'].fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
         context['action'] = reverse('detailProject',
@@ -357,7 +359,8 @@ class EditAnalysis(UpdateView):
         context['form'].fields["analysis_type"].queryset = JsonObjField.objects.filter(field_type="Analysis")
         context['form'].fields["analysis_file"].queryset = SeqencingFile.objects.filter(sequencingFile_exp=self.request.session['experimentId'] )
         obj = Analysis.objects.get(pk=self.get_object().id)
-        context['jsonObj']= json.loads(obj.analysis_fields)
+        if(obj.analysis_fields):
+            context['jsonObj']= json.loads(obj.analysis_fields)
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    
@@ -368,6 +371,184 @@ class DeleteAnalysis(DeleteView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
+
+
+class EditTag(UpdateView):
+    form_class = TagForm
+    model = Tag
+    template_name = 'customForm.html/'
+    
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditTag , self).get_context_data(**kwargs)
+        context['action'] = reverse('detailProject',
+                                kwargs={'pk': self.get_object().id})
+        return context    
+
+class DeleteTag(DeleteView):
+    model = Tag
+    template_name = 'delete.html'
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+
+class EditExperimentSet(UpdateView):
+    form_class = ExperimentSetForm
+    model = ExperimentSet
+    template_name = 'customForm.html/'
+    
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditExperimentSet , self).get_context_data(**kwargs)
+        context['form'].fields["experimentSet_type"].queryset = Choice.objects.filter(choice_type="experimentSet_type")
+        context['form'].fields["experimentSet_exp"].queryset = Experiment.objects.filter(project=self.request.session['projectId'])
+        context['action'] = reverse('detailProject',
+                                kwargs={'pk': self.get_object().id})
+        return context    
+
+class DeleteExperimentSet(DeleteView):
+    model = ExperimentSet
+    template_name = 'delete.html'
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+
+class EditFileSet(UpdateView):
+    form_class = FileSetForm
+    model = FileSet
+    template_name = 'customForm.html/'
+    
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditFileSet , self).get_context_data(**kwargs)
+        context['form'].fields["fileset_type"].queryset = Choice.objects.filter(choice_type="fileset_type")
+        context['form'].fields["fileSet_file"].queryset = SeqencingFile.objects.filter(project=self.request.session['projectId'])
+        context['action'] = reverse('detailProject',
+                                kwargs={'pk': self.get_object().id})
+        return context    
+
+class DeleteFileSet(DeleteView):
+    model = FileSet
+    template_name = 'delete.html'
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+
+
+class EditProtocol(UpdateView):
+    form_class = ProtocolForm
+    model = Protocol
+    template_name = 'editForm.html/'
+    
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        protocol = Protocol.objects.get(pk=self.get_object().id)
+        if(self.request.POST.get('protocol_type')):
+            protocol_type = self.request.POST.get('protocol_type')
+            protocol.protocol_fields = createJSON(self.request, protocol_type)
+            protocol.save()
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditProtocol , self).get_context_data(**kwargs)
+        obj = Protocol.objects.get(pk=self.get_object().id)
+        if(obj.protocol_fields):
+            context['jsonObj']= json.loads(obj.protocol_fields)
+        print(json.loads(obj.protocol_fields))
+        context['form'].fields["protocol_type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
+        context['action'] = reverse('detailExperiment',
+                                kwargs={'pk': self.get_object().id})
+        return context    
+
+class DeleteProtocol(DeleteView):
+    model = Protocol
+    template_name = 'deleteExperiment.html'
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+
+class EditDocument(UpdateView):
+    form_class = DocumentForm
+    model = Document
+    template_name = 'editForm.html/'
+    
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditDocument , self).get_context_data(**kwargs)
+        context['form'].fields["document_type"].queryset = Choice.objects.filter(choice_type="document_type")
+        context['action'] = reverse('detailExperiment',
+                                kwargs={'pk': self.get_object().id})
+        return context    
+
+class DeleteDocument(DeleteView):
+    model = Document
+    template_name = 'deleteExperiment.html'
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+
+class EditPublication(UpdateView):
+    form_class = PublicationForm
+    model = Publication
+    template_name = 'editForm.html/'
+    
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditPublication , self).get_context_data(**kwargs)
+        context['action'] = reverse('detailExperiment',
+                                kwargs={'pk': self.get_object().id})
+        return context    
+
+class DeletePublication(DeleteView):
+    model = Publication
+    template_name = 'deleteExperiment.html'
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+
+class EditImageObjects(UpdateView):
+    form_class = ImageObjectsForm
+    model = ImageObjects
+    template_name = 'editForm.html/'
+    
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditImageObjects , self).get_context_data(**kwargs)
+        context['action'] = reverse('detailExperiment',
+                                kwargs={'pk': self.get_object().id})
+        return context    
+
+class DeleteImageObjects(DeleteView):
+    model = ImageObjects
+    template_name = 'deleteExperiment.html'
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    
+
+
+
+
+
 
 
 

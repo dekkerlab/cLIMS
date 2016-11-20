@@ -16,7 +16,7 @@
 	</a>
 	{% endif %}
 	<br/>
-    	<span class="rowHead">Project Name:</span>{{ sequencingRun.run_project }}<br/>
+    	<span class="rowHead">Project Name:</span>{{ sequencingRun.project }}<br/>
     	<span class="rowHead">Attached Experiments:</span><br/>
     	{% for values in sequencingRun.run_Experiment.all %}
 	  		({{ forloop.counter }}) {{values}}<br/>

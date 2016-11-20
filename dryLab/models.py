@@ -9,7 +9,7 @@ class SequencingRun(models.Model):
         ('detailProject', 'No'),
     )
     run_name = models.CharField(max_length=100, null=False, default="")
-    run_project =  models.ForeignKey('organization.Project',related_name='runProject', on_delete=models.CASCADE,)
+    project =  models.ForeignKey('organization.Project',related_name='runProject', on_delete=models.CASCADE,)
     run_Experiment = models.ManyToManyField('organization.Experiment',related_name='runExp')
     run_sequencing_platform = models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='runPlatChoice', help_text="Sequencing platform.")
     run_sequencing_center = models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='runCenterChoice', help_text="Where the sequencing has been done.")
@@ -27,6 +27,7 @@ class SequencingRun(models.Model):
  
 class SeqencingFile(models.Model):
     sequencingFile_name = models.CharField(max_length=255, null=False, default="")
+    project =  models.ForeignKey('organization.Project',related_name='fileProject', on_delete=models.CASCADE,)
     sequencingFile_mainPath = models.CharField(max_length=500, null=False, default="")
     sequencingFile_backupPath = models.CharField(max_length=500, null=False, default="")
     sequencingFile_sha256sum = models.CharField(max_length=64, null=False, default="")
@@ -38,9 +39,11 @@ class SeqencingFile(models.Model):
 
 class FileSet(models.Model):
     fileSet_name = models.CharField(max_length=50, null=False, default="")
-    fileset_type = models.CharField(max_length=100, null=False, default="")
+    project =  models.ForeignKey('organization.Project',related_name='filesetProject', on_delete=models.CASCADE,)
+    fileset_type =models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='fileSetChoice', help_text="The categorization of the set of files.")
     fileSet_file = models.ManyToManyField(SeqencingFile,related_name='fileSetFile')
     fileset_description =  models.CharField(max_length=200, null=True, blank=True)
+    
     def __str__(self):
         return self.fileSet_name
 
@@ -53,17 +56,27 @@ class Analysis(models.Model):
     analysis_file = models.ManyToManyField(SeqencingFile,related_name='analysisFile')
     analysis_exp = models.ForeignKey('organization.Experiment',related_name='analysisExp', on_delete=models.CASCADE,)
     analysis_import = models.FileField(upload_to='uploads/', null=True, blank=True, help_text="Import .gz file")
-    
+    analysis_hiGlass = models.FileField(null="True", blank="True",upload_to='uploads/',help_text="Import HiGlass file")
     def __str__(self):
         return self.analysis_name
     
     class Meta:
         verbose_name_plural = 'Analysis'
 
-class Images(models.Model):
+class Images(models.Model): 
     image_path = models.FilePathField(max_length=500)
     image_analysis = models.ForeignKey(Analysis, on_delete=models.CASCADE)
     def __str__(self):
         return self.image_path
     class Meta:
         verbose_name_plural = 'Images'
+
+class ImageObjects(models.Model):
+    imageObjects_name = models.CharField(max_length=50, null=False, default="")
+    imageObjects_images = models.FileField(upload_to='uploads/', help_text="Import image file")
+    project = models.ForeignKey('organization.Project',related_name='imgProject', on_delete=models.CASCADE,)
+    def __str__(self):
+        return self.imageObjects_name
+    
+        
+        

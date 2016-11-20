@@ -23,7 +23,7 @@
 	</a>
 	</span>
 	</th>
-  </tr>
+  </tr>	
 </thead>
 <tbody>
   <tr>
@@ -84,8 +84,8 @@
   </tr>
     {% endfor %}
  </table>
- <a href="/exportSample">
-		<button type="button" class="btn btn-success">Export sample meta data</button>
+ <a href="/exportExperiment">
+		<button type="button" class="btn btn-success">Export Experiment meta data</button>
 	</a>
 	<a href="/exportAnalysis">
 		<button type="button" class="btn btn-success">Export Analysis</button>
@@ -141,36 +141,129 @@
 		<button type="button" class="btn btn-warning pull-right hidden show">Edit Run</button>
 	</a>
 	</td>
-    <!-- <td>
-    	<span class="rowHead">Sequencing Unit:</span> {{ unit.name }}&nbsp;&nbsp;
-    	<span class="rowHead">Cost:</span>{{ unit.cost }}&nbsp;&nbsp;
-    	<span class="rowHead">Read Length:</span>{{ unit.read_length }}&nbsp;&nbsp;
-    	<span class="rowHead">Submission Date:</span>{{ unit.submission_date }}&nbsp;&nbsp;
-    	<span class="rowHead">Retrieval Date:</span>{{ unit.retrieval_date }}&nbsp;&nbsp;
-    	<span class="rowHead">Sequencing Platform:</span>{{ unit.sequencing_platform }}&nbsp;&nbsp;
-    	<span class="rowHead">Sequencing Center:</span>{{ unit.sequencing_center }}&nbsp;&nbsp;
-    	<span class="rowHead">Type:</span>{{ unit.type }}&nbsp;&nbsp;
-    	<a href="#" data-toggle="tooltip" data-placement="bottom" title="{{ unit.notes }}">Notes</a>&nbsp;&nbsp;
-    	<span class="rowHead">Approved:</span>{{ unit.approved }}&nbsp;&nbsp;
-    	{% if unit.submitted == False %}
-        <a href="/submitLane/{{ unit.id}}">
-			<button type="button" class="btn btn-info"> Submit Unit</button>
-		</a>
-		{% else %}
-			<button type="button" class="btn btn-primary disabled">Submitted</button>
-		{% endif %}
-		<a href="/deleteLane/{{ unit.id }}">
-		<button type="button" class="btn btn-danger pull-right hidden show">Delete Unit</button>
-		</a>
-	<a href="/editLane/{{unit.id}}">
-		<button type="button" class="btn btn-warning pull-right hidden show">Edit Unit</button>
-	</a>
-    </td> -->
+    
   </tr>
     {% endfor %}
      </table>
 {% endif %}
 
+ <hr/>
+ <span class="tableHead">
+	Tags and Sets
+</span>
+<ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#add">Add</a></li>
+    
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tags<span class="caret"></span></a>
+       {% if tags %}
+      <ul class="dropdown-menu">
+       {% for tag in tags %}
+        <li><a data-toggle="tab" href=#{{tag.tag_name}}{{tag.id}}>{{tag.tag_name}}</a></li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Experiment Sets <span class="caret"></span></a>
+       {% if experimentSets %}
+      <ul class="dropdown-menu">
+       {% for expSet in experimentSets %}
+        <li><a data-toggle="tab" href=#{{expSet.experimentSet_name}}{{expSet.id}}>{{expSet.experimentSet_name}}</a></li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    
+    <li class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#">File Sets <span class="caret"></span></a>
+       {% if fileSets %}
+      <ul class="dropdown-menu">
+       {% for fileSet in fileSets %}
+        <li><a data-toggle="tab" href=#{{fileSet.fileSet_name}}{{fileSet.id}}>{{fileSet.fileSet_name}}</a></li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+  </ul>
+<div class="tab-content">
+  <div id="add" class="tab-pane fade in active">
+    <h3>Add Tags and Sets</h3>
+    <a href="/addTag">
+		<button type="button" class="btn btn-success">Tag Experiments</button>
+	</a>
+    <a href="/addExperimentSet">
+		<button type="button" class="btn btn-success">Experiment Set</button>
+	</a>
+	<a href="/addFileSet">
+		<button type="button" class="btn btn-success">File Set</button>
+	</a><br/><br/>
+  </div>
+  {% if tags %}
+        <br/>
+       {% for tag in tags %}
+       <div id={{tag.tag_name}}{{tag.id}} class="tab-pane fade">
+        <a href="/deleteTag/{{ tag.id }}">
+			<button type="button" class="btn btn-danger pull-right hidden show">Delete Tag</button>
+	  	</a>
+	   	<a href="/editTag/{{ tag.id}}">
+			<button type="button" class="btn btn-warning pull-right hidden show">Edit Tag</button>
+		</a>
+        <span class="rowHead">Tag Name</span>{{tag.tag_name | linebreaks}}
+        <span class="rowHead">Tagged Experiments</span><br/>
+        {% for values in tag.tag_exp.all %}
+	    			({{ forloop.counter }}) {{values}}<br/>
+	  	{% endfor %}
+        </div>
+      {% endfor %}
+  		
+{% endif %}
+  
+  {% if experimentSets %}
+       {% for expSet in experimentSets %}
+       <div id={{expSet.experimentSet_name}}{{expSet.id}} class="tab-pane fade">
+        <a href="/deleteExperimentSet/{{ expSet.id }}">
+			<button type="button" class="btn btn-danger pull-right hidden show">Delete ExperimentSet</button>
+	  	</a>
+	   	<a href="/editExperimentSet/{{ expSet.id}}">
+			<button type="button" class="btn btn-warning pull-right hidden show">Edit ExperimentSet</button>
+		</a>
+        <span class="rowHead">Experiment Set Name</span>{{expSet.experimentSet_name | linebreaks}}
+        <span class="rowHead">Experiment Set Type</span>{{expSet.experimentSet_type | linebreaks}}
+        <span class="rowHead">Experiment Set </span><br/>
+        {% for values in expSet.experimentSet_exp.all %}
+	    			({{ forloop.counter }}) {{values}}<br/>
+	  	{% endfor %}
+	  	<span class="rowHead">Experiment Set Description</span>{{expSet.experimentSet_description | linebreaks}}
+        </div>
+      {% endfor %}
+  		
+{% endif %}
+
+
+ {% if fileSets %}
+       {% for fileSet in fileSets %}
+       <div id={{fileSet.fileSet_name}}{{fileSet.id}} class="tab-pane fade">
+       <a href="/deleteFileSet/{{ fileSet.id }}">
+			<button type="button" class="btn btn-danger pull-right hidden show">Delete FileSet</button>
+	  </a>
+	   	<a href="/editFileSet/{{ fileSet.id}}">
+			<button type="button" class="btn btn-warning pull-right hidden show">Edit FileSet</button>
+		</a>
+        <span class="rowHead">File Set Name</span>{{fileSet.fileSet_name | linebreaks}}
+        <span class="rowHead">File Set Type</span>{{fileSet.fileset_type | linebreaks}}
+        {% for values in fileSet.fileSet_file.all %}
+	    			({{ forloop.counter }}) {{values}}<br/>
+	  	{% endfor %}
+	  	<span class="rowHead">File Set Description</span>{{fileSet.fileset_description | linebreaks}}
+        </div>
+      {% endfor %}
+  		
+{% endif %}
+
+</div>
+<!-- 
 {% if files %}
  <hr/>
     <span class="tableHead">
@@ -198,7 +291,7 @@
 				<button type="button" class="btn btn-warning pull-right hidden show">Edit File</button>
 			</a>
 			</td>
-    <!-- <td>
+    <td>
     	<span class="rowHead">Sample Name:</span> {{ file.sample.name }}<br/>
     	<span class="rowHead">Sequencing Unit:</span> {{ file.lane.name }}<br/>
     	<span class="rowHead">File Name:</span> {{ file.name }}<br/>
@@ -215,11 +308,11 @@
     <a href="/editFile/{{file.id}}">
 		<button type="button" class="btn btn-warning pull-right hidden show">Edit File</button>
 	</a>
-    </td> -->
+    </td>
   </tr>
     {% endfor %}
 {% endif %}
-</table>
+</table> -->
 {% else %}
     <p>No data available.</p>
 {% endif %}

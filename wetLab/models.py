@@ -20,8 +20,8 @@ class Document(models.Model):
         return self.document_description
         
 class References(models.Model):
-    documents = models.ForeignKey(Document, null=True, blank=True, on_delete=models.CASCADE, help_text="Documents that provide additional information (not data file).")
-    references = models.ForeignKey('organization.Publication', null=True, blank=True, on_delete=models.CASCADE, help_text="The publications that provide more information about the object.")
+    documents = models.ForeignKey(Document, null=True, blank=True, help_text="Documents that provide additional information (not data file).")
+    references = models.ForeignKey('organization.Publication', null=True, blank=True, help_text="The publications that provide more information about the object.")
     url = models.URLField(max_length=200,  null=True, blank=True, help_text="An external resource with additional information about the object")
     dbxrefs = models.CharField(max_length=100, null=True, blank=True, help_text="Unique identifiers from external resources.")
     class Meta:
@@ -134,6 +134,7 @@ class Biosample(UserOwner, References):
     biosample_treatment =  models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='biosamChoice', help_text="Select the treatment")
     biosample_type =  models.ForeignKey('organization.JsonObjField',on_delete=models.CASCADE, related_name='biotype', null=True, blank=True, verbose_name="Other Details",help_text="JsonObjField")
     biosample_fields = JSONField(  null=True, blank=True)
+    biosample_imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='bioImg', help_text="Cell growth images")
     
     def __str__(self):
         return self.biosample_name

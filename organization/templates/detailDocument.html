@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+ <script src="{% static "siteWide/js/show.js" %}"></script> 
+{% if document %}
+<div class="bodyContent container">
+<a href="#">
+		<button type="button" class="btn btn-warning edit pull-right">Edit</button>
+	</a>
+    <span class="tableHead">
+    	Document Details: {{ document.publication_title }}
+    </span>
+    <a href="/deleteDocument/{{ document.id }}">
+	<button type="button" class="btn btn-danger pull-right">Delete Document</button>
+	</a>
+	<a href="/editDocument/{{document.id}}">
+		<button type="button" class="btn btn-warning pull-right">Edit Document</button>
+	</a>
+	<br/>
+    	<span class="rowHead">Document Abstract:</span>{{ document.document_description }}<br/>
+    	<span class="rowHead">Document Type:</span>{{ document.document_type }}<br/>
+    	<span class="rowHead">Document Attachment:</span>{{ document.document_attachment }}<br/>
+    	<span class="rowHead">Document References:</span>
+    	<a href="/detailPublication/{{ document.document_references.id}}">{{ document.document_references }}</a><br/>
+    	<span class="rowHead">Document URL:</span>{{ document.document_url }}<br/>
+    	
+		{% else %}
+    <p>No data available.</p>
+{% endif %}
+<a type="button" class="btn btn-warning pull-right goBack" href="{% url 'detailExperiment' request.session.experimentId %}">Go Back</a>
+<br/><br/>
+</div>
+{% endblock %} 
+

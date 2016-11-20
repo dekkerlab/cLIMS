@@ -45,18 +45,20 @@
                     <li>
                         <a href="/showProject">Projects</a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="/showSamples">Samples</a>
-                    </li>
+                    </li> -->
+                    {% if request.session.currentGroup  ==  "admin"%}
                     <li>
                         <a href="/sequencingRunView">Sequencing Runs</a>
                     </li>
+                    {% endif %}
                      <li>
                         <a style="color:#cf0b06;" href="/logout">Logout</a>
                     </li>
                     <li>
                     	<br/>
-                        <form id="searchform" action="#" method="get" accept-charset="utf-8">
+						 <form id="searchform" action="{% url 'searchView' %}" method="get" accept-charset="utf-8">
 						  <button class="searchbutton" type="submit">
 						    <i class="fa fa-search"></i>
 						  </button>

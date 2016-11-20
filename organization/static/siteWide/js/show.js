@@ -74,5 +74,16 @@ $(document).ready(function(){
         	 $(this).parent().parent().find('.divData').toggleClass("hidden");
         });
         
+        $(".expandAll").click(function(){
+        	if ($(this).text() == "Expand All")
+     	       $(this).text("Collapse All")
+     	    else
+     	       $(this).text("Expand All");
+         $(".expand").toggleClass("hidden");
+         $('.collapse').toggleClass("hidden");
+       	 $('.divData').toggleClass("hidden");
+       	
+       });
+        
     
 });

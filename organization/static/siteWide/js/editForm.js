@@ -17,7 +17,8 @@ $(function() {
 //		    	$("."+model).append( form );
 		    	$(".inner").empty();
 		    	$(".inner").append( form );
-		    	var valuesJson = eval('(' +$( "#jsonForm").val() + ')');
+		    	var valuesJson = eval('(' + $( "#jsonForm").val() + ')');
+		    	console.log(valuesJson);
 				for (var k in valuesJson) {
 					$( "select[name='"+k+"']" ).val(""+valuesJson[k]+"");
 					$( "input[name='"+k+"']" ).val(""+valuesJson[k]+"");
@@ -42,7 +43,7 @@ $(function() {
     			 form += "<select name="+key+">";
     			 for (i = 1; i <= len; i++) {
     				 optionValue = jsObj[key].choices[i]
-    				 form += "<option value="+optionValue+">"+optionValue+"</option>";
+    				 form += "<option value='"+optionValue+"'>"+optionValue+"</option>";
     			 }
     			 form += "</select>";
     		 }
@@ -60,6 +61,7 @@ $(function() {
 	$( "span:contains('References')" ).append('<a href="/addPublication/" target="_blank" title="Add another Publication"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('constructs')" ).append('<a href="/addConstruct/" target="_blank" title="Add another Construct"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	$( "span:contains('target')" ).append('<a href="/addTarget/" target="_blank" title="Add another Target"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+	$( "span:contains('imageObjects')" ).append('<a href="/addImageObjects/" target="_blank" title="Add another Image"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 	
 	
 	$( ".jsonForm select" ).change();

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block content %}
+
+ <script src="{% static "siteWide/js/show.js" %}"></script> 
+{% if publication %}
+<div class="bodyContent container">
+    <span class="tableHead">
+    	Publication Details: {{ publication.publication_title }}
+    </span>
+   <a href="/deletePublication/{{ publication.id }}">
+	<button type="button" class="btn btn-danger pull-right">Delete Reference</button>
+	</a>
+	<a href="/editPublication/{{ publication.id}}">
+		<button type="button" class="btn btn-warning pull-right">Edit Reference</button>
+	</a>
+	<br/>
+    	<span class="rowHead">Publication Abstract:</span>{{ publication.publication_abstract }}<br/>
+    	<span class="rowHead">Publication Authors:</span>{{ publication.publication_authors }}<br/>
+    	<span class="rowHead">Publication Categories:</span>{{ publication.publication_categories }}<br/>
+    	<span class="rowHead">Publication Data Used:</span>{{ publication.publication_dataUsed }}<br/>
+    	<span class="rowHead">Publication Date Published:</span>{{ publication.publication_datePublished }}<br/>
+    	<span class="rowHead">Publication Date Revised:</span>{{ publication.publication_dateRevised }}<br/>
+    	<span class="rowHead">Publication Issue:</span>{{ publication.publication_issue }}<br/>
+    	<span class="rowHead">Publication Journal:</span>{{ publication.publication_journal }}<br/>
+    	<span class="rowHead">Publication Supplementary:</span>{{ publication.publication_supplementary }}<br/>
+    	<span class="rowHead">Publication Identifiers:</span>{{ publication.publication_identifiers }}<br/>
+    	<span class="rowHead">Publication Volume:</span>{{ publication.publication_volume }}<br/>
+    	
+{% else %}
+    <p>No data available.</p>
+{% endif %}
+<a type="button" class="btn btn-warning pull-right goBack" href="{% url 'detailExperiment' request.session.experimentId %}">Go Back</a>
+<br/><br/>
+</div>
+{% endblock %} 
+
