@@ -140,6 +140,7 @@ class EditBiosample(UpdateView):
             context['jsonObj']= json.loads(obj.biosample_fields)
         context['form'].fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
         context['form'].fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
+        context['form'].fields["biosample_imageObjects"].queryset = ImageObjects.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    
@@ -341,6 +342,31 @@ class DeleteSequencingRun(DeleteView):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
 
+
+class EditSequencingFile(UpdateView):
+    form_class = SeqencingFileForm
+    model = SeqencingFile
+    template_name = 'customForm.html/'
+    
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditSequencingFile , self).get_context_data(**kwargs)
+        context['form'].fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=self.request.session['projectId'])
+        context['action'] = reverse('detailExperiment',
+                                kwargs={'pk': self.get_object().id})
+        return context    
+
+class DeleteSequencingFile(DeleteView):
+    model = SeqencingFile
+    template_name = 'delete.html'
+    def get_success_url(self):
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+
+
 class EditAnalysis(UpdateView):
     form_class = AnalysisForm
     model = Analysis
@@ -384,6 +410,7 @@ class EditTag(UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(EditTag , self).get_context_data(**kwargs)
+        context['form'].fields["tag_exp"].queryset = Experiment.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailProject',
                                 kwargs={'pk': self.get_object().id})
         return context    
@@ -408,6 +435,7 @@ class EditExperimentSet(UpdateView):
         context = super(EditExperimentSet , self).get_context_data(**kwargs)
         context['form'].fields["experimentSet_type"].queryset = Choice.objects.filter(choice_type="experimentSet_type")
         context['form'].fields["experimentSet_exp"].queryset = Experiment.objects.filter(project=self.request.session['projectId'])
+        context['form'].fields["experiment_imageObjects"].queryset = ImageObjects.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailProject',
                                 kwargs={'pk': self.get_object().id})
         return context    

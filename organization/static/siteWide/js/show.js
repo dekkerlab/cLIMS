@@ -75,13 +75,21 @@ $(document).ready(function(){
         });
         
         $(".expandAll").click(function(){
-        	if ($(this).text() == "Expand All")
-     	       $(this).text("Collapse All")
-     	    else
-     	       $(this).text("Expand All");
-         $(".expand").toggleClass("hidden");
-         $('.collapse').toggleClass("hidden");
-       	 $('.divData').toggleClass("hidden");
+        	if ($(this).text() == "Expand All"){
+        		$(this).text("Collapse All")
+       	       $(".expand").addClass("hidden");
+          		$('.collapse').removeClass("hidden");
+          		$('.divData').removeClass("hidden");
+        	}
+     	      
+     	    else{
+     	    	$(this).text("Expand All");
+     	    	$(".expand").removeClass("hidden");
+          		$('.collapse').addClass("hidden");
+          		$('.divData').addClass("hidden");
+     	    }
+     	       
+         
        	
        });
         

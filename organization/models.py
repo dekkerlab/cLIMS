@@ -40,7 +40,7 @@ class Experiment(References):
     experiment_protocol = models.ForeignKey('wetLab.Protocol',related_name='expPro', on_delete=models.CASCADE,)
     experiment_enzyme = models.ForeignKey('wetLab.Enzyme',related_name='expEnz', on_delete=models.CASCADE,help_text="The enzyme used for digestion of the DNA.")
     experiment_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A short description of the experiment")
-    experiment_imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='expImg' , help_text="Lab gel and fragment analyzer images")
+    experiment_imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='expImg' , blank=True, help_text="Lab gel and fragment analyzer images")
     
     def __str__(self):
         return self.experiment_name

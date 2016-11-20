@@ -19,7 +19,7 @@ from _collections import defaultdict, OrderedDict
 import tarfile
 import os
 from cLIMS.base import WORKSPACEPATH
-from organization.extractAnalysis import extractHiCAnalysis
+from organization.extractAnalysis import extractHiCAnalysis, extract5CAnalysis
 # Create your views here.
 
 def login(request, **kwargs):
@@ -242,6 +242,10 @@ class DetailAnalysis(View):
             context['object']= analysis
             context['images'] = images
             template_name = 'detailAnalysisHiC.html'
+        elif (str(analysis.analysis_type) == "5C Analysis" ):
+            context['object']= analysis
+            context['images'] = images
+            template_name = 'detailAnalysis5C.html'
         
         return render(request, template_name, context)
 
@@ -386,6 +390,7 @@ class AddBiosample(View):
         form = self.form_class()
         form.fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
         form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
+        form.fields["biosample_imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
         return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
     
     def post(self,request):
@@ -419,6 +424,7 @@ class AddBiosample(View):
                 existing = selectForm['Biosample']
                 form.fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
                 form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
+                form.fields["biosample_imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
 
 
@@ -430,6 +436,7 @@ class AddExperiment(View):
     
     def get(self,request):
         form = self.form_class()
+        form.fields["experiment_imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
         return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
     
     def post(self,request):
@@ -441,6 +448,7 @@ class AddExperiment(View):
             form.save()
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
+            form.fields["experiment_imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
 
 
@@ -737,11 +745,11 @@ class AddSeqencingFile(View):
     
     def get(self,request):
         form = self.form_class()
+        form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
         return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
     
     def post(self,request):
         form = self.form_class(request.POST)
-        'sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp'
         if form.is_valid():
             file = form.save(commit=False)
             file.project = Project.objects.get(pk=request.session['projectId'])
@@ -752,6 +760,7 @@ class AddSeqencingFile(View):
             file.save()
             return HttpResponseRedirect('/detailExperiment/'+self.request.session['experimentId'])
         else:
+            form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
 
         
@@ -772,6 +781,10 @@ class AddFileSet(View):
             fileset = form.save(commit=False)
             fileset.project = Project.objects.get(pk=request.session['projectId'])
             fileset.save()
+            fileSetFile = request.POST.getlist('fileSet_file')
+            for file in fileSetFile:
+                f = SeqencingFile.objects.get(pk=file)
+                fileset.fileSet_file.add(f)
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
             form.fields["fileset_type"].queryset = Choice.objects.filter(choice_type="fileset_type")
@@ -795,6 +808,11 @@ class AddExperimentSet(View):
             expSet = form.save(commit=False)
             expSet.project = Project.objects.get(pk=request.session['projectId'])
             expSet.save()
+            expSetExp = request.POST.getlist('experimentSet_exp')
+            for exp in expSetExp:
+                e = Experiment.objects.get(pk=exp)
+                expSet.experimentSet_exp.add(e)
+                
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
             form.fields["experimentSet_type"].queryset = Choice.objects.filter(choice_type="experimentSet_type")
@@ -808,6 +826,7 @@ class AddTag(View):
     
     def get(self,request):
         form = self.form_class()
+        form.fields["tag_exp"].queryset = Experiment.objects.filter(project=request.session['projectId'])
         return render(request, self.template_name,{'form':form, 'form_class':"Tag"})
     
     def post(self,request):
@@ -817,8 +836,14 @@ class AddTag(View):
             tag.tag_user = User.objects.get(pk=request.user.id)
             tag.project = Project.objects.get(pk=request.session['projectId'])
             tag.save()
+            tagExp = request.POST.getlist('tag_exp')
+            for exp in tagExp:
+                e = Experiment.objects.get(pk=exp)
+                tag.tag_exp.add(e)
+                
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
+            form.fields["tag_exp"].queryset = Experiment.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"Tag"})
 
 
@@ -856,13 +881,17 @@ def png_files(members, analysisPk):
             Images.objects.create(image_path="/media/"+ tarinfo.name,image_analysis=Analysis.objects.get(pk=analysisPk) )
             yield tarinfo
 
-def importAnalysisGZ(analysis, analysisType):
+def importAnalysisGZ(analysis, analysisTypePk):
     analysisTarGz = str(analysis.analysis_import)
     analysisPk = analysis.pk
     tar = tarfile.open(WORKSPACEPATH+"media/"+analysisTarGz, "r|gz")
     logFile = tar.extractfile(log_file(tar))
     content = logFile.read()
-    json_data = extractHiCAnalysis(content, analysisType)
+    analysisType = JsonObjField.objects.get(pk = analysisTypePk).field_name
+    if(analysisType == "Hi-C Analysis"):
+        json_data = extractHiCAnalysis(content, analysisTypePk)
+    elif(analysisType == "5C Analysis"):
+        json_data = extract5CAnalysis(content, analysisTypePk)
     tar.extractall(path=WORKSPACEPATH+"media/", members=png_files(tar, analysisPk))
     tar.close()
     os.remove(WORKSPACEPATH+"media/"+analysisTarGz)

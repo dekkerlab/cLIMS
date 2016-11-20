@@ -409,10 +409,10 @@
 <span class="tableHead">Associated Seqencing Files</span><br/>
 <div class="divData hidden">
 		{% for file in seqencingFiles %}
-		<a href="/deleteSeqencingFile/{{ file.id }}">
+		<a href="/deleteSequencingFile/{{ file.id }}">
 			<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
 		</a>
-		<a href="/editSeqencingFile/{{file.id}}">
+		<a href="/editSequencingFile/{{file.id}}">
 			<button type="button" class="btn btn-warning pull-right hidden show">Edit</button>
 		</a>
 		<span class="rowHead">Sequencing File Name: </span>{{file.sequencingFile_name}}<br/>
@@ -448,9 +448,9 @@
 		{% for values in analysis.analysis_file.all %}
 	    			({{ forloop.counter }}) {{values}}<br/>
 	  	{% endfor %}
-	  	{% if not analysis.analysis_hiGlass  == None %}
+	  	{% if analysis.analysis_hiGlass %}
 	  	<span class="rowHead">HiGlass File: </span>{{analysis.analysis_hiGlass}}
-			<a href="http://higlass.gehlenborglab.org/">
+			<a href="http://higlass.gehlenborglab.org/" target="_blank">
 				<button type="button" class="btn btn-success pull-right">Visualize in HiGlass Bowser</button>
 			</a>
 		{% endif %}

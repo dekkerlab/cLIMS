@@ -125,4 +125,101 @@ def extractHiCAnalysis(fileContent, analysisTypePk):
         data[keys] = formVal
     json_data = json.dumps(data)
     return json_data
+
+
+
+def extract5CAnalysis(fileContent, analysisTypePk):
+    searchObj = fileContent.decode("utf-8")
+    general = re.search(r'General(.*)Dataset', searchObj, re.I|re.S)
+    dataset = re.search(r'Dataset(.*)Alignment Options', searchObj, re.I|re.S)
+    alignment = re.search(r'Alignment Options(.*)Mapping Statistics', searchObj, re.I|re.S)
+    statistics = re.search(r'Mapping Statistics(.*)Mapping Artifacts', searchObj, re.I|re.S)
+    artifacts = re.search(r'Mapping Artifacts(.*)Advanced', searchObj, re.I|re.S)
+    advanced = re.search(r'Advanced(.*)', searchObj, re.I|re.S)
+    
+    
+    time = re.search(r'time\s+(.*?)\n', general.group(1),re.I).group(1)
+    cType = re.search(r'cType\s+(.*?)\s', general.group(1),re.I).group(1)
+    logDirectory = re.search(r'logDirectory\s+(.*?)\s', general.group(1),re.I).group(1)
+    UUID = re.search(r'UUID\s+(.*?)\s', general.group(1),re.I).group(1)
+    cMapping = re.search(r'cMapping\s+(.*?)\s', general.group(1),re.I).group(1)
+    computeResource = re.search(r'computeResource\s+(.*?)\s', general.group(1),re.I).group(1)
+    reduceResources = re.search(r'reduceResources\s+(.*?)\s', general.group(1),re.I).group(1)
+    mapResources = re.search(r'mapResources\s+(.*?)\s', general.group(1),re.I).group(1)
+    reduceScratchDir = re.search(r'reduceScratchDir\s+(.*?)\s', general.group(1),re.I).group(1)
+    mapScratchDir = re.search(r'mapScratchDir\s+(.*?)\s', general.group(1),re.I).group(1)
+    mapScratchSize = re.search(r'mapScratchSize\s+(.*?)\s', general.group(1),re.I).group(1)
+    nCPU = int(re.search(r'nCPU\s+(.*?)\s', general.group(1),re.I).group(1))
+    reduceMemoryNeeded = re.search(r'reduceMemoryNeeded\s+(.*?)\s', general.group(1),re.I).group(1)
+    mapMemoryNeeded = re.search(r'mapMemoryNeeded\s+(.*?)\s', general.group(1),re.I).group(1)
+    
+    jobName = re.search(r'jobName\s+(.*?)\s', dataset.group(1),re.I).group(1)
+    flowCell = re.search(r'flowCell\s+(.*?)\s', dataset.group(1),re.I).group(1)
+    laneName = re.search(r'laneName\s+(.*?)\s', dataset.group(1),re.I).group(1)
+    laneNum = int(re.search(r'laneNum\s+(.*?)\s', dataset.group(1),re.I).group(1))
+    side1File = re.search(r'side1File\s+(.*?)\s', dataset.group(1),re.I).group(1)
+    side2File = re.search(r'side2File\s+(.*?)\s', dataset.group(1),re.I).group(1)
+    readLength = int(re.search(r'readLength\s+(.*?)\s', dataset.group(1),re.I).group(1))
+    qvEncoding = re.search(r'qvEncoding\s+(.*?)\s', dataset.group(1),re.I).group(1)
+    numReads = int(re.search(r'numReads\s+(.*?)\s', dataset.group(1),re.I).group(1).replace(",", ""))
+    
+    
+    splitSize = int(re.search(r'splitSize\s+(.*?)\s', alignment.group(1),re.I).group(1).replace(",", ""))
+    splitSizeMegabyte = re.search(r'splitSizeMegabyte\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    aligner = re.search(r'aligner\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    alignmentSoftwarePath = re.search(r'alignmentSoftwarePath\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    alignmentOptions = re.search(r'alignmentOptions\s+(.*?)\n', alignment.group(1),re.I).group(1)
+    side1AlignmentOptions = re.search(r'side1AlignmentOptions\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    side2AlignmentOptions = re.search(r'side2AlignmentOptions\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    enzyme = re.search(r'enzyme\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    restrictionSite = re.search(r'restrictionSite\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    restrictionFragmentFile = re.search(r'restrictionFragmentFile\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    genome = re.search(r'genome\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    genomePath = re.search(r'genomePath\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    genomeSize = re.search(r'genomeSize\s+(.*?)\s', alignment.group(1),re.I).group(1)
+    
+    
+    numRawReads = int(re.search(r'numRawReads\s+(.*?)\s', statistics.group(1),re.I).group(1).replace(",", ""))
+    side1Mapped = int(re.search(r'side1Mapped\s+(.*?)\s', statistics.group(1),re.I).group(1).replace(",", ""))
+    side1MappedPer = float(re.search(r'side1Mapped\s+.*?\t(.*?)\n', statistics.group(1),re.I|re.S).group(1))
+    side2Mapped = int(re.search(r'side2Mapped\s+(.*?)\s', statistics.group(1),re.I).group(1).replace(",", ""))
+    side2MappedPer = float(re.search(r'side2Mapped\s+.*?\t(.*?)\n', statistics.group(1),re.I|re.S).group(1))
+    noSideMapped = int(re.search(r'noSideMapped\s+(.*?)\s', statistics.group(1),re.I).group(1).replace(",", ""))
+    noSideMappedPer = float(re.search(r'noSideMapped\s+.*?\t(.*?)\n', statistics.group(1),re.I|re.S).group(1))
+    oneSideMapped = int(re.search(r'oneSideMapped\s+(.*?)\s', statistics.group(1),re.I).group(1).replace(",", ""))
+    oneSideMappedPer = float(re.search(r'oneSideMapped\s+.*?\t(.*?)\n', statistics.group(1),re.I|re.S).group(1))
+    bothSideMapped = int(re.search(r'bothSideMapped\s+(.*?)\s', statistics.group(1),re.I).group(1).replace(",", ""))
+    bothSideMappedPer = float(re.search(r'bothSideMapped\s+.*?\t(.*?)\n', statistics.group(1),re.I|re.S).group(1))
+    errorPairs = int(re.search(r'errorPairs\s+(.*?)\s', statistics.group(1),re.I).group(1).replace(",", ""))
+    errorPairsPer = float(re.search(r'errorPairs\s+.*?\t(.*?)\n', statistics.group(1),re.I|re.S).group(1))
+    invalidPairs = int(re.search(r'invalidPairs\s+(.*?)\s', statistics.group(1),re.I).group(1).replace(",", ""))
+    invalidPairsPer = float(re.search(r'invalidPairs\s+.*?\t(.*?)\n', statistics.group(1),re.I|re.S).group(1))
+    validPairs = int(re.search(r'validPairs\s+(.*?)\s', statistics.group(1),re.I).group(1).replace(",", ""))
+    validPairsPer = float(re.search(r'validPairs\s+.*?\t(.*?)\n', statistics.group(1),re.I|re.S).group(1))
+    
+    
+    fHomo = int(re.search(r'fHomo\s+(.*?)\s', artifacts.group(1),re.I).group(1).replace(",", ""))
+    fHomoPer = float(re.search(r'fHomo\s+.*?\t(.*?)\n', artifacts.group(1),re.I|re.S).group(1))
+    rHomo = int(re.search(r'rHomo\s+(.*?)\s', artifacts.group(1),re.I).group(1).replace(",", ""))
+    rHomoPer = float(re.search(r'rHomo\s+.*?\t(.*?)\n', artifacts.group(1),re.I|re.S).group(1))
+    
+    
+    same1 = int(re.search(r'same\|\-\>\.\-\>\s+(.*?)\s', advanced.group(1),re.I).group(1).replace(",", ""))
+    same2 = int(re.search(r'same\|\-\>\.\<\-\s+(.*?)\s', advanced.group(1),re.I).group(1).replace(",", ""))
+    same3 = int(re.search(r'same\|\<\-\.\-\>\s+(.*?)\s', advanced.group(1),re.I).group(1).replace(",", ""))
+    same4 = int(re.search(r'same\|\<\-\.\<\-\s+(.*?)\s', advanced.group(1),re.I).group(1).replace(",", ""))
+    
+    different1 = int(re.search(r'different\|\-\>\.\-\>\s+(.*?)\s', advanced.group(1),re.I).group(1).replace(",", ""))
+    different2 = int(re.search(r'different\|\-\>\.\<\-\s+(.*?)\s', advanced.group(1),re.I).group(1).replace(",", ""))
+    different3 = int(re.search(r'different\|\<\-\.\-\>\s+(.*?)\s', advanced.group(1),re.I).group(1).replace(",", ""))
+    different4 = int(re.search(r'different\|\<\-\.\<\-\s+(.*?)\s', advanced.group(1),re.I).group(1).replace(",", ""))
+    
+    
+    json_object = JsonObjField.objects.get(pk=analysisTypePk).field_set
+    data = {}
+    for keys in json_object:
+        formVal = eval(keys)
+        data[keys] = formVal
+    json_data = json.dumps(data)
+    return json_data
     

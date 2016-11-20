@@ -134,7 +134,7 @@ class Biosample(UserOwner, References):
     biosample_treatment =  models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='biosamChoice', help_text="Select the treatment")
     biosample_type =  models.ForeignKey('organization.JsonObjField',on_delete=models.CASCADE, related_name='biotype', null=True, blank=True, verbose_name="Other Details",help_text="JsonObjField")
     biosample_fields = JSONField(  null=True, blank=True)
-    biosample_imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='bioImg', help_text="Cell growth images")
+    biosample_imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='bioImg', blank=True, help_text="Cell growth images")
     
     def __str__(self):
         return self.biosample_name
