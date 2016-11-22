@@ -115,9 +115,9 @@ class Biosource(References):
     biosource_name = models.CharField(max_length=50, null=False, default="")
     biosource_type =  models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='sourceChoice', help_text="The categorization of the biosource.")
     biosource_cell_line = models.CharField(max_length=200,  null=True, blank=True, help_text="Ontology term for the cell line used.")
-    biosource_cell_line_tier = models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='bioCellChoice', help_text="Tier into which the cell line has been classified")
-    biosource_SOP_cell_line = models.ForeignKey(Protocol, on_delete=models.CASCADE, related_name='bioProtocol', help_text="Standard operation protocol for the cell line as determined by 4DN Cells Working Group")
-    biosource_vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='sourceVendor',help_text="The Lab or Vendor that provided the biosource.")
+    biosource_cell_line_tier = models.ForeignKey('organization.Choice', null=True, blank=True, on_delete=models.CASCADE, related_name='bioCellChoice', help_text="Tier into which the cell line has been classified")
+    biosource_SOP_cell_line = models.ForeignKey(Protocol, null=True, blank=True, on_delete=models.CASCADE, related_name='bioProtocol', help_text="Standard operation protocol for the cell line as determined by 4DN Cells Working Group")
+    biosource_vendor = models.ForeignKey(Vendor, null=True, blank=True, on_delete=models.CASCADE, related_name='sourceVendor',help_text="The Lab or Vendor that provided the biosource.")
     biosource_individual = models.ForeignKey(Individual,on_delete=models.CASCADE, related_name='sourceInd', help_text="Information on donor or individual mouse or other organism.")
     biosource_tissue  = models.CharField(max_length=100,  null=True, blank=True, help_text="Anatomy (UBERON) Ontology term for the tissue used.")
     biosource_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
@@ -130,11 +130,12 @@ class Biosample(UserOwner, References):
     biosample_biosource =  models.ForeignKey(Biosource, on_delete=models.CASCADE, related_name='bioSource', help_text="The cell lines or tissue types used in the experiment")
     biosample_individual =  models.ForeignKey(Individual,on_delete=models.CASCADE, related_name='bioIndi')
     biosample_modification =  models.ForeignKey(Modification,on_delete=models.CASCADE, related_name='bioMod', null=True, blank=True, help_text="Expression or targeting vectors stably transfected to generate Crispr'ed or other genomic modification")
-    biosample_protocol =  models.ForeignKey(Protocol,on_delete=models.CASCADE, related_name='bioMod', help_text="Information about biosample preparation protocols.")
+    biosample_protocol =  models.ForeignKey(Protocol, null=True, blank=True, on_delete=models.CASCADE, related_name='bioMod', help_text="Information about biosample preparation protocols.")
     biosample_treatment =  models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='biosamChoice', help_text="Select the treatment")
     biosample_type =  models.ForeignKey('organization.JsonObjField',on_delete=models.CASCADE, related_name='biotype', null=True, blank=True, verbose_name="Other Details",help_text="JsonObjField")
     biosample_fields = JSONField(  null=True, blank=True)
     biosample_imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='bioImg', blank=True, help_text="Cell growth images")
+    biosample_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     
     def __str__(self):
         return self.biosample_name

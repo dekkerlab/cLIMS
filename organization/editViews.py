@@ -435,7 +435,6 @@ class EditExperimentSet(UpdateView):
         context = super(EditExperimentSet , self).get_context_data(**kwargs)
         context['form'].fields["experimentSet_type"].queryset = Choice.objects.filter(choice_type="experimentSet_type")
         context['form'].fields["experimentSet_exp"].queryset = Experiment.objects.filter(project=self.request.session['projectId'])
-        context['form'].fields["experiment_imageObjects"].queryset = ImageObjects.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailProject',
                                 kwargs={'pk': self.get_object().id})
         return context    

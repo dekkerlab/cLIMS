@@ -52,6 +52,7 @@ def export(analysisType,ws, projectId):
         columns = []
         for names in field_names:
             if(names == "analysis_fields"):
+                print(analysisType)
                 jsonObj = JsonObjField.objects.get(field_name=analysisType)
                 jsonFields = orderByNumber(jsonObj.field_set)
                 for keys in jsonFields:
@@ -107,7 +108,7 @@ def exportAnalysis(request):
     
     pros = list(set([x.experiment_protocol.protocol_type.field_name for x in pro]))
     
-
+    print(pros)
     for protocol in pros:
         if protocol == "Hi-C Protocol":
             analysisType = "Hi-C Analysis"

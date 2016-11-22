@@ -33,7 +33,7 @@
 <br/>
 
 {% if experiment %}
-<span class="rowHead">Project Name: </span>{{experiment.experiment_project}}<br/>
+<span class="rowHead">Project Name: </span>{{experiment.project}}<br/>
 <span class="rowHead">Biosource: </span>{{experiment.experiment_biosample.biosample_biosource}}<br/>
 <span class="rowHead">Biosample: </span>{{ experiment.experiment_biosample }}<br/>
 <span class="rowHead">Protocol: </span><a href="/detailProtocol/{{ experiment.experiment_protocol.id }}">{{ experiment.experiment_protocol }}</a><br/>
@@ -74,8 +74,14 @@
 <span class="rowHead">Individual Name: </span>{{individual.individual_name}}<br/>
 <span class="rowHead">Individual Vendor: </span>{{individual.individual_vendor}}<br/>
 <span class="rowHead">Individual URL: </span>{{individual.url}}<br/>
+{% if not biosource.documents  == None %}
 <span class="rowHead">Individual Documents: </span><a href="/detailDocument/{{individual.documents.id}}">{{individual.documents}}</a><br/>
+{% endif %}
+
+{% if not biosource.references  == None %}
 <span class="rowHead">Individual References: </span><a href="/detailPublication/{{ individual.references.id }}">{{individual.references}}</a><br/>
+{% endif %}
+
 <span class="rowHead">Individual DBxrefs: </span>{{individual.dbxrefs}}<br/>
 <span class="rowHead">Individual Type: </span>{{ individual.individual_type }}<br/>
 <span class="rowHead">Individual Details: </span><br/>
@@ -111,14 +117,21 @@
 <span class="rowHead">Biosource Type: </span>{{biosource.biosource_type}}<br/>
 <span class="rowHead">Biosource Cell Line: </span>{{ biosource.biosource_cell_line }}<br/>
 <span class="rowHead">Biosource Cell Line Tire: </span>{{ biosource.biosource_cell_line_tier }}<br/>
+{% if not biosource.biosource_SOP_cell_line  == None %}
 <span class="rowHead">Biosource Standard Operation Protocol (4DN): </span><a href="/detailProtocol/{{ biosource.biosource_SOP_cell_line.id }}">{{ biosource.biosource_SOP_cell_line }}</a><br/>
+{% endif %}
 <span class="rowHead">Biosource Vendor: </span>{{ biosource.biosource_vendor }}<br/>
 <span class="rowHead">Biosource Individual: </span>{{ biosource.biosource_individual }}<br/>
 <span class="rowHead">Biosource Tissue: </span>{{ biosource.biosource_tissue }}<br/>
 <span class="rowHead">Biosource Description: </span>{{ biosource.biosource_description }}<br/>
 <span class="rowHead">Biosource URL: </span>{{biosource.url}}<br/>
-<span class="rowHead">Biosource Documents: </span><a href="/detailDocument/{{biosource.documents.id}}">{{biosource.documents}}</a><br/>
+{% if not biosource.documents  == None %}
+<span class="rowHead">Biosource Documents: </span>
+<a href="/detailDocument/{{biosource.documents.id}}">{{biosource.documents}}</a><br/>
+{% endif %}
+{% if not biosource.references  == None %}
 <span class="rowHead">Biosource References: </span><a href="/detailPublication/{{biosource.references.id}}">{{biosource.references}}</a><br/>
+{% endif %}
 <span class="rowHead">Biosource DBxrefs: </span>{{biosource.dbxrefs}}<br/>
 </div>
 </div>
@@ -141,11 +154,17 @@
 <span class="rowHead">Biosample Biosource: </span>{{biosample.biosample_biosource}}<br/>
 <span class="rowHead">Biosample Individual: </span>{{ biosample.biosample_individual }}<br/>
 <span class="rowHead">Biosample Modification: </span>{{ biosample.biosample_modification }}<br/>
+{% if not biosample.biosample_protocol  == None %}
 <span class="rowHead">Biosample Protocol: </span><a href="/detailProtocol/{{ biosample.biosample_protocol.id }}">{{ biosample.biosample_protocol }}</a><br/>
+{% endif %}
 <span class="rowHead">Biosample Treatment: </span>{{ biosample.biosample_treatment }}<br/>
 <span class="rowHead">Biosample URL: </span>{{biosample.url}}<br/>
+{% if not biosample.documents  == None %}
 <span class="rowHead">Biosample Documents: </span><a href="/detailDocument/{{biosample.documents.id}}">{{biosample.documents}}</a><br/>
+{% endif %}
+{% if not biosample.references  == None %}
 <span class="rowHead">Biosample References: </span><a href="/detailPublication/{{biosample.references.id}}">{{biosample.references}}</a><br/>
+{% endif %}
 <span class="rowHead">Biosample DBxrefs: </span>{{biosample.dbxrefs}}<br/>
 <span class="rowHead">Biosample Other Details: </span>{{ biosample.biosample_type }}<br/>
 
@@ -246,28 +265,15 @@
 			{% endif %}
 			
 			<span class="rowHead">Treatment URL: </span>{{treatment.url}}<br/>
-			<span class="rowHead">Treatment Documents: </span>{{treatment.documents}}<br/>
 			{% if not treatment.documents  == None %}
-			<div class="paddingSpace hidden show">
-				<a href="/deleteDocument/{{ treatment.documents.id }}">
-					<button type="button" class="btn btn-danger pull-right">Delete Document</button>
-				</a>
-				<a href="/editDocument/{{treatment.documents.id}}">
-					<button type="button" class="btn btn-warning pull-right">Edit Document</button>
-				</a>
-			</div>
+			<span class="rowHead">Treatment Documents: </span><a href="/detailDocument/{{treatment.documents.id}}">{{treatment.documents}}</a><br/>
 			{% endif %}
-			<span class="rowHead">Treatment References: </span>{{treatment.references}}<br/>
+			
 			{% if not treatment.references  == None %}
-			<div class="paddingSpace hidden show">
-				<a href="/deletePublication/{{ treatment.references.id }}">
-					<button type="button" class="btn btn-danger pull-right">Delete Reference</button>
-				</a>
-				<a href="/editPublication/{{ treatment.references.id }}">
-					<button type="button" class="btn btn-warning pull-right">Edit Reference</button>
-				</a>
-			</div>
+			<span class="rowHead">Treatment References: </span><a href="/detailPublication/{{ treatment.references.id }}">{{treatment.references}}</a><br/>
 			{% endif %}
+			
+			
 			<span class="rowHead">Treatment DBxrefs: </span>{{treatment.dbxrefs}}<br/>
 			<hr/>
 		{% endfor %}
@@ -296,28 +302,15 @@
 		<span class="rowHead">Modification Target: </span>{{modification.modification_target}}<br/>
 		<span class="rowHead">Modification Description: </span>{{modification.modification_description}}<br/>
 		<span class="rowHead">Modification URL: </span>{{modification.url}}<br/>
-		<span class="rowHead">Modification Documents: </span>{{modification.documents}}<br/>
+		
 		{% if not modification.documents  == None %}
-		<div class="paddingSpace hidden show">
-			<a href="/deleteDocument/{{ modification.documents.id }}">
-				<button type="button" class="btn btn-danger pull-right">Delete Document</button>
-			</a>
-			<a href="/editDocument/{{modification.documents.id}}">
-				<button type="button" class="btn btn-warning pull-right">Edit Document</button>
-			</a>
-		</div>
+		<span class="rowHead">Modification Documents: </span><a href="/detailDocument/{{modification.documents.id}}">{{modification.documents}}</a><br/>
 		{% endif %}
-		<span class="rowHead">Modification References: </span>{{modification.references}}<br/>
+		
 		{% if not modification.references  == None %}
-		<div class="paddingSpace hidden show">
-			<a href="/deletePublication/{{ modification.references.id }}">
-				<button type="button" class="btn btn-danger pull-right hidden show">Delete Reference</button>
-			</a>
-			<a href="/editPublication/{{modification.references.id}}">
-				<button type="button" class="btn btn-warning pull-right hidden show">Edit Reference</button>
-			</a>
-		</div>
+		<span class="rowHead">Modification References: </span><a href="/detailPublication/{{ modification.references.id }}">{{modification.references}}</a><br/>
 		{% endif %}
+		
 		<span class="rowHead">Modification DBxrefs: </span>{{modification.dbxrefs}}<br/>
 </div></div>
 {% endif %}

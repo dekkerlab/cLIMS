@@ -94,7 +94,7 @@ $(function() {
 					
 			    },
 			    error: function(ts) { 
-	                alert("Incorrect Choice");
+//	                alert("Incorrect Choice");
 	            }
 			});
 		
