@@ -12,6 +12,7 @@ from django import forms
 from organization.simple_search import BaseSearchForm
 
 class SequencingRunForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = SequencingRun
         exclude = ('project','run_approved','run_submitted')
@@ -28,6 +29,7 @@ class SequencingRunForm(ModelForm):
         self.fields['run_retrieval_date'].widget = widgets.AdminDateWidget()
 
 class SequencingRunSearchForm(BaseSearchForm):
+    use_required_attribute = False
     formName = 'SequencingRunSearchForm'
     class Meta:
         base_qs = SequencingRun.objects
@@ -44,6 +46,7 @@ class SequencingRunSearchForm(BaseSearchForm):
         super(SequencingRunSearchForm, self).__init__(*args, **kwargs)
 
 class SeqencingFileForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = SeqencingFile
         exclude = ('sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp','project')
@@ -58,6 +61,7 @@ class SeqencingFileForm(ModelForm):
         super(SeqencingFileForm, self).__init__(*args, **kwargs)
 
 class SeqencingFileSearchForm(BaseSearchForm):
+    use_required_attribute = False
     formName = 'SeqencingFileSearchForm'
     class Meta:
         base_qs = SeqencingFile.objects
@@ -73,6 +77,7 @@ class SeqencingFileSearchForm(BaseSearchForm):
         super(SeqencingFileSearchForm, self).__init__(*args, **kwargs)
 
 class FileSetForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = FileSet
         exclude = ('project',)
@@ -87,6 +92,7 @@ class FileSetForm(ModelForm):
         super(FileSetForm, self).__init__(*args, **kwargs)
 
 class AnalysisForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = Analysis
         exclude = ('analysis_exp','analysis_fields')
@@ -101,6 +107,7 @@ class AnalysisForm(ModelForm):
         super(AnalysisForm, self).__init__(*args, **kwargs)
 
 class ImageObjectsForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = ImageObjects
         exclude = ('project',)

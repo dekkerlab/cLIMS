@@ -10,12 +10,14 @@ from crispy_forms.layout import Submit
 from organization.simple_search import BaseSearchForm
 
 class ProjectForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = Project
         exclude = ('project_owner',)
 
 class ProjectSearchForm(BaseSearchForm):
     formName = 'ProjectSearchForm'
+    use_required_attribute = False
     class Meta:
         base_qs = Project.objects
         search_fields = ('project_name', 'project_notes',) 
@@ -32,6 +34,7 @@ class ProjectSearchForm(BaseSearchForm):
 
         
 class ExperimentForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = Experiment
         exclude = ('project','experiment_biosample',)
@@ -45,6 +48,7 @@ class ExperimentForm(ModelForm):
         super(ExperimentForm, self).__init__(*args, **kwargs)
 
 class ExperimentSearchForm(BaseSearchForm):
+    use_required_attribute = False
     formName = 'ExperimentSearchForm'
     class Meta:
         base_qs = Experiment.objects
@@ -61,6 +65,7 @@ class ExperimentSearchForm(BaseSearchForm):
         super(ExperimentSearchForm, self).__init__(*args, **kwargs)
 
 class ExperimentSetForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = ExperimentSet
         exclude = ('project',)
@@ -74,6 +79,7 @@ class ExperimentSetForm(ModelForm):
         super(ExperimentSetForm, self).__init__(*args, **kwargs)
 
 class PublicationForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = Publication
         exclude = ('',)
@@ -87,6 +93,7 @@ class PublicationForm(ModelForm):
         super(PublicationForm, self).__init__(*args, **kwargs)
 
 class AwardForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = Award
         exclude = ('',)
@@ -100,6 +107,7 @@ class AwardForm(ModelForm):
         super(AwardForm, self).__init__(*args, **kwargs)
 
 class TagForm(ModelForm):
+    use_required_attribute = False
     class Meta:
         model = Tag
         exclude = ('tag_user','project',)
