@@ -1,345 +1,282 @@
 [
 {
-  "model": "auth.group",
+  "model": "contenttypes.contenttype",
   "pk": 1,
   "fields": {
-    "name": "Collaborator",
-    "permissions": []
+    "app_label": "admin",
+    "model": "logentry"
   }
 },
 {
-  "model": "auth.group",
+  "model": "contenttypes.contenttype",
   "pk": 2,
   "fields": {
-    "name": "Admin",
-    "permissions": [
-      1,
-      2,
-      3,
-      7,
-      8,
-      9,
-      4,
-      5,
-      6,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      52,
-      53,
-      54,
-      49,
-      50,
-      51,
-      46,
-      47,
-      48,
-      43,
-      44,
-      45,
-      37,
-      38,
-      39,
-      22,
-      23,
-      24,
-      28,
-      29,
-      30,
-      31,
-      32,
-      33,
-      19,
-      20,
-      21,
-      25,
-      26,
-      27,
-      34,
-      35,
-      36,
-      40,
-      41,
-      42,
-      16,
-      17,
-      18,
-      91,
-      92,
-      93,
-      85,
-      86,
-      87,
-      82,
-      83,
-      84,
-      61,
-      62,
-      63,
-      55,
-      56,
-      57,
-      76,
-      77,
-      78,
-      64,
-      65,
-      66,
-      73,
-      74,
-      75,
-      70,
-      71,
-      72,
-      79,
-      80,
-      81,
-      67,
-      68,
-      69,
-      58,
-      59,
-      60
-    ]
+    "app_label": "auth",
+    "model": "permission"
   }
 },
 {
-  "model": "auth.group",
+  "model": "contenttypes.contenttype",
   "pk": 3,
   "fields": {
-    "name": "Principal Investigator",
-    "permissions": [
-      52,
-      53,
-      54,
-      49,
-      50,
-      51,
-      46,
-      47,
-      48,
-      43,
-      44,
-      45,
-      37,
-      38,
-      39,
-      22,
-      23,
-      24,
-      28,
-      29,
-      30,
-      31,
-      32,
-      33,
-      19,
-      20,
-      21,
-      25,
-      26,
-      27,
-      34,
-      35,
-      36,
-      40,
-      41,
-      42,
-      16,
-      17,
-      18,
-      91,
-      92,
-      93,
-      85,
-      86,
-      87,
-      82,
-      83,
-      84,
-      61,
-      62,
-      63,
-      55,
-      56,
-      57,
-      76,
-      77,
-      78,
-      64,
-      65,
-      66,
-      73,
-      74,
-      75,
-      70,
-      71,
-      72,
-      79,
-      80,
-      81,
-      67,
-      68,
-      69,
-      58,
-      59,
-      60
-    ]
+    "app_label": "auth",
+    "model": "group"
   }
 },
 {
-  "model": "auth.group",
+  "model": "contenttypes.contenttype",
   "pk": 4,
   "fields": {
-    "name": "Member",
-    "permissions": [
-      52,
-      53,
-      54,
-      49,
-      50,
-      51,
-      46,
-      47,
-      48,
-      43,
-      44,
-      45,
-      28,
-      29,
-      30,
-      31,
-      32,
-      33,
-      25,
-      26,
-      27,
-      34,
-      35,
-      36,
-      40,
-      41,
-      42,
-      16,
-      17,
-      18,
-      91,
-      92,
-      93,
-      85,
-      86,
-      87,
-      82,
-      83,
-      84,
-      61,
-      62,
-      63,
-      55,
-      56,
-      57,
-      64,
-      65,
-      66,
-      73,
-      74,
-      75,
-      70,
-      71,
-      72,
-      79,
-      80,
-      81,
-      67,
-      68,
-      69,
-      58,
-      59,
-      60
-    ]
+    "app_label": "auth",
+    "model": "user"
   }
 },
 {
-  "model": "auth.user",
-  "pk": 1,
+  "model": "contenttypes.contenttype",
+  "pk": 5,
   "fields": {
-    "password": "pbkdf2_sha256$24000$vpV1R1QMywoL$WBFwXA0UPx8fRHMCICeInMX4fdtEJ+8XjpYyYDtvyJU=",
-    "last_login": "2016-11-22T19:30:25.144Z",
-    "is_superuser": true,
-    "username": "admin",
-    "first_name": "",
-    "last_name": "",
-    "email": "nand@gmail.com",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2016-11-02T19:11:29Z",
-    "groups": [
-      2
-    ],
-    "user_permissions": []
+    "app_label": "contenttypes",
+    "model": "contenttype"
   }
 },
 {
-  "model": "auth.user",
-  "pk": 2,
+  "model": "contenttypes.contenttype",
+  "pk": 6,
   "fields": {
-    "password": "pbkdf2_sha256$24000$JTY8e3XBPc74$QQvGzaZrO1oPuwRHDJj4xmhqbHsaXyL+oAF4D1myv1E=",
-    "last_login": "2016-11-20T20:12:49.240Z",
-    "is_superuser": false,
-    "username": "hakan",
-    "first_name": "Hakan",
-    "last_name": "Ozadam",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2016-11-07T22:16:30Z",
-    "groups": [
-      4
-    ],
-    "user_permissions": []
+    "app_label": "sessions",
+    "model": "session"
   }
 },
 {
-  "model": "auth.user",
-  "pk": 3,
+  "model": "contenttypes.contenttype",
+  "pk": 7,
   "fields": {
-    "password": "pbkdf2_sha256$24000$dIiAg1g9qgpv$iZjesX5Oq4Hp5ATggLiBzH1pKyt7V25UdA7myV4R2tA=",
-    "last_login": "2016-11-20T20:13:22.993Z",
-    "is_superuser": false,
-    "username": "ram",
-    "first_name": "Ram",
-    "last_name": "Mathur",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2016-11-20T20:09:37Z",
-    "groups": [
-      1
-    ],
-    "user_permissions": []
+    "app_label": "organization",
+    "model": "jsonobjfield"
   }
 },
 {
-  "model": "auth.user",
-  "pk": 4,
+  "model": "contenttypes.contenttype",
+  "pk": 8,
   "fields": {
-    "password": "pbkdf2_sha256$24000$m2j9vw3bVSjt$VEi1/ljDgTWWUBFwBpOqVBQ0dycxZjxcaAuN281aoVo=",
-    "last_login": null,
-    "is_superuser": false,
-    "username": "job",
-    "first_name": "Job",
-    "last_name": "Dekker",
-    "email": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2016-11-20T20:10:27Z",
-    "groups": [
-      3
-    ],
-    "user_permissions": []
+    "app_label": "organization",
+    "model": "choice"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 9,
+  "fields": {
+    "app_label": "organization",
+    "model": "project"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "organization",
+    "model": "experiment"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 11,
+  "fields": {
+    "app_label": "organization",
+    "model": "experimentset"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 12,
+  "fields": {
+    "app_label": "organization",
+    "model": "publication"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 13,
+  "fields": {
+    "app_label": "organization",
+    "model": "award"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 14,
+  "fields": {
+    "app_label": "organization",
+    "model": "tag"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 15,
+  "fields": {
+    "app_label": "dryLab",
+    "model": "sequencingrun"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 16,
+  "fields": {
+    "app_label": "dryLab",
+    "model": "seqencingfile"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 17,
+  "fields": {
+    "app_label": "dryLab",
+    "model": "fileset"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 18,
+  "fields": {
+    "app_label": "dryLab",
+    "model": "analysis"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 19,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "document"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 20,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "vendor"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 21,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "construct"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 22,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "genomicregions"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 23,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "target"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 24,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "modification"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 25,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "individual"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 26,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "enzyme"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 27,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "protocol"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 28,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "biosource"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 29,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "biosample"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 31,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "barcode"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 32,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "treatmentrnai"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 33,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "treatmentchemical"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 35,
+  "fields": {
+    "app_label": "wetLab",
+    "model": "other"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 36,
+  "fields": {
+    "app_label": "dryLab",
+    "model": "images"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "pk": 37,
+  "fields": {
+    "app_label": "dryLab",
+    "model": "imageobjects"
   }
 },
 {
@@ -365,112 +302,112 @@
     "field_name": "CaptureC Protocol",
     "field_type": "Protocol",
     "field_set": {
-      "crosslinking_temperature": {
-        "data": "number",
-        "help": "Temperature of crosslinking step in degrees Celsius",
-        "required": "no"
-      },
-      "ligation_time": {
-        "data": "number",
-        "help": "Time of ligation step in minutes",
-        "required": "no"
-      },
-      "fragmentation_method": {
-        "data": "choices",
-        "help": "A short description or reference of the nucleic acid fragmentation protocol used in library preparation, if applicable.",
+      "digestion_time": {
+        "help": "Time of digestion step in minutes",
         "required": "no",
-        "choices": {
-          "3": "sonication",
-          "5": "none",
-          "1": "chemical",
-          "2": "shearing",
-          "4": "see protocol document",
-          "6": "n/a"
-        }
+        "data": "number"
       },
-      "digestion_temperature": {
-        "data": "number",
-        "help": "Temperature of digestion step in degrees Celsius",
-        "required": "no"
+      "ligation_volume": {
+        "help": "Volume of ligation step in milliliters",
+        "required": "no",
+        "data": "number"
       },
       "fragment_size_selection_method": {
-        "data": "choices",
         "help": "A short description or reference of the size selection protocol used in library preparation, if applicable.",
         "required": "no",
         "choices": {
+          "2": "see document",
           "3": "SPRI beads",
-          "1": "gel",
-          "2": "see document"
-        }
+          "1": "gel"
+        },
+        "data": "choices"
+      },
+      "fragmentation_method": {
+        "help": "A short description or reference of the nucleic acid fragmentation protocol used in library preparation, if applicable.",
+        "required": "no",
+        "choices": {
+          "6": "n/a",
+          "1": "chemical",
+          "4": "see protocol document",
+          "2": "shearing",
+          "3": "sonication",
+          "5": "none"
+        },
+        "data": "choices"
+      },
+      "enzyme_lot_number": {
+        "help": "Lot number of batch of enzyme used to digest DNA",
+        "required": "no",
+        "data": "string"
       },
       "experiment_type": {
-        "data": "choices",
         "help": "A controlled term specifying the type of experiment.",
         "required": "yes",
         "choices": {
           "1": "capture Hi-C"
-        }
-      },
-      "dbxrefs": {
-        "data": "Array",
-        "help": "Unique identifiers from external resources.",
-        "required": "no"
+        },
+        "data": "choices"
       },
       "crosslinking_time": {
-        "data": "number",
         "help": "Time of crosslinking step in minutes",
-        "required": "no"
-      },
-      "ligation_temperature": {
-        "data": "number",
-        "help": "Temperature of ligation step in degrees Celsius",
-        "required": "no"
-      },
-      "tagging_method": {
-        "data": "string",
-        "help": "Information on the biotinylated base used or other tagging info",
-        "required": "no"
+        "required": "no",
+        "data": "number"
       },
       "crosslinking_method": {
-        "data": "choices",
         "help": "Term used for the method for crosslinking chromatin",
         "required": "no",
         "choices": {
+          "2": "1% Formaldehyde",
           "3": "1.3% Formaldehyde",
-          "1": "none",
-          "2": "1% Formaldehyde"
-        }
-      },
-      "enzyme_lot_number": {
-        "data": "string",
-        "help": "Lot number of batch of enzyme used to digest DNA",
-        "required": "no"
-      },
-      "digestion_time": {
-        "data": "number",
-        "help": "Time of digestion step in minutes",
-        "required": "no"
+          "1": "none"
+        },
+        "data": "choices"
       },
       "library_preparation_date": {
-        "data": "date",
         "Date": "YYYY-MM-DD",
+        "help": "The date that the library was prepared - submitted",
         "required": "no",
-        "help": "The date that the library was prepared - submitted"
+        "data": "date"
       },
-      "fragment_size_range": {
-        "data": "string",
-        "help": "The measured size range of the purified nucleic acid, in bp.",
-        "required": "no"
+      "tagging_method": {
+        "help": "Information on the biotinylated base used or other tagging info",
+        "required": "no",
+        "data": "string"
       },
-      "ligation_volume": {
-        "data": "number",
-        "help": "Volume of ligation step in milliliters",
-        "required": "no"
+      "dbxrefs": {
+        "help": "Unique identifiers from external resources.",
+        "required": "no",
+        "data": "Array"
+      },
+      "ligation_temperature": {
+        "help": "Temperature of ligation step in degrees Celsius",
+        "required": "no",
+        "data": "number"
       },
       "average_fragment_size": {
-        "data": "integer",
         "help": "Size of average fragment in base pairs after fragmentation step",
-        "required": "no"
+        "required": "no",
+        "data": "integer"
+      },
+      "fragment_size_range": {
+        "help": "The measured size range of the purified nucleic acid, in bp.",
+        "required": "no",
+        "data": "string"
+      },
+      "digestion_temperature": {
+        "help": "Temperature of digestion step in degrees Celsius",
+        "required": "no",
+        "data": "number"
+      },
+      "ligation_time": {
+        "help": "Time of ligation step in minutes",
+        "required": "no",
+        "data": "number"
+      },
+      "crosslinking_temperature": {
+        "help": "Temperature of crosslinking step in degrees Celsius",
+        "required": "no",
+        "data": "number"
       }
     },
     "jsonField_description": ""
@@ -483,115 +420,115 @@
     "field_name": "Hi-C Protocol",
     "field_type": "Protocol",
     "field_set": {
-      "crosslinking_temperature": {
-        "data": "number",
-        "help": "Temperature of crosslinking step in degrees Celsius",
-        "required": "no"
-      },
-      "ligation_time": {
-        "data": "number",
-        "help": "Time of ligation step in minutes",
-        "required": "no"
-      },
-      "fragmentation_method": {
-        "data": "choices",
-        "help": "A short description or reference of the nucleic acid fragmentation protocol used in library preparation, if applicable.",
+      "digestion_time": {
+        "help": "Time of digestion step in minutes",
         "required": "no",
-        "choices": {
-          "3": "sonication",
-          "5": "none",
-          "1": "chemical",
-          "2": "shearing",
-          "4": "see protocol document",
-          "6": "n/a"
-        }
+        "data": "number"
       },
-      "digestion_temperature": {
-        "data": "number",
-        "help": "Temperature of digestion step in degrees Celsius",
-        "required": "no"
+      "ligation_volume": {
+        "help": "Volume of ligation step in milliliters",
+        "required": "no",
+        "data": "number"
       },
       "fragment_size_selection_method": {
-        "data": "choices",
         "help": "A short description or reference of the size selection protocol used in library preparation, if applicable.",
         "required": "no",
         "choices": {
+          "2": "see document",
           "3": "SPRI beads",
-          "1": "gel",
-          "2": "see document"
-        }
+          "1": "gel"
+        },
+        "data": "choices"
+      },
+      "fragmentation_method": {
+        "help": "A short description or reference of the nucleic acid fragmentation protocol used in library preparation, if applicable.",
+        "required": "no",
+        "choices": {
+          "6": "n/a",
+          "1": "chemical",
+          "4": "see protocol document",
+          "2": "shearing",
+          "3": "sonication",
+          "5": "none"
+        },
+        "data": "choices"
+      },
+      "enzyme_lot_number": {
+        "help": "Lot number of batch of enzyme used to digest DNA",
+        "required": "no",
+        "data": "string"
       },
       "experiment_type": {
-        "data": "choices",
         "help": "A controlled term specifying the type of experiment.",
         "required": "yes",
         "choices": {
+          "2": "dilution Hi-C",
           "3": "micro-C",
           "4": "DNase Hi-C",
-          "1": "in situ Hi-C",
-          "2": "dilution Hi-C"
-        }
-      },
-      "dbxrefs": {
-        "data": "Array",
-        "help": "Unique identifiers from external resources.",
-        "required": "no"
+          "1": "in situ Hi-C"
+        },
+        "data": "choices"
       },
       "crosslinking_time": {
-        "data": "number",
         "help": "Time of crosslinking step in minutes",
-        "required": "no"
-      },
-      "ligation_temperature": {
-        "data": "number",
-        "help": "Temperature of ligation step in degrees Celsius",
-        "required": "no"
-      },
-      "tagging_method": {
-        "data": "string",
-        "help": "Information on the biotinylated base used or other tagging info",
-        "required": "no"
+        "required": "no",
+        "data": "number"
       },
       "crosslinking_method": {
-        "data": "choices",
         "help": "Term used for the method for crosslinking chromatin",
         "required": "no",
         "choices": {
+          "2": "1% Formaldehyde",
           "3": "1.3% Formaldehyde",
-          "1": "none",
-          "2": "1% Formaldehyde"
-        }
-      },
-      "enzyme_lot_number": {
-        "data": "string",
-        "help": "Lot number of batch of enzyme used to digest DNA",
-        "required": "no"
-      },
-      "digestion_time": {
-        "data": "number",
-        "help": "Time of digestion step in minutes",
-        "required": "no"
+          "1": "none"
+        },
+        "data": "choices"
       },
       "library_preparation_date": {
-        "data": "date",
         "Date": "YYYY-MM-DD",
+        "help": "The date that the library was prepared - submitted",
         "required": "no",
-        "help": "The date that the library was prepared - submitted"
+        "data": "date"
       },
-      "fragment_size_range": {
-        "data": "string",
-        "help": "The measured size range of the purified nucleic acid, in bp.",
-        "required": "no"
+      "tagging_method": {
+        "help": "Information on the biotinylated base used or other tagging info",
+        "required": "no",
+        "data": "string"
       },
-      "ligation_volume": {
-        "data": "number",
-        "help": "Volume of ligation step in milliliters",
-        "required": "no"
+      "dbxrefs": {
+        "help": "Unique identifiers from external resources.",
+        "required": "no",
+        "data": "Array"
+      },
+      "ligation_temperature": {
+        "help": "Temperature of ligation step in degrees Celsius",
+        "required": "no",
+        "data": "number"
       },
       "average_fragment_size": {
-        "data": "integer",
         "help": "Size of average fragment in base pairs after fragmentation step",
-        "required": "no"
+        "required": "no",
+        "data": "integer"
+      },
+      "fragment_size_range": {
+        "help": "The measured size range of the purified nucleic acid, in bp.",
+        "required": "no",
+        "data": "string"
+      },
+      "digestion_temperature": {
+        "help": "Temperature of digestion step in degrees Celsius",
+        "required": "no",
+        "data": "number"
+      },
+      "ligation_time": {
+        "help": "Time of ligation step in minutes",
+        "required": "no",
+        "data": "number"
+      },
+      "crosslinking_temperature": {
+        "help": "Temperature of crosslinking step in degrees Celsius",
+        "required": "no",
+        "data": "number"
       }
     },
     "jsonField_description": ""
@@ -604,67 +541,67 @@
     "field_name": "BiosampleCellCulture",
     "field_type": "Biosample",
     "field_set": {
-      "culture_start_date": {
-        "data": "string",
-        "help": "The date the culture was started.",
-        "required": "yes"
-      },
-      "culture_duration": {
-        "data": "number",
-        "help": "Time cells in culture since first thaw",
-        "required": "no"
-      },
       "starting_amount_units": {
-        "data": "integer",
         "required": "no",
         "choices": {
+          "2": "g",
           "3": "mg",
           "4": "\u03bcg",
-          "1": "cells",
-          "2": "g"
-        }
+          "1": "cells"
+        },
+        "data": "integer"
       },
       "karyotype": {
-        "data": "string",
         "help": "Chromosome count and any noted rearrangements or copy number variation",
-        "required": "no"
-      },
-      "culture_duration_units": {
-        "data": "choices",
         "required": "no",
-        "choices": {
-          "3": "days",
-          "5": "months",
-          "1": "minutes",
-          "2": "hours",
-          "4": "weeks",
-          "6": "years"
-        }
+        "data": "string"
       },
       "differentiation_state": {
-        "data": "string",
         "help": "Description of markers used to determine the differentiation state of embryonic stem cells.",
-        "required": "no"
-      },
-      "synchronization_stage": {
-        "data": "string",
-        "help": "Cell cycle stage at which culture is synchronized",
-        "required": "no"
+        "required": "no",
+        "data": "string"
       },
       "passage_number": {
-        "data": "integer",
         "help": "Number of passages of the cell culture",
-        "required": "no"
+        "required": "no",
+        "data": "integer"
       },
-      "dbxrefs": {
-        "data": "array",
-        "help": "Unique identifiers from external resources.",
-        "required": "no"
+      "culture_duration_units": {
+        "required": "no",
+        "choices": {
+          "6": "years",
+          "1": "minutes",
+          "4": "weeks",
+          "2": "hours",
+          "3": "days",
+          "5": "months"
+        },
+        "data": "choices"
+      },
+      "culture_duration": {
+        "help": "Time cells in culture since first thaw",
+        "required": "no",
+        "data": "number"
       },
       "starting_amount": {
-        "data": "integer",
         "help": "The initial quantity of cells used for the culture.",
-        "required": "no"
+        "required": "no",
+        "data": "integer"
+      },
+      "synchronization_stage": {
+        "help": "Cell cycle stage at which culture is synchronized",
+        "required": "no",
+        "data": "string"
+      },
+      "dbxrefs": {
+        "help": "Unique identifiers from external resources.",
+        "required": "no",
+        "data": "array"
+      },
+      "culture_start_date": {
+        "help": "The date the culture was started.",
+        "required": "yes",
+        "data": "string"
       }
     },
     "jsonField_description": ""
@@ -677,47 +614,47 @@
     "field_name": "IndividualHuman",
     "field_type": "Individual",
     "field_set": {
-      "age": {
-        "data": "number",
-        "help": "The age of the individual when biological material was sampled.",
-        "required": "no"
-      },
-      "ethnicity": {
-        "data": "string",
-        "required": "no"
-      },
       "age_units": {
-        "data": "choices",
         "required": "no",
         "choices": {
+          "2": "week",
           "3": "month",
           "4": "year",
-          "1": "day",
-          "2": "week"
-        }
-      },
-      "sex": {
-        "data": "choices",
-        "required": "no",
-        "choices": {
-          "3": "unknown",
-          "4": "mixed",
-          "1": "male",
-          "2": "female"
-        }
+          "1": "day"
+        },
+        "data": "choices"
       },
       "health_status": {
-        "data": "choices",
         "required": "no",
         "choices": {
-          "3": "child",
-          "5": "unknown",
-          "1": "fetal",
-          "2": "newborn",
-          "4": "adult",
           "6": "embryonic",
-          "7": "postnatal"
-        }
+          "7": "postnatal",
+          "1": "fetal",
+          "4": "adult",
+          "2": "newborn",
+          "3": "child",
+          "5": "unknown"
+        },
+        "data": "choices"
+      },
+      "sex": {
+        "required": "no",
+        "choices": {
+          "2": "female",
+          "3": "unknown",
+          "4": "mixed",
+          "1": "male"
+        },
+        "data": "choices"
+      },
+      "age": {
+        "help": "The age of the individual when biological material was sampled.",
+        "required": "no",
+        "data": "number"
+      },
+      "ethnicity": {
+        "required": "no",
+        "data": "string"
       }
     },
     "jsonField_description": ""
@@ -730,44 +667,44 @@
     "field_name": "IndividualMouse",
     "field_type": "Individual",
     "field_set": {
-      "age": {
-        "data": "number",
-        "help": "The age of the individual when biological material was sampled.",
-        "required": "no"
-      },
-      "mouse_life_stage": {
-        "data": "choices",
-        "required": "no",
-        "choices": {
-          "3": "adult",
-          "1": "pup",
-          "2": "fetus"
-        }
-      },
       "age_units": {
-        "data": "choices",
         "required": "no",
         "choices": {
+          "2": "week",
           "3": "month",
           "4": "year",
-          "1": "day",
-          "2": "week"
-        }
+          "1": "day"
+        },
+        "data": "choices"
       },
-      "sex": {
-        "data": "choices",
+      "mouse_life_stage": {
         "required": "no",
         "choices": {
+          "2": "fetus",
+          "3": "adult",
+          "1": "pup"
+        },
+        "data": "choices"
+      },
+      "sex": {
+        "required": "no",
+        "choices": {
+          "2": "female",
           "3": "unknown",
           "4": "mixed",
-          "1": "male",
-          "2": "female"
-        }
+          "1": "male"
+        },
+        "data": "choices"
+      },
+      "age": {
+        "help": "The age of the individual when biological material was sampled.",
+        "required": "no",
+        "data": "number"
       },
       "mouse_strain": {
-        "data": "string",
         "help": "Can be an object of straing with dbxref for strain",
-        "required": "no"
+        "required": "no",
+        "data": "string"
       }
     },
     "jsonField_description": ""
@@ -802,533 +739,533 @@
     "field_name": "Hi-C Analysis",
     "field_type": "Analysis",
     "field_set": {
-      "side2NoMapPer": {
-        "data": "float",
-        "help": "",
-        "order": 50,
-        "required": "no"
-      },
-      "iterativeMappingStart": {
-        "data": "integer",
-        "help": "",
-        "order": 38,
-        "required": "no"
-      },
-      "side2File": {
-        "data": "string",
-        "help": "",
-        "order": 20,
-        "required": "no"
-      },
-      "bounded": {
-        "data": "integer",
-        "help": "",
-        "order": 68,
-        "required": "no"
-      },
-      "reduceScratchDir": {
-        "data": "string",
-        "help": "",
-        "order": 9,
-        "required": "no"
-      },
-      "boundedPer": {
-        "data": "float",
-        "help": "",
-        "order": 69,
-        "required": "no"
-      },
-      "iterativeMappingStep": {
-        "data": "integer",
-        "help": "",
-        "order": 40,
-        "required": "no"
-      },
-      "alignmentOptions": {
-        "data": "string",
-        "help": "",
-        "order": 28,
-        "required": "no"
-      },
-      "internal": {
-        "data": "integer",
-        "help": "",
-        "order": 70,
-        "required": "no"
-      },
-      "cMapping": {
-        "data": "string",
-        "help": "",
-        "order": 5,
-        "required": "no"
-      },
-      "validPairPer": {
-        "data": "float",
-        "help": "",
-        "order": 75,
-        "required": "no"
-      },
-      "singleSided": {
-        "data": "integer",
-        "help": "",
-        "order": 58,
-        "required": "no"
-      },
-      "laneNum": {
-        "data": "integer",
-        "help": "",
-        "order": 18,
-        "required": "no"
-      },
-      "mapScratchSize": {
-        "data": "string",
-        "help": "",
-        "order": 11,
-        "required": "no"
-      },
-      "readLength": {
-        "data": "integer",
-        "help": "",
-        "order": 21,
-        "required": "no"
-      },
-      "side1MultiMap": {
-        "data": "integer",
-        "help": "",
-        "order": 44,
-        "required": "no"
-      },
-      "errorPer": {
-        "data": "float",
-        "help": "",
-        "order": 73,
-        "required": "no"
-      },
-      "genomeSize": {
-        "data": "string",
-        "help": "",
-        "order": 36,
-        "required": "no"
-      },
-      "UUID": {
-        "data": "integer",
-        "help": "",
-        "order": 4,
-        "required": "no"
-      },
-      "logDirectory": {
-        "data": "string",
-        "help": "",
-        "order": 3,
-        "required": "no"
-      },
-      "splitSize": {
-        "data": "integer",
-        "help": "",
-        "order": 24,
-        "required": "no"
-      },
       "aligner": {
-        "data": "string",
         "help": "",
+        "required": "no",
         "order": 26,
-        "required": "no"
-      },
-      "mapResources": {
-        "data": "string",
-        "help": "",
-        "order": 8,
-        "required": "no"
-      },
-      "side2UniqueMapPer": {
-        "data": "float",
-        "help": "",
-        "order": 54,
-        "required": "no"
-      },
-      "internalPer": {
-        "data": "float",
-        "help": "",
-        "order": 71,
-        "required": "no"
-      },
-      "mapScratchDir": {
-        "data": "string",
-        "help": "",
-        "order": 10,
-        "required": "no"
-      },
-      "totalReads": {
-        "data": "integer",
-        "help": "",
-        "order": 55,
-        "required": "no"
-      },
-      "reduceResources": {
-        "data": "string",
-        "help": "",
-        "order": 7,
-        "required": "no"
-      },
-      "bothSideMappedPer": {
-        "data": "float",
-        "help": "",
-        "order": 61,
-        "required": "no"
-      },
-      "sameFragment": {
-        "data": "integer",
-        "help": "",
-        "order": 62,
-        "required": "no"
-      },
-      "validPairRed": {
-        "data": "integer",
-        "help": "",
-        "order": 80,
-        "required": "no"
-      },
-      "restrictionSite": {
-        "data": "string",
-        "help": "",
-        "order": 32,
-        "required": "no"
-      },
-      "error": {
-        "data": "integer",
-        "help": "",
-        "order": 72,
-        "required": "no"
-      },
-      "side1File": {
-        "data": "string",
-        "help": "",
-        "order": 19,
-        "required": "no"
-      },
-      "numReads": {
-        "data": "integer",
-        "help": "",
-        "order": 23,
-        "required": "no"
-      },
-      "unMapped": {
-        "data": "integer",
-        "help": "",
-        "order": 56,
-        "required": "no"
-      },
-      "reduceMemoryNeeded": {
-        "data": "string",
-        "help": "",
-        "order": 13,
-        "required": "no"
-      },
-      "sameFragmentPer": {
-        "data": "float",
-        "help": "",
-        "order": 63,
-        "required": "no"
-      },
-      "side1AlignmentOptions": {
-        "data": "string",
-        "help": "",
-        "order": 29,
-        "required": "no"
-      },
-      "totalMoleculesPer": {
-        "data": "float",
-        "help": "",
-        "order": 83,
-        "required": "no"
-      },
-      "iterativeMapping": {
-        "data": "string",
-        "help": "",
-        "order": 37,
-        "required": "no"
-      },
-      "side2UniqueMap": {
-        "data": "integer",
-        "help": "",
-        "order": 53,
-        "required": "no"
-      },
-      "splitSizeMegabyte": {
-        "data": "string",
-        "help": "",
-        "order": 25,
-        "required": "no"
-      },
-      "qvEncoding": {
-        "data": "string",
-        "help": "",
-        "order": 22,
-        "required": "no"
-      },
-      "side2MultiMap": {
-        "data": "integer",
-        "help": "",
-        "order": 51,
-        "required": "no"
-      },
-      "bothSideMapped": {
-        "data": "integer",
-        "help": "",
-        "order": 60,
-        "required": "no"
-      },
-      "nonRedundantInteractionsPer": {
-        "data": "float",
-        "help": "",
-        "order": 87,
-        "required": "no"
-      },
-      "validPairRedPer": {
-        "data": "float",
-        "help": "",
-        "order": 81,
-        "required": "no"
-      },
-      "unMappedPer": {
-        "data": "float",
-        "help": "",
-        "order": 57,
-        "required": "no"
-      },
-      "side2AlignmentOptions": {
-        "data": "string",
-        "help": "",
-        "order": 30,
-        "required": "no"
-      },
-      "side2TotalReads": {
-        "data": "integer",
-        "help": "",
-        "order": 48,
-        "required": "no"
-      },
-      "computeResource": {
-        "data": "string",
-        "help": "",
-        "order": 6,
-        "required": "no"
-      },
-      "transPer": {
-        "data": "float",
-        "help": "",
-        "order": 79,
-        "required": "no"
-      },
-      "selfCirclePer": {
-        "data": "float",
-        "help": "",
-        "order": 65,
-        "required": "no"
-      },
-      "nonRedundantInteractions": {
-        "data": "integer",
-        "help": "",
-        "order": 86,
-        "required": "no"
-      },
-      "singleSidedPer": {
-        "data": "float",
-        "help": "",
-        "order": 59,
-        "required": "no"
-      },
-      "side1NoMap": {
-        "data": "integer",
-        "help": "",
-        "order": 42,
-        "required": "no"
-      },
-      "flowCell": {
-        "data": "string",
-        "help": "",
-        "order": 16,
-        "required": "no"
-      },
-      "cisPer": {
-        "data": "float",
-        "help": "",
-        "order": 77,
-        "required": "no"
-      },
-      "danglingEndPer": {
-        "data": "float",
-        "help": "",
-        "order": 67,
-        "required": "no"
-      },
-      "redundantInteractions": {
-        "data": "integer",
-        "help": "",
-        "order": 84,
-        "required": "no"
-      },
-      "side1NoMapPer": {
-        "data": "float",
-        "help": "",
-        "order": 43,
-        "required": "no"
-      },
-      "side1TotalReads": {
-        "data": "integer",
-        "help": "",
-        "order": 41,
-        "required": "no"
-      },
-      "iterativeMappingEnd": {
-        "data": "integer",
-        "help": "",
-        "order": 39,
-        "required": "no"
-      },
-      "alignmentSoftwarePath": {
-        "data": "string",
-        "help": "",
-        "order": 27,
-        "required": "no"
-      },
-      "enzyme": {
-        "data": "string",
-        "help": "",
-        "order": 31,
-        "required": "no"
-      },
-      "jobName": {
-        "data": "string",
-        "help": "",
-        "order": 15,
-        "required": "no"
-      },
-      "side2MultiMapPer": {
-        "data": "float",
-        "help": "",
-        "order": 52,
-        "required": "no"
-      },
-      "side2NoMap": {
-        "data": "integer",
-        "help": "",
-        "order": 49,
-        "required": "no"
-      },
-      "cType": {
-        "data": "string",
-        "help": "",
-        "order": 2,
-        "required": "no"
-      },
-      "cis": {
-        "data": "integer",
-        "help": "",
-        "order": 76,
-        "required": "no"
-      },
-      "nCPU": {
-        "data": "integer",
-        "help": "",
-        "order": 12,
-        "required": "no"
-      },
-      "side1UniqueMapPer": {
-        "data": "float",
-        "help": "",
-        "order": 47,
-        "required": "no"
-      },
-      "danglingEnd": {
-        "data": "integer",
-        "help": "",
-        "order": 66,
-        "required": "no"
-      },
-      "genome": {
-        "data": "string",
-        "help": "",
-        "order": 34,
-        "required": "no"
+        "data": "string"
       },
       "selfCircle": {
-        "data": "integer",
         "help": "",
+        "required": "no",
         "order": 64,
-        "required": "no"
+        "data": "integer"
       },
-      "validPair": {
-        "data": "integer",
+      "totalReads": {
         "help": "",
-        "order": 74,
-        "required": "no"
+        "required": "no",
+        "order": 55,
+        "data": "integer"
       },
-      "laneName": {
-        "data": "string",
+      "logDirectory": {
         "help": "",
-        "order": 17,
-        "required": "no"
+        "required": "no",
+        "order": 3,
+        "data": "string"
       },
-      "mapMemoryNeeded": {
-        "data": "string",
+      "nonRedundantInteractionsPer": {
         "help": "",
-        "order": 14,
-        "required": "no"
+        "required": "no",
+        "order": 87,
+        "data": "float"
       },
-      "side1MultiMapPer": {
-        "data": "float",
+      "side2NoMapPer": {
         "help": "",
-        "order": 45,
-        "required": "no"
-      },
-      "percentRedundant": {
-        "data": "float",
-        "help": "",
-        "order": 88,
-        "required": "no"
-      },
-      "genomePath": {
-        "data": "string",
-        "help": "",
-        "order": 35,
-        "required": "no"
+        "required": "no",
+        "order": 50,
+        "data": "float"
       },
       "redundantInteractionsPer": {
-        "data": "float",
         "help": "",
+        "required": "no",
         "order": 85,
-        "required": "no"
+        "data": "float"
+      },
+      "side1MultiMap": {
+        "help": "",
+        "required": "no",
+        "order": 44,
+        "data": "integer"
+      },
+      "side1AlignmentOptions": {
+        "help": "",
+        "required": "no",
+        "order": 29,
+        "data": "string"
+      },
+      "unMappedPer": {
+        "help": "",
+        "required": "no",
+        "order": 57,
+        "data": "float"
+      },
+      "unMapped": {
+        "help": "",
+        "required": "no",
+        "order": 56,
+        "data": "integer"
+      },
+      "bounded": {
+        "help": "",
+        "required": "no",
+        "order": 68,
+        "data": "integer"
+      },
+      "transPer": {
+        "help": "",
+        "required": "no",
+        "order": 79,
+        "data": "float"
+      },
+      "side2MultiMapPer": {
+        "help": "",
+        "required": "no",
+        "order": 52,
+        "data": "float"
+      },
+      "singleSidedPer": {
+        "help": "",
+        "required": "no",
+        "order": 59,
+        "data": "float"
+      },
+      "errorPer": {
+        "help": "",
+        "required": "no",
+        "order": 73,
+        "data": "float"
+      },
+      "cType": {
+        "help": "",
+        "required": "no",
+        "order": 2,
+        "data": "string"
+      },
+      "iterativeMappingEnd": {
+        "help": "",
+        "required": "no",
+        "order": 39,
+        "data": "integer"
+      },
+      "side2NoMap": {
+        "help": "",
+        "required": "no",
+        "order": 49,
+        "data": "integer"
+      },
+      "genomeSize": {
+        "help": "",
+        "required": "no",
+        "order": 36,
+        "data": "string"
+      },
+      "internalPer": {
+        "help": "",
+        "required": "no",
+        "order": 71,
+        "data": "float"
+      },
+      "reduceResources": {
+        "help": "",
+        "required": "no",
+        "order": 7,
+        "data": "string"
+      },
+      "sameFragmentPer": {
+        "help": "",
+        "required": "no",
+        "order": 63,
+        "data": "float"
+      },
+      "boundedPer": {
+        "help": "",
+        "required": "no",
+        "order": 69,
+        "data": "float"
+      },
+      "mapMemoryNeeded": {
+        "help": "",
+        "required": "no",
+        "order": 14,
+        "data": "string"
+      },
+      "splitSizeMegabyte": {
+        "help": "",
+        "required": "no",
+        "order": 25,
+        "data": "string"
+      },
+      "internal": {
+        "help": "",
+        "required": "no",
+        "order": 70,
+        "data": "integer"
+      },
+      "mapScratchDir": {
+        "help": "",
+        "required": "no",
+        "order": 10,
+        "data": "string"
+      },
+      "side1NoMapPer": {
+        "help": "",
+        "required": "no",
+        "order": 43,
+        "data": "float"
+      },
+      "bothSideMapped": {
+        "help": "",
+        "required": "no",
+        "order": 60,
+        "data": "integer"
+      },
+      "side1MultiMapPer": {
+        "help": "",
+        "required": "no",
+        "order": 45,
+        "data": "float"
+      },
+      "laneNum": {
+        "help": "",
+        "required": "no",
+        "order": 18,
+        "data": "integer"
+      },
+      "sameFragment": {
+        "help": "",
+        "required": "no",
+        "order": 62,
+        "data": "integer"
+      },
+      "enzyme": {
+        "help": "",
+        "required": "no",
+        "order": 31,
+        "data": "string"
+      },
+      "cMapping": {
+        "help": "",
+        "required": "no",
+        "order": 5,
+        "data": "string"
+      },
+      "reduceScratchDir": {
+        "help": "",
+        "required": "no",
+        "order": 9,
+        "data": "string"
+      },
+      "percentRedundant": {
+        "help": "",
+        "required": "no",
+        "order": 88,
+        "data": "float"
       },
       "trans": {
-        "data": "integer",
         "help": "",
+        "required": "no",
         "order": 78,
-        "required": "no"
+        "data": "integer"
       },
-      "time": {
-        "data": "string",
+      "reduceMemoryNeeded": {
         "help": "",
-        "order": 1,
-        "required": "no"
+        "required": "no",
+        "order": 13,
+        "data": "string"
+      },
+      "mapResources": {
+        "help": "",
+        "required": "no",
+        "order": 8,
+        "data": "string"
+      },
+      "iterativeMapping": {
+        "help": "",
+        "required": "no",
+        "order": 37,
+        "data": "string"
+      },
+      "computeResource": {
+        "help": "",
+        "required": "no",
+        "order": 6,
+        "data": "string"
+      },
+      "mapScratchSize": {
+        "help": "",
+        "required": "no",
+        "order": 11,
+        "data": "string"
+      },
+      "genome": {
+        "help": "",
+        "required": "no",
+        "order": 34,
+        "data": "string"
+      },
+      "side2TotalReads": {
+        "help": "",
+        "required": "no",
+        "order": 48,
+        "data": "integer"
+      },
+      "nonRedundantInteractions": {
+        "help": "",
+        "required": "no",
+        "order": 86,
+        "data": "integer"
+      },
+      "side2File": {
+        "help": "",
+        "required": "no",
+        "order": 20,
+        "data": "string"
+      },
+      "validPairRed": {
+        "help": "",
+        "required": "no",
+        "order": 80,
+        "data": "integer"
       },
       "totalMolecules": {
-        "data": "integer",
         "help": "",
+        "required": "no",
         "order": 82,
-        "required": "no"
-      },
-      "side1UniqueMap": {
-        "data": "integer",
-        "help": "",
-        "order": 46,
-        "required": "no"
+        "data": "integer"
       },
       "restrictionFragmentFile": {
-        "data": "string",
         "help": "",
+        "required": "no",
         "order": 33,
-        "required": "no"
+        "data": "string"
+      },
+      "side2UniqueMapPer": {
+        "help": "",
+        "required": "no",
+        "order": 54,
+        "data": "float"
+      },
+      "jobName": {
+        "help": "",
+        "required": "no",
+        "order": 15,
+        "data": "string"
+      },
+      "nCPU": {
+        "help": "",
+        "required": "no",
+        "order": 12,
+        "data": "integer"
+      },
+      "side2AlignmentOptions": {
+        "help": "",
+        "required": "no",
+        "order": 30,
+        "data": "string"
+      },
+      "singleSided": {
+        "help": "",
+        "required": "no",
+        "order": 58,
+        "data": "integer"
+      },
+      "genomePath": {
+        "help": "",
+        "required": "no",
+        "order": 35,
+        "data": "string"
+      },
+      "side1NoMap": {
+        "help": "",
+        "required": "no",
+        "order": 42,
+        "data": "integer"
+      },
+      "side1File": {
+        "help": "",
+        "required": "no",
+        "order": 19,
+        "data": "string"
+      },
+      "redundantInteractions": {
+        "help": "",
+        "required": "no",
+        "order": 84,
+        "data": "integer"
+      },
+      "UUID": {
+        "help": "",
+        "required": "no",
+        "order": 4,
+        "data": "integer"
+      },
+      "qvEncoding": {
+        "help": "",
+        "required": "no",
+        "order": 22,
+        "data": "string"
+      },
+      "numReads": {
+        "help": "",
+        "required": "no",
+        "order": 23,
+        "data": "integer"
+      },
+      "bothSideMappedPer": {
+        "help": "",
+        "required": "no",
+        "order": 61,
+        "data": "float"
+      },
+      "validPairPer": {
+        "help": "",
+        "required": "no",
+        "order": 75,
+        "data": "float"
+      },
+      "side1TotalReads": {
+        "help": "",
+        "required": "no",
+        "order": 41,
+        "data": "integer"
+      },
+      "validPair": {
+        "help": "",
+        "required": "no",
+        "order": 74,
+        "data": "integer"
+      },
+      "cis": {
+        "help": "",
+        "required": "no",
+        "order": 76,
+        "data": "integer"
+      },
+      "readLength": {
+        "help": "",
+        "required": "no",
+        "order": 21,
+        "data": "integer"
+      },
+      "restrictionSite": {
+        "help": "",
+        "required": "no",
+        "order": 32,
+        "data": "string"
+      },
+      "side2MultiMap": {
+        "help": "",
+        "required": "no",
+        "order": 51,
+        "data": "integer"
+      },
+      "cisPer": {
+        "help": "",
+        "required": "no",
+        "order": 77,
+        "data": "float"
+      },
+      "danglingEndPer": {
+        "help": "",
+        "required": "no",
+        "order": 67,
+        "data": "float"
+      },
+      "danglingEnd": {
+        "help": "",
+        "required": "no",
+        "order": 66,
+        "data": "integer"
+      },
+      "side1UniqueMap": {
+        "help": "",
+        "required": "no",
+        "order": 46,
+        "data": "integer"
+      },
+      "iterativeMappingStep": {
+        "help": "",
+        "required": "no",
+        "order": 40,
+        "data": "integer"
+      },
+      "validPairRedPer": {
+        "help": "",
+        "required": "no",
+        "order": 81,
+        "data": "float"
+      },
+      "time": {
+        "help": "",
+        "required": "no",
+        "order": 1,
+        "data": "string"
+      },
+      "totalMoleculesPer": {
+        "help": "",
+        "required": "no",
+        "order": 83,
+        "data": "float"
+      },
+      "side2UniqueMap": {
+        "help": "",
+        "required": "no",
+        "order": 53,
+        "data": "integer"
+      },
+      "flowCell": {
+        "help": "",
+        "required": "no",
+        "order": 16,
+        "data": "string"
+      },
+      "alignmentSoftwarePath": {
+        "help": "",
+        "required": "no",
+        "order": 27,
+        "data": "string"
+      },
+      "splitSize": {
+        "help": "",
+        "required": "no",
+        "order": 24,
+        "data": "integer"
+      },
+      "error": {
+        "help": "",
+        "required": "no",
+        "order": 72,
+        "data": "integer"
+      },
+      "laneName": {
+        "help": "",
+        "required": "no",
+        "order": 17,
+        "data": "string"
+      },
+      "alignmentOptions": {
+        "help": "",
+        "required": "no",
+        "order": 28,
+        "data": "string"
+      },
+      "iterativeMappingStart": {
+        "help": "",
+        "required": "no",
+        "order": 38,
+        "data": "integer"
+      },
+      "selfCirclePer": {
+        "help": "",
+        "required": "no",
+        "order": 65,
+        "data": "float"
+      },
+      "side1UniqueMapPer": {
+        "help": "",
+        "required": "no",
+        "order": 47,
+        "data": "float"
       }
     },
     "jsonField_description": ""
@@ -1341,395 +1278,395 @@
     "field_name": "5C Analysis",
     "field_type": "Analysis",
     "field_set": {
-      "same1": {
-        "data": "integer",
-        "help": "",
-        "order": 56,
-        "required": "no"
-      },
-      "side2File": {
-        "data": "string",
-        "help": "",
-        "order": 20,
-        "required": "no"
-      },
-      "different3": {
-        "data": "integer",
-        "help": "",
-        "order": 62,
-        "required": "no"
-      },
-      "flowCell": {
-        "data": "string",
-        "help": "",
-        "order": 16,
-        "required": "no"
-      },
-      "side1AlignmentOptions": {
-        "data": "string",
-        "help": "",
-        "order": 29,
-        "required": "no"
-      },
-      "different4": {
-        "data": "integer",
-        "help": "",
-        "order": 63,
-        "required": "no"
-      },
-      "reduceScratchDir": {
-        "data": "string",
-        "help": "",
-        "order": 9,
-        "required": "no"
-      },
-      "same4": {
-        "data": "integer",
-        "help": "",
-        "order": 59,
-        "required": "no"
-      },
-      "side1Mapped": {
-        "data": "integer",
-        "help": "",
-        "order": 38,
-        "required": "no"
-      },
-      "alignmentOptions": {
-        "data": "string",
-        "help": "",
-        "order": 28,
-        "required": "no"
-      },
-      "fHomoPer": {
-        "data": "float",
-        "help": "",
-        "order": 53,
-        "required": "no"
-      },
-      "cMapping": {
-        "data": "string",
-        "help": "",
-        "order": 5,
-        "required": "no"
-      },
-      "side2MappedPer": {
-        "data": "float",
-        "help": "",
-        "order": 41,
-        "required": "no"
-      },
-      "side2Mapped": {
-        "data": "integer",
-        "help": "",
-        "order": 40,
-        "required": "no"
-      },
-      "mapScratchSize": {
-        "data": "string",
-        "help": "",
-        "order": 11,
-        "required": "no"
-      },
-      "validPairsPer": {
-        "data": "float",
-        "help": "",
-        "order": 51,
-        "required": "no"
-      },
-      "rHomo": {
-        "data": "integer",
-        "help": "",
-        "order": 54,
-        "required": "no"
-      },
-      "readLength": {
-        "data": "integer",
-        "help": "",
-        "order": 21,
-        "required": "no"
-      },
-      "restrictionFragmentFile": {
-        "data": "string",
-        "help": "",
-        "order": 33,
-        "required": "no"
-      },
-      "genomeSize": {
-        "data": "string",
-        "help": "",
-        "order": 36,
-        "required": "no"
-      },
-      "UUID": {
-        "data": "integer",
-        "help": "",
-        "order": 4,
-        "required": "no"
-      },
-      "logDirectory": {
-        "data": "string",
-        "help": "",
-        "order": 3,
-        "required": "no"
-      },
-      "splitSize": {
-        "data": "integer",
-        "help": "",
-        "order": 24,
-        "required": "no"
-      },
-      "alignmentSoftwarePath": {
-        "data": "string",
-        "help": "",
-        "order": 27,
-        "required": "no"
-      },
-      "splitSizeMegabyte": {
-        "data": "string",
-        "help": "",
-        "order": 25,
-        "required": "no"
-      },
-      "same3": {
-        "data": "integer",
-        "help": "",
-        "order": 58,
-        "required": "no"
-      },
-      "rHomoPer": {
-        "data": "float",
-        "help": "",
-        "order": 55,
-        "required": "no"
-      },
-      "enzyme": {
-        "data": "string",
-        "help": "",
-        "order": 31,
-        "required": "no"
-      },
-      "laneNum": {
-        "data": "integer",
-        "help": "",
-        "order": 18,
-        "required": "no"
-      },
-      "side2AlignmentOptions": {
-        "data": "string",
-        "help": "",
-        "order": 30,
-        "required": "no"
-      },
-      "cType": {
-        "data": "string",
-        "help": "",
-        "order": 2,
-        "required": "no"
-      },
-      "mapScratchDir": {
-        "data": "string",
-        "help": "",
-        "order": 10,
-        "required": "no"
-      },
       "computeResource": {
-        "data": "string",
         "help": "",
+        "required": "no",
         "order": 6,
-        "required": "no"
-      },
-      "reduceResources": {
-        "data": "string",
-        "help": "",
-        "order": 7,
-        "required": "no"
-      },
-      "aligner": {
-        "data": "string",
-        "help": "",
-        "order": 26,
-        "required": "no"
-      },
-      "bothSideMappedPer": {
-        "data": "float",
-        "help": "",
-        "order": 47,
-        "required": "no"
-      },
-      "same2": {
-        "data": "integer",
-        "help": "",
-        "order": 57,
-        "required": "no"
+        "data": "string"
       },
       "restrictionSite": {
-        "data": "string",
         "help": "",
+        "required": "no",
         "order": 32,
-        "required": "no"
-      },
-      "jobName": {
-        "data": "string",
-        "help": "",
-        "order": 15,
-        "required": "no"
-      },
-      "side1File": {
-        "data": "string",
-        "help": "",
-        "order": 19,
-        "required": "no"
-      },
-      "nCPU": {
-        "data": "integer",
-        "help": "",
-        "order": 12,
-        "required": "no"
-      },
-      "numReads": {
-        "data": "integer",
-        "help": "",
-        "order": 23,
-        "required": "no"
+        "data": "string"
       },
       "oneSideMapped": {
-        "data": "integer",
         "help": "",
+        "required": "no",
         "order": 44,
-        "required": "no"
-      },
-      "reduceMemoryNeeded": {
-        "data": "string",
-        "help": "",
-        "order": 13,
-        "required": "no"
-      },
-      "different2": {
-        "data": "integer",
-        "help": "",
-        "order": 61,
-        "required": "no"
-      },
-      "mapMemoryNeeded": {
-        "data": "string",
-        "help": "",
-        "order": 14,
-        "required": "no"
+        "data": "integer"
       },
       "genome": {
-        "data": "string",
         "help": "",
+        "required": "no",
         "order": 34,
-        "required": "no"
+        "data": "string"
       },
-      "errorPairsPer": {
-        "data": "float",
+      "side1Mapped": {
         "help": "",
-        "order": 49,
-        "required": "no"
+        "required": "no",
+        "order": 38,
+        "data": "integer"
       },
-      "oneSideMappedPer": {
-        "data": "float",
+      "reduceResources": {
         "help": "",
-        "order": 45,
-        "required": "no"
+        "required": "no",
+        "order": 7,
+        "data": "string"
       },
-      "mapResources": {
-        "data": "string",
+      "logDirectory": {
         "help": "",
-        "order": 8,
-        "required": "no"
-      },
-      "laneName": {
-        "data": "string",
-        "help": "",
-        "order": 17,
-        "required": "no"
-      },
-      "noSideMappedPer": {
-        "data": "float",
-        "help": "",
-        "order": 43,
-        "required": "no"
-      },
-      "qvEncoding": {
-        "data": "string",
-        "help": "",
-        "order": 22,
-        "required": "no"
-      },
-      "different1": {
-        "data": "integer",
-        "help": "",
-        "order": 60,
-        "required": "no"
-      },
-      "bothSideMapped": {
-        "data": "integer",
-        "help": "",
-        "order": 46,
-        "required": "no"
-      },
-      "errorPairs": {
-        "data": "integer",
-        "help": "",
-        "order": 48,
-        "required": "no"
-      },
-      "invalidPairsPer": {
-        "data": "float",
-        "help": "",
-        "order": 51,
-        "required": "no"
-      },
-      "validPairs": {
-        "data": "integer",
-        "help": "",
-        "order": 50,
-        "required": "no"
-      },
-      "genomePath": {
-        "data": "string",
-        "help": "",
-        "order": 35,
-        "required": "no"
-      },
-      "fHomo": {
-        "data": "integer",
-        "help": "",
-        "order": 52,
-        "required": "no"
-      },
-      "numRawReads": {
-        "data": "string",
-        "help": "",
-        "order": 37,
-        "required": "no"
-      },
-      "side1MappedPer": {
-        "data": "float",
-        "help": "",
-        "order": 39,
-        "required": "no"
-      },
-      "time": {
-        "data": "string",
-        "help": "",
-        "order": 1,
-        "required": "no"
-      },
-      "noSideMapped": {
-        "data": "integer",
-        "help": "",
-        "order": 42,
-        "required": "no"
+        "required": "no",
+        "order": 3,
+        "data": "string"
       },
       "invalidPairs": {
-        "data": "integer",
         "help": "",
+        "required": "no",
         "order": 50,
-        "required": "no"
+        "data": "integer"
+      },
+      "same3": {
+        "help": "",
+        "required": "no",
+        "order": 58,
+        "data": "integer"
+      },
+      "restrictionFragmentFile": {
+        "help": "",
+        "required": "no",
+        "order": 33,
+        "data": "string"
+      },
+      "fHomoPer": {
+        "help": "",
+        "required": "no",
+        "order": 53,
+        "data": "float"
+      },
+      "side1AlignmentOptions": {
+        "help": "",
+        "required": "no",
+        "order": 29,
+        "data": "string"
+      },
+      "jobName": {
+        "help": "",
+        "required": "no",
+        "order": 15,
+        "data": "string"
+      },
+      "errorPairs": {
+        "help": "",
+        "required": "no",
+        "order": 48,
+        "data": "integer"
+      },
+      "nCPU": {
+        "help": "",
+        "required": "no",
+        "order": 12,
+        "data": "integer"
+      },
+      "side2AlignmentOptions": {
+        "help": "",
+        "required": "no",
+        "order": 30,
+        "data": "string"
+      },
+      "different4": {
+        "help": "",
+        "required": "no",
+        "order": 63,
+        "data": "integer"
+      },
+      "validPairsPer": {
+        "help": "",
+        "required": "no",
+        "order": 51,
+        "data": "float"
+      },
+      "UUID": {
+        "help": "",
+        "required": "no",
+        "order": 4,
+        "data": "integer"
+      },
+      "qvEncoding": {
+        "help": "",
+        "required": "no",
+        "order": 22,
+        "data": "string"
+      },
+      "numReads": {
+        "help": "",
+        "required": "no",
+        "order": 23,
+        "data": "integer"
+      },
+      "bothSideMappedPer": {
+        "help": "",
+        "required": "no",
+        "order": 47,
+        "data": "float"
+      },
+      "side1MappedPer": {
+        "help": "",
+        "required": "no",
+        "order": 39,
+        "data": "float"
+      },
+      "noSideMapped": {
+        "help": "",
+        "required": "no",
+        "order": 42,
+        "data": "integer"
+      },
+      "mapScratchDir": {
+        "help": "",
+        "required": "no",
+        "order": 10,
+        "data": "string"
+      },
+      "reduceMemoryNeeded": {
+        "help": "",
+        "required": "no",
+        "order": 13,
+        "data": "string"
+      },
+      "different2": {
+        "help": "",
+        "required": "no",
+        "order": 61,
+        "data": "integer"
+      },
+      "aligner": {
+        "help": "",
+        "required": "no",
+        "order": 26,
+        "data": "string"
+      },
+      "readLength": {
+        "help": "",
+        "required": "no",
+        "order": 21,
+        "data": "integer"
+      },
+      "side2MappedPer": {
+        "help": "",
+        "required": "no",
+        "order": 41,
+        "data": "float"
+      },
+      "genomeSize": {
+        "help": "",
+        "required": "no",
+        "order": 36,
+        "data": "string"
+      },
+      "different3": {
+        "help": "",
+        "required": "no",
+        "order": 62,
+        "data": "integer"
+      },
+      "same2": {
+        "help": "",
+        "required": "no",
+        "order": 57,
+        "data": "integer"
+      },
+      "side1File": {
+        "help": "",
+        "required": "no",
+        "order": 19,
+        "data": "string"
+      },
+      "numRawReads": {
+        "help": "",
+        "required": "no",
+        "order": 37,
+        "data": "string"
+      },
+      "mapMemoryNeeded": {
+        "help": "",
+        "required": "no",
+        "order": 14,
+        "data": "string"
+      },
+      "same1": {
+        "help": "",
+        "required": "no",
+        "order": 56,
+        "data": "integer"
+      },
+      "splitSizeMegabyte": {
+        "help": "",
+        "required": "no",
+        "order": 25,
+        "data": "string"
+      },
+      "same4": {
+        "help": "",
+        "required": "no",
+        "order": 59,
+        "data": "integer"
+      },
+      "noSideMappedPer": {
+        "help": "",
+        "required": "no",
+        "order": 43,
+        "data": "float"
+      },
+      "validPairs": {
+        "help": "",
+        "required": "no",
+        "order": 50,
+        "data": "integer"
+      },
+      "invalidPairsPer": {
+        "help": "",
+        "required": "no",
+        "order": 51,
+        "data": "float"
+      },
+      "fHomo": {
+        "help": "",
+        "required": "no",
+        "order": 52,
+        "data": "integer"
+      },
+      "different1": {
+        "help": "",
+        "required": "no",
+        "order": 60,
+        "data": "integer"
+      },
+      "bothSideMapped": {
+        "help": "",
+        "required": "no",
+        "order": 46,
+        "data": "integer"
+      },
+      "errorPairsPer": {
+        "help": "",
+        "required": "no",
+        "order": 49,
+        "data": "float"
+      },
+      "time": {
+        "help": "",
+        "required": "no",
+        "order": 1,
+        "data": "string"
+      },
+      "laneNum": {
+        "help": "",
+        "required": "no",
+        "order": 18,
+        "data": "integer"
+      },
+      "rHomoPer": {
+        "help": "",
+        "required": "no",
+        "order": 55,
+        "data": "float"
+      },
+      "cType": {
+        "help": "",
+        "required": "no",
+        "order": 2,
+        "data": "string"
+      },
+      "mapScratchSize": {
+        "help": "",
+        "required": "no",
+        "order": 11,
+        "data": "string"
+      },
+      "enzyme": {
+        "help": "",
+        "required": "no",
+        "order": 31,
+        "data": "string"
+      },
+      "cMapping": {
+        "help": "",
+        "required": "no",
+        "order": 5,
+        "data": "string"
+      },
+      "reduceScratchDir": {
+        "help": "",
+        "required": "no",
+        "order": 9,
+        "data": "string"
+      },
+      "side2File": {
+        "help": "",
+        "required": "no",
+        "order": 20,
+        "data": "string"
+      },
+      "flowCell": {
+        "help": "",
+        "required": "no",
+        "order": 16,
+        "data": "string"
+      },
+      "side2Mapped": {
+        "help": "",
+        "required": "no",
+        "order": 40,
+        "data": "integer"
+      },
+      "alignmentSoftwarePath": {
+        "help": "",
+        "required": "no",
+        "order": 27,
+        "data": "string"
+      },
+      "splitSize": {
+        "help": "",
+        "required": "no",
+        "order": 24,
+        "data": "integer"
+      },
+      "oneSideMappedPer": {
+        "help": "",
+        "required": "no",
+        "order": 45,
+        "data": "float"
+      },
+      "rHomo": {
+        "help": "",
+        "required": "no",
+        "order": 54,
+        "data": "integer"
+      },
+      "mapResources": {
+        "help": "",
+        "required": "no",
+        "order": 8,
+        "data": "string"
+      },
+      "laneName": {
+        "help": "",
+        "required": "no",
+        "order": 17,
+        "data": "string"
+      },
+      "alignmentOptions": {
+        "help": "",
+        "required": "no",
+        "order": 28,
+        "data": "string"
+      },
+      "genomePath": {
+        "help": "",
+        "required": "no",
+        "order": 35,
+        "data": "string"
       }
     },
     "jsonField_description": ""
@@ -2681,34 +2618,6 @@
   }
 },
 {
-  "model": "organization.project",
-  "pk": 7,
-  "fields": {
-    "project_owner": 1,
-    "project_name": "U54",
-    "project_notes": "Human Project",
-    "project_active": true,
-    "project_contributor": [
-      2,
-      3
-    ]
-  }
-},
-{
-  "model": "organization.project",
-  "pk": 8,
-  "fields": {
-    "project_owner": 1,
-    "project_name": "Rao et al",
-    "project_notes": "",
-    "project_active": true,
-    "project_contributor": [
-      4,
-      2
-    ]
-  }
-},
-{
   "model": "organization.experiment",
   "pk": 26,
   "fields": {
@@ -2794,19 +2703,6 @@
     "publication_supplementary": "trht",
     "publication_identifiers": "thrh",
     "publication_volume": "trhtrh"
-  }
-},
-{
-  "model": "organization.tag",
-  "pk": 6,
-  "fields": {
-    "tag_name": "TagExport",
-    "project": 7,
-    "tag_user": 1,
-    "tag_exp": [
-      26,
-      27
-    ]
   }
 },
 {
@@ -3193,93 +3089,6 @@
   }
 },
 {
-  "model": "wetLab.modification",
-  "pk": 1,
-  "fields": {
-    "userOwner": 1,
-    "documents": null,
-    "references": null,
-    "url": "",
-    "dbxrefs": "",
-    "modification_name": "Modification123",
-    "modification_type": 15,
-    "modification_constructs": 1,
-    "modification_vendor": null,
-    "modification_gRNA": "",
-    "modification_genomicRegions": 1,
-    "modification_target": 1,
-    "modification_description": "Description"
-  }
-},
-{
-  "model": "wetLab.modification",
-  "pk": 3,
-  "fields": {
-    "userOwner": 1,
-    "documents": null,
-    "references": null,
-    "url": "",
-    "dbxrefs": "",
-    "modification_name": "Modif11",
-    "modification_type": 14,
-    "modification_constructs": 3,
-    "modification_vendor": null,
-    "modification_gRNA": "",
-    "modification_genomicRegions": 2,
-    "modification_target": 2,
-    "modification_description": "xvcvv"
-  }
-},
-{
-  "model": "wetLab.modification",
-  "pk": 4,
-  "fields": {
-    "userOwner": 1,
-    "documents": null,
-    "references": null,
-    "url": "",
-    "dbxrefs": "",
-    "modification_name": "mod1",
-    "modification_type": 15,
-    "modification_constructs": 4,
-    "modification_vendor": null,
-    "modification_gRNA": "",
-    "modification_genomicRegions": 3,
-    "modification_target": 3,
-    "modification_description": "ygdjwd"
-  }
-},
-{
-  "model": "wetLab.individual",
-  "pk": 23,
-  "fields": {
-    "userOwner": 1,
-    "documents": null,
-    "references": null,
-    "url": "",
-    "dbxrefs": "",
-    "individual_name": "DDL17human",
-    "individual_vendor": null,
-    "individual_type": 4,
-    "individual_fields": "{\"age_units\": \"day\", \"age\": \"17\", \"ethnicity\": \"Caucasian\", \"sex\": \"male\", \"health_status\": \"embryonic\"}"
-  }
-},
-{
-  "model": "wetLab.individual",
-  "pk": 24,
-  "fields": {
-    "userOwner": 1,
-    "documents": null,
-    "references": null,
-    "url": "",
-    "dbxrefs": "",
-    "individual_name": "HeLaS3human",
-    "individual_vendor": null,
-    "individual_type": 4,
-    "individual_fields": "{\"health_status\": \"adult\", \"sex\": \"female\", \"age\": \"31\", \"ethnicity\": \"Black\", \"age_units\": \"year\"}"
-  }
-},
-{
   "model": "wetLab.enzyme",
   "pk": 1,
   "fields": {
@@ -3331,48 +3140,6 @@
   }
 },
 {
-  "model": "wetLab.protocol",
-  "pk": 11,
-  "fields": {
-    "userOwner": 1,
-    "protocol_name": "ExperimentHiC Protocol-HindIII",
-    "protocol_type": 2,
-    "protocol_fields": "{\"experiment_type\": \"in\", \"crosslinking_method\": \"1%\", \"ligation_time\": \"240\", \"fragment_size_range\": \"150-350\", \"digestion_temperature\": \"37\", \"average_fragment_size\": \"200\", \"digestion_time\": \"960\", \"crosslinking_temperature\": \"25\", \"library_preparation_date\": \"3/6/2016\", \"ligation_temperature\": \"16\", \"fragment_size_selection_method\": \"SPRI\", \"ligation_volume\": \"1.2\", \"fragmentation_method\": \"sonication\", \"dbxrefs\": \"\", \"enzyme_lot_number\": \"\", \"tagging_method\": \"bio-dCTP\", \"crosslinking_time\": \"10\"}",
-    "protocol_document": null,
-    "protocol_enzyme": 2,
-    "protocol_variation": "",
-    "protocol_description": ""
-  }
-},
-{
-  "model": "wetLab.protocol",
-  "pk": 12,
-  "fields": {
-    "userOwner": 1,
-    "protocol_name": "ExperimentHiC Protocol-DpnII",
-    "protocol_type": 2,
-    "protocol_fields": "{\"crosslinking_time\": \"10\", \"digestion_temperature\": \"37\", \"fragment_size_range\": \"150-350\", \"enzyme_lot_number\": \"\", \"ligation_time\": \"240\", \"fragment_size_selection_method\": null, \"crosslinking_temperature\": \"25\", \"dbxrefs\": \"\", \"experiment_type\": \"in situ Hi-C\", \"digestion_time\": \"960\", \"tagging_method\": \"bio-dCTP\", \"fragmentation_method\": \"sonication\", \"average_fragment_size\": \"200\", \"ligation_volume\": \"1.2\", \"library_preparation_date\": \"8/8/2016\", \"crosslinking_method\": \"1% Formaldehyde\", \"ligation_temperature\": \"16\"}",
-    "protocol_document": null,
-    "protocol_enzyme": 1,
-    "protocol_variation": "",
-    "protocol_description": ""
-  }
-},
-{
-  "model": "wetLab.protocol",
-  "pk": 13,
-  "fields": {
-    "userOwner": 1,
-    "protocol_name": "ExperimentHiC Protocol-MboI",
-    "protocol_type": 2,
-    "protocol_fields": "{\"fragmentation_method\": \"sonication\", \"digestion_temperature\": \"37\", \"dbxrefs\": \"\", \"crosslinking_temperature\": \"25\", \"ligation_temperature\": \"25\", \"fragment_size_range\": \"\", \"experiment_type\": \"in situ Hi-C\", \"enzyme_lot_number\": \"\", \"ligation_time\": \"240\", \"tagging_method\": \"bio-dATP\", \"ligation_volume\": \"1.2\", \"digestion_time\": \"120\", \"crosslinking_time\": \"10\", \"crosslinking_method\": \"1% Formaldehyde\", \"fragment_size_selection_method\": \"SPRI beads\", \"average_fragment_size\": \"\", \"library_preparation_date\": \"\"}",
-    "protocol_document": null,
-    "protocol_enzyme": 3,
-    "protocol_variation": "",
-    "protocol_description": ""
-  }
-},
-{
   "model": "wetLab.biosource",
   "pk": 18,
   "fields": {
@@ -3408,50 +3175,6 @@
     "biosource_individual": 24,
     "biosource_tissue": "cervix",
     "biosource_description": ""
-  }
-},
-{
-  "model": "wetLab.biosample",
-  "pk": 21,
-  "fields": {
-    "userOwner": 1,
-    "documents": null,
-    "references": null,
-    "url": "",
-    "dbxrefs": "",
-    "biosample_name": "H1-hESC stem cell",
-    "biosample_biosource": 18,
-    "biosample_individual": 23,
-    "biosample_modification": null,
-    "biosample_protocol": null,
-    "biosample_treatment": 78,
-    "biosample_type": null,
-    "biosample_fields": null,
-    "biosample_description": "",
-    "biosample_imageObjects": [
-      9
-    ]
-  }
-},
-{
-  "model": "wetLab.biosample",
-  "pk": 22,
-  "fields": {
-    "userOwner": 1,
-    "documents": null,
-    "references": null,
-    "url": "",
-    "dbxrefs": "",
-    "biosample_name": "HeLaS3human_p1",
-    "biosample_biosource": 19,
-    "biosample_individual": 24,
-    "biosample_modification": null,
-    "biosample_protocol": null,
-    "biosample_treatment": 78,
-    "biosample_type": null,
-    "biosample_fields": null,
-    "biosample_description": "",
-    "biosample_imageObjects": []
   }
 },
 {
@@ -3569,6 +3292,581 @@
     "name": "wcwe",
     "description": "cdac",
     "biosample": []
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Collaborator",
+    "permissions": []
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 2,
+  "fields": {
+    "name": "Admin",
+    "permissions": [
+      1,
+      2,
+      3,
+      7,
+      8,
+      9,
+      4,
+      5,
+      6,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      52,
+      53,
+      54,
+      49,
+      50,
+      51,
+      46,
+      47,
+      48,
+      43,
+      44,
+      45,
+      37,
+      38,
+      39,
+      22,
+      23,
+      24,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      19,
+      20,
+      21,
+      25,
+      26,
+      27,
+      34,
+      35,
+      36,
+      40,
+      41,
+      42,
+      16,
+      17,
+      18,
+      91,
+      92,
+      93,
+      85,
+      86,
+      87,
+      82,
+      83,
+      84,
+      61,
+      62,
+      63,
+      55,
+      56,
+      57,
+      76,
+      77,
+      78,
+      64,
+      65,
+      66,
+      73,
+      74,
+      75,
+      70,
+      71,
+      72,
+      79,
+      80,
+      81,
+      67,
+      68,
+      69,
+      58,
+      59,
+      60
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 3,
+  "fields": {
+    "name": "Principal Investigator",
+    "permissions": [
+      52,
+      53,
+      54,
+      49,
+      50,
+      51,
+      46,
+      47,
+      48,
+      43,
+      44,
+      45,
+      37,
+      38,
+      39,
+      22,
+      23,
+      24,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      19,
+      20,
+      21,
+      25,
+      26,
+      27,
+      34,
+      35,
+      36,
+      40,
+      41,
+      42,
+      16,
+      17,
+      18,
+      91,
+      92,
+      93,
+      85,
+      86,
+      87,
+      82,
+      83,
+      84,
+      61,
+      62,
+      63,
+      55,
+      56,
+      57,
+      76,
+      77,
+      78,
+      64,
+      65,
+      66,
+      73,
+      74,
+      75,
+      70,
+      71,
+      72,
+      79,
+      80,
+      81,
+      67,
+      68,
+      69,
+      58,
+      59,
+      60
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 4,
+  "fields": {
+    "name": "Member",
+    "permissions": [
+      52,
+      53,
+      54,
+      49,
+      50,
+      51,
+      46,
+      47,
+      48,
+      43,
+      44,
+      45,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      25,
+      26,
+      27,
+      34,
+      35,
+      36,
+      40,
+      41,
+      42,
+      16,
+      17,
+      18,
+      91,
+      92,
+      93,
+      85,
+      86,
+      87,
+      82,
+      83,
+      84,
+      61,
+      62,
+      63,
+      55,
+      56,
+      57,
+      64,
+      65,
+      66,
+      73,
+      74,
+      75,
+      70,
+      71,
+      72,
+      79,
+      80,
+      81,
+      67,
+      68,
+      69,
+      58,
+      59,
+      60
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$24000$vpV1R1QMywoL$WBFwXA0UPx8fRHMCICeInMX4fdtEJ+8XjpYyYDtvyJU=",
+    "last_login": "2016-11-22T19:30:25.144Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "nand@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2016-11-02T19:11:29Z",
+    "groups": [
+      2
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$24000$JTY8e3XBPc74$QQvGzaZrO1oPuwRHDJj4xmhqbHsaXyL+oAF4D1myv1E=",
+    "last_login": "2016-11-20T20:12:49.240Z",
+    "is_superuser": false,
+    "username": "hakan",
+    "first_name": "Hakan",
+    "last_name": "Ozadam",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2016-11-07T22:16:30Z",
+    "groups": [
+      4
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$24000$dIiAg1g9qgpv$iZjesX5Oq4Hp5ATggLiBzH1pKyt7V25UdA7myV4R2tA=",
+    "last_login": "2016-11-20T20:13:22.993Z",
+    "is_superuser": false,
+    "username": "ram",
+    "first_name": "Ram",
+    "last_name": "Mathur",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2016-11-20T20:09:37Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$24000$m2j9vw3bVSjt$VEi1/ljDgTWWUBFwBpOqVBQ0dycxZjxcaAuN281aoVo=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "job",
+    "first_name": "Job",
+    "last_name": "Dekker",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2016-11-20T20:10:27Z",
+    "groups": [
+      3
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$24000$URkfVdLCk332$0vLg/03KtRjz+mMGg9YGtKGMkZ7lUkDIihTIQNxszaY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "sss",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2016-11-22T20:38:14.042Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "organization.project",
+  "pk": 7,
+  "fields": {
+    "project_owner": 1,
+    "project_name": "U54",
+    "project_notes": "Human Project",
+    "project_active": true,
+    "project_contributor": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "organization.project",
+  "pk": 8,
+  "fields": {
+    "project_owner": 1,
+    "project_name": "Rao et al",
+    "project_notes": "",
+    "project_active": true,
+    "project_contributor": [
+      4,
+      2
+    ]
+  }
+},
+{
+  "model": "organization.tag",
+  "pk": 6,
+  "fields": {
+    "tag_name": "TagExport",
+    "project": 7,
+    "tag_user": 1,
+    "tag_exp": [
+      26,
+      27
+    ]
+  }
+},
+{
+  "model": "wetLab.modification",
+  "pk": 1,
+  "fields": {
+    "userOwner": 1,
+    "documents": null,
+    "references": null,
+    "url": "",
+    "dbxrefs": "",
+    "modification_name": "Modification123",
+    "modification_type": 15,
+    "modification_constructs": 1,
+    "modification_vendor": null,
+    "modification_gRNA": "",
+    "modification_genomicRegions": 1,
+    "modification_target": 1,
+    "modification_description": "Description"
+  }
+},
+{
+  "model": "wetLab.modification",
+  "pk": 3,
+  "fields": {
+    "userOwner": 1,
+    "documents": null,
+    "references": null,
+    "url": "",
+    "dbxrefs": "",
+    "modification_name": "Modif11",
+    "modification_type": 14,
+    "modification_constructs": 3,
+    "modification_vendor": null,
+    "modification_gRNA": "",
+    "modification_genomicRegions": 2,
+    "modification_target": 2,
+    "modification_description": "xvcvv"
+  }
+},
+{
+  "model": "wetLab.modification",
+  "pk": 4,
+  "fields": {
+    "userOwner": 1,
+    "documents": null,
+    "references": null,
+    "url": "",
+    "dbxrefs": "",
+    "modification_name": "mod1",
+    "modification_type": 15,
+    "modification_constructs": 4,
+    "modification_vendor": null,
+    "modification_gRNA": "",
+    "modification_genomicRegions": 3,
+    "modification_target": 3,
+    "modification_description": "ygdjwd"
+  }
+},
+{
+  "model": "wetLab.individual",
+  "pk": 23,
+  "fields": {
+    "userOwner": 1,
+    "documents": null,
+    "references": null,
+    "url": "",
+    "dbxrefs": "",
+    "individual_name": "DDL17human",
+    "individual_vendor": null,
+    "individual_type": 4,
+    "individual_fields": "{\"age_units\": \"day\", \"age\": \"17\", \"ethnicity\": \"Caucasian\", \"sex\": \"male\", \"health_status\": \"embryonic\"}"
+  }
+},
+{
+  "model": "wetLab.individual",
+  "pk": 24,
+  "fields": {
+    "userOwner": 1,
+    "documents": null,
+    "references": null,
+    "url": "",
+    "dbxrefs": "",
+    "individual_name": "HeLaS3human",
+    "individual_vendor": null,
+    "individual_type": 4,
+    "individual_fields": "{\"health_status\": \"adult\", \"sex\": \"female\", \"age\": \"31\", \"ethnicity\": \"Black\", \"age_units\": \"year\"}"
+  }
+},
+{
+  "model": "wetLab.protocol",
+  "pk": 11,
+  "fields": {
+    "userOwner": 1,
+    "protocol_name": "ExperimentHiC Protocol-HindIII",
+    "protocol_type": 2,
+    "protocol_fields": "{\"experiment_type\": \"in\", \"crosslinking_method\": \"1%\", \"ligation_time\": \"240\", \"fragment_size_range\": \"150-350\", \"digestion_temperature\": \"37\", \"average_fragment_size\": \"200\", \"digestion_time\": \"960\", \"crosslinking_temperature\": \"25\", \"library_preparation_date\": \"3/6/2016\", \"ligation_temperature\": \"16\", \"fragment_size_selection_method\": \"SPRI\", \"ligation_volume\": \"1.2\", \"fragmentation_method\": \"sonication\", \"dbxrefs\": \"\", \"enzyme_lot_number\": \"\", \"tagging_method\": \"bio-dCTP\", \"crosslinking_time\": \"10\"}",
+    "protocol_document": null,
+    "protocol_enzyme": 2,
+    "protocol_variation": "",
+    "protocol_description": ""
+  }
+},
+{
+  "model": "wetLab.protocol",
+  "pk": 12,
+  "fields": {
+    "userOwner": 1,
+    "protocol_name": "ExperimentHiC Protocol-DpnII",
+    "protocol_type": 2,
+    "protocol_fields": "{\"crosslinking_time\": \"10\", \"digestion_temperature\": \"37\", \"fragment_size_range\": \"150-350\", \"enzyme_lot_number\": \"\", \"ligation_time\": \"240\", \"fragment_size_selection_method\": null, \"crosslinking_temperature\": \"25\", \"dbxrefs\": \"\", \"experiment_type\": \"in situ Hi-C\", \"digestion_time\": \"960\", \"tagging_method\": \"bio-dCTP\", \"fragmentation_method\": \"sonication\", \"average_fragment_size\": \"200\", \"ligation_volume\": \"1.2\", \"library_preparation_date\": \"8/8/2016\", \"crosslinking_method\": \"1% Formaldehyde\", \"ligation_temperature\": \"16\"}",
+    "protocol_document": null,
+    "protocol_enzyme": 1,
+    "protocol_variation": "",
+    "protocol_description": ""
+  }
+},
+{
+  "model": "wetLab.protocol",
+  "pk": 13,
+  "fields": {
+    "userOwner": 1,
+    "protocol_name": "ExperimentHiC Protocol-MboI",
+    "protocol_type": 2,
+    "protocol_fields": "{\"fragmentation_method\": \"sonication\", \"digestion_temperature\": \"37\", \"dbxrefs\": \"\", \"crosslinking_temperature\": \"25\", \"ligation_temperature\": \"25\", \"fragment_size_range\": \"\", \"experiment_type\": \"in situ Hi-C\", \"enzyme_lot_number\": \"\", \"ligation_time\": \"240\", \"tagging_method\": \"bio-dATP\", \"ligation_volume\": \"1.2\", \"digestion_time\": \"120\", \"crosslinking_time\": \"10\", \"crosslinking_method\": \"1% Formaldehyde\", \"fragment_size_selection_method\": \"SPRI beads\", \"average_fragment_size\": \"\", \"library_preparation_date\": \"\"}",
+    "protocol_document": null,
+    "protocol_enzyme": 3,
+    "protocol_variation": "",
+    "protocol_description": ""
+  }
+},
+{
+  "model": "wetLab.biosample",
+  "pk": 21,
+  "fields": {
+    "userOwner": 1,
+    "documents": null,
+    "references": null,
+    "url": "",
+    "dbxrefs": "",
+    "biosample_name": "H1-hESC stem cell",
+    "biosample_biosource": 18,
+    "biosample_individual": 23,
+    "biosample_modification": null,
+    "biosample_protocol": null,
+    "biosample_treatment": 78,
+    "biosample_type": null,
+    "biosample_fields": null,
+    "biosample_description": "",
+    "biosample_imageObjects": [
+      9
+    ]
+  }
+},
+{
+  "model": "wetLab.biosample",
+  "pk": 22,
+  "fields": {
+    "userOwner": 1,
+    "documents": null,
+    "references": null,
+    "url": "",
+    "dbxrefs": "",
+    "biosample_name": "HeLaS3human_p1",
+    "biosample_biosource": 19,
+    "biosample_individual": 24,
+    "biosample_modification": null,
+    "biosample_protocol": null,
+    "biosample_treatment": 78,
+    "biosample_type": null,
+    "biosample_fields": null,
+    "biosample_description": "",
+    "biosample_imageObjects": []
   }
 },
 {
@@ -7545,6 +7843,19 @@
     "content_type": 26,
     "object_id": "3",
     "object_repr": "MboI",
+    "action_flag": 1,
+    "change_message": "Added."
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 307,
+  "fields": {
+    "action_time": "2016-11-22T20:38:14.122Z",
+    "user": 1,
+    "content_type": 4,
+    "object_id": "5",
+    "object_repr": "sss",
     "action_flag": 1,
     "change_message": "Added."
   }
