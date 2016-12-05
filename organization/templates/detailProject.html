@@ -74,7 +74,7 @@
 			<td>{{exp.experiment_enzyme}}</td>
 			
 			<td>
-			<a href="/editExperiment/{{ exp.id }}">
+			<a href="/deleteExperiment/{{ exp.id }}">
 				<button type="button" class="btn btn-danger pull-right hidden show">Delete Experiment</button>
 			</a>
 			<a href="/editExperiment/{{exp.id}}">
@@ -98,7 +98,7 @@
  {% if sequencingRuns %}
   <hr/>
  <span class="tableHead">
-	Sequencing Unit Details
+	Sequencing Run Details
 </span>
 <table class="table table-bordered table-hover table-responsive">
   	<tr>

@@ -100,6 +100,7 @@ class ShowProject(View):
         context = {
             'object': obj,
         }
+        
         return render(request, self.template_name, context)
     
 
@@ -138,7 +139,7 @@ class DetailProject(View):
         request.session['projectId'] = pk
         context = {}
         prj = Project.objects.get(pk=pk)
-        
+        request.session['project_ownerId']=prj.project_owner.id
     #     units = Lane.objects.filter(project=pk)
     #     files = DeepSeqFile.objects.filter(project=pk)
         experiments = Experiment.objects.filter(project=pk)

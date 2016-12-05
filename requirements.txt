@@ -1,0 +1,12 @@
+wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tar.xz
+tar xJf ./Python-3.5.2.tar.xz
+cd ./Python-3.5.2
+./configure --prefix=/opt/python3.5
+make && sudo make install
+
+pip3 install Django=1.9.7
+pip3 install postgresql_psycopg2
+pip3 install django-crispy-forms=1.0.0
+pip3 install openpyxl=2.4.1
+pip3 install xlutils=2.0.0
+pip3 install xlwt=1.1.2

@@ -43,7 +43,7 @@ def orderByNumber(jsonDict):
 
     
 def export(analysisType,ws, projectId):
-    dbdata = Analysis.objects.filter(analysis_exp__project=projectId)
+    dbdata = Analysis.objects.filter(analysis_exp__project=projectId, analysis_type__field_name=analysisType)
     if (dbdata):
         row_num = 0
         for a in dbdata:
@@ -52,12 +52,13 @@ def export(analysisType,ws, projectId):
         columns = []
         for names in field_names:
             if(names == "analysis_fields"):
-                print(analysisType)
                 jsonObj = JsonObjField.objects.get(field_name=analysisType)
                 jsonFields = orderByNumber(jsonObj.field_set)
                 for keys in jsonFields:
                     columns.append((keys, 4000))
             elif(names == "analysis_import"):
+                pass
+            elif(names == "analysis_hiGlass"):
                 pass
             else:
                 columns.append((names, 4000))
@@ -86,6 +87,8 @@ def export(analysisType,ws, projectId):
                         row.append(json_val)
                 elif(field == "analysis_import"):
                     pass
+                elif(field == "analysis_hiGlass"):
+                    pass
                 else:
                     if ((type(att) != int) and (type(att) != str)):
                         att = str(att)
@@ -104,34 +107,32 @@ def exportAnalysis(request):
     wb = xlwt.Workbook(encoding='utf-8')
     
     projectId = request.session['projectId']
-    pro = Experiment.objects.filter(project=projectId)
+    ana = Analysis.objects.filter(analysis_exp__project=projectId)
     
-    pros = list(set([x.experiment_protocol.protocol_type.field_name for x in pro]))
+    analysis = list(set([x.analysis_type for x in ana]))
     
-    print(pros)
-    for protocol in pros:
-        if protocol == "Hi-C Protocol":
-            analysisType = "Hi-C Analysis"
+    for analysisType in analysis:
+        print(analysisType, analysis)
+        if str(analysisType) == "Hi-C Analysis":
             ws = wb.add_sheet('Hi-C')
             export(analysisType,ws, projectId)
-             
-        elif protocol == "3C Protocol":
-            analysisType = "3C Analysis"
+            
+        elif str(analysisType) == "3C Analysis":
             ws = wb.add_sheet('3C')
             export(analysisType,ws, projectId)
              
-        elif protocol == "5C Protocol":
-            analysisType = "5C Analysis"
+        elif str(analysisType) == "5C Analysis":
             ws = wb.add_sheet('5C')
             export(analysisType,ws, projectId)
         
-        elif protocol == "CaptureC Protocol":
-            analysisType = "CaptureC Analysis"
+        elif str(analysisType) == "CaptureC Analysis":
             ws = wb.add_sheet('CaptureC')
             export(analysisType,ws, projectId)
              
         else:
             pass
+        
+        
     wb.save(response)
     return response
 
@@ -144,6 +145,7 @@ def exportGEO(request):
     files = SeqencingFile.objects.filter(sequencingFile_exp__project=projectId)
     experiments = Experiment.objects.filter(project=projectId)
     bioSample = Biosample.objects.filter(expBio__project=projectId)
+    
     
     title = prj.project_name
     summary = prj.project_notes
@@ -191,8 +193,9 @@ def exportGEO(request):
         ws.cell(row=sampleRowNo, column=2).value = str(sample.biosample_name)
         ws.cell(row=sampleRowNo, column=3).value = str(sample.biosample_biosource.biosource_tissue)
         ws.cell(row=sampleRowNo, column=4).value = str(sample.biosample_individual.individual_type)
-        ws.cell(row=sampleRowNo, column=5).value = str(sample.biosample_protocol.protocol_type)
-        ws.cell(row=sampleRowNo, column=6).value = str(sample.biosample_protocol.protocol_enzyme) 
+        if(sample.biosample_protocol):
+            ws.cell(row=sampleRowNo, column=5).value = str(sample.biosample_protocol.protocol_type)
+            ws.cell(row=sampleRowNo, column=6).value = str(sample.biosample_protocol.protocol_enzyme) 
         ws.cell(row=sampleRowNo, column=7).value = str(sample.biosample_biosource.biosource_cell_line)  
         ws.cell(row=sampleRowNo, column=8).value = str("DNA")
         ws.cell(row=sampleRowNo, column=9).value = str(sample.biosample_biosource.biosource_description)

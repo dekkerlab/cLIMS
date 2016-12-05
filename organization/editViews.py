@@ -10,6 +10,8 @@ from wetLab.forms import *
 from dryLab.forms import *
 from organization.forms import *
 import json
+from organization.decorators import *
+from django.utils.decorators import method_decorator
 
 
 class EditProject(UpdateView):
@@ -27,11 +29,19 @@ class EditProject(UpdateView):
                                 kwargs={'pk': self.get_object().id})
         return context
     
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 class DeleteProject(DeleteView):
     model = Project
     template_name = 'delete.html'
     def get_success_url(self):
         return reverse('showProject')
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 class EditExperiment(UpdateView):
     form_class = ExperimentForm
@@ -46,7 +56,11 @@ class EditExperiment(UpdateView):
         context = super(EditExperiment , self).get_context_data(**kwargs)
         context['action'] = reverse('editProject',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 class DeleteExperiment(DeleteView):
     model = Experiment
@@ -54,6 +68,10 @@ class DeleteExperiment(DeleteView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 def createJSON(request, fieldTypePk):
     json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set
@@ -85,7 +103,11 @@ class EditIndividual(UpdateView):
             context['jsonObj']= json.loads(obj.individual_fields)
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 class DeleteIndividual(DeleteView):
     model = Individual
@@ -93,6 +115,10 @@ class DeleteIndividual(DeleteView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 
 class EditBiosource(UpdateView):
@@ -110,7 +136,12 @@ class EditBiosource(UpdateView):
         context['form'].fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class DeleteBiosource(DeleteView):
     model = Biosource
@@ -118,6 +149,11 @@ class DeleteBiosource(DeleteView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class EditBiosample(UpdateView):
     form_class = BiosampleForm
@@ -133,6 +169,7 @@ class EditBiosample(UpdateView):
             biosample.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
+    
     def get_context_data(self, **kwargs):
         context = super(EditBiosample , self).get_context_data(**kwargs)
         obj = Biosample.objects.get(pk=self.get_object().id)
@@ -143,7 +180,13 @@ class EditBiosample(UpdateView):
         context['form'].fields["biosample_imageObjects"].queryset = ImageObjects.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
+    
 
 class DeleteBiosample(DeleteView):
     model = Biosample
@@ -151,6 +194,10 @@ class DeleteBiosample(DeleteView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
     
 
 class EditTreatmentRnai(UpdateView):
@@ -167,7 +214,12 @@ class EditTreatmentRnai(UpdateView):
         context['form'].fields["treatmentRnai_rnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_rnai_type")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class DeleteTreatmentRnai(DeleteView):
     model = TreatmentRnai
@@ -175,6 +227,10 @@ class DeleteTreatmentRnai(DeleteView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 
 class EditTreatmentChemical(UpdateView):
@@ -192,7 +248,11 @@ class EditTreatmentChemical(UpdateView):
         context['form'].fields["treatmentChemical_duration_units"].queryset = Choice.objects.filter(choice_type="treatmentChemical_duration_units")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 class DeleteTreatmentChemical(DeleteView):
     model = TreatmentChemical
@@ -200,6 +260,11 @@ class DeleteTreatmentChemical(DeleteView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
     
 class EditOther(UpdateView):
     form_class = OtherForm
@@ -214,14 +279,24 @@ class EditOther(UpdateView):
         context = super(EditOther , self).get_context_data(**kwargs)
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+     
 
 class DeleteOther(DeleteView):
     model = Other
     template_name = 'deleteExperiment.html'
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
-        return reverse('detailExperiment', kwargs={'pk': experimentId})   
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class EditModification(UpdateView):
     form_class = ModificationForm
@@ -237,14 +312,23 @@ class EditModification(UpdateView):
         context['form'].fields["modification_type"].queryset = Choice.objects.filter(choice_type="modification_type")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class DeleteModification(DeleteView):
     model = Modification
     template_name = 'deleteExperiment.html'
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
-        return reverse('detailExperiment', kwargs={'pk': experimentId})      
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)      
 
 class EditConstruct(UpdateView):
     form_class = ConstructForm
@@ -260,7 +344,11 @@ class EditConstruct(UpdateView):
         context['form'].fields["construct_type"].queryset = Choice.objects.filter(choice_type="construct_type")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)  
 
 class DeleteConstruct(DeleteView):
     model = Construct
@@ -268,6 +356,10 @@ class DeleteConstruct(DeleteView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 class EditGenomicRegions(UpdateView):
     form_class = GenomicRegionsForm
@@ -284,7 +376,11 @@ class EditGenomicRegions(UpdateView):
         context['form'].fields["genomicRegions_chromosome"].queryset = Choice.objects.filter(choice_type="genomicRegions_chromosome")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)    
 
 class DeleteGenomicRegions(DeleteView):
     model = GenomicRegions
@@ -292,6 +388,10 @@ class DeleteGenomicRegions(DeleteView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 
 class EditTarget(UpdateView):
@@ -308,6 +408,10 @@ class EditTarget(UpdateView):
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 class DeleteTarget(DeleteView):
     model = Target
@@ -315,6 +419,10 @@ class DeleteTarget(DeleteView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 
 class EditSequencingRun(UpdateView):
@@ -333,7 +441,12 @@ class EditSequencingRun(UpdateView):
         context['form'].fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
         context['action'] = reverse('detailProject',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class DeleteSequencingRun(DeleteView):
     model = SequencingRun
@@ -341,6 +454,10 @@ class DeleteSequencingRun(DeleteView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 
 class EditSequencingFile(UpdateView):
@@ -357,7 +474,12 @@ class EditSequencingFile(UpdateView):
         context['form'].fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class DeleteSequencingFile(DeleteView):
     model = SeqencingFile
@@ -365,6 +487,11 @@ class DeleteSequencingFile(DeleteView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 
 class EditAnalysis(UpdateView):
@@ -389,7 +516,13 @@ class EditAnalysis(UpdateView):
             context['jsonObj']= json.loads(obj.analysis_fields)
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
+    
 
 class DeleteAnalysis(DeleteView):
     model = Analysis
@@ -397,6 +530,10 @@ class DeleteAnalysis(DeleteView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 
 class EditTag(UpdateView):
@@ -413,7 +550,11 @@ class EditTag(UpdateView):
         context['form'].fields["tag_exp"].queryset = Experiment.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailProject',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 class DeleteTag(DeleteView):
     model = Tag
@@ -421,6 +562,11 @@ class DeleteTag(DeleteView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class EditExperimentSet(UpdateView):
     form_class = ExperimentSetForm
@@ -437,7 +583,12 @@ class EditExperimentSet(UpdateView):
         context['form'].fields["experimentSet_exp"].queryset = Experiment.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailProject',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+      
 
 class DeleteExperimentSet(DeleteView):
     model = ExperimentSet
@@ -461,7 +612,11 @@ class EditFileSet(UpdateView):
         context['form'].fields["fileSet_file"].queryset = SeqencingFile.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailProject',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context  
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)  
 
 class DeleteFileSet(DeleteView):
     model = FileSet
@@ -494,7 +649,12 @@ class EditProtocol(UpdateView):
         context['form'].fields["protocol_type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context  
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+      
 
 class DeleteProtocol(DeleteView):
     model = Protocol
@@ -502,6 +662,11 @@ class DeleteProtocol(DeleteView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class EditDocument(UpdateView):
     form_class = DocumentForm
@@ -518,6 +683,10 @@ class EditDocument(UpdateView):
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 class DeleteDocument(DeleteView):
     model = Document
@@ -525,6 +694,10 @@ class DeleteDocument(DeleteView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 class EditPublication(UpdateView):
     form_class = PublicationForm
@@ -540,6 +713,11 @@ class EditPublication(UpdateView):
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class DeletePublication(DeleteView):
     model = Publication
@@ -561,7 +739,12 @@ class EditImageObjects(UpdateView):
         context = super(EditImageObjects , self).get_context_data(**kwargs)
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
-        return context    
+        return context
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 
 class DeleteImageObjects(DeleteView):
     model = ImageObjects
@@ -569,6 +752,11 @@ class DeleteImageObjects(DeleteView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
     
     
 
