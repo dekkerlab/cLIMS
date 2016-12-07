@@ -2681,10 +2681,10 @@ SELECT pg_catalog.setval('auth_permission_id_seq', 111, true);
 
 COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
 4	pbkdf2_sha256$24000$m2j9vw3bVSjt$VEi1/ljDgTWWUBFwBpOqVBQ0dycxZjxcaAuN281aoVo=	\N	f	job	Job	Dekker		f	t	2016-11-20 15:10:27-05
-2	pbkdf2_sha256$24000$JTY8e3XBPc74$QQvGzaZrO1oPuwRHDJj4xmhqbHsaXyL+oAF4D1myv1E=	2016-11-20 15:12:49.240173-05	f	hakan	Hakan	Ozadam		f	t	2016-11-07 17:16:30-05
 3	pbkdf2_sha256$24000$dIiAg1g9qgpv$iZjesX5Oq4Hp5ATggLiBzH1pKyt7V25UdA7myV4R2tA=	2016-11-20 15:13:22.993-05	f	ram	Ram	Mathur		f	t	2016-11-20 15:09:37-05
-1	pbkdf2_sha256$24000$vpV1R1QMywoL$WBFwXA0UPx8fRHMCICeInMX4fdtEJ+8XjpYyYDtvyJU=	2016-11-22 14:30:25.144136-05	t	admin			nand@gmail.com	t	t	2016-11-02 15:11:29-04
 5	pbkdf2_sha256$24000$URkfVdLCk332$0vLg/03KtRjz+mMGg9YGtKGMkZ7lUkDIihTIQNxszaY=	\N	f	sss				f	t	2016-11-22 15:38:14.042986-05
+1	pbkdf2_sha256$24000$vpV1R1QMywoL$WBFwXA0UPx8fRHMCICeInMX4fdtEJ+8XjpYyYDtvyJU=	2016-11-23 13:12:38.653145-05	t	admin			nand@gmail.com	t	t	2016-11-02 15:11:29-04
+2	pbkdf2_sha256$24000$JTY8e3XBPc74$QQvGzaZrO1oPuwRHDJj4xmhqbHsaXyL+oAF4D1myv1E=	2016-12-05 14:38:26.676532-05	f	hakan	Hakan	Ozadam		f	t	2016-11-07 17:16:30-05
 \.
 
 
@@ -3041,6 +3041,9 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 305	2016-11-21 11:33:25.075739-05	2	HindIII	1	Added.	26	1
 306	2016-11-21 12:26:04.987594-05	3	MboI	1	Added.	26	1
 307	2016-11-22 15:38:14.122882-05	5	sss	1	Added.	4	1
+308	2016-11-23 10:53:09.899429-05	17	U54-ESC-FA-20160812-DpnII	2	Changed run_approved.	15	1
+309	2016-11-23 10:53:50.166022-05	17	U54-ESC-FA-20160812-DpnII	2	Changed run_submitted.	15	1
+310	2016-11-23 11:15:36.934901-05	17	U54-ESC-FA-20160812-DpnII	2	Changed run_approved and run_submitted.	15	1
 \.
 
 
@@ -3048,7 +3051,7 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('django_admin_log_id_seq', 307, true);
+SELECT pg_catalog.setval('django_admin_log_id_seq', 310, true);
 
 
 --
@@ -3237,8 +3240,8 @@ SELECT pg_catalog.setval('django_migrations_id_seq', 116, true);
 --
 
 COPY django_session (session_key, session_data, expire_date) FROM stdin;
-c9zrsexceboafutxht2raixd9qduywva	NjMzNDRjNTdiODllNThlMWZkNmM4NTVlM2U2ZDFlYThmMmYyYWM4Mzp7ImV4cGVyaW1lbnRJZCI6IjI2IiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2hhc2giOiI3MDZmOTk0ZGEwNjFhYjRiYWZhMDk2MzdiYjllNTExYzU0NTc1NTNjIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJwcm9qZWN0SWQiOiI3IiwiY3VycmVudEdyb3VwIjoiYWRtaW4ifQ==	2016-12-05 16:33:00.088493-05
 b2p5h8q10uhh9jno8a6yps3lamuj0y3u	OTY1OGI3YzgxYTliMjkwZjA1YTgwNTIzYjgwNzFlYTdlNjRlMWU2ZTp7InByb2plY3RJZCI6IjciLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjcwNmY5OTRkYTA2MWFiNGJhZmEwOTYzN2JiOWU1MTFjNTQ1NzU1M2MiLCJleHBlcmltZW50SWQiOiIyNiIsIl9hdXRoX3VzZXJfaWQiOiIxIiwiY3VycmVudEdyb3VwIjoiYWRtaW4ifQ==	2016-12-06 15:15:21.52987-05
+wbgsz3ilchkfwbopr8o5o8c680hlriva	OWFhNTY3MDQ4YjhmOTY4MjgyOTA3YjE1NmM0MWU1ZDA5MTYwY2RhYjp7InByb2plY3RJZCI6IjgiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIiwiX2F1dGhfdXNlcl9oYXNoIjoiOWYxNTI5MjIyNTFmZWZlNTJjMjc2ZTI0OWMyNGNlZTllMDFhNjIzNCIsImN1cnJlbnRHcm91cCI6Im1lbWJlciIsInByb2plY3Rfb3duZXJJZCI6MX0=	2016-12-19 15:11:14.382125-05
 \.
 
 
@@ -3249,6 +3252,8 @@ b2p5h8q10uhh9jno8a6yps3lamuj0y3u	OTY1OGI3YzgxYTliMjkwZjA1YTgwNTIzYjgwNzFlYTdlNjR
 COPY "dryLab_analysis" (id, analysis_fields, analysis_type_id, analysis_exp_id, analysis_name, analysis_import, "analysis_hiGlass") FROM stdin;
 111	"{\\"singleSided\\": 125562849, \\"side1TotalReads\\": 383120273, \\"bounded\\": 12717, \\"enzyme\\": \\"HindIII\\", \\"side2NoMapPer\\": 10.26, \\"iterativeMappingStep\\": 5, \\"numReads\\": 383120273, \\"mapScratchSize\\": \\"1720M\\", \\"iterativeMapping\\": \\"on\\", \\"splitSize\\": 4000000, \\"genomePath\\": \\"/farline/umw_job_dekker/HPCC/cshare/genome/bowtie2/hg19/hg19\\", \\"danglingEnd\\": 4649365, \\"reduceResources\\": \\"long\\", \\"side2UniqueMap\\": 289449957, \\"side1MultiMapPer\\": 14.42, \\"restrictionSite\\": \\"AAGCTT\\", \\"errorPer\\": 0.04, \\"side2NoMap\\": 39293578, \\"time\\": \\"18:2:18, Wed Mar 30, 2016\\", \\"laneName\\": \\"U54M-031116-ESC-R1\\", \\"danglingEndPer\\": 2.04, \\"unMapped\\": 29191092, \\"reduceScratchDir\\": \\"/home/jg14w/farline/scratch\\", \\"boundedPer\\": 0.27, \\"nonRedundantInteractionsPer\\": 68.63, \\"iterativeMappingEnd\\": 50, \\"sameFragmentPer\\": 2.69, \\"internalPer\\": 99.73, \\"computeResource\\": \\"c02b01\\", \\"cMapping\\": \\"/home/jg14w/cMapping/scripts\\", \\"nCPU\\": 384, \\"error\\": 83981, \\"unMappedPer\\": 7.62, \\"totalMolecules\\": 222226983, \\"totalReads\\": 383120273, \\"totalMoleculesPer\\": 100.0, \\"alignmentSoftwarePath\\": \\"/share/pkg/bowtie2/2-2.1.0/bowtie2\\", \\"percentRedundant\\": 31.37, \\"selfCircle\\": 1406003, \\"reduceMemoryNeeded\\": \\"17,384M\\", \\"validPair\\": 222226983, \\"readLength\\": 50, \\"mapResources\\": \\"long\\", \\"validPairRedPer\\": 100.0, \\"bothSideMapped\\": 228366332, \\"side1MultiMap\\": 55232088, \\"internal\\": 4636648, \\"qvEncoding\\": \\"phred33\\", \\"side2File\\": \\"U54-031116-ESC-R1_*_L003_R2_*.fastq.gz\\", \\"alignmentOptions\\": \\"--very-sensitive --no-hd --no-sq --mm --qc-filter\\", \\"UUID\\": \\"ddf2c11c-51b7-4901-84b6-1f4e676c3cbb\\", \\"side2MultiMapPer\\": 14.19, \\"sameFragment\\": 6139349, \\"cType\\": \\"Hi-C\\", \\"bothSideMappedPer\\": 59.61, \\"trans\\": 77420170, \\"genome\\": \\"hg19\\", \\"side2UniqueMapPer\\": 75.55, \\"side2MultiMap\\": 54376738, \\"side1UniqueMap\\": 292845556, \\"redundantInteractionsPer\\": 31.37, \\"splitSizeMegabyte\\": \\"8,692M\\", \\"redundantInteractions\\": 69720369, \\"restrictionFragmentFile\\": \\"/farline/umw_job_dekker/HPCC/cshare/genome/restrictionFragments/hg19/hg19__AAGCTT.txt\\", \\"iterativeMappingStart\\": 25, \\"logDirectory\\": \\"/home/jg14w/lsf_jobs\\", \\"cisPer\\": 65.16, \\"transPer\\": 34.84, \\"selfCirclePer\\": 0.62, \\"jobName\\": \\"22MAR16_BH7JCHBB_PE50__U54M-031116-ESC-R1__hg19\\", \\"side1NoMap\\": 35042629, \\"cis\\": 144806813, \\"side1UniqueMapPer\\": 76.44, \\"laneNum\\": 3, \\"nonRedundantInteractions\\": 152506614, \\"side2AlignmentOptions\\": \\"n/a\\", \\"flowCell\\": \\"22MAR16_BH7JCHBB_PE50\\", \\"validPairRed\\": 222226983, \\"side1NoMapPer\\": 9.15, \\"side2TotalReads\\": 383120273, \\"mapMemoryNeeded\\": \\"16,398M\\", \\"mapScratchDir\\": \\"/tmp\\", \\"genomeSize\\": \\"16,398M\\", \\"side1File\\": \\"U54-031116-ESC-R1_*_L003_R1_*.fastq.gz\\", \\"aligner\\": \\"bowtie2\\", \\"side1AlignmentOptions\\": \\"n/a\\", \\"singleSidedPer\\": 32.77, \\"validPairPer\\": 97.31}"	8	26	c-World Hi-C		uploads/kinetic_detections_fgkCvpj.png
 112	"{\\"side1UniqueMap\\": \\"164500613\\", \\"jobName\\": \\"18AUG16_PE50_HCVLYBB__U54-ESC-FA-20160812-DpnII__hg19\\", \\"side1TotalReads\\": \\"234814011\\", \\"nCPU\\": \\"235\\", \\"cisPer\\": \\"33.14\\", \\"time\\": \\"10:8:14, Wed Aug 24, 2016\\", \\"unMapped\\": \\"22960699\\", \\"UUID\\": \\"dcf7009d-8e84-49d2-8972-95dfffeab8fa\\", \\"transPer\\": \\"66.86\\", \\"selfCirclePer\\": \\"0.14\\", \\"totalMolecules\\": \\"115044282\\", \\"errorPer\\": \\"0.27\\", \\"totalReads\\": \\"234814011\\", \\"bothSideMappedPer\\": \\"49.25\\", \\"trans\\": \\"76921677\\", \\"computeResource\\": \\"ghpcc06\\", \\"bounded\\": \\"8249\\", \\"numReads\\": \\"234814011\\", \\"internal\\": \\"119858\\", \\"cType\\": \\"Hi-C\\", \\"qvEncoding\\": \\"phred33\\", \\"side2UniqueMap\\": \\"163009540\\", \\"splitSize\\": \\"4000000\\", \\"danglingEnd\\": \\"128107\\", \\"side1NoMap\\": \\"20811736\\", \\"restrictionFragmentFile\\": \\"/farline/umw_job_dekker/HPCC/tmp_cshare/genome/restrictionFragments/hg19/hg19__GATC.txt\\", \\"side1NoMapPer\\": \\"8.86\\", \\"side2File\\": \\"U54-ESC-FA81216DpnII_*_L001_R2_*.fastq.gz\\", \\"nonRedundantInteractions\\": \\"63010031\\", \\"reduceResources\\": \\"long\\", \\"alignmentOptions\\": \\"--very-sensitive --no-hd --no-sq --mm --qc-filter\\", \\"splitSizeMegabyte\\": \\"8,692M\\", \\"sameFragment\\": \\"612559\\", \\"nonRedundantInteractionsPer\\": \\"54.77\\", \\"reduceMemoryNeeded\\": \\"17,384M\\", \\"validPair\\": \\"115044282\\", \\"readLength\\": \\"50\\", \\"cMapping\\": \\"/home/jg14w/cMapping/scripts\\", \\"mapScratchDir\\": \\"/tmp\\", \\"flowCell\\": \\"18AUG16_PE50_HCVLYBB\\", \\"laneName\\": \\"U54-ESC-FA-20160812-DpnII\\", \\"iterativeMappingStep\\": \\"5\\", \\"mapMemoryNeeded\\": \\"16,398M\\", \\"side2MultiMapPer\\": \\"20.5\\", \\"mapResources\\": \\"long\\", \\"enzyme\\": \\"DpnII\\", \\"percentRedundant\\": \\"45.23\\", \\"side1MultiMap\\": \\"49501662\\", \\"iterativeMappingStart\\": \\"25\\", \\"singleSidedPer\\": \\"40.97\\", \\"side2TotalReads\\": \\"234814011\\", \\"boundedPer\\": \\"6.44\\", \\"iterativeMapping\\": \\"on\\", \\"redundantInteractionsPer\\": \\"45.23\\", \\"side1MultiMapPer\\": \\"21.08\\", \\"side2MultiMap\\": \\"48132717\\", \\"mapScratchSize\\": \\"7440M\\", \\"singleSided\\": \\"96196471\\", \\"validPairPer\\": \\"99.47\\", \\"error\\": \\"317207\\", \\"internalPer\\": \\"93.56\\", \\"aligner\\": \\"bowtie2\\", \\"reduceScratchDir\\": \\"/home/jg14w/farline/scratch\\", \\"side2AlignmentOptions\\": \\"n/a\\", \\"side1File\\": \\"U54-ESC-FA81216DpnII_*_L001_R1_*.fastq.gz\\", \\"validPairRedPer\\": \\"100\\", \\"genome\\": \\"hg19\\", \\"iterativeMappingEnd\\": \\"50\\", \\"sameFragmentPer\\": \\"0.53\\", \\"unMappedPer\\": \\"9.78\\", \\"logDirectory\\": \\"/farline/umw_job_dekker/HPCC/tmp_cshare/cWorld-logs\\", \\"genomeSize\\": \\"16,398M\\", \\"genomePath\\": \\"/farline/umw_job_dekker/HPCC/tmp_cshare/genome/bowtie2/hg19/hg19\\", \\"side2NoMapPer\\": \\"10.08\\", \\"validPairRed\\": \\"115044282\\", \\"danglingEndPer\\": \\"0.11\\", \\"side1AlignmentOptions\\": \\"n/a\\", \\"restrictionSite\\": \\"GATC\\", \\"cis\\": \\"38122605\\", \\"side2NoMap\\": \\"23671754\\", \\"bothSideMapped\\": \\"115656841\\", \\"redundantInteractions\\": \\"52034251\\", \\"alignmentSoftwarePath\\": \\"/share/pkg/bowtie2/2-2.1.0/bowtie2\\", \\"totalMoleculesPer\\": \\"100\\", \\"selfCircle\\": \\"167245\\", \\"side1UniqueMapPer\\": \\"70.06\\", \\"side2UniqueMapPer\\": \\"69.42\\", \\"laneNum\\": \\"1\\"}"	8	27	c-World Hi-C-DpnII		uploads/gel_zWnQPbK.png
+117	"{\\"cMapping\\": \\"/home/jg14w/cMapping/scripts\\", \\"sameFragment\\": 612559, \\"side2MultiMap\\": 48132717, \\"computeResource\\": \\"ghpcc06\\", \\"qvEncoding\\": \\"phred33\\", \\"sameFragmentPer\\": 0.53, \\"logDirectory\\": \\"/farline/umw_job_dekker/HPCC/tmp_cshare/cWorld-logs\\", \\"side2File\\": \\"U54-ESC-FA81216DpnII_*_L001_R2_*.fastq.gz\\", \\"side1TotalReads\\": 234814011, \\"bothSideMapped\\": 115656841, \\"internal\\": 119858, \\"splitSize\\": 4000000, \\"side2NoMapPer\\": 10.08, \\"iterativeMappingEnd\\": 50, \\"validPairRed\\": 115044282, \\"redundantInteractions\\": 52034251, \\"reduceMemoryNeeded\\": \\"17,384M\\", \\"side2MultiMapPer\\": 20.5, \\"trans\\": 76921677, \\"validPairPer\\": 99.47, \\"totalMoleculesPer\\": 100.0, \\"side2UniqueMapPer\\": 69.42, \\"side1File\\": \\"U54-ESC-FA81216DpnII_*_L001_R1_*.fastq.gz\\", \\"side2TotalReads\\": 234814011, \\"cisPer\\": 33.14, \\"unMapped\\": 22960699, \\"laneName\\": \\"U54-ESC-FA-20160812-DpnII\\", \\"restrictionSite\\": \\"GATC\\", \\"enzyme\\": \\"DpnII\\", \\"internalPer\\": 93.56, \\"mapMemoryNeeded\\": \\"16,398M\\", \\"cType\\": \\"Hi-C\\", \\"side1MultiMap\\": 49501662, \\"selfCircle\\": 167245, \\"alignmentOptions\\": \\"--very-sensitive --no-hd --no-sq --mm --qc-filter\\", \\"reduceResources\\": \\"long\\", \\"readLength\\": 50, \\"jobName\\": \\"18AUG16_PE50_HCVLYBB__U54-ESC-FA-20160812-DpnII__hg19\\", \\"time\\": \\"10:8:14, Wed Aug 24, 2016\\", \\"flowCell\\": \\"18AUG16_PE50_HCVLYBB\\", \\"transPer\\": 66.86, \\"nonRedundantInteractions\\": 63010031, \\"iterativeMappingStart\\": 25, \\"bothSideMappedPer\\": 49.25, \\"side2AlignmentOptions\\": \\"n/a\\", \\"restrictionFragmentFile\\": \\"/farline/umw_job_dekker/HPCC/tmp_cshare/genome/restrictionFragments/hg19/hg19__GATC.txt\\", \\"side1MultiMapPer\\": 21.08, \\"side1AlignmentOptions\\": \\"n/a\\", \\"validPair\\": 115044282, \\"unMappedPer\\": 9.78, \\"totalReads\\": 234814011, \\"iterativeMapping\\": \\"on\\", \\"aligner\\": \\"bowtie2\\", \\"singleSidedPer\\": 40.97, \\"validPairRedPer\\": 100.0, \\"bounded\\": 8249, \\"numReads\\": 234814011, \\"iterativeMappingStep\\": 5, \\"singleSided\\": 96196471, \\"side2NoMap\\": 23671754, \\"percentRedundant\\": 45.23, \\"errorPer\\": 0.27, \\"genomePath\\": \\"/farline/umw_job_dekker/HPCC/tmp_cshare/genome/bowtie2/hg19/hg19\\", \\"mapResources\\": \\"long\\", \\"UUID\\": \\"dcf7009d-8e84-49d2-8972-95dfffeab8fa\\", \\"side1NoMap\\": 20811736, \\"mapScratchSize\\": \\"7440M\\", \\"cis\\": 38122605, \\"danglingEnd\\": 128107, \\"genome\\": \\"hg19\\", \\"side1UniqueMapPer\\": 70.06, \\"redundantInteractionsPer\\": 45.23, \\"mapScratchDir\\": \\"/tmp\\", \\"nCPU\\": 235, \\"boundedPer\\": 6.44, \\"side1NoMapPer\\": 8.86, \\"alignmentSoftwarePath\\": \\"/share/pkg/bowtie2/2-2.1.0/bowtie2\\", \\"splitSizeMegabyte\\": \\"8,692M\\", \\"danglingEndPer\\": 0.11, \\"side1UniqueMap\\": 164500613, \\"error\\": 317207, \\"reduceScratchDir\\": \\"/home/jg14w/farline/scratch\\", \\"laneNum\\": 1, \\"side2UniqueMap\\": 163009540, \\"totalMolecules\\": 115044282, \\"selfCirclePer\\": 0.14, \\"nonRedundantInteractionsPer\\": 54.77, \\"genomeSize\\": \\"16,398M\\"}"	8	30	A1		
+118	"{\\"cMapping\\": \\"/home/mo70w/scripts/git/cMapping/scripts\\", \\"same3\\": 817, \\"same4\\": 32, \\"different3\\": 6, \\"bothSideMappedPer\\": 98.64, \\"computeResource\\": \\"c02b04\\", \\"restrictionFragmentFile\\": \\"NA\\", \\"qvEncoding\\": \\"STDFQ\\", \\"restrictionSite\\": \\"NA\\", \\"noSideMapped\\": 1185262, \\"numReads\\": 100986155, \\"numRawReads\\": 100986155, \\"side2MappedPer\\": 98.67, \\"errorPairs\\": 14, \\"different1\\": 439, \\"bothSideMapped\\": 99612135, \\"invalidPairsPer\\": 0.0, \\"splitSize\\": 4000000, \\"same1\\": 21, \\"logDirectory\\": \\"/home/mo70w/farline/scratch/fiveCData/cWorld-logs\\", \\"side2File\\": \\"MO5CM-Hela-NS-C-R1T1-v2PhiX_*_L003_R2_*.fastq.gz\\", \\"fHomo\\": 1208, \\"validPairsPer\\": 0.0, \\"side1Mapped\\": 99765187, \\"validPairs\\": 2497, \\"same2\\": 791, \\"reduceMemoryNeeded\\": \\"17,384M\\", \\"different4\\": 398, \\"UUID\\": \\"83edd8a7-0f4a-49df-9c6a-1c7e193f51fd\\", \\"side2AlignmentOptions\\": \\"n/a\\", \\"jobName\\": \\"08NOV16_PE50_C-Monster__MO5CM-Hela-NS-C-R1T1-v2PhiX__5158-TalLmoHindIIIDA\\", \\"different2\\": 99609631, \\"mapScratchSize\\": \\"1720M\\", \\"rHomoPer\\": 0.0, \\"side2Mapped\\": 99647841, \\"genome\\": \\"5158-TalLmoHindIIIDA\\", \\"side1File\\": \\"MO5CM-Hela-NS-C-R1T1-v2PhiX_*_L003_R1_*.fastq.gz\\", \\"errorPairsPer\\": 0.0, \\"mapScratchDir\\": \\"/tmp\\", \\"genomePath\\": \\"/farline/umw_job_dekker/HPCC/cshare/genome/novoalign/5158-TalLmoHindIIIDA\\", \\"nCPU\\": 101, \\"invalidPairs\\": 2497, \\"alignmentSoftwarePath\\": \\"/share/pkg/novocraft/V3.02.08/novoalign\\", \\"splitSizeMegabyte\\": \\"8,692M\\", \\"oneSideMappedPer\\": 0.19, \\"laneName\\": \\"MO5CM-Hela-NS-C-R1T1-v2PhiX\\", \\"side1AlignmentOptions\\": \\"n/a\\", \\"enzyme\\": \\"NA\\", \\"mapMemoryNeeded\\": \\"8,692M\\", \\"rHomo\\": 1289, \\"reduceScratchDir\\": \\"/home/mo70w/farline/scratch\\", \\"cType\\": \\"5C\\", \\"fHomoPer\\": 0.0, \\"aligner\\": \\"novoalign\\", \\"laneNum\\": 3, \\"alignmentOptions\\": \\"n/a\\", \\"reduceResources\\": \\"long\\", \\"mapResources\\": \\"long\\", \\"readLength\\": 50, \\"oneSideMapped\\": 188758, \\"noSideMappedPer\\": 1.17, \\"side1MappedPer\\": 98.79, \\"time\\": \\"1:5:50, Wed Nov 16, 2016\\", \\"genomeSize\\": \\"8,199M\\", \\"flowCell\\": \\"08NOV16_PE50_C-Monster\\"}"	9	30	A2		
 \.
 
 
@@ -3261,6 +3266,8 @@ COPY "dryLab_analysis_analysis_file" (id, analysis_id, seqencingfile_id) FROM st
 19	111	7
 20	112	8
 21	112	9
+26	117	11
+27	118	11
 \.
 
 
@@ -3268,14 +3275,14 @@ COPY "dryLab_analysis_analysis_file" (id, analysis_id, seqencingfile_id) FROM st
 -- Name: dryLab_analysis_analysis_file_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_analysis_analysis_file_id_seq"', 21, true);
+SELECT pg_catalog.setval('"dryLab_analysis_analysis_file_id_seq"', 27, true);
 
 
 --
 -- Name: dryLab_analysis_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_analysis_id_seq"', 112, true);
+SELECT pg_catalog.setval('"dryLab_analysis_id_seq"', 118, true);
 
 
 --
@@ -3345,6 +3352,10 @@ COPY "dryLab_images" (id, image_path, image_analysis_id) FROM stdin;
 58	/media/plots/18AUG16_PE50_HCVLYBB__U54-ESC-FA-20160812-DpnII__hg19.iterativeMapping.log.png	112
 59	/media/plots/18AUG16_PE50_HCVLYBB__U54-ESC-FA-20160812-DpnII__hg19.moleculeSize.plot.log.png	112
 60	/media/plots/18AUG16_PE50_HCVLYBB__U54-ESC-FA-20160812-DpnII__hg19.interaction.log.png	112
+65	/media/plots/18AUG16_PE50_HCVLYBB__U54-ESC-FA-20160812-DpnII__hg19.strandBias.log.png	117
+66	/media/plots/18AUG16_PE50_HCVLYBB__U54-ESC-FA-20160812-DpnII__hg19.iterativeMapping.log.png	117
+67	/media/plots/18AUG16_PE50_HCVLYBB__U54-ESC-FA-20160812-DpnII__hg19.moleculeSize.plot.log.png	117
+68	/media/plots/18AUG16_PE50_HCVLYBB__U54-ESC-FA-20160812-DpnII__hg19.interaction.log.png	117
 \.
 
 
@@ -3352,7 +3363,7 @@ COPY "dryLab_images" (id, image_path, image_analysis_id) FROM stdin;
 -- Name: dryLab_images_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_images_id_seq"', 60, true);
+SELECT pg_catalog.setval('"dryLab_images_id_seq"', 68, true);
 
 
 --
@@ -3364,6 +3375,7 @@ COPY "dryLab_seqencingfile" (id, "sequencingFile_mainPath", "sequencingFile_back
 7	/farline/umw_job_dekker/HPCC/tmp_cShare/U54-031116-ESC/U54-031116-ESC-R1_*_L003_R2_*.fastq.gz	/s4s//farline/umw_job_dekker/HPCC/tmp_cShare/U54-031116-ESC/U54-031116-ESC-R1_*_L003_R2_*.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	U54-031116-ESC-R1_*_L003_R2_*.fastq.gz	16	26	7
 8	/farline/umw_job_dekker/HPCC/tmp_cShare/U54-031116-ESC/U54-ESC-FA81216DpnII_*_L001_R1_*.fastq.gz	/s4s//farline/umw_job_dekker/HPCC/tmp_cShare/U54-031116-ESC/U54-ESC-FA81216DpnII_*_L001_R1_*.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	U54-ESC-FA81216DpnII_*_L001_R1_*.fastq.gz	17	27	7
 9	/farline/umw_job_dekker/HPCC/tmp_cShare/U54-031116-ESC/U54-ESC-FA81216DpnII_*_L001_R2_*.fastq.gz	/s4s//farline/umw_job_dekker/HPCC/tmp_cShare/U54-031116-ESC/U54-ESC-FA81216DpnII_*_L001_R2_*.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	U54-ESC-FA81216DpnII_*_L001_R2_*.fastq.gz	17	27	7
+11	/farline	/s4s//farline	diuwdiued788798	hewifu9283ydhjhkj	file1	19	30	7
 \.
 
 
@@ -3371,7 +3383,7 @@ COPY "dryLab_seqencingfile" (id, "sequencingFile_mainPath", "sequencingFile_back
 -- Name: dryLab_seqencingfile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_seqencingfile_id_seq"', 9, true);
+SELECT pg_catalog.setval('"dryLab_seqencingfile_id_seq"', 11, true);
 
 
 --
@@ -3379,8 +3391,9 @@ SELECT pg_catalog.setval('"dryLab_seqencingfile_id_seq"', 9, true);
 --
 
 COPY "dryLab_sequencingrun" (id, run_name, project_id, "run_Add_Barcode", run_retrieval_date, run_submission_date, run_approved, run_submitted, run_sequencing_center_id, run_sequencing_platform_id) FROM stdin;
-17	U54-ESC-FA-20160812-DpnII	7	detailProject	2016-08-24	2016-08-01	t	t	93	91
 16	U54M-031116-ESC-R1	7	detailProject	2016-03-30	2016-03-20	t	t	93	91
+17	U54-ESC-FA-20160812-DpnII	7	detailProject	2016-08-24	2016-08-01	t	t	93	91
+19	r1	7	addBarcode	\N	2016-12-02	f	t	93	91
 \.
 
 
@@ -3388,7 +3401,7 @@ COPY "dryLab_sequencingrun" (id, run_name, project_id, "run_Add_Barcode", run_re
 -- Name: dryLab_sequencingrun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_sequencingrun_id_seq"', 17, true);
+SELECT pg_catalog.setval('"dryLab_sequencingrun_id_seq"', 19, true);
 
 
 --
@@ -3398,6 +3411,9 @@ SELECT pg_catalog.setval('"dryLab_sequencingrun_id_seq"', 17, true);
 COPY "dryLab_sequencingrun_run_Experiment" (id, sequencingrun_id, experiment_id) FROM stdin;
 14	16	26
 15	17	27
+17	19	30
+18	19	26
+19	19	27
 \.
 
 
@@ -3405,7 +3421,7 @@ COPY "dryLab_sequencingrun_run_Experiment" (id, sequencingrun_id, experiment_id)
 -- Name: dryLab_sequencingrun_run_Experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_sequencingrun_run_Experiment_id_seq"', 15, true);
+SELECT pg_catalog.setval('"dryLab_sequencingrun_run_Experiment_id_seq"', 19, true);
 
 
 --
@@ -3581,6 +3597,7 @@ COPY organization_experiment (id, experiment_name, experiment_biosample_id, proj
 28	ExperimentHiC-MboI	22	8	13		3		\N	\N	
 26	ExperimentHiC-HindIII	21	7	11		2		\N	\N	
 27	ExperimentHiC-Dpn||	21	7	12		1		\N	\N	
+30	Exp1	24	7	11		2		\N	\N	
 \.
 
 
@@ -3607,7 +3624,7 @@ SELECT pg_catalog.setval('"organization_experiment_experiment_imageObjects_id_se
 -- Name: organization_experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_experiment_id_seq', 28, true);
+SELECT pg_catalog.setval('organization_experiment_id_seq', 30, true);
 
 
 --
@@ -3671,8 +3688,8 @@ SELECT pg_catalog.setval('organization_jsonobjfield_id_seq', 9, true);
 --
 
 COPY organization_project (id, project_name, project_notes, project_active, project_owner_id) FROM stdin;
-7	U54	Human Project	t	1
 8	Rao et al		t	1
+7	U54	Human Project1	t	1
 \.
 
 
@@ -3680,7 +3697,7 @@ COPY organization_project (id, project_name, project_notes, project_active, proj
 -- Name: organization_project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_project_id_seq', 8, true);
+SELECT pg_catalog.setval('organization_project_id_seq', 9, true);
 
 
 --
@@ -3699,7 +3716,7 @@ COPY organization_project_project_contributor (id, project_id, user_id) FROM std
 -- Name: organization_project_project_contributor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_project_project_contributor_id_seq', 12, true);
+SELECT pg_catalog.setval('organization_project_project_contributor_id_seq', 13, true);
 
 
 --
@@ -3724,6 +3741,7 @@ SELECT pg_catalog.setval('organization_publication_id_seq', 1, true);
 
 COPY organization_tag (id, tag_name, tag_user_id, project_id) FROM stdin;
 6	TagExport	1	7
+7	tag1	1	7
 \.
 
 
@@ -3731,7 +3749,7 @@ COPY organization_tag (id, tag_name, tag_user_id, project_id) FROM stdin;
 -- Name: organization_tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_tag_id_seq', 6, true);
+SELECT pg_catalog.setval('organization_tag_id_seq', 7, true);
 
 
 --
@@ -3741,6 +3759,7 @@ SELECT pg_catalog.setval('organization_tag_id_seq', 6, true);
 COPY organization_tag_tag_exp (id, tag_id, experiment_id) FROM stdin;
 6	6	27
 7	6	26
+8	7	27
 \.
 
 
@@ -3748,7 +3767,7 @@ COPY organization_tag_tag_exp (id, tag_id, experiment_id) FROM stdin;
 -- Name: organization_tag_tag_exp_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_tag_tag_exp_id_seq', 7, true);
+SELECT pg_catalog.setval('organization_tag_tag_exp_id_seq', 8, true);
 
 
 --
@@ -3756,6 +3775,7 @@ SELECT pg_catalog.setval('organization_tag_tag_exp_id_seq', 7, true);
 --
 
 COPY "wetLab_barcode" (id, barcode_exp_id, barcode_name_1_id, barcode_name_2_id, barcode_run_id) FROM stdin;
+11	30	80	79	19
 \.
 
 
@@ -3763,7 +3783,7 @@ COPY "wetLab_barcode" (id, barcode_exp_id, barcode_name_1_id, barcode_name_2_id,
 -- Name: wetLab_barcode_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_barcode_id_seq"', 9, true);
+SELECT pg_catalog.setval('"wetLab_barcode_id_seq"', 11, true);
 
 
 --
@@ -3773,6 +3793,8 @@ SELECT pg_catalog.setval('"wetLab_barcode_id_seq"', 9, true);
 COPY "wetLab_biosample" (id, biosample_fields, biosample_biosource_id, biosample_individual_id, biosample_modification_id, biosample_protocol_id, biosample_type_id, biosample_name, "userOwner_id", dbxrefs, documents_id, references_id, url, biosample_treatment_id, biosample_description) FROM stdin;
 22	\N	19	24	\N	\N	\N	HeLaS3human_p1	1		\N	\N		78	
 21	\N	18	23	\N	\N	\N	H1-hESC stem cell	1		\N	\N		78	
+23	"{\\"passage_number\\": \\"22\\", \\"synchronization_stage\\": \\"G2\\", \\"starting_amount_units\\": \\"\\", \\"karyotype\\": \\"\\", \\"differentiation_state\\": \\"\\", \\"dbxrefs\\": \\"\\", \\"culture_duration\\": \\"\\", \\"starting_amount\\": \\"\\", \\"culture_duration_units\\": \\"minutes\\", \\"culture_start_date\\": \\"07/07/2016\\"}"	18	23	3	\N	3	sample1	1		\N	\N		75	
+24	"{\\"passage_number\\": \\"\\", \\"synchronization_stage\\": \\"\\", \\"starting_amount_units\\": \\"\\", \\"karyotype\\": \\"\\", \\"differentiation_state\\": \\"\\", \\"dbxrefs\\": \\"\\", \\"culture_duration\\": \\"\\", \\"starting_amount\\": \\"\\", \\"culture_duration_units\\": \\"minutes\\", \\"culture_start_date\\": \\"\\"}"	18	23	3	11	3	sam1	1		\N	\N		75	
 \.
 
 
@@ -3796,7 +3818,7 @@ SELECT pg_catalog.setval('"wetLab_biosample_biosample_imageObjects_id_seq"', 2, 
 -- Name: wetLab_biosample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_biosample_id_seq"', 22, true);
+SELECT pg_catalog.setval('"wetLab_biosample_id_seq"', 24, true);
 
 
 --
@@ -4030,6 +4052,8 @@ COPY "wetLab_treatmentrnai" (id, url, dbxrefs, "treatmentRnai_name", "treatmentR
 3			tttt			\N	\N	1	58	1	\N
 10			dd			\N	\N	\N	58	\N	\N
 11			Tr1	udqwyd	des	\N	\N	\N	58	\N	\N
+12			rani			\N	\N	1	58	\N	\N
+13			treat1			\N	\N	1	58	\N	1
 \.
 
 
@@ -4038,6 +4062,8 @@ COPY "wetLab_treatmentrnai" (id, url, dbxrefs, "treatmentRnai_name", "treatmentR
 --
 
 COPY "wetLab_treatmentrnai_biosample" (id, treatmentrnai_id, biosample_id) FROM stdin;
+10	12	23
+11	13	24
 \.
 
 
@@ -4045,14 +4071,14 @@ COPY "wetLab_treatmentrnai_biosample" (id, treatmentrnai_id, biosample_id) FROM 
 -- Name: wetLab_treatmentrnai_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_treatmentrnai_id_seq"', 11, true);
+SELECT pg_catalog.setval('"wetLab_treatmentrnai_id_seq"', 13, true);
 
 
 --
 -- Name: wetLab_treatmentrnai_treatmentRnai_biosample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_treatmentrnai_treatmentRnai_biosample_id_seq"', 9, true);
+SELECT pg_catalog.setval('"wetLab_treatmentrnai_treatmentRnai_biosample_id_seq"', 11, true);
 
 
 --

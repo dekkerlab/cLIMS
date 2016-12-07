@@ -4,9 +4,12 @@ cd ./Python-3.5.2
 ./configure --prefix=/opt/python3.5
 make && sudo make install
 
-pip3 install Django=1.9.7
-pip3 install psycopg2=2.6.2 
-pip3 install django-crispy-forms=1.6.0
-pip3 install openpyxl=2.4.0
-pip3 install xlutils=2.0.0
-pip3 install xlwt=1.1.2 	
+sudo pip-3.5 install Django==1.9.7
+ 
+sudo pip-3.5 install django-crispy-forms==1.6.0
+sudo pip-3.5 install openpyxl==2.4.0
+sudo pip-3.5 install xlutils==2.0.0
+sudo pip-3.5 install xlwt==1.1.2 	
+
+
+sudo pip-3.5 install psycopg2==2.6.2
