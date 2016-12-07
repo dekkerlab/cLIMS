@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': cLIMS.base.DATABASE_NAME,
         'USER': cLIMS.base.DATABASE_USER,
         'PASSWORD': cLIMS.base.DATABASE_PASSWORD,
-        'HOST': '',
+        'HOST': 'localhost',
         'PORT': '', 
     }
 }
