@@ -25,3 +25,35 @@ sudo yum install httpd24*
 
 ##pg_dump clims_db > clims.sql;
 ##cat /djangoProject/cLIMS/clims.sql.txt | psql clims_db
+
+
+## /usr/local/lib/python3.5/site-packages   PYTHON LIBRARIES
+## /usr/local/lib64/python3.5/site-packages/	PYTHON LIBRARIES
+## sudo python3 manage.py runserver 0.0.0.0:80	RUNSERVER WITH PORT
+
+## /var/lib/pgsql9/data/pg_hba.conf
+##Your pg_hba.conf is configured to use 'ident' authentication for connections from localhost (127.0.0.1). You need it to be changed to md5 for your database and user combination.
+
+##sudo /etc/init.d/httpd stop
+##sudo /etc/init.d/httpd start  
+
+##cd /etc/httpd/conf    APACHE CONFIG FILE
+##cd /etc/httpd/logs	  APACHE LOGS
+
+
+######### CHANGES FOR APACHE CONFIG FILE##########
+##Alias /static /djangoProject/cLIMS/static
+##<Directory "/djangoProject/cLIMS/static">
+##        Require all granted
+##</Directory>
+
+##WSGIScriptAlias / /djangoProject/cLIMS/cLIMS/apache/wsgi.py
+##<Directory "/djangoProject/cLIMS/cLIMS/apache">
+##        <Files wsgi.py>
+##                Require all granted
+##        </Files>
+##</Directory>
+
+##WSGIPythonPath /djangoProject/cLIMS/:/usr/local/lib/python3.5/site-packages/
+
+
