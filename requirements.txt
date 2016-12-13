@@ -56,3 +56,4 @@ sudo yum install httpd24*
 
 ##WSGIPythonPath /djangoProject/cLIMS/:/usr/local/lib/python3.5/site-packages/
 
+
