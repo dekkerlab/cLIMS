@@ -1,15 +1,27 @@
-wget https://www.python.org/ftp/python/3.5.2/Python-3.5.2.tar.xz
-tar xJf ./Python-3.5.2.tar.xz
-cd ./Python-3.5.2
-./configure --prefix=/opt/python3.5
-make && sudo make install
+sudo yum -y update
+sudo yum install git-all
+mkdir /djangoProject
+cd /djangoProject
+sudo git clone https://github.com/dekkerlab/cLIMS.git
+sudo yum install python35*
+sudo yum install mod24_wsgi-python35.x86_64
 
 sudo pip-3.5 install Django==1.9.7
- 
 sudo pip-3.5 install django-crispy-forms==1.6.0
 sudo pip-3.5 install openpyxl==2.4.0
 sudo pip-3.5 install xlutils==2.0.0
-sudo pip-3.5 install xlwt==1.1.2 	
+sudo pip-3.5 install xlwt==1.1.2 
 
+sudo yum install postgresql95*
+sudo yum -y groupinstall "Development Tools"
+sudo pip-3.5 install psycopg2
+sudo yum install httpd24*
 
-sudo pip-3.5 install psycopg2==2.6.2
+##create database clims_db;
+##drop database clims_db;
+##CREATE ROLE dekker_lab WITH LOGIN PASSWORD 'CHYYTS14#';
+##GRANT ALL PRIVILEGES ON DATABASE clims_db TO dekker_lab;
+##ALTER USER dekker_lab CREATEDB;
+
+##pg_dump clims_db > clims.sql;
+##cat /djangoProject/cLIMS/clims.sql.txt | psql clims_db
