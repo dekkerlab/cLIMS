@@ -20,6 +20,6 @@ Created on Oct 7, 2016
 DATABASE_NAME='clims_db'
 DATABASE_USER='dekker_lab'
 DATABASE_PASSWORD='CHYYTS14#'
-HOST='localhost'
-PORT='8000'
-WORKSPACEPATH = "/Users/nanda/Documents/EclipseWorkspace/clims/cLIMS/"
+HOST=''
+PORT=''
+WORKSPACEPATH = "/djangoProject/cLIMS"
