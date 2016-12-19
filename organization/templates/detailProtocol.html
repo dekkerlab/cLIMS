@@ -19,10 +19,10 @@
 	<br/>
     	<span class="rowHead">Protocol Type:</span>{{ protocol.type }}<br/>
     	<span class="rowHead">Protocol Document:</span>
-    	<a href="/detailDocument/{{ protocol.protocol_document.id}}">{{ protocol.document }}</a><br/>
+    	<a href="/detailDocument/{{ protocol.document.id}}">{{ protocol.document }}</a><br/>
     	<span class="rowHead">Protocol Enzyme:</span>
-    	{% if not protocol.protocol_enzyme == None %}
-    		<a href="/detailEnzyme/{{ protocol.protocol_enzyme.id}}">{{ protocol.enzyme }}</a>
+    	{% if not protocol.enzyme == None %}
+    		<a href="/detailEnzyme/{{ protocol.enzyme.id}}">{{ protocol.enzyme }}</a>
     	{% endif %}
     	<br/>
     	<span class="rowHead">Protocol Variation:</span>{{ protocol.variation }}<br/>

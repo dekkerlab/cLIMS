@@ -39,7 +39,7 @@ class Construct(models.Model):
     construct_name = models.CharField(max_length=50, null=False, default="", help_text="Short name for construct - letters, numbers, hyphens or underscores allowed (no spaces)")
     construct_type = models.ForeignKey('organization.Choice',related_name='conChoice', on_delete=models.CASCADE, help_text="The categorization of the construct.")
     construct_vendor = models.ForeignKey(Vendor,related_name='conVendor',null=True, blank=True, help_text="The Lab or Vendor that provided the construct.")
-    construct_designed_to_target = models.CharField(max_length=200, null=True, blank=True, help_text="The gene or genomic region that this construct is designed to target")
+    construct_designed_to_Target = models.CharField(max_length=200, null=True, blank=True, help_text="The gene or genomic region that this construct is designed to target")
     construct_insert_sequence = models.CharField(max_length=200, null=True, blank=True, help_text="Nucleotide Sequence of the Insert")
     document =  models.ForeignKey(Document,verbose_name="construct_map",related_name='conDoc',null=True, blank=True, on_delete=models.CASCADE, help_text="Map of the construct - document")
     construct_tag = models.CharField(max_length=200, null=True, blank=True, help_text="String describing tags the construct contains.")

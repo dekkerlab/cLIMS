@@ -102,6 +102,8 @@ urlpatterns = [
     url(r'^deletePublication/(?P<pk>[0-9]+)/$', DeletePublication.as_view(), name='deletePublication'),
     url(r'^editImageObjects/(?P<pk>[0-9]+)/$', EditImageObjects.as_view(), name='editImageObjects'),
     url(r'^deleteImageObjects/(?P<pk>[0-9]+)/$', DeleteImageObjects.as_view(), name='deleteImageObjects'),
+    url(r'^editBarcode/(?P<pk>[0-9]+)/$', EditBarcode.as_view(), name='editBarcode'),
+    url(r'^deleteBarcode/(?P<pk>[0-9]+)/$', DeleteBarcode.as_view(), name='deleteBarcode'),
     
     
     url(r'^submitSequencingRun/(?P<pk>[0-9]+)/$', views.submitSequencingRun, name='submitSequencingRun'),

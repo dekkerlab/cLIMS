@@ -193,9 +193,9 @@ def exportGEO(request):
         ws.cell(row=sampleRowNo, column=2).value = str(sample.biosample_name)
         ws.cell(row=sampleRowNo, column=3).value = str(sample.biosample_biosource.biosource_tissue)
         ws.cell(row=sampleRowNo, column=4).value = str(sample.biosample_individual.individual_type)
-        if(sample.biosample_protocol):
-            ws.cell(row=sampleRowNo, column=5).value = str(sample.biosample_protocol.protocol_type)
-            ws.cell(row=sampleRowNo, column=6).value = str(sample.biosample_protocol.protocol_enzyme) 
+        if(sample.protocol):
+            ws.cell(row=sampleRowNo, column=5).value = str(sample.protocol.type)
+            ws.cell(row=sampleRowNo, column=6).value = str(sample.protocol.enzyme) 
         ws.cell(row=sampleRowNo, column=7).value = str(sample.biosample_biosource.biosource_cell_line)  
         ws.cell(row=sampleRowNo, column=8).value = str("DNA")
         ws.cell(row=sampleRowNo, column=9).value = str(sample.biosample_biosource.biosource_description)

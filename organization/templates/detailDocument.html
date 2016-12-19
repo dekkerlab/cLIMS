@@ -14,17 +14,22 @@
     	Document Details: {{ document.publication_title }}
     </span>
     <a href="/deleteDocument/{{ document.id }}">
-	<button type="button" class="btn btn-danger pull-right">Delete Document</button>
+	<button type="button" class="btn btn-danger pull-right hidden show">Delete Document</button>
 	</a>
 	<a href="/editDocument/{{document.id}}">
-		<button type="button" class="btn btn-warning pull-right">Edit Document</button>
+		<button type="button" class="btn btn-warning pull-right hidden show">Edit Document</button>
 	</a>
 	<br/>
     	<span class="rowHead">Document Abstract:</span>{{ document.description }}<br/>
     	<span class="rowHead">Document Type:</span>{{ document.type }}<br/>
-    	<span class="rowHead">Document Attachment:</span>{{ document.attachment }}<br/>
-    	<span class="rowHead">Document References:</span>
-    	<a href="/detailPublication/{{ document.references.id}}">{{ document.references }}</a><br/>
+    	
+    	{% if not document.attachment  == None %}
+    	<span class="rowHead">Document Attachment:</span><a href="/media/{{ document.attachment }}">{{ document.attachment }}</a><br/>
+    	{% endif %}
+    	
+    	{% if not document.references  == None %}
+    	<span class="rowHead">Document References:</span><a href="/detailPublication/{{ document.references.id}}">{{ document.references }}</a><br/>
+    	{% endif %}
     	<span class="rowHead">Document URL:</span>{{ document.url }}<br/>
     	
 		{% else %}

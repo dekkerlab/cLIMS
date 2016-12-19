@@ -175,9 +175,12 @@ class EditBiosample(UpdateView):
         obj = Biosample.objects.get(pk=self.get_object().id)
         if(obj.biosample_fields):
             context['jsonObj']= json.loads(obj.biosample_fields)
-        context['form'].fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
+            
+        context['form'].fields["biosample_TreatmentRnai"].queryset = TreatmentRnai.objects.filter(userOwner=self.request.user.pk)
+        context['form'].fields["biosample_TreatmentChemical"].queryset = TreatmentChemical.objects.filter(userOwner=self.request.user.pk)
+        context['form'].fields["biosample_OtherTreatment"].queryset = OtherTreatment.objects.filter(userOwner=self.request.user.pk)
         context['form'].fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
-        context['form'].fields["biosample_imageObjects"].queryset = ImageObjects.objects.filter(project=self.request.session['projectId'])
+        context['form'].fields["imageObjects"].queryset = ImageObjects.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -624,6 +627,10 @@ class DeleteFileSet(DeleteView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 
 class EditProtocol(UpdateView):
@@ -634,8 +641,8 @@ class EditProtocol(UpdateView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         protocol = Protocol.objects.get(pk=self.get_object().id)
-        if(self.request.POST.get('protocol_type')):
-            protocol_type = self.request.POST.get('protocol_type')
+        if(self.request.POST.get('type')):
+            protocol_type = self.request.POST.get('type')
             protocol.protocol_fields = createJSON(self.request, protocol_type)
             protocol.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
@@ -646,7 +653,7 @@ class EditProtocol(UpdateView):
         if(obj.protocol_fields):
             context['jsonObj']= json.loads(obj.protocol_fields)
         print(json.loads(obj.protocol_fields))
-        context['form'].fields["protocol_type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
+        context['form'].fields["type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context  
@@ -679,7 +686,7 @@ class EditDocument(UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(EditDocument , self).get_context_data(**kwargs)
-        context['form'].fields["document_type"].queryset = Choice.objects.filter(choice_type="document_type")
+        context['form'].fields["type"].queryset = Choice.objects.filter(choice_type="document_type")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    
@@ -756,6 +763,42 @@ class DeleteImageObjects(DeleteView):
     @method_decorator(require_permission)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
+
+
+class EditBarcode(UpdateView):
+    form_class = BarcodeForm
+    model = Barcode
+    template_name = 'barcodeForm.html'
+    
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+    
+    def get_context_data(self, **kwargs):
+        context = super(EditBarcode , self).get_context_data(**kwargs)
+        context['form'].fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
+        context['form'].fields["barcode_name_2"].queryset = Choice.objects.filter(choice_type="barcode")
+        context['form'].fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=self.request.session['runId'])
+        context['action'] = reverse('detailProject',
+                                kwargs={'pk': self.get_object().id})
+        return context  
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
+
+class DeleteBarcode(DeleteView):
+    model = Barcode
+    template_name = 'delete.html'
+    def get_success_url(self):
+        projectId = self.request.session['projectId']
+        return reverse('detailProject', kwargs={'pk': projectId})
+    
+    @method_decorator(require_permission)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
     
     
     
