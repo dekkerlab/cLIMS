@@ -22,4 +22,4 @@ DATABASE_USER='dekker_lab'
 DATABASE_PASSWORD='CHYYTS14#'
 HOST=''
 PORT=''
-WORKSPACEPATH = "/djangoProject/cLIMS"
+WORKSPACEPATH = "/djangoProject/cLIMS/"
