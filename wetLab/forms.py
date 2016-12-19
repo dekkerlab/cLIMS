@@ -9,8 +9,6 @@ from wetLab.models import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
-from django_modalview.generic.edit import ModalFormView
-from django_modalview.generic.component import ModalResponse
 from django.contrib.admin.widgets import RelatedFieldWidgetWrapper
 from wetLab.wrapper import add_related_field_wrapper, SelectWithPop,\
     MultipleSelectWithPop
