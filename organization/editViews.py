@@ -268,7 +268,7 @@ class DeleteTreatmentChemical(DeleteView):
     
 class EditOther(UpdateView):
     form_class = OtherForm
-    model = Other
+    model = OtherTreatment
     template_name = 'customForm.html/'
     
     def get_success_url(self):
@@ -287,7 +287,7 @@ class EditOther(UpdateView):
      
 
 class DeleteOther(DeleteView):
-    model = Other
+    model = OtherTreatment
     template_name = 'deleteExperiment.html'
     def get_success_url(self):
         experimentId = self.request.session['experimentId']

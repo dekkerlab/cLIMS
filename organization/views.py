@@ -20,6 +20,10 @@ import tarfile
 import os
 from cLIMS.base import WORKSPACEPATH
 from organization.extractAnalysis import extractHiCAnalysis, extract5CAnalysis
+import itertools
+import re
+from django.utils.html import escape
+from django.template.context import RequestContext
 # Create your views here.
 
 def login(request, **kwargs):
@@ -59,6 +63,8 @@ class HomeView(View):
         else:
             return render(request, self.error_page)
 
+
+ 
 class AddProject(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -75,9 +81,10 @@ class AddProject(View):
             result.project_owner = request.user
             result.save()
             project_contributor = request.POST.getlist('project_contributor')
-            for contributor in project_contributor:
-                user = User.objects.get(pk=contributor)
-                result.project_contributor.add(user)
+            if(project_contributor):
+                for contributor in project_contributor:
+                    user = User.objects.get(pk=contributor)
+                    result.project_contributor.add(user)
             return HttpResponseRedirect('/showProject/')
         else:
             return render(request, self.template_name,{'form':form})
@@ -169,7 +176,9 @@ class DetailExperiment(View):
         experiment = Experiment.objects.get(pk=pk)
         individual = False
         biosource = False
-        treatment = False
+        treatmentRnai = False
+        treatmentChemical = False
+        otherTreatment = False
         modification = False
         construct = False
         target = False
@@ -183,10 +192,13 @@ class DetailExperiment(View):
                 biosource = Biosource.objects.get(bioSource__pk=biosample.pk)
                 if(Individual.objects.filter(sourceInd__pk=biosource.pk)):
                     individual = Individual.objects.filter(sourceInd__pk=biosource.pk)
-        if(str(biosample.biosample_treatment)  != "None"):
-            treatmentModel = apps.get_model('wetLab', str(biosample.biosample_treatment))
-            if(treatmentModel.objects.filter(biosample=biosample.pk)):
-                treatment = treatmentModel.objects.filter(biosample=biosample.pk)
+            if(TreatmentRnai.objects.filter(biosamTreatmentRnai=biosample.pk)):
+                treatmentRnai = TreatmentRnai.objects.filter(biosamTreatmentRnai=biosample.pk)
+            if(TreatmentChemical.objects.filter(biosamTreatmentChemical=biosample.pk)):
+                treatmentChemical = TreatmentChemical.objects.filter(biosamTreatmentChemical=biosample.pk)
+            if(OtherTreatment.objects.filter(biosamOtherTreatment=biosample.pk)):
+                otherTreatment = OtherTreatment.objects.filter(biosamOtherTreatment=biosample.pk)
+            
         if((Modification.objects.filter(bioMod__pk=biosample.pk))):
             modification = Modification.objects.get(bioMod__pk=biosample.pk)
             if(Construct.objects.filter(modConstructs__pk=modification.pk)):
@@ -209,7 +221,9 @@ class DetailExperiment(View):
         context['biosample']= biosample
         context['biosource']= biosource
         context['individuals']= individual
-        context['treatments']= treatment
+        context['treatmentRnai']= treatmentRnai
+        context['treatmentChemical']= treatmentChemical
+        context['otherTreatment']= otherTreatment
         context['modification']= modification
         context['constructs']= construct
         context['targets']= target
@@ -377,6 +391,8 @@ class AddBiosource(View):
                 form.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosource", 'existing':existing,'isExisting':isExisting})
 
+
+
 class AddBiosample(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -389,9 +405,12 @@ class AddBiosample(View):
         isExisting = (selectForm.fields["Biosample"].queryset.count() > 0)
         existing = selectForm['Biosample']
         form = self.form_class()
-        form.fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
+        
+        form.fields["biosample_TreatmentRnai"].queryset = TreatmentRnai.objects.filter(userOwner=request.user.pk)
+        form.fields["biosample_TreatmentChemical"].queryset = TreatmentChemical.objects.filter(userOwner=request.user.pk)
+        form.fields["biosample_OtherTreatment"].queryset = OtherTreatment.objects.filter(userOwner=request.user.pk)
         form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
-        form.fields["biosample_imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
+        form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
         return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
     
     def post(self,request):
@@ -409,23 +428,21 @@ class AddBiosample(View):
                 biosourcePK = request.session['biosourcePK']
                 biosample.biosample_biosource = Biosource.objects.get(pk=biosourcePK)
                 biosample.biosample_individual = Individual.objects.get(pk=individualPK)
-                treatmentModel = str(biosample.biosample_treatment)
                 if(request.POST.get('biosample_type')):
                     biosample_type = request.POST.get('biosample_type')
                     biosample.biosample_fields = createJSON(request, biosample_type)
                 biosample.save()
                 request.session['biosamplePK'] = biosample.pk
-                if (treatmentModel == "None"):
-                    return HttpResponseRedirect('/addExperiment/')
-                else:
-                    return HttpResponseRedirect('/add'+treatmentModel)
+                return HttpResponseRedirect('/addExperiment/')
             else:
                 selectForm.fields["Biosample"].queryset = Biosample.objects.filter(biosample_biosource=request.session['biosourcePK'])
                 isExisting = (selectForm.fields["Biosample"].queryset.count() > 0)
                 existing = selectForm['Biosample']
-                form.fields["biosample_treatment"].queryset = Choice.objects.filter(choice_type="biosample_treatment")
+                form.fields["biosample_TreatmentRnai"].queryset = TreatmentRnai.objects.filter(userOwner=request.user.pk)
+                form.fields["biosample_TreatmentChemical"].queryset = TreatmentChemical.objects.filter(userOwner=request.user.pk)
+                form.fields["biosample_OtherTreatment"].queryset = OtherTreatment.objects.filter(userOwner=request.user.pk)
                 form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
-                form.fields["biosample_imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
+                form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
 
 
@@ -437,7 +454,7 @@ class AddExperiment(View):
     
     def get(self,request):
         form = self.form_class()
-        form.fields["experiment_imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
+        form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
         return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
     
     def post(self,request):
@@ -449,7 +466,7 @@ class AddExperiment(View):
             form.save()
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
-            form.fields["experiment_imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
+            form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
 
 
@@ -487,7 +504,7 @@ class AddModification(View):
             modification.modification_genomicRegions = regions
             modification.modification_target = target
             modification.save()
-            return HttpResponseRedirect('/addBiosample/')
+            return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(modification._get_pk_val()), escape(modification)))
         else:
             form.fields["modification_type"].queryset = Choice.objects.filter(choice_type="modification_type")
             construct_form.fields["construct_type"].queryset = Choice.objects.filter(choice_type="construct_type")
@@ -497,178 +514,226 @@ class AddModification(View):
 
         
 class AddConstruct(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
     form_class = ConstructForm
-    
+    field = "Construct"
     def get(self,request):
         form = self.form_class()
         form.fields["construct_type"].queryset = Choice.objects.filter(choice_type="construct_type")
-        return render(request, self.template_name,{'form':form, 'form_class':"Construct"})
+        pageContext = {'form': form, 'field':self.field}
+        return render(request, "popup.html", pageContext)
     
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/showProject/')
+            newObject = None
+            try:
+                newObject = form.save()
+            
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
+ 
         else:
             form.fields["construct_type"].queryset = Choice.objects.filter(choice_type="construct_type")
-            return render(request, self.template_name,{'form':form, 'form_class':"Construct"})
+            pageContext = {'form': form, 'field':self.field}
+            return render(request, "popup.html", pageContext)
 
 
         
 class AddTarget(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
     form_class = TargetForm
-    
+    field = "Target"
     def get(self,request):
         form = self.form_class()
-        return render(request, self.template_name,{'form':form, 'form_class':"Target"})
+        pageContext = {'form': form, 'field':self.field}
+        return render(request, "popup.html", pageContext)
     
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/showProject/')
+            newObject = None
+            try:
+                newObject = form.save()
+            
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
-            return render(request, self.template_name,{'form':form, 'form_class':"Target"})
+            pageContext = {'form': form, 'field':self.field}
+            return render(request, "popup.html", pageContext)
 
 
 
 class AddProtocol(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
     form_class = ProtocolForm
-    
+    field = "Protocol"
     def get(self,request):
         form = self.form_class()
-        form.fields["protocol_type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
-        return render(request, self.template_name,{'form':form, 'form_class':"Protocol"})
+        form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
+        pageContext = {'form': form, 'field':self.field}
+        return render(request, "popup.html", pageContext)
     
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            protocol = form.save(commit= False)
-            protocol.userOwner = User.objects.get(pk=request.user.pk)
-            if(request.POST.get('protocol_type')):
-                protocol_type = request.POST.get('protocol_type')
-                protocol.protocol_fields = createJSON(request, protocol_type)
-            protocol.save()
-            return HttpResponseRedirect('/showProject/')
+            newObject = None
+            try:
+                newObject = form.save(commit= False)
+                newObject.userOwner = User.objects.get(pk=request.user.pk)
+                if(request.POST.get('type')):
+                    protocol_type = request.POST.get('type')
+                    newObject.protocol_fields = createJSON(request, protocol_type)
+                newObject.save()
+           
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
-            form.fields["protocol_type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
-            return render(request, self.template_name,{'form':form, 'form_class':"Protocol"})
-
+            form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
+            pageContext = {'form': form, 'field':self.field}
+            return render(request, "popup.html", pageContext)
+        
 class AddTreatmentRnai(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
     form_class = TreatmentRnaiForm
-    
+    field = "TreatmentRNAi"
     def get(self,request):
         form = self.form_class()
         form.fields["treatmentRnai_rnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_rnai_type")
-        return render(request, self.template_name,{'form':form, 'form_class':"TreatmentRnai"})
+        pageContext = {'form': form, 'field':self.field}
+        return render(request, "popup.html", pageContext)
     
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            treatment = form.save(commit= False)
-            treatment.save()
-            biosample = request.POST.getlist('biosample')
-            for bioPk in biosample:
-                bioSam = Biosample.objects.get(pk=bioPk)
-                treatment.biosample.add(bioSam)
-            return HttpResponseRedirect('/addExperiment/')
+            newObject = None
+            try:
+                newObject = form.save(commit= False)
+                newObject.userOwner = User.objects.get(pk=request.user.pk)
+                newObject.save()
+           
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
+
         else:
             form.fields["treatmentRnai_rnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_rnai_type")
-            return render(request, self.template_name,{'form':form, 'form_class':"TreatmentRnai"})
-
+            pageContext = {'form': form, 'field':self.field}
+            return render(request, "popup.html", pageContext)
+        
 class AddTreatmentChemical(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
     form_class = TreatmentChemicalForm
-    
+    field = "TreatmentChemical"
     def get(self,request):
         form = self.form_class()
         form.fields["treatmentChemical_concentration_units"].queryset = Choice.objects.filter(choice_type="treatmentChemical_concentration_units")
         form.fields["treatmentChemical_duration_units"].queryset = Choice.objects.filter(choice_type="treatmentChemical_duration_units")
-        return render(request, self.template_name,{'form':form, 'form_class':"TreatmentChemical"})
+        pageContext = {'form': form, 'field':self.field}
+        return render(request, "popup.html", pageContext)
     
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            treatment = form.save(commit= False)
-            treatment.save()
-            biosample = request.POST.getlist('biosample')
-            for bioPk in biosample:
-                bioSam = Biosample.objects.get(pk=bioPk)
-                treatment.biosample.add(bioSam)
-            return HttpResponseRedirect('/addExperiment/')
+            newObject = None
+            try:
+                newObject = form.save(commit= False)
+                newObject.userOwner = User.objects.get(pk=request.user.pk)
+                newObject.save()
+            
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
             form.fields["treatmentChemical_concentration_units"].queryset = Choice.objects.filter(choice_type="treatmentChemical_concentration_units")
             form.fields["treatmentChemical_duration_units"].queryset = Choice.objects.filter(choice_type="treatmentChemical_duration_units")
-            return render(request, self.template_name,{'form':form, 'form_class':"TreatmentChemical"})
+            pageContext = {'form': form, 'field':self.field}
+            return render(request, "popup.html", pageContext)
         
 class AddOther(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
     form_class = OtherForm
-    
+    field = "OtherTreatment"
     def get(self,request):
         form = self.form_class()
-        return render(request, self.template_name,{'form':form, 'form_class':"Others"})
+        pageContext = {'form': form, 'field':self.field}
+        return render(request, "popup.html", pageContext)
     
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            other = form.save()
-            biosample = request.POST.getlist('biosample')
-            for bioPk in biosample:
-                bioSam = Biosample.objects.get(pk=bioPk)
-                other.biosample.add(bioSam)
-            return HttpResponseRedirect('/addExperiment/')
+            newObject = None
+            try:
+                newObject = form.save()
+                
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
-            return render(request, self.template_name,{'form':form, 'form_class':"Others"})
-
+            pageContext = {'form': form, 'field':self.field}
+            return render(request, "popup.html", pageContext)
+        
 
 
 class AddDocument(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
     form_class = DocumentForm
-    
+    field = "Document"
     def get(self,request):
         form = self.form_class()
-        form.fields["document_type"].queryset = Choice.objects.filter(choice_type="document_type")
-        return render(request, self.template_name,{'form':form, 'form_class':"Document"})
-    
+        form.fields["type"].queryset = Choice.objects.filter(choice_type="document_type")
+        pageContext = {'form': form, 'field':self.field}
+        return render(request, "popup.html", pageContext)
+     
     def post(self,request):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            document = form.save(commit= False)
-            document.save()
-            return HttpResponseRedirect('/showProject/')
+            newObject = None
+            try:
+                newObject = form.save()
+                
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
-            form.fields["document_type"].queryset = Choice.objects.filter(choice_type="document_type")
-            return render(request, self.template_name,{'form':form, 'form_class':"Document"})
+            form.fields["type"].queryset = Choice.objects.filter(choice_type="document_type")
+            pageContext = {'form': form, 'field':self.field}
+            return render(request, "popup.html", pageContext)
+        
 
 class AddPublication(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
     form_class = PublicationForm
-    
+    field = "Publication"
     def get(self,request):
         form = self.form_class()
-        return render(request, self.template_name,{'form':form, 'form_class':"Publication"})
+        pageContext = {'form': form, 'field':self.field}
+        return render(request, "popup.html", pageContext)
     
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/showProject/')
+            newObject = None
+            try:
+                newObject = form.save()
+                
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
-            return render(request, self.template_name,{'form':form, 'form_class':"Publication"})
+            pageContext = {'form': form, 'field':self.field}
+            return render(request, "popup.html", pageContext)
 
 
 class AddSequencingRun(View): 
@@ -849,24 +914,30 @@ class AddTag(View):
 
 
 class AddImageObjects(View): 
-    template_name = 'customForm.html'
-    error_page = 'error.html'
     form_class = ImageObjectsForm
-    
+    field = "Images"
     def get(self,request):
         form = self.form_class()
-        return render(request, self.template_name,{'form':form, 'form_class':"Images"})
+        pageContext = {'form': form, 'field':self.field}
+        return render(request, "popup.html", pageContext)
     
     def post(self,request):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            image = form.save(commit=False)
-            image.project = Project.objects.get(pk=request.session['projectId'])
-            image.save()
-            return HttpResponseRedirect('/showProject/')
-        else:
-            return render(request, self.template_name,{'form':form, 'form_class':"Images"})
+            newObject = None
+            try:
+                newObject = form.save(commit=False)
+                newObject.project = Project.objects.get(pk=request.session['projectId'])
+                newObject.save()
+            except(forms.ValidationError):
+                newObject = None
                 
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
+
+        else:
+            pageContext = {'form': form, 'field':self.field}
+            return render(request, "popup.html", pageContext)
 
 
 def log_file(members):

@@ -25,7 +25,7 @@ class Choice(models.Model):
     
 class Project(models.Model):
     project_owner = models.ForeignKey(User, related_name='ownerProject', on_delete=models.CASCADE,)
-    project_contributor = models.ManyToManyField(User, related_name='memberProject')
+    project_contributor = models.ManyToManyField(User, related_name='memberProject', blank=True,)
     project_name = models.CharField(max_length=200, null=False, default="", unique=True,  db_index=True, help_text="Name of the project")
     project_notes = models.TextField( null=True, blank=True, help_text="Notes for the project.")
     project_active = models.BooleanField(default=True, help_text="Is project currently in progress?")
@@ -37,10 +37,10 @@ class Experiment(References):
     experiment_name = models.CharField(max_length=100, null=False, default="", db_index=True)
     project = models.ForeignKey(Project,related_name='expProject', on_delete=models.CASCADE,)
     experiment_biosample = models.ForeignKey('wetLab.Biosample',related_name='expBio', on_delete=models.CASCADE,help_text="Starting biological material.")
-    experiment_protocol = models.ForeignKey('wetLab.Protocol',related_name='expPro', on_delete=models.CASCADE,)
+    protocol = models.ForeignKey('wetLab.Protocol',related_name='expPro', on_delete=models.CASCADE,)
     experiment_enzyme = models.ForeignKey('wetLab.Enzyme',related_name='expEnz', on_delete=models.CASCADE,help_text="The enzyme used for digestion of the DNA.")
     experiment_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A short description of the experiment")
-    experiment_imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='expImg' , blank=True, help_text="Lab gel and fragment analyzer images")
+    imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='expImg' , blank=True, help_text="Lab gel and fragment analyzer images")
     
     def __str__(self):
         return self.experiment_name

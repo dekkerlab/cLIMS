@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-
+{% load tags_extras %}
 
 {% block content %}
- <script src="{% static "siteWide/js/show.js" %}"></script>
+ <script src="{% static 'siteWide/js/show.js' %}"></script>
   <link href="/static/siteWide/css/detail.css" rel="stylesheet">
 {% if experiment %}
 <div class="bodyContent container">
@@ -36,12 +36,12 @@
 <span class="rowHead">Project Name: </span>{{experiment.project}}<br/>
 <span class="rowHead">Biosource: </span>{{experiment.experiment_biosample.biosample_biosource}}<br/>
 <span class="rowHead">Biosample: </span>{{ experiment.experiment_biosample }}<br/>
-<span class="rowHead">Protocol: </span><a href="/detailProtocol/{{ experiment.experiment_protocol.id }}">{{ experiment.experiment_protocol }}</a><br/>
+<span class="rowHead">Protocol: </span><a href="/detailProtocol/{{ experiment.protocol.id }}">{{ experiment.protocol }}</a><br/>
 <span class="rowHead">Enzyme: </span>{{ experiment.experiment_enzyme }}<br/>
 <span class="rowHead">Description: </span>{{ experiment.experiment_description }}<br/>
 
 <span class="rowHead">Experiment Images: </span><br/>
-{% for images in experiment.experiment_imageObjects.all %}
+{% for images in experiment.imageObjects.all %}
 <a href="/media/{{images.imageObjects_images}}" target="_blank">{{images.imageObjects_name}}</a><br/>
 <div class="paddingSpace  hidden show">
 <a href="/deleteImageObjects/{{images.id }}">
@@ -74,8 +74,8 @@
 <span class="rowHead">Individual Name: </span>{{individual.individual_name}}<br/>
 <span class="rowHead">Individual Vendor: </span>{{individual.individual_vendor}}<br/>
 <span class="rowHead">Individual URL: </span>{{individual.url}}<br/>
-{% if not biosource.documents  == None %}
-<span class="rowHead">Individual Documents: </span><a href="/detailDocument/{{individual.documents.id}}">{{individual.documents}}</a><br/>
+{% if not biosource.document  == None %}
+<span class="rowHead">Individual Documents: </span><a href="/detailDocument/{{individual.document.id}}">{{individual.document}}</a><br/>
 {% endif %}
 
 {% if not biosource.references  == None %}
@@ -117,17 +117,17 @@
 <span class="rowHead">Biosource Type: </span>{{biosource.biosource_type}}<br/>
 <span class="rowHead">Biosource Cell Line: </span>{{ biosource.biosource_cell_line }}<br/>
 <span class="rowHead">Biosource Cell Line Tire: </span>{{ biosource.biosource_cell_line_tier }}<br/>
-{% if not biosource.biosource_SOP_cell_line  == None %}
-<span class="rowHead">Biosource Standard Operation Protocol (4DN): </span><a href="/detailProtocol/{{ biosource.biosource_SOP_cell_line.id }}">{{ biosource.biosource_SOP_cell_line }}</a><br/>
+{% if not biosource.protocol  == None %}
+<span class="rowHead">Biosource Standard Operation Protocol (4DN): </span><a href="/detailProtocol/{{ biosource.protocol.id }}">{{ biosource.protocol }}</a><br/>
 {% endif %}
 <span class="rowHead">Biosource Vendor: </span>{{ biosource.biosource_vendor }}<br/>
 <span class="rowHead">Biosource Individual: </span>{{ biosource.biosource_individual }}<br/>
 <span class="rowHead">Biosource Tissue: </span>{{ biosource.biosource_tissue }}<br/>
 <span class="rowHead">Biosource Description: </span>{{ biosource.biosource_description }}<br/>
 <span class="rowHead">Biosource URL: </span>{{biosource.url}}<br/>
-{% if not biosource.documents  == None %}
+{% if not biosource.document  == None %}
 <span class="rowHead">Biosource Documents: </span>
-<a href="/detailDocument/{{biosource.documents.id}}">{{biosource.documents}}</a><br/>
+<a href="/detailDocument/{{biosource.documents.id}}">{{biosource.document}}</a><br/>
 {% endif %}
 {% if not biosource.references  == None %}
 <span class="rowHead">Biosource References: </span><a href="/detailPublication/{{biosource.references.id}}">{{biosource.references}}</a><br/>
@@ -154,13 +154,24 @@
 <span class="rowHead">Biosample Biosource: </span>{{biosample.biosample_biosource}}<br/>
 <span class="rowHead">Biosample Individual: </span>{{ biosample.biosample_individual }}<br/>
 <span class="rowHead">Biosample Modification: </span>{{ biosample.biosample_modification }}<br/>
-{% if not biosample.biosample_protocol  == None %}
-<span class="rowHead">Biosample Protocol: </span><a href="/detailProtocol/{{ biosample.biosample_protocol.id }}">{{ biosample.biosample_protocol }}</a><br/>
+{% if not biosample.protocol  == None %}
+<span class="rowHead">Biosample Protocol: </span><a href="/detailProtocol/{{ biosample.protocol.id }}">{{ biosample.protocol }}</a><br/>
 {% endif %}
-<span class="rowHead">Biosample Treatment: </span>{{ biosample.biosample_treatment }}<br/>
+{% if biosample.biosample_TreatmentRnai%}
+<span class="rowHead">Biosample Treatment: </span>{{ biosample.biosample_TreatmentRnai}}<br/>
+{% endif %}
+
+{% if biosample.biosample_TreatmentChemical %}
+<span class="rowHead">Biosample Treatment: </span>{{ biosample.biosample_TreatmentChemical }}<br/>
+{% endif %}
+
+{% if biosample.biosample_OtherTreatment %}
+<span class="rowHead">Biosample Treatment: </span>{{ biosample.biosample_OtherTreatment }}<br/>
+{% endif %}
+
 <span class="rowHead">Biosample URL: </span>{{biosample.url}}<br/>
-{% if not biosample.documents  == None %}
-<span class="rowHead">Biosample Documents: </span><a href="/detailDocument/{{biosample.documents.id}}">{{biosample.documents}}</a><br/>
+{% if not biosample.document  == None %}
+<span class="rowHead">Biosample Documents: </span><a href="/detailDocument/{{biosample.document.id}}">{{biosample.document}}</a><br/>
 {% endif %}
 {% if not biosample.references  == None %}
 <span class="rowHead">Biosample References: </span><a href="/detailPublication/{{biosample.references.id}}">{{biosample.references}}</a><br/>
@@ -181,7 +192,7 @@
 </table>
 {% endif %}
 <span class="rowHead">Biosample Images: </span><br/>
-{% for images in biosample.biosample_imageObjects.all %}
+{% for images in biosample.imageObjects.all %}
 <a href="/media/{{images.imageObjects_images}}" target="_blank">{{images.imageObjects_name}}</a><br/>
 <div class="paddingSpace  hidden show">
 <a href="/deleteImageObjects/{{images.id }}">
@@ -197,15 +208,14 @@
 {% endif %}
 
 
-{% if treatments %}
+{% if treatmentRnai %}
 <hr/>
 <div class="infoBlock">
 <a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
 <a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
-<span class="tableHead">Associated Biosample Treatment</span><br/>
+<span class="tableHead">Associated Biosample Treatment RNAi</span><br/>
 <div class="divData hidden">
-		{% for treatment in treatments %}
-			{% if treatment.treatmentRnai_name %}
+		{% for treatment in treatmentRnai %}
 			<a href="/deleteTreatmentRnai/{{ treatment.id }}">
 				<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
 			</a>
@@ -224,9 +234,31 @@
 	    			({{ forloop.counter }}) {{values}}<br/>
 	  			{% endfor %}
 			<span class="rowHead">TreatmentRnai Description: </span>{{treatment.treatmentRnai_description}}<br/>
+			
+			<span class="rowHead">Treatment Description: </span>{{treatment.description}}<br/>
+			
+			<span class="rowHead">Treatment URL: </span>{{treatment.url}}<br/>
+			{% if not treatment.documents  == None %}
+			<span class="rowHead">Treatment Documents: </span><a href="/detailDocument/{{treatment.document.id}}">{{treatment.document}}</a><br/>
 			{% endif %}
 			
-			{% if treatment.treatmentChemical_name %}
+			{% if not treatment.references  == None %}
+			<span class="rowHead">Treatment References: </span><a href="/detailPublication/{{ treatment.references.id }}">{{treatment.references}}</a><br/>
+			{% endif %}
+			<span class="rowHead">Treatment DBxrefs: </span>{{treatment.dbxrefs}}<br/>
+		{% endfor %}
+</div></div>
+{% endif %}
+
+
+{% if treatmentChemical %}
+<hr/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
+<span class="tableHead">Associated Biosample Treatment Chemical</span><br/>
+<div class="divData hidden">
+		{% for treatment in treatmentChemical %}
 			<a href="/deleteTreatmentChemical/{{ treatment.id }}">
 				<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
 			</a>
@@ -246,9 +278,31 @@
 	    			({{ forloop.counter }}) {{values}}<br/>
 	  			{% endfor %}
 			<span class="rowHead">TreatmentChemical Description: </span>{{treatment.treatmentChemical_description}}<br/>
+			<span class="rowHead">Treatment Description: </span>{{treatment.description}}<br/>
+			
+			<span class="rowHead">Treatment URL: </span>{{treatment.url}}<br/>
+			{% if not treatment.documents  == None %}
+			<span class="rowHead">Treatment Documents: </span><a href="/detailDocument/{{treatment.document.id}}">{{treatment.document}}</a><br/>
 			{% endif %}
 			
-			{% if treatment.name %}
+			{% if not treatment.references  == None %}
+			<span class="rowHead">Treatment References: </span><a href="/detailPublication/{{ treatment.references.id }}">{{treatment.references}}</a><br/>
+			{% endif %}
+			<span class="rowHead">Treatment DBxrefs: </span>{{treatment.dbxrefs}}<br/>
+{% endfor %}
+</div></div>
+{% endif %}
+
+
+
+{% if otherTreatment %}
+<hr/>
+<div class="infoBlock">
+<a style="cursor: pointer;"><i class="fa fa-plus-square-o expand" aria-hidden="true"></i></a>
+<a style="cursor: pointer;"><i class="fa fa-minus-square-o collapse hidden" aria-hidden="true"></i></a>
+<span class="tableHead">Associated Biosample Treatment Other</span><br/>
+<div class="divData hidden">
+		{% for treatment in otherTreatment %}
 			<a href="/deleteOther/{{ treatment.id }}">
 				<button type="button" class="btn btn-danger pull-right hidden show">Delete</button>
 			</a>
@@ -262,11 +316,10 @@
 	    			({{ forloop.counter }}) {{values}}<br/>
 	  			{% endfor %}
 			<span class="rowHead">Treatment Description: </span>{{treatment.description}}<br/>
-			{% endif %}
 			
 			<span class="rowHead">Treatment URL: </span>{{treatment.url}}<br/>
-			{% if not treatment.documents  == None %}
-			<span class="rowHead">Treatment Documents: </span><a href="/detailDocument/{{treatment.documents.id}}">{{treatment.documents}}</a><br/>
+			{% if not treatment.document  == None %}
+			<span class="rowHead">Treatment Documents: </span><a href="/detailDocument/{{treatment.document.id}}">{{treatment.document}}</a><br/>
 			{% endif %}
 			
 			{% if not treatment.references  == None %}
@@ -295,16 +348,16 @@
 </a>
 		<span class="rowHead">Modification Name: </span>{{modification.modification_name}}<br/>
 		<span class="rowHead">Modification Type: </span>{{modification.modification_type}}<br/>
-		<span class="rowHead">Modification Constructs: </span>{{modification.modification_constructs}}<br/>
+		<span class="rowHead">Modification Constructs: </span>{{modification.constructs}}<br/>
 		<span class="rowHead">Modification Vendor: </span>{{modification.modification_vendor}}<br/>
 		<span class="rowHead">Modification gRNA: </span>{{modification.modification_gRNA}}<br/>
 		<span class="rowHead">Modification Genomic Regions: </span>{{modification.modification_genomicRegions}}<br/>
-		<span class="rowHead">Modification Target: </span>{{modification.modification_target}}<br/>
+		<span class="rowHead">Modification Target: </span>{{modification.target}}<br/>
 		<span class="rowHead">Modification Description: </span>{{modification.modification_description}}<br/>
 		<span class="rowHead">Modification URL: </span>{{modification.url}}<br/>
 		
-		{% if not modification.documents  == None %}
-		<span class="rowHead">Modification Documents: </span><a href="/detailDocument/{{modification.documents.id}}">{{modification.documents}}</a><br/>
+		{% if not modification.document  == None %}
+		<span class="rowHead">Modification Documents: </span><a href="/detailDocument/{{modification.document.id}}">{{modification.document}}</a><br/>
 		{% endif %}
 		
 		{% if not modification.references  == None %}
@@ -334,7 +387,7 @@
 		<span class="rowHead">Construct Vendor: </span>{{construct.construct_vendor}}<br/>
 		<span class="rowHead">Construct Designed To Target: </span>{{construct.construct_designed_to_target}}<br/>
 		<span class="rowHead">Construct Insert Sequence: </span>{{construct.construct_insert_sequence}}<br/>
-		<span class="rowHead">Construct Map: </span>{{construct.construct_map}}<br/>
+		<span class="rowHead">Construct Map: </span>{{construct.document}}<br/>
 		<span class="rowHead">Construct Tag: </span>{{construct.construct_tag}}<br/>
 		<span class="rowHead">Construct Vector Backbone: </span>{{construct.construct_vector_backbone}}<br/>
 		<span class="rowHead">Construct Description: </span>{{construct.construct_description}}<br/>

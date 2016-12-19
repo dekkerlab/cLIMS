@@ -151,8 +151,8 @@
 		<div class="fieldWrapper">
 		 {{field.errors}}
 		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  {{field.label}} {% if field.field.required %} * {% endif %}
-	  {{field}}
+	  <span>{{field.label}} {% if field.field.required %} * {% endif %}
+	  {{field}}</span>
   </div>
 {% endfor %}
 	 {% endif %}
@@ -163,8 +163,8 @@
 		<div class="fieldWrapper">
 		 {{field.errors}}
 		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  {{field.label}} {% if field.field.required %} * {% endif %}
-	  {{field}}
+	  <span>{{field.label}} {% if field.field.required %} * {% endif %}
+	  {{field}}</span>
   </div>
 {% endfor %}
 	 {% endif %}
@@ -175,8 +175,8 @@
 		<div class="fieldWrapper">
 		 {{field.errors}}
 		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  {{field.label}} {% if field.field.required %} * {% endif %}
-	  {{field}}
+	  <span>{{field.label}} {% if field.field.required %} * {% endif %}
+	  {{field}}</span>
   </div>
 {% endfor %}
 	 {% endif %}
@@ -187,8 +187,9 @@
 		<div class="fieldWrapper">
 		 {{field.errors}}
 		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  {{field.label}} {% if field.field.required %} * {% endif %}
+	  <span>{{field.label}} {% if field.field.required %} * {% endif %}
 	  {{field}}
+	  </span>
   </div>
 {% endfor %}
 	 {% endif %}

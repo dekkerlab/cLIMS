@@ -8,12 +8,17 @@ from organization.models import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from organization.simple_search import BaseSearchForm
+from django import forms
+from wetLab.models import Protocol, Document
+from wetLab.wrapper import SelectWithPop, MultipleSelectWithPop
+from dryLab.models import ImageObjects
 
 class ProjectForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Project
         exclude = ('project_owner',)
+    
 
 class ProjectSearchForm(BaseSearchForm):
     formName = 'ProjectSearchForm'
@@ -35,9 +40,16 @@ class ProjectSearchForm(BaseSearchForm):
         
 class ExperimentForm(ModelForm):
     use_required_attribute = False
+    documents = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
+    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop,required=False)
+    protocol = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop)
+    imageObjects = forms.ModelMultipleChoiceField (ImageObjects.objects.all(), widget=MultipleSelectWithPop, required=False)
+    
     class Meta:
         model = Experiment
         exclude = ('project','experiment_biosample',)
+        fields = ['experiment_name','protocol','experiment_enzyme',
+                  'imageObjects','references','documents','url','dbxrefs','experiment_description']
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'

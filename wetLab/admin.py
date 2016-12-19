@@ -1,6 +1,10 @@
 from django.contrib import admin
+from django.contrib.admin.options import ModelAdmin
+
 from .models import *
-# Register your models here.
+
+
+
 
 admin.site.register(Modification)
 admin.site.register(Individual)
@@ -15,5 +19,5 @@ admin.site.register(GenomicRegions)
 admin.site.register(Target)
 admin.site.register(TreatmentRnai)
 admin.site.register(TreatmentChemical)
-admin.site.register(Other)
+admin.site.register(OtherTreatment)
 admin.site.register(Barcode)

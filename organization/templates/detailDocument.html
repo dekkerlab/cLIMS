@@ -20,12 +20,12 @@
 		<button type="button" class="btn btn-warning pull-right">Edit Document</button>
 	</a>
 	<br/>
-    	<span class="rowHead">Document Abstract:</span>{{ document.document_description }}<br/>
-    	<span class="rowHead">Document Type:</span>{{ document.document_type }}<br/>
-    	<span class="rowHead">Document Attachment:</span>{{ document.document_attachment }}<br/>
+    	<span class="rowHead">Document Abstract:</span>{{ document.description }}<br/>
+    	<span class="rowHead">Document Type:</span>{{ document.type }}<br/>
+    	<span class="rowHead">Document Attachment:</span>{{ document.attachment }}<br/>
     	<span class="rowHead">Document References:</span>
-    	<a href="/detailPublication/{{ document.document_references.id}}">{{ document.document_references }}</a><br/>
-    	<span class="rowHead">Document URL:</span>{{ document.document_url }}<br/>
+    	<a href="/detailPublication/{{ document.references.id}}">{{ document.references }}</a><br/>
+    	<span class="rowHead">Document URL:</span>{{ document.url }}<br/>
     	
 		{% else %}
     <p>No data available.</p>

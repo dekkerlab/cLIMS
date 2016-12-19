@@ -47,14 +47,127 @@ $(function() {
 	}
 	
 	
-	$( "span:contains('Biosample modification')" ).append('<a href="/addModification/" title="Add another Modification"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
-	$( "span:contains('protocol ')" ).append('<a href="/addProtocol/" target="_blank" title="Add another Protocol"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
-	$( "span:contains('document')" ).append('<a href="/addDocument/" target="_blank" title="Add another Document"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
-	$( "span:contains('Documents')" ).append('<a href="/addDocument/" target="_blank" title="Add another Document"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
-	$( "span:contains('References')" ).append('<a href="/addPublication/" target="_blank" title="Add another Publication"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
-	$( "span:contains('constructs')" ).append('<a href="/addConstruct/" target="_blank" title="Add another Construct"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
-	$( "span:contains('target')" ).append('<a href="/addTarget/" target="_blank" title="Add another Target"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
-	$( "span:contains('imageObjects')" ).append('<a href="/addImageObjects/" target="_blank" title="Add another Image"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+	 
+	//$( "span:contains('Biosample modification')" ).append('<a href="/addModification/" title="Add another Modification"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+	//$( "span:contains('protocol ')" ).append('<a href="/addProtocol/" target="_blank" title="Add another Protocol"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+	//$( "span:contains('document')" ).append('<a href="/addDocument/" target="_blank" title="Add another Document"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+	
+	//$( "span:contains('Document')" ).append('<a id="document_modal" class=\'btn\' href=\'/addDocument/\'>Display modal </a>');
+	
+	//$( "span:contains('Documents')" ).append('<a href="/addDocument/" target="_blank" title="Add another Document"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+	//$( ".formLabel:contains('Documents')" ).append('<a href="/addDocument/" class="add-another" id="add_id_documents" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('Document')" ).append('<a href="/addDocument/" class="add-another" id="add_id_document" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('References')" ).append('<a href="/addPublication/" class="add-another" id="add_id_references" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('Protocol')" ).append('<a href="/addProtocol/" class="add-another" id="add_id_protocol" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('Biosample modification')" ).append('<a href="/addModification/" class="add-another" id="add_id_biosample_modification" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('constructs')" ).append('<a href="/addConstruct/" class="add-another" id="add_id_constructs" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('target')" ).append('<a href="/addTarget/" class="add-another" id="add_id_target" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('Imageobjects')" ).append('<a href="/addImageObjects/" class="add-another" id="add_id_imageObjects" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('treatmentrnai')" ).append('<a href="/addTreatmentRnai/" class="add-another" id="add_id_biosample_TreatmentRnai" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('treatmentchemical')" ).append('<a href="/addTreatmentChemical/" class="add-another" id="add_id_biosample_TreatmentChemical" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('othertreatment')" ).append('<a href="/addOther/" class="add-another" id="add_id_biosample_OtherTreatment" onclick="return showAddAnotherPopup(this);"></a>');
+	
+	
+	//$( "span:contains('References')" ).append('<a href="/addPublication/" target="_blank" title="Add another Publication"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+//	$( "span:contains('constructs')" ).append('<a href="/addConstruct/" target="_blank" title="Add another Construct"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+//	$( "span:contains('target')" ).append('<a href="/addTarget/" target="_blank" title="Add another Target"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+//	$( "span:contains('imageObjects')" ).append('<a href="/addImageObjects/" target="_blank" title="Add another Image"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+//	$( "span:contains('TreatmentRnai')" ).append('<a href="/addTreatmentRnai/" target="_blank" title="Add another TreatmentRnai"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+//	$( "span:contains('TreatmentChemical')" ).append('<a href="/addTreatmentChemical/" target="_blank" title="Add another TreatmentChemical"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+//	$( "span:contains('OtherTreatment ')" ).append('<a href="/addOther/" target="_blank" title="Add another Other Treatment"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
+	
+//	
+//	$('#id_biosample_treatment').on('change', function() {
+//		var selectedTreatment = $( "#id_biosample_treatment option:selected" ).text();
+//		if(selectedTreatment=="Already selected TreatmentRnai"){
+//			
+//			$("#id_biosample_select_old_OtherTreatment").val("");
+//			$("#id_biosample_select_old_TreatmentChemical").val("");
+//			
+//			$("#id_biosample_select_old_TreatmentRnai").prop('required',true);
+//			$("#id_biosample_select_old_TreatmentChemical").prop('required',false);
+//			$("#id_biosample_select_old_OtherTreatment").prop('required',false);
+//		}
+//		else if(selectedTreatment=="Already selected TreatmentChemical"){
+//			
+//			$("#id_biosample_select_old_OtherTreatment").val("");
+//			$("#id_biosample_select_old_TreatmentRnai").val("");
+//			
+//			$("#id_biosample_select_old_TreatmentChemical").prop('required',true);
+//			$("#id_biosample_select_old_TreatmentRnai").prop('required',false);
+//			$("#id_biosample_select_old_OtherTreatment").prop('required',false);
+//		}
+//		else if(selectedTreatment=="Already selected OtherTreatment"){
+//			
+//			$("#id_biosample_select_old_TreatmentChemical").val("");
+//			$("#id_biosample_select_old_TreatmentRnai").val("");
+//			
+//			$("#id_biosample_select_old_OtherTreatment").prop('required',true);
+//			$("#id_biosample_select_old_TreatmentChemical").prop('required',false);
+//			$("#id_biosample_select_old_TreatmentRnai").prop('required',false);
+//		}
+//		else {
+//			$("#id_biosample_select_old_OtherTreatment").prop('required',false);
+//			$("#id_biosample_select_old_TreatmentChemical").prop('required',false);
+//			$("#id_biosample_select_old_TreatmentRnai").prop('required',false);
+//			
+//			$("#id_biosample_select_old_OtherTreatment").val("");
+//			$("#id_biosample_select_old_TreatmentChemical").val("");
+//			$("#id_biosample_select_old_TreatmentRnai").val("");
+//		}
+//			
+//		
+//	});
+//	
+//	$('#id_biosample_select_old_TreatmentRnai').on('change', function() {
+//		var oldTreatment = $( "#id_biosample_select_old_TreatmentRnai option:selected" ).val();
+//		if(oldTreatment){
+//			$("#id_biosample_select_old_OtherTreatment").val("");
+//			$("#id_biosample_select_old_TreatmentChemical").val("");
+//			
+//			var theText = "Already selected TreatmentRnai";
+//			$("#id_biosample_treatment option:contains(" + theText + ")").attr('selected', 'selected');
+//			
+//			
+//			$("#id_biosample_select_old_OtherTreatment").prop('required',false);
+//			$("#id_biosample_select_old_TreatmentChemical").prop('required',false);
+//			
+//			$("#id_biosample_select_old_TreatmentRnai").prop('required',true);
+//		}
+//		
+//	});
+//	$('#id_biosample_select_old_OtherTreatment').on('change', function() {
+//		var oldTreatment = $( "#id_biosample_select_old_OtherTreatment option:selected" ).val();
+//		if(oldTreatment){
+//			$("#id_biosample_select_old_TreatmentRnai").val("");
+//			$("#id_biosample_select_old_TreatmentChemical").val("");
+//			
+//			var theText = "Already selected OtherTreatment";
+//			$("#id_biosample_treatment option:contains(" + theText + ")").attr('selected', 'selected');
+//			
+//			$("#id_biosample_select_old_TreatmentRnai").prop('required',false);
+//			$("#id_biosample_select_old_TreatmentChemical").prop('required',false);
+//			
+//			$("#id_biosample_select_old_OtherTreatment").prop('required',true);
+//		}
+//		
+//	});
+//	$('#id_biosample_select_old_TreatmentChemical').on('change', function() {
+//		var oldTreatment = $( "#id_biosample_select_old_TreatmentChemical option:selected" ).val();
+//		if(oldTreatment){
+//			$("#id_biosample_select_old_OtherTreatment").val("");
+//			$("#id_biosample_select_old_TreatmentRnai").val("");
+//			
+//			var theText = "Already selected TreatmentChemical";
+//			$("#id_biosample_treatment option:contains(" + theText + ")").attr('selected', 'selected');
+//			
+//			$("#id_biosample_select_old_OtherTreatment").prop('required',false);
+//			$("#id_biosample_select_old_TreatmentRnai").prop('required',false);
+//			
+//			$("#id_biosample_select_old_TreatmentChemical").prop('required',true);
+//		}
+//		
+//	});
 	
 //	$('#indCheck').click(function() {
 //	    $(".indDiv").toggleClass("hidden");

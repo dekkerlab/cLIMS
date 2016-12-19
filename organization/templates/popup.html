@@ -1,7 +1,18 @@
-{% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% load staticfiles %}
 {% block content %}
+{% load staticfiles %}
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+
+<link href="/static/siteWide/css/bootstrap.min.css" rel="stylesheet">
+
+ <!-- Custom Fonts -->
+ <link href="/static/siteWide/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+ <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+
 <script type="text/javascript" src="{% static '/static/siteWide/js/jquery.init.js' %}"></script> 
 <script type="text/javascript" src="/static/admin/js/core.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css"/>
@@ -9,8 +20,12 @@
 <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css"/>
 <link rel="stylesheet" type="text/css" href="/static/admin/css/widgets.css"/>
 <link href="/static/siteWide/css/formSteps.css" rel="stylesheet">
+
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
 <script type="text/javascript" src="/static/siteWide/js/form.js"></script>
-<script>
+<!-- Custom CSS -->
+ <link href="/static/siteWide/css/landing-page.css" rel="stylesheet">
+ <script>
 (function(globals) { 
 
   var django = globals.django || (globals.django = {});
@@ -134,25 +149,12 @@
 
 }(this));
 </script>
-<div class="bodyContent container">
-	    {% if messages %}
-        {% for message in messages %}
-            <p class="alert alert-danger">{{message}}</p>
-        {% endfor %}
-    {% endif %}
-	<form method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-		<h1>{{form_class}}</h1>
-		{% if  isExisting %}
-		<input type="radio" name="selectForm" value="old">&nbsp;&nbsp;Choose Existing One<br/><br/>
-			{% for objects in existing %}
-				{{objects.name}}&nbsp;&nbsp;
-				{{objects}}
-			{% endfor %}
-			<br/><br/><input type="radio" name="selectForm"  value="new" checked="checked">&nbsp;&nbsp;OR Fill a new one<br/><br/>
-		{% endif %}
-		
-		 {% if form %}
+ 
+ <div class="bodyContent container">
+<h1>Add {{ field }}</h1>
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+ {% if form %}
 			{{ form.non_field_errors }}
 			{% for field in form %}
 				<div class="fieldWrapper">
@@ -161,18 +163,19 @@
 					<span class="formLabel">
 					  {{field.label}} {% if field.field.required %} * {% endif %}
 					  </span>
-					 {% if field.help_text == "JsonObjField" %}
+					  	{% if field.help_text == "JsonObjField" %}
 					  <span class="jsonForm">
 					  		{{field}}
 					  </span>
 					  {% else %}
 					  	{{field}}
 					  {% endif %}
+					 
 			  	</div>
 				{% endfor %}
 				<div class="inner"></div>
 			{% endif %}
-			<input type="submit" value="Submit" />
-		</div>
-	</form>
+			<p><input type="submit" value="Submit" /> | <a href="javascript:window.close()">Cancel</a></p>
+</form>
+</div>
 {% endblock %} 
