@@ -20,7 +20,7 @@ class SequencingRun(models.Model):
     run_Add_Barcode = models.CharField(
         max_length=13,
         choices=BARCODE_CHOICES,
-        default='showProject',
+        default='detailProject',
     )
     def __str__(self):
         return self.run_name
