@@ -10,10 +10,10 @@ Created on Dec 20, 2016
 #import create_account
 #create_account.readAccounts("/home/ubuntu/clims_automated_emails/lab_emails.txt")
 ###########################################
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 
 def createAccounts(userEmail,userName, userPassword):
-    from django.contrib.auth.models import User
-    from django.contrib.auth.models import Group
     user = User.objects.create_user(userName, userEmail, userPassword)
     user.save()
     name=userEmail.split("@")
