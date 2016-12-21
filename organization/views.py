@@ -24,20 +24,30 @@ import itertools
 import re
 from django.utils.html import escape
 from django.template.context import RequestContext
+from organization.decorators import class_login_required
+from django.dispatch.dispatcher import receiver
+from django.contrib.auth.signals import user_logged_in
 # Create your views here.
+
+@receiver(user_logged_in)
+def sig_user_logged_in(sender, user, request, **kwargs):
+        if('Member' in map(str, request.user.groups.all())):
+            request.session['currentGroup'] = "member"
+        elif('Collaborator' in map(str, request.user.groups.all())):
+            request.session['currentGroup'] = "collaborator"
+        elif ('Admin' in map(str, request.user.groups.all()) or 'Principal Investigator' in map(str, request.user.groups.all())):
+            request.session['currentGroup'] = "admin"
+
 
 def login(request, **kwargs):
     if request.user.is_authenticated():
         return redirect(settings.LOGIN_REDIRECT_URL)
     else:
         return contrib_login (request, **kwargs)
-
-
-
-def home(request):
-    return render(request, 'home.html')
-
-
+        
+            
+        
+@class_login_required
 class HomeView(View):
     template_name = 'home.html'
     error_page = 'error.html'
@@ -62,9 +72,9 @@ class HomeView(View):
             return render(request, self.template_name, context)
         else:
             return render(request, self.error_page)
+        
 
-
- 
+@class_login_required 
 class AddProject(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -89,6 +99,7 @@ class AddProject(View):
         else:
             return render(request, self.template_name,{'form':form})
 
+@class_login_required
 class ShowProject(View):
     template_name = 'showProject.html'
     error_page = 'error.html'
@@ -113,32 +124,7 @@ class ShowProject(View):
 
 
 
-# class AddProject(View): 
-#     template_name = 'stepOneForm.html'
-#     error_page = 'error.html'
-#     form_class = ExperimentForm
-#     ChoiceForm_set = formset_factory(ExperimentForm, extra=0, min_num=1, validate_min=True)
-#     
-#     def get(self,request):
-#         form = self.form_class()
-#         return render(request, self.template_name,{'form':form})
-#     
-#     def post(self,request):
-#         form = self.form_class(request.POST)
-#         if form.is_valid():
-#             result = form.save(commit= False)
-#             result.project_owner = request.user
-#             result.save()
-#             project_contributor = request.POST.getlist('project_contributor')
-#             for contributor in project_contributor:
-#                 user = User.objects.get(pk=contributor)
-#                 result.project_contributor.add(user)
-#             return HttpResponseRedirect('/showProject/')
-#         else:
-#             return render(request, self.error_page, {})
-    
-
-
+@class_login_required
 class DetailProject(View):
     template_name = 'detailProject.html'
     error_page = 'error.html'
@@ -167,6 +153,7 @@ class DetailProject(View):
         return render(request, self.template_name, context)
 
 
+@class_login_required
 class DetailExperiment(View):
     template_name = 'detailExperiment.html'
     error_page = 'error.html'
@@ -232,6 +219,7 @@ class DetailExperiment(View):
         context['analyses']= analysis
         return render(request, self.template_name, context)
 
+@class_login_required
 class DetailSequencingRun(View):
     template_name = 'detailRun.html'
     error_page = 'error.html'
@@ -245,7 +233,7 @@ class DetailSequencingRun(View):
         print(barcodes)
         return render(request, self.template_name, context)
 
-
+@class_login_required
 class DetailAnalysis(View):
     error_page = 'error.html'
     def get(self,request,pk):
@@ -264,7 +252,7 @@ class DetailAnalysis(View):
         
         return render(request, template_name, context)
 
-
+@class_login_required
 class DetailPublication(View):
     template_name = 'detailPublication.html'
     error_page = 'error.html'
@@ -274,6 +262,7 @@ class DetailPublication(View):
         context['publication']= publication
         return render(request, self.template_name, context)
 
+@class_login_required
 class DetailProtocol(View):
     template_name = 'detailProtocol.html'
     error_page = 'error.html'
@@ -286,6 +275,8 @@ class DetailProtocol(View):
         context['protocol']= protocol
         return render(request, self.template_name, context)
 
+
+@class_login_required
 class DetailDocument(View):
     template_name = 'detailDocument.html'
     error_page = 'error.html'
@@ -295,6 +286,8 @@ class DetailDocument(View):
         context['document']= document
         return render(request, self.template_name, context)
 
+
+@class_login_required
 class DetailEnzyme(View):
     template_name = 'detailEnzyme.html'
     error_page = 'error.html'
@@ -303,6 +296,8 @@ class DetailEnzyme(View):
         enzyme = Enzyme.objects.get(pk=pk)
         context['enzyme']= enzyme
         return render(request, self.template_name, context)
+
+
 
 def createJSON(request, fieldTypePk):
     json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set
@@ -313,6 +308,8 @@ def createJSON(request, fieldTypePk):
     json_data = json.dumps(data)
     return(json_data)
 
+
+@class_login_required
 class AddIndividual(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -352,6 +349,8 @@ class AddIndividual(View):
                 form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
                 return render(request, self.template_name,{'form':form, 'form_class':"Individual", 'existing':existing,'isExisting':isExisting})
 
+
+@class_login_required
 class AddBiosource(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -392,7 +391,7 @@ class AddBiosource(View):
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosource", 'existing':existing,'isExisting':isExisting})
 
 
-
+@class_login_required
 class AddBiosample(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -446,7 +445,7 @@ class AddBiosample(View):
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
 
 
-        
+@class_login_required        
 class AddExperiment(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -470,6 +469,7 @@ class AddExperiment(View):
             return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
 
 
+@class_login_required
 class AddModification(View): 
     template_name = 'modificationForm.html'
     error_page = 'error.html'
@@ -512,7 +512,7 @@ class AddModification(View):
             regions_form.fields["genomicRegions_chromosome"].queryset = Choice.objects.filter(choice_type="genomicRegions_chromosome")
             return render(request, self.template_name,{'form':form, 'construct_form':construct_form,'regions_form':regions_form, 'target_form':target_form})
 
-        
+@class_login_required        
 class AddConstruct(View): 
     form_class = ConstructForm
     field = "Construct"
@@ -541,7 +541,7 @@ class AddConstruct(View):
             return render(request, "popup.html", pageContext)
 
 
-        
+@class_login_required        
 class AddTarget(View): 
     form_class = TargetForm
     field = "Target"
@@ -567,7 +567,7 @@ class AddTarget(View):
             return render(request, "popup.html", pageContext)
 
 
-
+@class_login_required
 class AddProtocol(View): 
     form_class = ProtocolForm
     field = "Protocol"
@@ -598,7 +598,8 @@ class AddProtocol(View):
             form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
-        
+
+@class_login_required        
 class AddTreatmentRnai(View): 
     form_class = TreatmentRnaiForm
     field = "TreatmentRNAi"
@@ -627,7 +628,8 @@ class AddTreatmentRnai(View):
             form.fields["treatmentRnai_rnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_rnai_type")
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
-        
+
+@class_login_required        
 class AddTreatmentChemical(View): 
     form_class = TreatmentChemicalForm
     field = "TreatmentChemical"
@@ -657,7 +659,8 @@ class AddTreatmentChemical(View):
             form.fields["treatmentChemical_duration_units"].queryset = Choice.objects.filter(choice_type="treatmentChemical_duration_units")
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
-        
+
+@class_login_required        
 class AddOther(View): 
     form_class = OtherForm
     field = "OtherTreatment"
@@ -683,7 +686,7 @@ class AddOther(View):
             return render(request, "popup.html", pageContext)
         
 
-
+@class_login_required
 class AddDocument(View): 
     form_class = DocumentForm
     field = "Document"
@@ -711,6 +714,7 @@ class AddDocument(View):
             return render(request, "popup.html", pageContext)
         
 
+@class_login_required
 class AddPublication(View): 
     form_class = PublicationForm
     field = "Publication"
@@ -735,7 +739,7 @@ class AddPublication(View):
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
 
-
+@class_login_required
 class AddSequencingRun(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -773,6 +777,7 @@ class AddSequencingRun(View):
             form.fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
             return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
 
+@class_login_required
 class AddBarcode(View): 
     template_name = 'barcodeForm.html'
     error_page = 'error.html'
@@ -803,7 +808,7 @@ class AddBarcode(View):
                 f.fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=request.session['runId'])
             return render(request, self.template_name,{'form':form, 'form_class':"Barcode"})
 
-
+@class_login_required
 class AddSeqencingFile(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -829,7 +834,7 @@ class AddSeqencingFile(View):
             form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
 
-        
+@class_login_required        
 class AddFileSet(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -856,7 +861,8 @@ class AddFileSet(View):
             form.fields["fileset_type"].queryset = Choice.objects.filter(choice_type="fileset_type")
             form.fields["fileSet_file"].queryset = SeqencingFile.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"FileSet"})
-        
+
+@class_login_required        
 class AddExperimentSet(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -885,6 +891,7 @@ class AddExperimentSet(View):
             form.fields["experimentSet_exp"].queryset = Experiment.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"ExperimentSet"})
 
+@class_login_required
 class AddTag(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'   
@@ -912,7 +919,7 @@ class AddTag(View):
             form.fields["tag_exp"].queryset = Experiment.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"Tag"})
 
-
+@class_login_required
 class AddImageObjects(View): 
     form_class = ImageObjectsForm
     field = "Images"
@@ -969,7 +976,7 @@ def importAnalysisGZ(analysis, analysisTypePk):
     os.remove(WORKSPACEPATH+"media/"+analysisTarGz)
     return json_data
 
-
+@class_login_required
 class AddAnalysis(View): 
     template_name = 'customForm.html'
     error_page = 'error.html'
@@ -1048,7 +1055,7 @@ def approveSequencingRun(request,pk):
     obj.save()
     return redirect("/sequencingRunView")
 
-
+@class_login_required
 class SequencingRunView(View):
     template_name = 'sequencingRuns.html'
     
@@ -1064,7 +1071,7 @@ class SequencingRunView(View):
         return render(request, self.template_name, context)
     
 
-
+@login_required
 def searchView(request):
     context ={}
     if request.GET:

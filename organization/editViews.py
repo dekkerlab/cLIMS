@@ -13,7 +13,7 @@ import json
 from organization.decorators import *
 from django.utils.decorators import method_decorator
 
-
+@class_login_required 
 class EditProject(UpdateView):
     form_class = ProjectForm
     model = Project
@@ -32,7 +32,8 @@ class EditProject(UpdateView):
     @method_decorator(require_permission)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
-    
+
+@class_login_required     
 class DeleteProject(DeleteView):
     model = Project
     template_name = 'delete.html'
@@ -43,6 +44,7 @@ class DeleteProject(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+@class_login_required 
 class EditExperiment(UpdateView):
     form_class = ExperimentForm
     model = Experiment
@@ -62,6 +64,7 @@ class EditExperiment(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+@class_login_required 
 class DeleteExperiment(DeleteView):
     model = Experiment
     template_name = 'deleteExperiment.html'
@@ -82,6 +85,7 @@ def createJSON(request, fieldTypePk):
     json_data = json.dumps(data)
     return(json_data)
 
+@class_login_required 
 class EditIndividual(UpdateView):
     form_class = IndividualForm
     model = Individual
@@ -109,6 +113,7 @@ class EditIndividual(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+@class_login_required 
 class DeleteIndividual(DeleteView):
     model = Individual
     template_name = 'deleteExperiment.html'
@@ -120,7 +125,7 @@ class DeleteIndividual(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
-
+@class_login_required 
 class EditBiosource(UpdateView):
     form_class = BiosourceForm
     model = Biosource
@@ -142,7 +147,7 @@ class EditBiosource(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class DeleteBiosource(DeleteView):
     model = Biosource
     template_name = 'deleteExperiment.html'
@@ -154,7 +159,7 @@ class DeleteBiosource(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class EditBiosample(UpdateView):
     form_class = BiosampleForm
     model = Biosample
@@ -190,7 +195,7 @@ class EditBiosample(UpdateView):
         return super().dispatch(request,  *args, **kwargs)
     
     
-
+@class_login_required 
 class DeleteBiosample(DeleteView):
     model = Biosample
     template_name = 'deleteExperiment.html'
@@ -202,7 +207,7 @@ class DeleteBiosample(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class EditTreatmentRnai(UpdateView):
     form_class = TreatmentRnaiForm
     model = TreatmentRnai
@@ -223,7 +228,7 @@ class EditTreatmentRnai(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class DeleteTreatmentRnai(DeleteView):
     model = TreatmentRnai
     template_name = 'deleteExperiment.html'
@@ -235,7 +240,7 @@ class DeleteTreatmentRnai(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
-
+@class_login_required 
 class EditTreatmentChemical(UpdateView):
     form_class = TreatmentChemicalForm
     model = TreatmentChemical
@@ -257,6 +262,7 @@ class EditTreatmentChemical(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+@class_login_required 
 class DeleteTreatmentChemical(DeleteView):
     model = TreatmentChemical
     template_name = 'deleteExperiment.html'
@@ -268,7 +274,7 @@ class DeleteTreatmentChemical(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-    
+@class_login_required     
 class EditOther(UpdateView):
     form_class = OtherForm
     model = OtherTreatment
@@ -288,7 +294,7 @@ class EditOther(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
      
-
+@class_login_required 
 class DeleteOther(DeleteView):
     model = OtherTreatment
     template_name = 'deleteExperiment.html'
@@ -300,7 +306,7 @@ class DeleteOther(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class EditModification(UpdateView):
     form_class = ModificationForm
     model = Modification
@@ -321,7 +327,7 @@ class EditModification(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class DeleteModification(DeleteView):
     model = Modification
     template_name = 'deleteExperiment.html'
@@ -333,6 +339,7 @@ class DeleteModification(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)      
 
+@class_login_required 
 class EditConstruct(UpdateView):
     form_class = ConstructForm
     model = Construct
@@ -353,6 +360,7 @@ class EditConstruct(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)  
 
+@class_login_required 
 class DeleteConstruct(DeleteView):
     model = Construct
     template_name = 'deleteExperiment.html'
@@ -364,6 +372,7 @@ class DeleteConstruct(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+@class_login_required 
 class EditGenomicRegions(UpdateView):
     form_class = GenomicRegionsForm
     model = GenomicRegions
@@ -385,6 +394,7 @@ class EditGenomicRegions(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)    
 
+@class_login_required 
 class DeleteGenomicRegions(DeleteView):
     model = GenomicRegions
     template_name = 'deleteExperiment.html'
@@ -396,7 +406,7 @@ class DeleteGenomicRegions(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
-
+@class_login_required 
 class EditTarget(UpdateView):
     form_class = TargetForm
     model = Target
@@ -416,6 +426,7 @@ class EditTarget(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+@class_login_required 
 class DeleteTarget(DeleteView):
     model = Target
     template_name = 'deleteExperiment.html'
@@ -427,7 +438,7 @@ class DeleteTarget(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
-
+@class_login_required 
 class EditSequencingRun(UpdateView):
     form_class = SequencingRunForm
     model = SequencingRun
@@ -450,7 +461,7 @@ class EditSequencingRun(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class DeleteSequencingRun(DeleteView):
     model = SequencingRun
     template_name = 'delete.html'
@@ -462,7 +473,7 @@ class DeleteSequencingRun(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
-
+@class_login_required 
 class EditSequencingFile(UpdateView):
     form_class = SeqencingFileForm
     model = SeqencingFile
@@ -483,7 +494,7 @@ class EditSequencingFile(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class DeleteSequencingFile(DeleteView):
     model = SeqencingFile
     template_name = 'delete.html'
@@ -496,7 +507,7 @@ class DeleteSequencingFile(DeleteView):
         return super().dispatch(request,  *args, **kwargs)
     
 
-
+@class_login_required 
 class EditAnalysis(UpdateView):
     form_class = AnalysisForm
     model = Analysis
@@ -526,7 +537,7 @@ class EditAnalysis(UpdateView):
         return super().dispatch(request,  *args, **kwargs)
     
     
-
+@class_login_required 
 class DeleteAnalysis(DeleteView):
     model = Analysis
     template_name = 'deleteExperiment.html'
@@ -538,7 +549,7 @@ class DeleteAnalysis(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
-
+@class_login_required 
 class EditTag(UpdateView):
     form_class = TagForm
     model = Tag
@@ -559,6 +570,7 @@ class EditTag(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+@class_login_required 
 class DeleteTag(DeleteView):
     model = Tag
     template_name = 'delete.html'
@@ -570,7 +582,7 @@ class DeleteTag(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class EditExperimentSet(UpdateView):
     form_class = ExperimentSetForm
     model = ExperimentSet
@@ -593,6 +605,7 @@ class EditExperimentSet(UpdateView):
         return super().dispatch(request,  *args, **kwargs)
       
 
+@class_login_required 
 class DeleteExperimentSet(DeleteView):
     model = ExperimentSet
     template_name = 'delete.html'
@@ -600,6 +613,7 @@ class DeleteExperimentSet(DeleteView):
         projectId = self.request.session['projectId']
         return reverse('detailProject', kwargs={'pk': projectId})
 
+@class_login_required 
 class EditFileSet(UpdateView):
     form_class = FileSetForm
     model = FileSet
@@ -621,6 +635,7 @@ class EditFileSet(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)  
 
+@class_login_required 
 class DeleteFileSet(DeleteView):
     model = FileSet
     template_name = 'delete.html'
@@ -633,6 +648,7 @@ class DeleteFileSet(DeleteView):
         return super().dispatch(request,  *args, **kwargs)
 
 
+@class_login_required 
 class EditProtocol(UpdateView):
     form_class = ProtocolForm
     model = Protocol
@@ -662,7 +678,7 @@ class EditProtocol(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
       
-
+@class_login_required 
 class DeleteProtocol(DeleteView):
     model = Protocol
     template_name = 'deleteExperiment.html'
@@ -675,6 +691,7 @@ class DeleteProtocol(DeleteView):
         return super().dispatch(request,  *args, **kwargs)
     
 
+@class_login_required 
 class EditDocument(UpdateView):
     form_class = DocumentForm
     model = Document
@@ -695,6 +712,7 @@ class EditDocument(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+@class_login_required 
 class DeleteDocument(DeleteView):
     model = Document
     template_name = 'deleteExperiment.html'
@@ -706,6 +724,7 @@ class DeleteDocument(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+@class_login_required 
 class EditPublication(UpdateView):
     form_class = PublicationForm
     model = Publication
@@ -725,7 +744,7 @@ class EditPublication(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class DeletePublication(DeleteView):
     model = Publication
     template_name = 'deleteExperiment.html'
@@ -733,6 +752,8 @@ class DeletePublication(DeleteView):
         experimentId = self.request.session['experimentId']
         return reverse('detailExperiment', kwargs={'pk': experimentId})
 
+
+@class_login_required 
 class EditImageObjects(UpdateView):
     form_class = ImageObjectsForm
     model = ImageObjects
@@ -752,7 +773,7 @@ class EditImageObjects(UpdateView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
     
-
+@class_login_required 
 class DeleteImageObjects(DeleteView):
     model = ImageObjects
     template_name = 'deleteExperiment.html'
@@ -764,7 +785,7 @@ class DeleteImageObjects(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
-
+@class_login_required 
 class EditBarcode(UpdateView):
     form_class = BarcodeForm
     model = Barcode
@@ -788,6 +809,7 @@ class EditBarcode(UpdateView):
         return super().dispatch(request,  *args, **kwargs)
     
 
+@class_login_required 
 class DeleteBarcode(DeleteView):
     model = Barcode
     template_name = 'delete.html'
