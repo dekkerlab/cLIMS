@@ -21,12 +21,12 @@ def createAccountHelper(userEmail,userName, userPassword):
         user.save()
         name=userEmail.split("@")
         flName=name[0].split(".")
-        print("USER CREATED "+userName)
         user.first_name=flName[0]
         user.last_name=flName[1]
         user.save()
         group = Group.objects.get(name='Member')
-        user.groups.add(group) 
+        user.groups.add(group)
+        print("USER CREATED "+userName)
     
     
 def createAccounts(accountList):
