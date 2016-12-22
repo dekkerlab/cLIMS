@@ -57,7 +57,7 @@ class HomeView(View):
         context['currentUserName']= request.user.username
         if('Member' in map(str, request.user.groups.all())):
             request.session['currentGroup'] = "member"
-            prj = Project.objects.filter((Q(project_owner=request.user.id) | Q(project_contributor=request.user.id)) , project_active="True") 
+            prj = Project.objects.filter((Q(project_owner=request.user.id) | Q(project_contributor=request.user.id)) , project_active="True").distinct()
             context['projects']= prj
             return render(request, self.template_name, context)
         elif('Collaborator' in map(str, request.user.groups.all())):
@@ -108,7 +108,7 @@ class ShowProject(View):
         userType = request.session['currentGroup']
         userId = request.user.id
         if (userType == "member"):
-            obj = Project.objects.filter(Q(project_owner=userId) |  Q(project_contributor=userId))
+            obj = Project.objects.filter(Q(project_owner=userId) |  Q(project_contributor=userId)).distinct()
         elif (userType == "collaborator"):
             obj = Project.objects.filter(Q(project_contributor=userId))
         elif (userType == "admin"):
