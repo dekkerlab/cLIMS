@@ -72,6 +72,16 @@ class HomeView(View):
             return render(request, self.template_name, context)
         else:
             return render(request, self.error_page)
+
+
+@class_login_required
+class ErrorView(View):
+    error_page = 'accessError.html'
+    def get(self,request):
+        project_owner = User.objects.get(pk=request.session['project_ownerId'])
+        context = {}
+        context['project_owner']=project_owner
+        return render(request, self.error_page, context)
         
 
 @class_login_required 

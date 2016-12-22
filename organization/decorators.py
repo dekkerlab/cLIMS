@@ -20,7 +20,7 @@ def require_permission(view):
             return view(request, *args, **kwargs)
         else:
             url = '{}?next={}'.format(
-                settings.LOGIN_URL,
+                settings.Error_URL,
                 request.path)
             return redirect(url)
     return new_view
