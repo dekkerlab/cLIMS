@@ -17,28 +17,17 @@
 		<button type="button" class="btn btn-warning pull-right">Edit Protocol</button>
 	</a>
 	<br/>
-    	<span class="rowHead">Protocol Type:</span>{{ protocol.type }}<br/>
+	
     	<span class="rowHead">Protocol Document:</span>
-    	<a href="/detailDocument/{{ protocol.document.id}}">{{ protocol.document }}</a><br/>
+    	{% if not  protocol.document == None %}
+    		<a href="/detailDocument/{{ protocol.document.id}}">{{ protocol.document }}</a>
+    	{% endif %}<br/>
     	<span class="rowHead">Protocol Enzyme:</span>
     	{% if not protocol.enzyme == None %}
     		<a href="/detailEnzyme/{{ protocol.enzyme.id}}">{{ protocol.enzyme }}</a>
     	{% endif %}
     	<br/>
-    	<span class="rowHead">Protocol Variation:</span>{{ protocol.variation }}<br/>
     	<span class="rowHead">Protocol protocol_description:</span>{{ protocol.description }}<br/>
-    	<span class="rowHead">Protocol Specific Details: </span><br/>
-		<table class="table table-bordered table-hover table-responsive">
-		<th><span class="rowHead">Field</span></th>
-		<th><span class="rowHead">Value</span></th>
-			{% for keys,values in protocol.protocol_fields.items %}
-			<tr>
-				<td>{{ keys }}</td>
-				<td>{{ values }}</td>
-			</tr>
-			{% endfor %}
-		</table>
-
     	
 {% else %}
     <p>No data available.</p>

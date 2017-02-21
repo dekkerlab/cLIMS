@@ -151,8 +151,8 @@ class DetailProject(View):
         fileSets = FileSet.objects.filter(project=pk)
         tags = Tag.objects.filter(project=pk)
         
-        for run in sequencingRuns:
-            run.run_Add_Barcode = run.get_run_Add_Barcode_display()
+#         for run in sequencingRuns:
+#             run.run_Add_Barcode = run.get_run_Add_Barcode_display()
         context['project']= prj
         context['sequencingRuns']= sequencingRuns
     #     context['files']= files
@@ -171,17 +171,18 @@ class DetailExperiment(View):
         request.session['experimentId'] = pk
         context = {}
         experiment = Experiment.objects.get(pk=pk)
+        if(experiment.experiment_fields):
+            experiment.protocol_fields = json.loads(experiment.experiment_fields)
         individual = False
         biosource = False
         treatmentRnai = False
         treatmentChemical = False
         otherTreatment = False
         modification = False
-        construct = False
-        target = False
-        genomicRegions = False
         seqencingFiles = False
         analysis = False
+        modificationBio = False
+        
         
         if (Biosample.objects.get(expBio__pk=pk)):
             biosample = Biosample.objects.get(expBio__pk=pk)
@@ -189,6 +190,8 @@ class DetailExperiment(View):
                 biosource = Biosource.objects.get(bioSource__pk=biosample.pk)
                 if(Individual.objects.filter(sourceInd__pk=biosource.pk)):
                     individual = Individual.objects.filter(sourceInd__pk=biosource.pk)
+                if(Modification.objects.filter(biosMod__pk=biosample.pk)):
+                    modificationBio = Modification.objects.filter(biosMod__pk=biosource.pk)
             if(TreatmentRnai.objects.filter(biosamTreatmentRnai=biosample.pk)):
                 treatmentRnai = TreatmentRnai.objects.filter(biosamTreatmentRnai=biosample.pk)
             if(TreatmentChemical.objects.filter(biosamTreatmentChemical=biosample.pk)):
@@ -197,13 +200,8 @@ class DetailExperiment(View):
                 otherTreatment = OtherTreatment.objects.filter(biosamOtherTreatment=biosample.pk)
             
         if((Modification.objects.filter(bioMod__pk=biosample.pk))):
-            modification = Modification.objects.get(bioMod__pk=biosample.pk)
-            if(Construct.objects.filter(modConstructs__pk=modification.pk)):
-                construct = Construct.objects.filter(modConstructs__pk=modification.pk)
-            if(Target.objects.filter(modTarget__pk=modification.pk)):
-                target = Target.objects.filter(modTarget__pk=modification.pk)
-            if(GenomicRegions.objects.filter(modGen__pk=modification.pk)):
-                genomicRegions =GenomicRegions.objects.filter(modGen__pk=modification.pk)
+            modification = Modification.objects.filter(bioMod__pk=biosample.pk)
+           
         if((SeqencingFile.objects.filter(sequencingFile_exp=pk))):
             seqencingFiles = SeqencingFile.objects.filter(sequencingFile_exp=pk)
         if((Analysis.objects.filter(analysis_exp=pk))):
@@ -217,14 +215,14 @@ class DetailExperiment(View):
         context['experiment']= experiment
         context['biosample']= biosample
         context['biosource']= biosource
+        context['modificationBio']= modificationBio
+        
         context['individuals']= individual
         context['treatmentRnai']= treatmentRnai
         context['treatmentChemical']= treatmentChemical
         context['otherTreatment']= otherTreatment
         context['modification']= modification
-        context['constructs']= construct
-        context['targets']= target
-        context['genomicRegions']= genomicRegions
+       
         context['seqencingFiles']= seqencingFiles
         context['analyses']= analysis
         return render(request, self.template_name, context)
@@ -236,11 +234,11 @@ class DetailSequencingRun(View):
     def get(self,request,pk):
         context = {}
         sequencingRun = SequencingRun.objects.get(pk=pk)
-        barcodes = Barcode.objects.filter(barcode_run=pk)
-        sequencingRun.run_Add_Barcode = sequencingRun.get_run_Add_Barcode_display()
+#         barcodes = Barcode.objects.filter(barcode_run=pk)
+#         sequencingRun.run_Add_Barcode = sequencingRun.get_run_Add_Barcode_display()
         context['sequencingRun']= sequencingRun
-        context['barcodes']= barcodes
-        print(barcodes)
+#         context['barcodes']= barcodes
+#         print(barcodes)
         return render(request, self.template_name, context)
 
 @class_login_required
@@ -279,9 +277,6 @@ class DetailProtocol(View):
     def get(self,request,pk):
         context = {}
         protocol = Protocol.objects.get(pk=pk)
-        if(protocol.protocol_fields):
-            protocol.protocol_fields = json.loads(protocol.protocol_fields) 
-            print(protocol.protocol_fields)
         context['protocol']= protocol
         return render(request, self.template_name, context)
 
@@ -307,6 +302,35 @@ class DetailEnzyme(View):
         context['enzyme']= enzyme
         return render(request, self.template_name, context)
 
+@class_login_required
+class DetailConstruct(View):
+    template_name = 'detailConstructs.html'
+    error_page = 'error.html'
+    def get(self,request,pk):
+        context = {}
+        construct = Construct.objects.get(pk=pk)
+        context['construct']= construct
+        return render(request, self.template_name, context)
+
+@class_login_required
+class DetailGenomicRegions(View):
+    template_name = 'detailGenomicRegion.html'
+    error_page = 'error.html'
+    def get(self,request,pk):
+        context = {}
+        region = GenomicRegions.objects.get(pk=pk)
+        context['region']= region
+        return render(request, self.template_name, context)
+
+@class_login_required
+class DetailTarget(View):
+    template_name = 'detailTarget.html'
+    error_page = 'error.html'
+    def get(self,request,pk):
+        context = {}
+        target = Target.objects.get(pk=pk)
+        context['target']= target
+        return render(request, self.template_name, context)
 
 
 def createJSON(request, fieldTypePk):
@@ -375,6 +399,7 @@ class AddBiosource(View):
         form = self.form_class()
         form.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
         form.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
+        form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
         return render(request, self.template_name,{'form':form, 'form_class':"Biosource", 'existing':existing,'isExisting':isExisting})
     
     def post(self,request):
@@ -390,6 +415,10 @@ class AddBiosource(View):
                 individualPK = request.session['individualPK']
                 biosource.biosource_individual = Individual.objects.get(pk=individualPK)
                 biosource.save()
+                modifications = request.POST.getlist('modifications')
+                for m in modifications:
+                    mod = Modification.objects.get(pk=m)
+                    biosource.modifications.add(mod)
                 request.session['biosourcePK'] = biosource.pk
                 return HttpResponseRedirect('/addBiosample/')
             else:
@@ -398,6 +427,7 @@ class AddBiosource(View):
                 existing = selectForm['Biosource']
                 form.fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
                 form.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
+                form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosource", 'existing':existing,'isExisting':isExisting})
 
 
@@ -420,6 +450,7 @@ class AddBiosample(View):
         form.fields["biosample_OtherTreatment"].queryset = OtherTreatment.objects.filter(userOwner=request.user.pk)
         form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
         form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
+        form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
         return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
     
     def post(self,request):
@@ -441,6 +472,26 @@ class AddBiosample(View):
                     biosample_type = request.POST.get('biosample_type')
                     biosample.biosample_fields = createJSON(request, biosample_type)
                 biosample.save()
+                modifications = request.POST.getlist('modifications')
+                for m in modifications:
+                    mod = Modification.objects.get(pk=m)
+                    biosample.modifications.add(mod)
+                biosample_TreatmentRnai = request.POST.getlist('biosample_TreatmentRnai')
+                for b in biosample_TreatmentRnai:
+                    trt = TreatmentRnai.objects.get(pk=b)
+                    biosample.biosample_TreatmentRnai.add(trt)
+                biosample_TreatmentChemical = request.POST.getlist('biosample_TreatmentChemical')
+                for b in biosample_TreatmentChemical:
+                    trt = TreatmentChemical.objects.get(pk=b)
+                    biosample.biosample_TreatmentChemical.add(trt)
+                biosample_OtherTreatment = request.POST.getlist('biosample_OtherTreatment')
+                for b in biosample_OtherTreatment:
+                    trt = OtherTreatment.objects.get(pk=b)
+                    biosample.biosample_OtherTreatment.add(trt)
+                imageObjects = request.POST.getlist('imageObjects')
+                for im in imageObjects:
+                    img = ImageObjects.objects.get(pk=im)
+                    biosample.imageObjects.add(img)
                 request.session['biosamplePK'] = biosample.pk
                 return HttpResponseRedirect('/addExperiment/')
             else:
@@ -452,6 +503,7 @@ class AddBiosample(View):
                 form.fields["biosample_OtherTreatment"].queryset = OtherTreatment.objects.filter(userOwner=request.user.pk)
                 form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
                 form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
+                form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
 
 
@@ -464,6 +516,7 @@ class AddExperiment(View):
     def get(self,request):
         form = self.form_class()
         form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
+        form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Experiment")
         return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
     
     def post(self,request):
@@ -472,10 +525,15 @@ class AddExperiment(View):
             form = form.save(commit=False)
             form.project = Project.objects.get(pk=request.session['projectId'])
             form.experiment_biosample = Biosample.objects.get(pk=request.session['biosamplePK'])
+            
+            if(request.POST.get('type')):
+                exp_type = request.POST.get('type')
+                form.experiment_fields = createJSON(request, exp_type)
             form.save()
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
             form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
+            form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Experiment")
             return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
 
 
@@ -510,9 +568,9 @@ class AddModification(View):
             regions = regions_form.save()
             modification = form.save(commit= False)
             modification.userOwner = User.objects.get(pk=request.user.pk)
-            modification.modification_constructs = construct
+            modification.constructs = construct
             modification.modification_genomicRegions = regions
-            modification.modification_target = target
+            modification.target = target
             modification.save()
             return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(modification._get_pk_val()), escape(modification)))
         else:
@@ -583,7 +641,6 @@ class AddProtocol(View):
     field = "Protocol"
     def get(self,request):
         form = self.form_class()
-        form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
         pageContext = {'form': form, 'field':self.field}
         return render(request, "popup.html", pageContext)
     
@@ -594,9 +651,6 @@ class AddProtocol(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
-                if(request.POST.get('type')):
-                    protocol_type = request.POST.get('type')
-                    newObject.protocol_fields = createJSON(request, protocol_type)
                 newObject.save()
            
             except(forms.ValidationError):
@@ -605,7 +659,6 @@ class AddProtocol(View):
             if newObject:
                 return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
-            form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
 
@@ -627,6 +680,7 @@ class AddTreatmentRnai(View):
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
                 newObject.save()
+                modifications = request.POST.getlist('modifications')
            
             except(forms.ValidationError):
                 newObject = None
@@ -684,7 +738,9 @@ class AddOther(View):
         if form.is_valid():
             newObject = None
             try:
-                newObject = form.save()
+                newObject = form.save(commit= False)
+                newObject.userOwner = User.objects.get(pk=request.user.pk)
+                newObject.save()
                 
             except(forms.ValidationError):
                 newObject = None
@@ -730,11 +786,15 @@ class AddPublication(View):
     field = "Publication"
     def get(self,request):
         form = self.form_class()
+        form.fields["publication_categories"].queryset = Choice.objects.filter(choice_type="publication_categories")
+        form.fields["publication_published_by"].queryset = Choice.objects.filter(choice_type="publication_published_by")
+        form.fields["exp_sets_prod_in_pub"].queryset = ExperimentSet.objects.filter(project=request.session['projectId'])
+        form.fields["exp_sets_used_in_pub"].queryset = ExperimentSet.objects.filter(project=request.session['projectId'])
         pageContext = {'form': form, 'field':self.field}
         return render(request, "popup.html", pageContext)
     
     def post(self,request):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             newObject = None
             try:
@@ -746,6 +806,10 @@ class AddPublication(View):
             if newObject:
                 return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
+            form.fields["publication_categories"].queryset = Choice.objects.filter(choice_type="publication_categories")
+            form.fields["publication_published_by"].queryset = Choice.objects.filter(choice_type="publication_published_by")
+            form.fields["exp_sets_prod_in_pub"].queryset = ExperimentSet.objects.filter(project=request.session['projectId'])
+            form.fields["exp_sets_used_in_pub"].queryset = ExperimentSet.objects.filter(project=request.session['projectId'])
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
 
@@ -759,8 +823,9 @@ class AddSequencingRun(View):
        
         form = self.form_class()
         form.fields["run_Experiment"].queryset = Experiment.objects.filter(project=request.session['projectId'])
-        form.fields["run_sequencing_platform"].queryset = Choice.objects.filter(choice_type="run_sequencing_platform")
         form.fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
+        form.fields["run_sequencing_machine"].queryset = Choice.objects.filter(choice_type="run_sequencing_machine")
+        form.fields["run_sequencing_instrument"].queryset = Choice.objects.filter(choice_type="run_sequencing_instrument")
         return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
     
     def post(self,request):
@@ -774,49 +839,70 @@ class AddSequencingRun(View):
                 exp = Experiment.objects.get(pk=expsPk)
                 form.run_Experiment.add(exp)
             request.session['runId'] = form.pk
-            addBarcodeRedirect = form.run_Add_Barcode
-            if(addBarcodeRedirect == "addBarcode"):
-                return HttpResponseRedirect('/'+ addBarcodeRedirect)
-            elif(addBarcodeRedirect == "detailProject"):
-                return HttpResponseRedirect('/'+ addBarcodeRedirect +'/'+request.session['projectId'])
-            else:
-                return render(request, self.error_page, {})
+            return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
             form.fields["run_Experiment"].queryset = Experiment.objects.filter(project=request.session['projectId'])
-            form.fields["run_sequencing_platform"].queryset = Choice.objects.filter(choice_type="run_sequencing_platform")
             form.fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
+            form.fields["run_sequencing_machine"].queryset = Choice.objects.filter(choice_type="run_sequencing_machine")
+            form.fields["run_sequencing_instrument"].queryset = Choice.objects.filter(choice_type="run_sequencing_instrument")
             return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
 
 @class_login_required
-class AddBarcode(View): 
-    template_name = 'barcodeForm.html'
-    error_page = 'error.html'
+class AddBarcode(View):
+    form_class = BarcodeForm
+    field = "Barcode"
     def get(self,request):
-        countForms = Experiment.objects.filter(runExp__pk=request.session['runId']).count()
-        formset= formset_factory(BarcodeForm,extra=countForms)
-        form = formset()
-        for f in form:
-            f.fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
-            f.fields["barcode_name_2"].queryset = Choice.objects.filter(choice_type="barcode")
-            f.fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=request.session['runId'])
-        return render(request, self.template_name,{'form':form, 'form_class':"Barcode"})
+        form = self.form_class()
+        pageContext = {'form': form, 'field':self.field}
+        form.fields["barcode_index"].queryset = Choice.objects.filter(choice_type="barcode")
+        return render(request, "popup.html", pageContext)
     
     def post(self,request):
-        countForms = Experiment.objects.filter(runExp__pk=request.session['runId']).count()
-        formset= formset_factory(BarcodeForm,extra=countForms)
-        form = formset(request.POST)
-        if all([form.is_valid()]):
-            for f in form: 
-                barcode = f.save(commit=False)
-                barcode.barcode_run = SequencingRun.objects.get(pk=request.session['runId'])
-                barcode.save()
-            return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            newObject = None
+            try:
+                newObject = form.save(commit=False)
+                newObject.save()
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
+
         else:
-            for f in form:
-                f.fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
-                f.fields["barcode_name_2"].queryset = Choice.objects.filter(choice_type="barcode")
-                f.fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=request.session['runId'])
-            return render(request, self.template_name,{'form':form, 'form_class':"Barcode"})
+            pageContext = {'form': form, 'field':self.field}
+            form.fields["barcode_index"].queryset = Choice.objects.filter(choice_type="barcode")
+            return render(request, "popup.html", pageContext)
+#     
+#     template_name = 'barcodeForm.html'
+#     error_page = 'error.html'
+#     def get(self,request):
+#         countForms = Experiment.objects.filter(runExp__pk=request.session['runId']).count()
+#         formset= formset_factory(BarcodeForm,extra=countForms)
+#         form = formset()
+#         for f in form:
+#             f.fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
+#             f.fields["barcode_name_2"].queryset = Choice.objects.filter(choice_type="barcode")
+#             f.fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=request.session['runId'])
+#         return render(request, self.template_name,{'form':form, 'form_class':"Barcode"})
+#     
+#     def post(self,request):
+#         countForms = Experiment.objects.filter(runExp__pk=request.session['runId']).count()
+#         formset= formset_factory(BarcodeForm,extra=countForms)
+#         form = formset(request.POST)
+#         if all([form.is_valid()]):
+#             for f in form: 
+#                 barcode = f.save(commit=False)
+#                 barcode.barcode_run = SequencingRun.objects.get(pk=request.session['runId'])
+#                 barcode.save()
+#             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
+#         else:
+#             for f in form:
+#                 f.fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
+#                 f.fields["barcode_name_2"].queryset = Choice.objects.filter(choice_type="barcode")
+#                 f.fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=request.session['runId'])
+#             return render(request, self.template_name,{'form':form, 'form_class':"Barcode"})
 
 @class_login_required
 class AddSeqencingFile(View): 
@@ -827,6 +913,7 @@ class AddSeqencingFile(View):
     def get(self,request):
         form = self.form_class()
         form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
+        form.fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
         return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
     
     def post(self,request):
@@ -842,6 +929,7 @@ class AddSeqencingFile(View):
             return HttpResponseRedirect('/detailExperiment/'+self.request.session['experimentId'])
         else:
             form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
+            form.fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
             return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
 
 @class_login_required        
@@ -1073,7 +1161,7 @@ class SequencingRunView(View):
         sequencingRuns = SequencingRun.objects.all().order_by('-run_submission_date')
         d = defaultdict(list)
         for run in sequencingRuns:
-            run.run_Add_Barcode = run.get_run_Add_Barcode_display()
+#             run.run_Add_Barcode = run.get_run_Add_Barcode_display()
             d[run.project.project_name].append(run)
         context = {
             'sequencingRuns': OrderedDict(d),

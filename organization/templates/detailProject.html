@@ -93,6 +93,9 @@
 	<a href="/exportGEO">
 		<button type="button" class="btn btn-success">Export- GEO</button>
 	</a>
+	<a href="/exportDCIC">
+		<button type="button" class="btn btn-success">Export- DCIC</button>
+	</a>
 {% endif %}
  
  {% if sequencingRuns %}
@@ -106,7 +109,6 @@
   		<td><span class="rowHead">Experiments</span></td>
   		<td><span class="rowHead">Submission Date</span></td>
   		<td><span class="rowHead">Retrieval Date</span></td>
-  		<td><span class="rowHead">Barcode</span></td>
   		<td><span class="rowHead">Submitted</span></td>
   		
   		<td></td>
@@ -121,7 +123,6 @@
 	</td>
 	<td>{{ run.run_submission_date }}</td>
 	<td>{{ run.run_retrieval_date }}</td>
-	<td>{{ run.run_Add_Barcode }}</td>
 	<td>
 		{% if run.run_submitted == False %}
         <a href="/submitSequencingRun/{{ run.id}}">

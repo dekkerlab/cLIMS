@@ -11,11 +11,19 @@
     <span class="tableHead">
     	Sequencing Run Details: {{ sequencingRun.run_name }}
     </span>
-     {% if sequencingRun.run_Add_Barcode == "Yes" %}
+    
+    
+    
+{% comment %}
+ {% if sequencingRun.run_Add_Barcode == "Yes" %}
     	<a href="/addBarcode/{{ object.id }}">
 			<button type="button" class="btn btn-success pull-right">Add/Delete Barcode</button>
 	</a>
 	{% endif %}
+{% endcomment %}
+
+
+
     <a href="#">
 		<button type="button" class="btn btn-warning edit pull-right">Edit</button>
 	</a>
@@ -24,11 +32,14 @@
     	<span class="rowHead">Attached Experiments:</span><br/>
     	{% for values in sequencingRun.run_Experiment.all %}
 	  		({{ forloop.counter }}) {{values}}<br/>
-		{% endfor %}
+		{% endfor %} 
     	<span class="rowHead">Submission Date:</span>{{ sequencingRun.run_submission_date }}<br/>
     	<span class="rowHead">Retrieval Date:</span>{{ sequencingRun.run_retrieval_date }}<br/>
-    	<span class="rowHead">Sequencing Platform:</span>{{ sequencingRun.run_sequencing_platform }}<br/>
+    	<span class="rowHead">Sequencing Platform:</span>{{ sequencingRun.run_sequencing_machine }}<br/>
     	<span class="rowHead">Sequencing Center:</span>{{ sequencingRun.run_sequencing_center }}<br/>
+    	<span class="rowHead">Sequencing Instrument:</span>{{ sequencingRun.run_sequencing_instrument }}<br/>
+    	
+{% comment %}    	
     	<span class="rowHead">Barcode:</span>{{ sequencingRun.run_Add_Barcode }}<br/>
     	{% for barcode in barcodes %}
 	  		({{ forloop.counter }}) {{barcode.barcode_exp}} - {{barcode.barcode_name_1}} -  {{barcode.barcode_name_2}}<br/>
@@ -41,7 +52,9 @@
 			</a><br/><br/>
 			</div>
 		{% endfor %}
-    	
+ {% endcomment %}
+ 
+ 
     	<span class="rowHead">Approved:</span>{{ sequencingRun.run_approved }}<br/>
     	{% if sequencingRun.run_submitted == False %}
        <a href="/submitSequencingRun/{{ sequencingRun.id}}">

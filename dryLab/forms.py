@@ -10,6 +10,8 @@ from crispy_forms.layout import Submit
 from django.contrib.admin import widgets
 from django import forms
 from organization.simple_search import BaseSearchForm
+from wetLab.models import Barcode
+from wetLab.wrapper import SelectWithPop
 
 class SequencingRunForm(ModelForm):
     use_required_attribute = False
@@ -47,6 +49,8 @@ class SequencingRunSearchForm(BaseSearchForm):
 
 class SeqencingFileForm(ModelForm):
     use_required_attribute = False
+    file_barcode = forms.ModelChoiceField(Barcode.objects.all(), widget=SelectWithPop, required=False)
+    
     class Meta:
         model = SeqencingFile
         exclude = ('sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp','project')

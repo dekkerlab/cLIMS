@@ -13,6 +13,16 @@ import json
 from organization.decorators import *
 from django.utils.decorators import method_decorator
 
+def createJSON(request, fieldTypePk):
+    json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set
+    data = {}
+    for keys in json_object:
+        formVal = request.POST.get(keys)
+        data[keys] = formVal
+    json_data = json.dumps(data)
+    return(json_data)
+
+
 @class_login_required 
 class EditProject(UpdateView):
     form_class = ProjectForm
@@ -44,6 +54,7 @@ class DeleteProject(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
+
 @class_login_required 
 class EditExperiment(UpdateView):
     form_class = ExperimentForm
@@ -52,10 +63,19 @@ class EditExperiment(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        expe = Experiment.objects.get(pk=self.get_object().id)
+        if(self.request.POST.get('type')):
+            exp_type = self.request.POST.get('type')
+            expe.experiment_fields = createJSON(self.request, exp_type)
+            expe.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
         context = super(EditExperiment , self).get_context_data(**kwargs)
+        obj = Experiment.objects.get(pk=self.get_object().id)
+        if(obj.experiment_fields):
+            context['jsonObj']= json.loads(obj.experiment_fields)
+        context['form'].fields["type"].queryset = JsonObjField.objects.filter(field_type="Experiment")
         context['action'] = reverse('editProject',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -76,14 +96,6 @@ class DeleteExperiment(DeleteView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request,  *args, **kwargs)
 
-def createJSON(request, fieldTypePk):
-    json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set
-    data = {}
-    for keys in json_object:
-        formVal = request.POST.get(keys)
-        data[keys] = formVal
-    json_data = json.dumps(data)
-    return(json_data)
 
 @class_login_required 
 class EditIndividual(UpdateView):
@@ -139,6 +151,7 @@ class EditBiosource(UpdateView):
         context = super(EditBiosource , self).get_context_data(**kwargs)
         context['form'].fields["biosource_type"].queryset = Choice.objects.filter(choice_type="biosource_type")
         context['form'].fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
+        context['form'].fields["modifications"].queryset = Modification.objects.filter(userOwner=self.request.user.pk)
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -186,6 +199,7 @@ class EditBiosample(UpdateView):
         context['form'].fields["biosample_OtherTreatment"].queryset = OtherTreatment.objects.filter(userOwner=self.request.user.pk)
         context['form'].fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
         context['form'].fields["imageObjects"].queryset = ImageObjects.objects.filter(project=self.request.session['projectId'])
+        context['form'].fields["modifications"].queryset = Modification.objects.filter(userOwner=self.request.user.pk)
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -451,8 +465,9 @@ class EditSequencingRun(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EditSequencingRun , self).get_context_data(**kwargs)
         context['form'].fields["run_Experiment"].queryset = Experiment.objects.filter(project=self.request.session['projectId'])
-        context['form'].fields["run_sequencing_platform"].queryset = Choice.objects.filter(choice_type="run_sequencing_platform")
         context['form'].fields["run_sequencing_center"].queryset = Choice.objects.filter(choice_type="run_sequencing_center")
+        context['form'].fields["run_sequencing_machine"].queryset = Choice.objects.filter(choice_type="run_sequencing_machine")
+        context['form'].fields["run_sequencing_instrument"].queryset = Choice.objects.filter(choice_type="run_sequencing_instrument")
         context['action'] = reverse('detailProject',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -486,6 +501,7 @@ class EditSequencingFile(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EditSequencingFile , self).get_context_data(**kwargs)
         context['form'].fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=self.request.session['projectId'])
+        context['form'].fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -656,20 +672,10 @@ class EditProtocol(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
-        protocol = Protocol.objects.get(pk=self.get_object().id)
-        if(self.request.POST.get('type')):
-            protocol_type = self.request.POST.get('type')
-            protocol.protocol_fields = createJSON(self.request, protocol_type)
-            protocol.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
         context = super(EditProtocol , self).get_context_data(**kwargs)
-        obj = Protocol.objects.get(pk=self.get_object().id)
-        if(obj.protocol_fields):
-            context['jsonObj']= json.loads(obj.protocol_fields)
-        print(json.loads(obj.protocol_fields))
-        context['form'].fields["type"].queryset = JsonObjField.objects.filter(field_type="Protocol")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context  
@@ -736,6 +742,10 @@ class EditPublication(UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(EditPublication , self).get_context_data(**kwargs)
+        context['form'].fields["publication_categories"].queryset = Choice.objects.filter(choice_type="publication_categories")
+        context['form'].fields["publication_published_by"].queryset = Choice.objects.filter(choice_type="publication_published_by")
+        context['form'].fields["exp_sets_prod_in_pub"].queryset = ExperimentSet.objects.filter(project=self.request.session['projectId'])
+        context['form'].fields["exp_sets_used_in_pub"].queryset = ExperimentSet.objects.filter(project=self.request.session['projectId'])
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    
@@ -792,15 +802,16 @@ class EditBarcode(UpdateView):
     template_name = 'barcodeForm.html'
     
     def get_success_url(self):
-        projectId = self.request.session['projectId']
-        return reverse('detailProject', kwargs={'pk': projectId})
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
         context = super(EditBarcode , self).get_context_data(**kwargs)
-        context['form'].fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
-        context['form'].fields["barcode_name_2"].queryset = Choice.objects.filter(choice_type="barcode")
-        context['form'].fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=self.request.session['runId'])
-        context['action'] = reverse('detailProject',
+        context['form'].fields["barcode_index"].queryset = Choice.objects.filter(choice_type="barcode")
+#         context['form'].fields["barcode_name_1"].queryset = Choice.objects.filter(choice_type="barcode")
+#         context['form'].fields["barcode_name_2"].queryset = Choice.objects.filter(choice_type="barcode")
+#         context['form'].fields["barcode_exp"].queryset = Experiment.objects.filter(runExp__pk=self.request.session['runId'])
+        context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context  
     
@@ -812,10 +823,10 @@ class EditBarcode(UpdateView):
 @class_login_required 
 class DeleteBarcode(DeleteView):
     model = Barcode
-    template_name = 'delete.html'
+    template_name = 'deleteExperiment.html'
     def get_success_url(self):
-        projectId = self.request.session['projectId']
-        return reverse('detailProject', kwargs={'pk': projectId})
+        experimentId = self.request.session['experimentId']
+        return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     @method_decorator(require_permission)
     def dispatch(self, request, *args, **kwargs):

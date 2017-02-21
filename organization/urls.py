@@ -30,6 +30,10 @@ urlpatterns = [
     url(r'^detailProtocol/(?P<pk>[0-9]+)/$', DetailProtocol.as_view(), name='detailProtocol'),
     url(r'^detailDocument/(?P<pk>[0-9]+)/$', DetailDocument.as_view(), name='detailDocument'),
     url(r'^detailEnzyme/(?P<pk>[0-9]+)/$', DetailEnzyme.as_view(), name='detailEnzyme'),
+    url(r'^detailConstruct/(?P<pk>[0-9]+)/$', DetailConstruct.as_view(), name='detailConstruct'),
+    url(r'^detailGenomicRegions/(?P<pk>[0-9]+)/$', DetailGenomicRegions.as_view(), name='detailGenomicRegions'),
+    url(r'^detailTarget/(?P<pk>[0-9]+)/$', DetailTarget.as_view(), name='detailTarget'),
+     
     
 #     url(r'^addIndividual/$', AddIndividual.as_view(), name='addIndividual'),
 #     url(r'^addIndividual/constructForm/$',  views.constructForm, name='constructIndividual'), 
@@ -105,6 +109,8 @@ urlpatterns = [
     url(r'^deleteImageObjects/(?P<pk>[0-9]+)/$', DeleteImageObjects.as_view(), name='deleteImageObjects'),
     url(r'^editBarcode/(?P<pk>[0-9]+)/$', EditBarcode.as_view(), name='editBarcode'),
     url(r'^deleteBarcode/(?P<pk>[0-9]+)/$', DeleteBarcode.as_view(), name='deleteBarcode'),
+   
+    
     
     
     url(r'^submitSequencingRun/(?P<pk>[0-9]+)/$', views.submitSequencingRun, name='submitSequencingRun'),
@@ -115,5 +121,6 @@ urlpatterns = [
     url(r'^exportExperiment/$', exportExperiment, name='exportExperiment'),
     url(r'^exportAnalysis/$', exportAnalysis, name='exportAnalysis'),
     url(r'^exportGEO/$', exportGEO, name='exportGEO'),
+    url(r'^exportDCIC/$', exportDCIC, name='exportDCIC'), 
     
     ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

@@ -47,8 +47,8 @@ class ExperimentForm(ModelForm):
     
     class Meta:
         model = Experiment
-        exclude = ('project','experiment_biosample',)
-        fields = ['experiment_name','protocol','experiment_enzyme',
+        exclude = ('project','experiment_biosample','experiment_fields','bio_rep_no','tec_rep_no')
+        fields = ['experiment_name','biosample_quantity','biosample_quantity_units','protocol','type','variation','experiment_enzyme',
                   'imageObjects','references','documents','url','dbxrefs','experiment_description']
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -78,6 +78,7 @@ class ExperimentSearchForm(BaseSearchForm):
 
 class ExperimentSetForm(ModelForm):
     use_required_attribute = False
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
     class Meta:
         model = ExperimentSet
         exclude = ('project',)

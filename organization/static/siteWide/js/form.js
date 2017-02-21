@@ -59,14 +59,17 @@ $(function() {
 	$( ".formLabel:contains('Document')" ).append('<a href="/addDocument/" class="add-another" id="add_id_document" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('References')" ).append('<a href="/addPublication/" class="add-another" id="add_id_references" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Protocol')" ).append('<a href="/addProtocol/" class="add-another" id="add_id_protocol" onclick="return showAddAnotherPopup(this);"></a>');
-	$( ".formLabel:contains('Biosample modification')" ).append('<a href="/addModification/" class="add-another" id="add_id_biosample_modification" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('Biosource SOP cell line')" ).append('<a href="/addProtocol/" class="add-another" id="add_id_protocol" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('Modifications')" ).append('<a href="/addModification/" class="add-another" id="add_id_modifications" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('constructs')" ).append('<a href="/addConstruct/" class="add-another" id="add_id_constructs" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('target')" ).append('<a href="/addTarget/" class="add-another" id="add_id_target" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Imageobjects')" ).append('<a href="/addImageObjects/" class="add-another" id="add_id_imageObjects" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('treatmentrnai')" ).append('<a href="/addTreatmentRnai/" class="add-another" id="add_id_biosample_TreatmentRnai" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('treatmentchemical')" ).append('<a href="/addTreatmentChemical/" class="add-another" id="add_id_biosample_TreatmentChemical" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('othertreatment')" ).append('<a href="/addOther/" class="add-another" id="add_id_biosample_OtherTreatment" onclick="return showAddAnotherPopup(this);"></a>');
-	
+	$( ".formLabel:contains('File barcode')" ).append('<a href="/addBarcode/" class="add-another" id="add_id_file_barcode" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('Construct Map')" ).append('<a href="/addDocument/" class="add-another" id="add_id_document" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('File format specifications')" ).append('<a href="/addDocument/" class="add-another" id="add_id_file_format_specifications" onclick="return showAddAnotherPopup(this);"></a>');
 	
 	//$( "span:contains('References')" ).append('<a href="/addPublication/" target="_blank" title="Add another Publication"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 //	$( "span:contains('constructs')" ).append('<a href="/addConstruct/" target="_blank" title="Add another Construct"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');

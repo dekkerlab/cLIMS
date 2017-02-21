@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% load staticfiles %}
 {% block content %}
-<script src="{% static "/static/siteWide/js/jquery.init.js" %}"></script> 
+<script type="text/javascript" src="{% static '/static/siteWide/js/jquery.init.js' %}"></script> 
 <script type="text/javascript" src="/static/admin/js/core.js"></script>
 <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css"/>
 <link rel="stylesheet" type="text/css" href="/static/admin/css/fonts.css"/>
@@ -151,8 +151,10 @@
 		<div class="fieldWrapper">
 		 {{field.errors}}
 		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  <span>{{field.label}} {% if field.field.required %} * {% endif %}
-	  {{field}}</span>
+		 <span class="formLabel">
+		  	{{field.label}} {% if field.field.required %} * {% endif %}
+		  </span>
+	  {{field}}
   </div>
 {% endfor %}
 	 {% endif %}
@@ -163,8 +165,10 @@
 		<div class="fieldWrapper">
 		 {{field.errors}}
 		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  <span>{{field.label}} {% if field.field.required %} * {% endif %}
-	  {{field}}</span>
+	   <span class="formLabel">
+		  	{{field.label}} {% if field.field.required %} * {% endif %}
+		</span>
+	  {{field}}
   </div>
 {% endfor %}
 	 {% endif %}
@@ -175,8 +179,10 @@
 		<div class="fieldWrapper">
 		 {{field.errors}}
 		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  <span>{{field.label}} {% if field.field.required %} * {% endif %}
-	  {{field}}</span>
+	   <span class="formLabel">
+		  	{{field.label}} {% if field.field.required %} * {% endif %}
+		  </span>
+	  {{field}}
   </div>
 {% endfor %}
 	 {% endif %}
@@ -187,9 +193,10 @@
 		<div class="fieldWrapper">
 		 {{field.errors}}
 		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	  <span>{{field.label}} {% if field.field.required %} * {% endif %}
+	   <span class="formLabel">
+		  	{{field.label}} {% if field.field.required %} * {% endif %}
+		  </span>
 	  {{field}}
-	  </span>
   </div>
 {% endfor %}
 	 {% endif %}

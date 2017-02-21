@@ -36,8 +36,7 @@ class ModificationForm(ModelForm):
 
 class ConstructForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
-    
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label="Construct Map", help_text="Map of the construct - document")
     class Meta:
         model = Construct
         exclude = ('',)
@@ -71,6 +70,7 @@ class TargetForm(ModelForm):
     class Meta:
         model = Target
         exclude = ('',)
+        fields = ['targeted_genes','targeted_region','references','document','url','dbxrefs']
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -137,13 +137,18 @@ class BiosourceForm(ModelForm):
     use_required_attribute = False
     document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
     references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
-    protocol = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop,required=False)
+    protocol = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop,required=False, label="Biosource SOP cell line", 
+                                      help_text='Standard operation protocol for the cell line as determined by 4DN Cells Working Group' )
+    modifications = forms.ModelMultipleChoiceField(Modification.objects.all(), widget=MultipleSelectWithPop, required=False,
+                                                   help_text='Expression or targeting vectors stably transfected to generate Crispr\'ed or other genomic modification')
+    
     
     class Meta:
         model = Biosource
         exclude = ('biosource_individual',)
         fields = ['biosource_name','biosource_type','biosource_cell_line','biosource_cell_line_tier','protocol','biosource_vendor',
-                  'biosource_tissue','references','document','url','dbxrefs','biosource_description']
+                  'cell_line_termid', 'modifications', 'biosource_tissue','references','document','url','dbxrefs','biosource_description']
+
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -158,17 +163,17 @@ class BiosampleForm(ModelForm):
     use_required_attribute = False
     document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
     references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
-    biosample_modification = forms.ModelChoiceField(Modification.objects.all(), widget=SelectWithPop, required=False)
+    modifications = forms.ModelMultipleChoiceField(Modification.objects.all(), widget=MultipleSelectWithPop, required=False)
     protocol= forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, required=False)
-    biosample_TreatmentRnai = forms.ModelChoiceField(TreatmentRnai.objects.all(), widget=SelectWithPop, required=False)
-    biosample_TreatmentChemical= forms.ModelChoiceField(TreatmentChemical.objects.all(), widget=SelectWithPop, required=False)
-    biosample_OtherTreatment= forms.ModelChoiceField(OtherTreatment.objects.all(), widget=SelectWithPop, required=False)
+    biosample_TreatmentRnai = forms.ModelMultipleChoiceField(TreatmentRnai.objects.all(), widget=MultipleSelectWithPop, required=False)
+    biosample_TreatmentChemical= forms.ModelMultipleChoiceField(TreatmentChemical.objects.all(), widget=MultipleSelectWithPop, required=False)
+    biosample_OtherTreatment= forms.ModelMultipleChoiceField(OtherTreatment.objects.all(), widget=MultipleSelectWithPop, required=False)
     imageObjects = forms.ModelMultipleChoiceField (ImageObjects.objects.all(), widget=MultipleSelectWithPop, required=False)
     
     class Meta:
         model = Biosample
         exclude = ('biosample_fields','userOwner','biosample_biosource', 'biosample_individual',)
-        fields = ['biosample_name','biosample_modification','protocol','biosample_TreatmentRnai',
+        fields = ['biosample_name','modifications','protocol','biosample_TreatmentRnai',
                   'biosample_TreatmentChemical','biosample_OtherTreatment','imageObjects','biosample_type',
                   'references','document','url','dbxrefs','biosample_description']
     def __init__(self, *args, **kwargs):
@@ -246,7 +251,7 @@ class BarcodeForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Barcode
-        exclude = ('barcode_run',)
+        exclude = ('',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
