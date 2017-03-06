@@ -332,11 +332,13 @@ def appendConstruct(pKey,dcicExcelSheet):
     singleItem.append(construct.construct_designed_to_Target)
     singleItem.append(construct.construct_insert_sequence)
     if(construct.document):
+        singleItem.append(labName +"Document_"+str(construct.document)+"_"+str(construct.document.pk))
         appendDocument(construct.document.pk, dcicExcelSheet)
     else:
         singleItem.append("")
     singleItem.append(construct.construct_tag)
     singleItem.append(construct.construct_vector_backbone)
+    singleItem.append("")
     if(construct.references):
         singleItem.append(labName +"Publication_"+str(construct.references)+"_"+str(construct.references.pk))
         appendPublication(construct.references.pk,dcicExcelSheet)
@@ -383,7 +385,7 @@ def appendModification(pKey,dcicExcelSheet):
     singleMod.append(modificationObj.modification_description)
     singleMod.append(str(modificationObj.modification_type))
     if(modificationObj.constructs):
-        singleMod.append(labName + "Modification_"+str(modificationObj.constructs)+"_"+str(modificationObj.constructs.pk))
+        singleMod.append(labName + "Construct_"+str(modificationObj.constructs)+"_"+str(modificationObj.constructs.pk))
         appendConstruct(modificationObj.constructs.pk, dcicExcelSheet)
     else:
         singleMod.append("")
@@ -413,7 +415,7 @@ def appendModification(pKey,dcicExcelSheet):
 
 
 def appendBioRep(expPk,singleExp):
-    bio_rep_no = -1  ##-1 to leave out itself object
+    bio_rep_no = 0 
     exp = Experiment.objects.get(pk=expPk)
     expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample)
     
@@ -427,7 +429,7 @@ def appendBioRep(expPk,singleExp):
     singleExp.append(bio_rep_no)
     
 def appendTechRep(expPk,singleExp):
-    tech_rep_no = -1 ##-1 to leave out itself object
+    tech_rep_no = 0 
     exp = Experiment.objects.get(pk=expPk)
     expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample, protocol=exp.protocol, experiment_enzyme=exp.experiment_enzyme, type=exp.type)
     
@@ -497,7 +499,7 @@ def populateDict(request):
             singleSample.append(labName +"BiosampleCellCulture_"+str(sample.biosample_name)+"_"+str(sample.pk))
         else:
             singleSample.append("")
-        if(sample.modifications):
+        if(sample.modifications.all()):
             modList = []
             for mod in sample.modifications.all():
                 modList.append(labName + "Modification_"+str(mod.modification_name)+"_"+str(mod.pk))
@@ -509,11 +511,11 @@ def populateDict(request):
         rnai= []
         chemical=[]
         treatmentList=[]
-        if(sample.biosample_TreatmentRnai):
+        if(sample.biosample_TreatmentRnai.all()):
             for rnaiTreat in sample.biosample_TreatmentRnai.all():
                 rnai.append(labName + "TreatmentRnai_"+str(rnaiTreat)+"_"+str(rnaiTreat.pk))
             treatmentList.append(",".join(rnai))
-        if(sample.biosample_TreatmentChemical):
+        if(sample.biosample_TreatmentChemical.all()):
             for chemTreat in sample.biosample_TreatmentChemical.all():
                 chemical.append(labName + "TreatmentChemical_"+str(chemTreat)+"_"+str(chemTreat.pk))
             treatmentList.append(",".join(chemical))
@@ -551,9 +553,10 @@ def populateDict(request):
             singleBcc.append("")
             singleBcc.append("")
             singleBcc.append(bcc["passage_number"])
-            if(sample.protocol.document):
-                singleBcc.append(labName +"Document_"+str(sample.protocol.document)+"_"+str(sample.protocol.document.pk))
-                appendDocument(sample.protocol.document.pk, dcicExcelSheet)
+            if(sample.protocol):
+                if(sample.protocol.document):
+                    singleBcc.append(labName +"Document_"+str(sample.protocol.document)+"_"+str(sample.protocol.document.pk))
+                    appendDocument(sample.protocol.document.pk, dcicExcelSheet)
             else:
                 singleBcc.append("")
             
@@ -729,7 +732,7 @@ def populateDict(request):
                 appendPublication(biosource.references.pk,dcicExcelSheet)
                
             else:
-                singleItem.append("")
+                singleBio.append("")
             singleBio.append(biosource.url)
             dcicExcelSheet['Biosource'].append(singleBio)
     
@@ -830,7 +833,10 @@ def populateDict(request):
                         singleFile.append(labName +"Files_"+str(f.sequencingFile_name)+"_"+str(f.pk))
                         singleFile.append(str(f.file_format))
                         singleFile.append(str(f.file_classification))
-                        singleFile.append(str(f.file_format_specifications))
+                        if(f.file_format_specifications):
+                            singleFile.append(str(f.file_format_specifications))
+                        else:
+                            singleFile.append("")
                         singleFile.append("")
                         singleFile.append("")
                         singleFile.append(f.dbxrefs)
@@ -840,12 +846,27 @@ def populateDict(request):
                         singleFile.append(labName +"Files_"+str(f.sequencingFile_name)+"_"+str(f.pk))
                         singleFile.append(str(f.file_format))
                         singleFile.append(str(f.file_classification))
-                        singleFile.append(str(f.file_format_specifications))
-                        singleFile.append(str(f.file_barcode.barcode_index))
-                        singleFile.append(str(f.barcode_in_read))
-                        singleFile.append(str(f.file_barcode.barcode_position))
+                        if(f.file_format_specifications):
+                            singleFile.append(str(f.file_format_specifications))
+                        else:
+                            singleFile.append("")
+                        if(f.file_barcode):
+                            singleFile.append(str(f.file_barcode.barcode_index))
+                        else:
+                            singleFile.append("")
+                        if(f.barcode_in_read):
+                            singleFile.append(str(f.barcode_in_read))
+                        else:
+                            singleFile.append("")
+                        if(f.file_barcode):
+                            singleFile.append(str(f.file_barcode.barcode_position))
+                        else:
+                            singleFile.append("")
                         singleFile.append(str(f.flowcell_details_chunk))
-                        singleFile.append(str(f.sequencingFile_run))
+                        if(f.sequencingFile_run):
+                            singleFile.append(str(f.sequencingFile_run))
+                        else:
+                            singleFile.append("")
                         singleFile.append(str(f.flowcell_details_lane))
                         singleFile.append(str(f.sequencingFile_run.run_sequencing_machine))
                         singleFile.append(str(f.sequencingFile_run.run_sequencing_instrument))

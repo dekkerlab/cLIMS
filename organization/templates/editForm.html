@@ -159,8 +159,9 @@
 				<div class="fieldWrapper">
 					 {{field.errors}}
 					 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-					<span>
+					<span class="formLabel">
 					  {{field.label}} {% if field.field.required %} * {% endif %}
+					  </span>
 					  	{% if field.help_text == "JsonObjField" %}
 					  <span class="jsonForm">
 					  		{{field}}
@@ -172,7 +173,6 @@
 					  {% else %}
 					  	{{field}}
 					  {% endif %}
-					 </span>
 			  	</div>
 				{% endfor %}
 				{% if jsonObj %}

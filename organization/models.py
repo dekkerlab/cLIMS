@@ -70,7 +70,7 @@ class ExperimentSet(models.Model):
     experimentSet_exp = models.ManyToManyField(Experiment, related_name='setExp')
     experimentSet_description = models.CharField(max_length=200,  null=True, blank=True)
     document = models.ForeignKey('wetLab.Document', on_delete=models.CASCADE, related_name='setDoc',null=True, blank=True)
-    description =  models.CharField(max_length=200,  null=True, blank=True,)
+    description =  models.CharField(max_length=200, null=False, default="")
     
     def __str__(self):
         return self.experimentSet_name

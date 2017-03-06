@@ -563,14 +563,17 @@ class AddModification(View):
         regions_form =self.regions_form(request.POST)
         target_form =self.target_form(request.POST)
         if all([form.is_valid(), construct_form.is_valid(),regions_form.is_valid(),target_form.is_valid()]):
-            target = target_form.save()
-            construct = construct_form.save()
-            regions = regions_form.save()
             modification = form.save(commit= False)
+            if(target_form['targeted_genes'].value() != ""):
+                target = target_form.save()
+                modification.target = target
+            if(construct_form['construct_name'].value() != ""):
+                construct = construct_form.save()
+                modification.constructs = construct
+            if(regions_form['genomicRegions_genome_assembly'].value() != ""):
+                regions = regions_form.save()
+                modification.modification_genomicRegions = regions
             modification.userOwner = User.objects.get(pk=request.user.pk)
-            modification.constructs = construct
-            modification.modification_genomicRegions = regions
-            modification.target = target
             modification.save()
             return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(modification._get_pk_val()), escape(modification)))
         else:

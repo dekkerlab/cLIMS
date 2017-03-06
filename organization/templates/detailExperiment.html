@@ -219,23 +219,23 @@
 {% if not biosample.protocol  == None %}
 <span class="rowHead">Biosample Protocol: </span><a href="/detailProtocol/{{ biosample.protocol.id }}">{{ biosample.protocol }}</a><br/>
 {% endif %}
-{% if biosample.biosample_TreatmentRnai%}
-<span class="rowHead">Biosample Treatment: </span><br/>
+{% if biosample.biosample_TreatmentRnai.all%}
+<span class="rowHead">Biosample Treatment RNAi: </span><br/>
 {% for values in biosample.biosample_TreatmentRnai.all %}
 	    	({{ forloop.counter }}) {{values}}<br/>
 {% endfor %}
 
 {% endif %}
 
-{% if biosample.biosample_TreatmentChemical %}
-<span class="rowHead">Biosample Treatment: </span><br/>
+{% if biosample.biosample_TreatmentChemical.all %}
+<span class="rowHead">Biosample TreatmentChemical: </span><br/>
 {% for values in biosample.biosample_TreatmentChemical.all %}
 	    	({{ forloop.counter }}) {{values}}<br/>
 {% endfor %}
 {% endif %}
 
-{% if biosample.biosample_OtherTreatment %}
-<span class="rowHead">Biosample Treatment: </span><br/>
+{% if biosample.biosample_OtherTreatment.all %}
+<span class="rowHead">Biosample Treatment Other: </span><br/>
 {% for values in biosample.biosample_OtherTreatment.all %}
 	    	({{ forloop.counter }}) {{values}}<br/>
 {% endfor %}

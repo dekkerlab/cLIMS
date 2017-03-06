@@ -34,6 +34,8 @@ class SeqencingFile(models.Model):
         max_length=1,
         choices=PAIR_CHOICES,
         default='',
+        null=True, 
+        blank=True,
         help_text="The read the barcode is located on."
     )
     flowcell_details_chunk = models.CharField(max_length=500, null=True, blank=True, help_text="The file chunk label as assigned by Illumina software when splitting up a \
@@ -43,6 +45,8 @@ class SeqencingFile(models.Model):
         max_length=1,
         choices=PAIR_CHOICES,
         default='',
+        null=True, 
+        blank=True,
         help_text="Which pair the file belongs to (if paired end library)"
     )
     read_length = models.IntegerField(null=True, blank=True, help_text="The length of the enzyme recognition sequence.")

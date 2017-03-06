@@ -59,7 +59,7 @@ class DeleteProject(DeleteView):
 class EditExperiment(UpdateView):
     form_class = ExperimentForm
     model = Experiment
-    template_name = 'customForm.html/'
+    template_name = 'editForm.html/'
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']

@@ -27,6 +27,12 @@
     <a href="#">
 		<button type="button" class="btn btn-warning edit pull-right">Edit</button>
 	</a>
+	 <a href="/deleteSequencingRun/{{ sequencingRun.id }}">
+		<button type="button" class="btn btn-danger pull-right hidden show">Delete Run</button>
+		</a>
+	<a href="/editSequencingRun/{{sequencingRun.id}}">
+		<button type="button" class="btn btn-warning pull-right hidden show">Edit Run</button>
+	</a>
 	<br/>
     	<span class="rowHead">Project Name:</span>{{ sequencingRun.project }}<br/>
     	<span class="rowHead">Attached Experiments:</span><br/>

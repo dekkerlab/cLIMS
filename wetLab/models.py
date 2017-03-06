@@ -36,8 +36,8 @@ class Vendor(models.Model):
         return self.vendor_title    
     
 class Construct(models.Model):
-    construct_name = models.CharField(max_length=50, null=False, default="", help_text="Short name for construct - letters, numbers, hyphens or underscores allowed (no spaces)")
-    construct_type = models.ForeignKey('organization.Choice',related_name='conChoice', on_delete=models.CASCADE, help_text="The categorization of the construct.")
+    construct_name = models.CharField(max_length=50, null=True, blank=True, help_text="Short name for construct - letters, numbers, hyphens or underscores allowed (no spaces)")
+    construct_type = models.ForeignKey('organization.Choice',related_name='conChoice', null=True, blank=True, on_delete=models.CASCADE, help_text="The categorization of the construct.")
     construct_vendor = models.ForeignKey(Vendor,related_name='conVendor',null=True, blank=True, help_text="The Lab or Vendor that provided the construct.")
     construct_designed_to_Target = models.CharField(max_length=200, null=True, blank=True, help_text="The gene or genomic region that this construct is designed to target")
     construct_insert_sequence = models.CharField(max_length=200, null=True, blank=True, help_text="Nucleotide Sequence of the Insert")
@@ -49,10 +49,11 @@ class Construct(models.Model):
     url = models.URLField(max_length=200,  null=True, blank=True, help_text="An external resource with additional information about the object")
     
     def __str__(self):
-        return self.construct_name 
+        return self.construct_name
+        
 
 class  GenomicRegions(models.Model):
-    genomicRegions_genome_assembly = models.ForeignKey('organization.Choice',related_name='genAsmChoice', on_delete=models.CASCADE, help_text="The genome assembly from which the region was derived")
+    genomicRegions_genome_assembly = models.ForeignKey('organization.Choice',related_name='genAsmChoice', null=True, blank=True, on_delete=models.CASCADE, help_text="The genome assembly from which the region was derived")
     genomicRegions_chromosome = models.ForeignKey('organization.Choice',related_name='chrChoice',null=True, blank=True, help_text="The chromosome containing the region")
     genomicRegions_start_coordinate =  models.IntegerField(null=True, blank=True, help_text="The base position of the start coordinate of the region - start < end")
     genomicRegions_end_coordinate = models.IntegerField(null=True, blank=True, help_text="The base position of the end coordinate - end > start")
@@ -60,13 +61,12 @@ class  GenomicRegions(models.Model):
     genomicRegions_start_location = models.CharField(max_length=200, null=True, blank=True, help_text="If the exact start coordinate is not know a description of the start location")
     genomicRegions_end_location = models.CharField(max_length=200, null=True, blank=True, help_text="If the exact end coordinate is not know a description of the start location")
     
-    def __str__(self):
-        return self.genomicRegions_genome_assembly.choice_name 
+
     
 class  Target(References):
-    targeted_genes = models.CharField(max_length=200,  null=False, default="", help_text="The genes that are specifically targeted - can also be derived from genomic region info")
+    targeted_genes = models.CharField(max_length=200, null=True, blank=True, help_text="The genes that are specifically targeted - can also be derived from genomic region info")
     targeted_region =  models.ForeignKey(GenomicRegions, null=True, blank=True, related_name='targetGenAsm', on_delete=models.CASCADE, help_text="The genome assembly, chromosome and coordinates of the region that is targeted")
-    target_description = models.CharField(max_length=200,  null=False, default="", help_text="A brief plain text description of the target.")
+    target_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A brief plain text description of the target.")
     
     def __str__(self):
         return self.targeted_genes
@@ -148,11 +148,11 @@ class TreatmentRnai(References, UserOwner):
 class TreatmentChemical(References, UserOwner):
     treatmentChemical_name = models.CharField(max_length=50, null=False, default="")
     treatmentChemical_chemical = models.CharField(max_length=50, null=False, default="")
-    treatmentChemical_concentration = models.FloatField(max_length=10, null=False,default="")
+    treatmentChemical_concentration = models.FloatField(max_length=10, null=False,default=0)
     treatmentChemical_concentration_units = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, null=True, blank=True, related_name='conUnits')
-    treatmentChemical_duration = models.FloatField(max_length=10,null=False,default="") 
+    treatmentChemical_duration = models.FloatField(max_length=10,null=False,default=0) 
     treatmentChemical_duration_units = models.ForeignKey('organization.Choice',on_delete=models.CASCADE, null=True, blank=True, related_name='timeUnits')
-    treatmentChemical_temperature = models.FloatField(max_length=10,null=False, default="")
+    treatmentChemical_temperature = models.FloatField(max_length=10,null=False, default=0)
     treatmentChemical_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     
     def __str__(self):

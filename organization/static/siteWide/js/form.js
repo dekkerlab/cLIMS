@@ -17,12 +17,20 @@ $(function() {
 //		    	$("."+model).append( form );
 		    	$(".inner").empty();
 		    	$(".inner").append( form );
+//		    	var valuesJson = eval('(' + $( "#jsonForm").val() + ')');
+//		    	console.log(valuesJson);
+//				for (var k in valuesJson) {
+//					$( "select[name='"+k+"']" ).val("'"+valuesJson[k]+"'");
+//					$( "input[name='"+k+"']" ).val("'"+valuesJson[k]+"'");
+//				}
+				
 		    },
 		    error: function(ts) { 
                 alert("Incorrect Choice");
             }
 		});
 });
+	
 	function constructForm(jsObj) {
 		form = ""
 		for (var key in jsObj) {
@@ -35,7 +43,7 @@ $(function() {
     			 form += "<select name="+key+">";
     			 for (i = 1; i <= len; i++) {
     				 optionValue = jsObj[key].choices[i]
-    				 form += "<option value="+optionValue+">"+optionValue+"</option>";
+    				 form += "<option value='"+optionValue+"'>"+optionValue+"</option>";
     			 }
     			 form += "</select>";
     		 }
@@ -45,7 +53,6 @@ $(function() {
     		}
 	    return form;
 	}
-	
 	
 	 
 	//$( "span:contains('Biosample modification')" ).append('<a href="/addModification/" title="Add another Modification"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
@@ -70,6 +77,8 @@ $(function() {
 	$( ".formLabel:contains('File barcode')" ).append('<a href="/addBarcode/" class="add-another" id="add_id_file_barcode" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Construct Map')" ).append('<a href="/addDocument/" class="add-another" id="add_id_document" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('File format specifications')" ).append('<a href="/addDocument/" class="add-another" id="add_id_file_format_specifications" onclick="return showAddAnotherPopup(this);"></a>');
+	
+	
 	
 	//$( "span:contains('References')" ).append('<a href="/addPublication/" target="_blank" title="Add another Publication"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 //	$( "span:contains('constructs')" ).append('<a href="/addConstruct/" target="_blank" title="Add another Construct"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
