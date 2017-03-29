@@ -22,4 +22,7 @@ DATABASE_USER='dekker_lab'
 DATABASE_PASSWORD='CHYYTS14#'
 HOST=''
 PORT=''
+#WORKSPACEPATH = "/Users/nanda/Documents/EclipseWorkspace/clims/cLIMS/"
 WORKSPACEPATH = "/djangoProject/cLIMS/"
+#FILEUPLOADPATH = "/Users/nanda/Documents/EclipseWorkspace/clims/cLIMS/"
+FILEUPLOADPATH = "/djangoProject/cLIMS/media/"

@@ -27,6 +27,8 @@ from django.template.context import RequestContext
 from organization.decorators import class_login_required
 from django.dispatch.dispatcher import receiver
 from django.contrib.auth.signals import user_logged_in
+import string
+import random
 # Create your views here.
 
 @receiver(user_logged_in)
@@ -45,7 +47,8 @@ def login(request, **kwargs):
     else:
         return contrib_login (request, **kwargs)
         
-            
+def dcic_idGen(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))            
         
 @class_login_required
 class HomeView(View):
@@ -99,6 +102,7 @@ class AddProject(View):
         if form.is_valid():
             result = form.save(commit= False)
             result.project_owner = request.user
+            result.dcic_alias = dcic_idGen()
             result.save()
             project_contributor = request.POST.getlist('project_contributor')
             if(project_contributor):
@@ -372,6 +376,7 @@ class AddIndividual(View):
                 individual_type = request.POST.get('individual_type')
                 individual.userOwner = User.objects.get(pk=request.user.pk)
                 individual.individual_fields = createJSON(request, individual_type)  
+                individual.dcic_alias = dcic_idGen()
                 individual.save()
                 request.session['individualPK'] = individual.pk
                 print(individual.pk)
@@ -414,6 +419,7 @@ class AddBiosource(View):
                 biosource = form.save(commit=False)
                 individualPK = request.session['individualPK']
                 biosource.biosource_individual = Individual.objects.get(pk=individualPK)
+                biosource.dcic_alias = dcic_idGen()
                 biosource.save()
                 modifications = request.POST.getlist('modifications')
                 for m in modifications:
@@ -471,6 +477,7 @@ class AddBiosample(View):
                 if(request.POST.get('biosample_type')):
                     biosample_type = request.POST.get('biosample_type')
                     biosample.biosample_fields = createJSON(request, biosample_type)
+                biosample.dcic_alias = dcic_idGen()
                 biosample.save()
                 modifications = request.POST.getlist('modifications')
                 for m in modifications:
@@ -529,6 +536,7 @@ class AddExperiment(View):
             if(request.POST.get('type')):
                 exp_type = request.POST.get('type')
                 form.experiment_fields = createJSON(request, exp_type)
+            form.dcic_alias = dcic_idGen()
             form.save()
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
@@ -574,6 +582,7 @@ class AddModification(View):
                 regions = regions_form.save()
                 modification.modification_genomicRegions = regions
             modification.userOwner = User.objects.get(pk=request.user.pk)
+            modification.dcic_alias = dcic_idGen()
             modification.save()
             return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(modification._get_pk_val()), escape(modification)))
         else:
@@ -598,7 +607,9 @@ class AddConstruct(View):
         if form.is_valid():
             newObject = None
             try:
-                newObject = form.save()
+                newObject = form.save(commit= False)
+                newObject.dcic_alias = dcic_idGen()
+                newObject.save()
             
             except(forms.ValidationError):
                 newObject = None
@@ -624,9 +635,12 @@ class AddTarget(View):
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
+            form.dcic_alias = dcic_idGen()
             newObject = None
             try:
-                newObject = form.save()
+                newObject = form.save(commit= False)
+                newObject.dcic_alias = dcic_idGen()
+                newObject.save()
             
             except(forms.ValidationError):
                 newObject = None
@@ -654,6 +668,7 @@ class AddProtocol(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
+                newObject.dcic_alias = dcic_idGen()
                 newObject.save()
            
             except(forms.ValidationError):
@@ -682,8 +697,9 @@ class AddTreatmentRnai(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
+                newObject.dcic_alias = dcic_idGen()
                 newObject.save()
-                modifications = request.POST.getlist('modifications')
+                #modifications = request.POST.getlist('modifications')
            
             except(forms.ValidationError):
                 newObject = None
@@ -714,6 +730,7 @@ class AddTreatmentChemical(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
+                newObject.dcic_alias = dcic_idGen()
                 newObject.save()
             
             except(forms.ValidationError):
@@ -770,7 +787,9 @@ class AddDocument(View):
         if form.is_valid():
             newObject = None
             try:
-                newObject = form.save()
+                newObject = form.save(commit= False)
+                newObject.dcic_alias = dcic_idGen()
+                newObject.save()
                 
             except(forms.ValidationError):
                 newObject = None
@@ -801,7 +820,9 @@ class AddPublication(View):
         if form.is_valid():
             newObject = None
             try:
-                newObject = form.save()
+                newObject = form.save(commit= False)
+                newObject.dcic_alias = dcic_idGen()
+                newObject.save()
                 
             except(forms.ValidationError):
                 newObject = None
@@ -928,6 +949,7 @@ class AddSeqencingFile(View):
             file.sequencingFile_sha256sum = "diuwdiued788798"
             file.sequencingFile_md5sum = "hewifu9283ydhjhkj"
             file.sequencingFile_exp = Experiment.objects.get(pk = self.request.session['experimentId'] )
+            file.dcic_alias = dcic_idGen()
             file.save()
             return HttpResponseRedirect('/detailExperiment/'+self.request.session['experimentId'])
         else:
@@ -980,6 +1002,7 @@ class AddExperimentSet(View):
         if form.is_valid():
             expSet = form.save(commit=False)
             expSet.project = Project.objects.get(pk=request.session['projectId'])
+            expSet.dcic_alias = dcic_idGen()
             expSet.save()
             expSetExp = request.POST.getlist('experimentSet_exp')
             for exp in expSetExp:
@@ -1036,6 +1059,7 @@ class AddImageObjects(View):
             try:
                 newObject = form.save(commit=False)
                 newObject.project = Project.objects.get(pk=request.session['projectId'])
+                newObject.dcic_alias = dcic_idGen()
                 newObject.save()
             except(forms.ValidationError):
                 newObject = None

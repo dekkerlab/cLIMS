@@ -62,13 +62,13 @@ class EditExperiment(UpdateView):
     template_name = 'editForm.html/'
     
     def get_success_url(self):
-        experimentId = self.request.session['experimentId']
+        projectId = self.request.session['projectId']
         expe = Experiment.objects.get(pk=self.get_object().id)
         if(self.request.POST.get('type')):
             exp_type = self.request.POST.get('type')
             expe.experiment_fields = createJSON(self.request, exp_type)
             expe.save()
-        return reverse('detailExperiment', kwargs={'pk': experimentId})
+        return reverse('detailProject', kwargs={'pk': projectId})
     
     def get_context_data(self, **kwargs):
         context = super(EditExperiment , self).get_context_data(**kwargs)

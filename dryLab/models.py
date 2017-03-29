@@ -1,8 +1,10 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+
  
 # Create your models here.
- 
+
+
 class SequencingRun(models.Model):
     run_name = models.CharField(max_length=100, null=False, default="")
     project = models.ForeignKey('organization.Project', related_name='runProject', on_delete=models.CASCADE,)
@@ -57,6 +59,8 @@ class SeqencingFile(models.Model):
     sequencingFile_run = models.ForeignKey(SequencingRun, related_name='fileRun', on_delete=models.CASCADE,)
     sequencingFile_exp = models.ForeignKey('organization.Experiment', related_name='fileExp', on_delete=models.CASCADE,)
     dbxrefs = models.CharField(max_length=500, null=True, blank=True, help_text="Unique identifiers from external resources, enter as a database name:identifier eg. HGNC:PARK2")
+    dcic_alias = models.CharField(max_length=10, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    
     def __str__(self):
         return self.sequencingFile_name
 
@@ -97,6 +101,7 @@ class ImageObjects(models.Model):
     imageObjects_name = models.CharField(max_length=50, null=False, default="")
     imageObjects_images = models.FileField(upload_to='uploads/', help_text="Import image file")
     project = models.ForeignKey('organization.Project', related_name='imgProject', on_delete=models.CASCADE,)
+    dcic_alias = models.CharField(max_length=10, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     def __str__(self):
         return self.imageObjects_name
     

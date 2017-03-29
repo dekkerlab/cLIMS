@@ -22,7 +22,7 @@ class ModificationForm(ModelForm):
     
     class Meta:
         model = Modification
-        exclude = ('userOwner','constructs','modification_genomicRegions','target')
+        exclude = ('userOwner','constructs','modification_genomicRegions','target','dcic_alias')
         fields = ['modification_name','modification_type','modification_vendor','modification_gRNA','references','document','url','dbxrefs','modification_description']
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -39,7 +39,7 @@ class ConstructForm(ModelForm):
     document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label="Construct Map", help_text="Map of the construct - document")
     class Meta:
         model = Construct
-        exclude = ('',)
+        exclude = ('dcic_alias',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -54,7 +54,7 @@ class GenomicRegionsForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = GenomicRegions
-        exclude = ('',)
+        exclude = ('dcic_alias',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -69,7 +69,7 @@ class TargetForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Target
-        exclude = ('',)
+        exclude = ('dcic_alias',)
         fields = ['targeted_genes','targeted_region','references','document','url','dbxrefs']
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
@@ -91,7 +91,7 @@ class IndividualForm(ModelForm):
         #add_related_field_wrapper(self, 'documents')
     class Meta:
         model = Individual
-        exclude = ('individual_fields','userOwner')
+        exclude = ('individual_fields','userOwner','dcic_alias')
         fields = ['individual_name','individual_vendor','individual_type','references','document','url','dbxrefs']
     
 
@@ -105,7 +105,7 @@ class DocumentForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Document
-        exclude = ('',)
+        exclude = ('dcic_alias',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -122,7 +122,7 @@ class ProtocolForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Protocol
-        exclude = ('protocol_fields','userOwner')
+        exclude = ('protocol_fields','userOwner','dcic_alias',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -145,7 +145,7 @@ class BiosourceForm(ModelForm):
     
     class Meta:
         model = Biosource
-        exclude = ('biosource_individual',)
+        exclude = ('biosource_individual','dcic_alias',)
         fields = ['biosource_name','biosource_type','biosource_cell_line','biosource_cell_line_tier','protocol','biosource_vendor',
                   'cell_line_termid', 'modifications', 'biosource_tissue','references','document','url','dbxrefs','biosource_description']
 
@@ -172,7 +172,7 @@ class BiosampleForm(ModelForm):
     
     class Meta:
         model = Biosample
-        exclude = ('biosample_fields','userOwner','biosample_biosource', 'biosample_individual',)
+        exclude = ('biosample_fields','userOwner','biosample_biosource', 'biosample_individual','dcic_alias',)
         fields = ['biosample_name','modifications','protocol','biosample_TreatmentRnai',
                   'biosample_TreatmentChemical','biosample_OtherTreatment','imageObjects','biosample_type',
                   'references','document','url','dbxrefs','biosample_description']
@@ -195,7 +195,7 @@ class TreatmentRnaiForm(ModelForm):
     
     class Meta:
         model = TreatmentRnai
-        exclude = ('userOwner',)
+        exclude = ('userOwner','dcic_alias',)
         fields = ['treatmentRnai_name','treatmentRnai_rnai_type','constructs','treatmentRnai_rnai_vendor','target','treatmentRnai_nucleotide_seq',
                   'references','document','url','dbxrefs','treatmentRnai_description']
     def __init__(self, *args, **kwargs):
@@ -215,7 +215,7 @@ class TreatmentChemicalForm(ModelForm):
     
     class Meta:
         model = TreatmentChemical
-        exclude = ('userOwner',)
+        exclude = ('userOwner','dcic_alias',)
         fields = ['treatmentChemical_name','treatmentChemical_chemical','treatmentChemical_concentration','treatmentChemical_concentration_units','treatmentChemical_duration','treatmentChemical_duration_units',
                   'treatmentChemical_temperature','references','document','url','dbxrefs','treatmentChemical_description']
     def __init__(self, *args, **kwargs):

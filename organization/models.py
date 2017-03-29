@@ -29,6 +29,7 @@ class Project(models.Model):
     project_contributor = models.ManyToManyField(User, related_name='memberProject', blank=True,)
     project_notes = models.TextField( null=True, blank=True, help_text="Notes for the project.")
     project_active = models.BooleanField(default=True, help_text="Is project currently in progress?")
+    dcic_alias = models.CharField(max_length=10, null=False, unique=True, db_index=True, default="", help_text="Provide an alias name for the object for DCIC submission.")
     
     def __str__(self):
         return self.project_name
@@ -52,12 +53,13 @@ class Experiment(References):
         default='',
     )
     protocol = models.ForeignKey('wetLab.Protocol',related_name='expPro', on_delete=models.CASCADE,)
-    type = models.ForeignKey('organization.JsonObjField',  null=True, blank=True, on_delete=models.CASCADE, related_name='expType', help_text="JsonObjField")
+    type = models.ForeignKey('organization.JsonObjField', on_delete=models.CASCADE, related_name='expType', help_text="JsonObjField")
     experiment_fields = JSONField(null=True, blank=True)
     variation = models.TextField( null=True, blank=True, verbose_name="protocol_variations")
     experiment_enzyme = models.ForeignKey('wetLab.Enzyme',related_name='expEnz', on_delete=models.CASCADE,help_text="The enzyme used for digestion of the DNA.")
     experiment_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A short description of the experiment")
     imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='expImg' , blank=True, help_text="Lab gel and fragment analyzer images")
+    dcic_alias = models.CharField(max_length=10, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     
     def __str__(self):
         return self.experiment_name
@@ -68,9 +70,9 @@ class ExperimentSet(models.Model):
     project =  models.ForeignKey('organization.Project',related_name='expSetProject', on_delete=models.CASCADE,)
     experimentSet_type = models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='setChoice', help_text="The categorization of the set of experiments.")
     experimentSet_exp = models.ManyToManyField(Experiment, related_name='setExp')
-    experimentSet_description = models.CharField(max_length=200,  null=True, blank=True)
     document = models.ForeignKey('wetLab.Document', on_delete=models.CASCADE, related_name='setDoc',null=True, blank=True)
     description =  models.CharField(max_length=200, null=False, default="")
+    dcic_alias = models.CharField(max_length=10, null=False,  default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     
     def __str__(self):
         return self.experimentSet_name
@@ -83,6 +85,7 @@ class Publication(models.Model):
     exp_sets_used_in_pub = models.ForeignKey(ExperimentSet,related_name='pubUsedSet', null=True, blank=True, on_delete=models.SET_NULL, help_text="List of experiment sets that are used (not produced) by this publication.")
     publication_categories = models.ForeignKey('organization.Choice', null=True, on_delete=models.SET_NULL, related_name='pubCatChoice', help_text="The categorization of publications.")
     publication_published_by = models.ForeignKey('organization.Choice', null=True, on_delete=models.SET_NULL, related_name='pubByChoice', help_text="Publication publisher.")
+    dcic_alias = models.CharField(max_length=10, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     
     def __str__(self):
         return self.publication_title
@@ -92,7 +95,7 @@ class Award(models.Model):
     award_name = models.CharField(max_length=50, null=False, default="", db_index=True)
     award_exp = models.ManyToManyField(Experiment, related_name='awardExp')
     award_project = models.ManyToManyField(Project, related_name='awardPro')
-
+    
     def __str__(self):
         return self.award_name
 

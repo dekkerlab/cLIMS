@@ -17,7 +17,7 @@ class ProjectForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Project
-        exclude = ('project_owner',)
+        exclude = ('project_owner','dcic_alias')
     
 
 class ProjectSearchForm(BaseSearchForm):
@@ -40,16 +40,16 @@ class ProjectSearchForm(BaseSearchForm):
         
 class ExperimentForm(ModelForm):
     use_required_attribute = False
-    documents = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
     references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop,required=False)
     protocol = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop)
     imageObjects = forms.ModelMultipleChoiceField (ImageObjects.objects.all(), widget=MultipleSelectWithPop, required=False)
     
     class Meta:
         model = Experiment
-        exclude = ('project','experiment_biosample','experiment_fields','bio_rep_no','tec_rep_no')
+        exclude = ('project','experiment_biosample','experiment_fields','dcic_alias')
         fields = ['experiment_name','biosample_quantity','biosample_quantity_units','protocol','type','variation','experiment_enzyme',
-                  'imageObjects','references','documents','url','dbxrefs','experiment_description']
+                  'imageObjects','references','document','url','dbxrefs','experiment_description']
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -95,7 +95,7 @@ class PublicationForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Publication
-        exclude = ('',)
+        exclude = ('dcic_alias',)
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'

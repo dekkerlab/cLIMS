@@ -53,7 +53,7 @@ class SeqencingFileForm(ModelForm):
     
     class Meta:
         model = SeqencingFile
-        exclude = ('sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp','project')
+        exclude = ('sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp','project','dcic_alias')
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -114,7 +114,7 @@ class ImageObjectsForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = ImageObjects
-        exclude = ('project',)
+        exclude = ('project','dcic_alias')
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'

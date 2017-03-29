@@ -42,6 +42,9 @@
 <span class="rowHead">Protocol Variations: </span>{{ experiment.variation }}<br/>
 <span class="rowHead">Type: </span>{{ experiment.type }}<br/>
 <span class="rowHead">Enzyme: </span>{{ experiment.experiment_enzyme }}<br/>
+{% if not experiment.document  == None %}
+	<span class="rowHead">Experiment Documents: </span><a href="/detailDocument/{{experiment.document.id}}">{{experiment.document}}</a><br/>
+{% endif %}
 <span class="rowHead">Description: </span>{{ experiment.experiment_description }}<br/>
 <span class="rowHead">Experiment Images: </span><br/>
 {% for images in experiment.imageObjects.all %}
