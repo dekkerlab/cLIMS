@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.postgres.fields import JSONField
+from organization.validators import alphanumeric
 
  
 # Create your models here.
 
-
 class SequencingRun(models.Model):
-    run_name = models.CharField(max_length=100, null=False, default="")
+    run_name = models.CharField(max_length=100, null=False, default="", validators=[alphanumeric])
     project = models.ForeignKey('organization.Project', related_name='runProject', on_delete=models.CASCADE,)
     run_Experiment = models.ManyToManyField('organization.Experiment', related_name='runExp')
     run_sequencing_center = models.ForeignKey('organization.Choice', null=True, blank=True, on_delete=models.CASCADE, related_name='runCenterChoice', help_text="Where the sequencing has been done.")
@@ -26,10 +26,11 @@ class SeqencingFile(models.Model):
         ('1', '1'),
         ('2', '2'),
     )
-    sequencingFile_name = models.CharField(max_length=255, null=False, default="")
+    sequencingFile_name = models.CharField(max_length=255, null=False, default="", validators=[alphanumeric])
     project = models.ForeignKey('organization.Project', related_name='fileProject', on_delete=models.CASCADE,)
     file_format = models.ForeignKey('organization.Choice', null=True, blank=True, on_delete=models.CASCADE, related_name='fileChoice', help_text="Type of file format.")
-    file_classification = models.CharField(max_length=200, null=True, blank=True, help_text="General classification group for the File (raw, processed, ancillary (eg. index files))")
+    file_classification = models.ForeignKey('organization.Choice', null=True, blank=True, on_delete=models.CASCADE, related_name='fileclassChoice', help_text="General classification group for the File (raw, processed, ancillary (eg. index files))")
+    #file_classification = models.CharField(max_length=200, null=True, blank=True, help_text="General classification group for the File (raw, processed, ancillary (eg. index files))")
     file_format_specifications = models.ForeignKey('wetLab.Document', null=True, blank=True, help_text="Text or pdf files that further explain the file format")
     file_barcode = models.ForeignKey('wetLab.Barcode', on_delete=models.SET_NULL, null=True, blank=True, help_text="Barcode attached to the file.")
     barcode_in_read = models.CharField(
@@ -59,13 +60,13 @@ class SeqencingFile(models.Model):
     sequencingFile_run = models.ForeignKey(SequencingRun, related_name='fileRun', on_delete=models.CASCADE,)
     sequencingFile_exp = models.ForeignKey('organization.Experiment', related_name='fileExp', on_delete=models.CASCADE,)
     dbxrefs = models.CharField(max_length=500, null=True, blank=True, help_text="Unique identifiers from external resources, enter as a database name:identifier eg. HGNC:PARK2")
-    dcic_alias = models.CharField(max_length=10, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     
     def __str__(self):
         return self.sequencingFile_name
 
 class FileSet(models.Model):
-    fileSet_name = models.CharField(max_length=50, null=False, default="")
+    fileSet_name = models.CharField(max_length=50, null=False, default="", validators=[alphanumeric])
     project = models.ForeignKey('organization.Project', related_name='filesetProject', on_delete=models.CASCADE,)
     fileset_type = models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='fileSetChoice', help_text="The categorization of the set of files.")
     fileSet_file = models.ManyToManyField(SeqencingFile, related_name='fileSetFile')
@@ -76,7 +77,7 @@ class FileSet(models.Model):
 
 
 class Analysis(models.Model):
-    analysis_name = models.CharField(max_length=50, null=False, default="")
+    analysis_name = models.CharField(max_length=50, null=False, default="", validators=[alphanumeric])
     analysis_type = models.ForeignKey('organization.JsonObjField', related_name='analysisType', on_delete=models.CASCADE, help_text="AnalysisField")
     analysis_fields = JSONField(null=True, blank=True)
     analysis_file = models.ManyToManyField(SeqencingFile, related_name='analysisFile')
@@ -98,12 +99,15 @@ class Images(models.Model):
         verbose_name_plural = 'Images'
 
 class ImageObjects(models.Model):
-    imageObjects_name = models.CharField(max_length=50, null=False, default="")
-    imageObjects_images = models.FileField(upload_to='uploads/', help_text="Import image file")
+    imageObjects_name = models.CharField(max_length=50, null=False, default="", validators=[alphanumeric])
+    imageObjects_images = models.FileField(upload_to='uploads/', help_text="Import image file", max_length=200)
+    imageObjects_type = models.ForeignKey('organization.Choice', null=False, on_delete=models.CASCADE, related_name='imgChoice', help_text="The categorization of the images.")
+    description = models.CharField(max_length=200, null=True, blank=True)
     project = models.ForeignKey('organization.Project', related_name='imgProject', on_delete=models.CASCADE,)
-    dcic_alias = models.CharField(max_length=10, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     def __str__(self):
         return self.imageObjects_name
-    
+    class Meta:
+        verbose_name_plural = 'ImageObjects'
         
         

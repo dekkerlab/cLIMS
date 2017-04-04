@@ -67,10 +67,12 @@ class GenomicRegionsForm(ModelForm):
 
 class TargetForm(ModelForm):
     use_required_attribute = False
+    targeted_region = forms.ModelChoiceField(GenomicRegions.objects.all(), widget=SelectWithPop, required=False)
+    
     class Meta:
         model = Target
         exclude = ('dcic_alias',)
-        fields = ['targeted_genes','targeted_region','references','document','url','dbxrefs']
+        fields = ['name','targeted_genes','targeted_region','references','document','url','dbxrefs']
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
@@ -191,12 +193,12 @@ class TreatmentRnaiForm(ModelForm):
     document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
     references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
     constructs = forms.ModelChoiceField(Construct.objects.all(), widget=SelectWithPop, required=False)
-    target = forms.ModelChoiceField(Target.objects.all(), widget=SelectWithPop, required=False)
+    treatmentRnai_target = forms.ModelChoiceField(Target.objects.all(), widget=SelectWithPop, required=False)
     
     class Meta:
         model = TreatmentRnai
         exclude = ('userOwner','dcic_alias',)
-        fields = ['treatmentRnai_name','treatmentRnai_rnai_type','constructs','treatmentRnai_rnai_vendor','target','treatmentRnai_nucleotide_seq',
+        fields = ['treatmentRnai_name','treatmentRnai_type','constructs','treatmentRnai_vendor','treatmentRnai_target','treatmentRnai_nucleotide_seq',
                   'references','document','url','dbxrefs','treatmentRnai_description']
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()

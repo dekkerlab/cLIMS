@@ -158,20 +158,6 @@
   </div>
 {% endfor %}
 	 {% endif %}
-	   {% if target_form %}
-		<h1>Target</h1>
-		{{ target_form.non_field_errors }}
-		{% for field in target_form %}
-		<div class="fieldWrapper">
-		 {{field.errors}}
-		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
-	   <span class="formLabel">
-		  	{{field.label}} {% if field.field.required %} * {% endif %}
-		</span>
-	  {{field}}
-  </div>
-{% endfor %}
-	 {% endif %}
 	  {% if construct_form %}
 		<h1>Construct</h1>
 		{{ construct_form.non_field_errors }}
@@ -197,6 +183,24 @@
 		  	{{field.label}} {% if field.field.required %} * {% endif %}
 		  </span>
 	  {{field}}
+  </div>
+{% endfor %}
+	 {% endif %}
+	   {% if target_form %}
+		<h1>Target</h1>
+		{{ target_form.non_field_errors }}
+		{% for field in target_form %}
+		<div class="fieldWrapper">
+		 {{field.errors}}
+		 {% if field.label == "Targeted region" %}
+	    
+	   	{% else %}
+		 <a style="cursor: pointer;"><i class="fa fa-question-circle" title="{{field.help_text}}"></i></a>
+	   <span class="formLabel">
+		  	{{field.label}} {% if field.field.required %} * {% endif %}
+		</span>
+	  {{field}}
+	   {% endif %}
   </div>
 {% endfor %}
 	 {% endif %}

@@ -233,7 +233,7 @@ class EditTreatmentRnai(UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(EditTreatmentRnai , self).get_context_data(**kwargs)
-        context['form'].fields["treatmentRnai_rnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_rnai_type")
+        context['form'].fields["treatmentRnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_type")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -502,6 +502,7 @@ class EditSequencingFile(UpdateView):
         context = super(EditSequencingFile , self).get_context_data(**kwargs)
         context['form'].fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=self.request.session['projectId'])
         context['form'].fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
+        context['form'].fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -775,6 +776,7 @@ class EditImageObjects(UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(EditImageObjects , self).get_context_data(**kwargs)
+        context['form'].fields["imageObjects_type"].queryset = Choice.objects.filter(choice_type="imageObjects_type")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context

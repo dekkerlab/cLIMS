@@ -46,10 +46,14 @@ def login(request, **kwargs):
         return redirect(settings.LOGIN_REDIRECT_URL)
     else:
         return contrib_login (request, **kwargs)
-        
-def dcic_idGen(size=6, chars=string.ascii_uppercase + string.digits):
-    return ''.join(random.choice(chars) for _ in range(size))            
-        
+
+##Order Json field
+def orderByNumber(jsonDict):
+    jsonList = jsonDict.items()
+    sorted_list = sorted(jsonList, key=lambda k: (int(k[1]['order'])))
+    sorted_dict= OrderedDict(sorted_list)
+    return sorted_dict        
+     
 @class_login_required
 class HomeView(View):
     template_name = 'home.html'
@@ -102,7 +106,8 @@ class AddProject(View):
         if form.is_valid():
             result = form.save(commit= False)
             result.project_owner = request.user
-            result.dcic_alias = dcic_idGen()
+            aliasList=[result.project_name]
+            result.dcic_alias = aliasList
             result.save()
             project_contributor = request.POST.getlist('project_contributor')
             if(project_contributor):
@@ -214,7 +219,7 @@ class DetailExperiment(View):
         for i in individual:
             i.individual_fields = json.loads(i.individual_fields)
         if(biosample.biosample_fields):
-            biosample.biosample_fields = json.loads(biosample.biosample_fields)    
+            biosample.biosample_fields = json.loads(biosample.biosample_fields)   
            
         context['experiment']= experiment
         context['biosample']= biosample
@@ -375,8 +380,8 @@ class AddIndividual(View):
                 individual = form.save(commit= False)
                 individual_type = request.POST.get('individual_type')
                 individual.userOwner = User.objects.get(pk=request.user.pk)
-                individual.individual_fields = createJSON(request, individual_type)  
-                individual.dcic_alias = dcic_idGen()
+                individual.individual_fields = createJSON(request, individual_type)
+                individual.dcic_alias = individual.individual_name
                 individual.save()
                 request.session['individualPK'] = individual.pk
                 print(individual.pk)
@@ -419,7 +424,7 @@ class AddBiosource(View):
                 biosource = form.save(commit=False)
                 individualPK = request.session['individualPK']
                 biosource.biosource_individual = Individual.objects.get(pk=individualPK)
-                biosource.dcic_alias = dcic_idGen()
+                biosource.dcic_alias = biosource.biosource_name
                 biosource.save()
                 modifications = request.POST.getlist('modifications')
                 for m in modifications:
@@ -477,7 +482,8 @@ class AddBiosample(View):
                 if(request.POST.get('biosample_type')):
                     biosample_type = request.POST.get('biosample_type')
                     biosample.biosample_fields = createJSON(request, biosample_type)
-                biosample.dcic_alias = dcic_idGen()
+                aliasList=[biosample.biosample_biosource.biosource_name,biosample.biosample_name]
+                biosample.dcic_alias = "_".join(aliasList)
                 biosample.save()
                 modifications = request.POST.getlist('modifications')
                 for m in modifications:
@@ -536,7 +542,8 @@ class AddExperiment(View):
             if(request.POST.get('type')):
                 exp_type = request.POST.get('type')
                 form.experiment_fields = createJSON(request, exp_type)
-            form.dcic_alias = dcic_idGen()
+            aliasList=[form.project.project_name,form.experiment_name]
+            form.dcic_alias = "_".join(aliasList)
             form.save()
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
@@ -572,17 +579,27 @@ class AddModification(View):
         target_form =self.target_form(request.POST)
         if all([form.is_valid(), construct_form.is_valid(),regions_form.is_valid(),target_form.is_valid()]):
             modification = form.save(commit= False)
-            if(target_form['targeted_genes'].value() != ""):
-                target = target_form.save()
-                modification.target = target
             if(construct_form['construct_name'].value() != ""):
-                construct = construct_form.save()
+                construct = construct_form.save(commit= False)
+                aliasList=[modification.modification_name,construct.construct_name]
+                construct.dcic_alias = "_".join(aliasList)
+                construct.save()
                 modification.constructs = construct
-            if(regions_form['genomicRegions_genome_assembly'].value() != ""):
-                regions = regions_form.save()
+            if(regions_form['name'].value() != ""):
+                regions = regions_form.save(commit= False)
+                aliasList=[modification.modification_name,regions.name]
+                regions.dcic_alias = "_".join(aliasList)
+                regions.save()
                 modification.modification_genomicRegions = regions
+            if(target_form['name'].value() != ""):
+                target = target_form.save(commit= False)
+                target.targeted_region = regions
+                aliasList=[modification.modification_name,target.name]
+                target.dcic_alias = "_".join(aliasList)
+                target.save()
+                modification.target = target
             modification.userOwner = User.objects.get(pk=request.user.pk)
-            modification.dcic_alias = dcic_idGen()
+            modification.dcic_alias = modification.modification_name
             modification.save()
             return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(modification._get_pk_val()), escape(modification)))
         else:
@@ -608,7 +625,7 @@ class AddConstruct(View):
             newObject = None
             try:
                 newObject = form.save(commit= False)
-                newObject.dcic_alias = dcic_idGen()
+                newObject.dcic_alias = newObject.construct_name
                 newObject.save()
             
             except(forms.ValidationError):
@@ -635,11 +652,10 @@ class AddTarget(View):
     def post(self,request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            form.dcic_alias = dcic_idGen()
             newObject = None
             try:
                 newObject = form.save(commit= False)
-                newObject.dcic_alias = dcic_idGen()
+                newObject.dcic_alias = newObject.name
                 newObject.save()
             
             except(forms.ValidationError):
@@ -650,6 +666,39 @@ class AddTarget(View):
         else:
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
+
+@class_login_required        
+class AddGenomicRegions(View): 
+    form_class = GenomicRegionsForm
+    field = "GenomicRegions"
+    def get(self,request):
+        form = self.form_class()
+        pageContext = {'form': form, 'field':self.field}
+        form.fields["genomicRegions_genome_assembly"].queryset = Choice.objects.filter(choice_type="genomicRegions_genome_assembly")
+        form.fields["genomicRegions_chromosome"].queryset = Choice.objects.filter(choice_type="genomicRegions_chromosome")
+        return render(request, "popup.html", pageContext)
+    
+    def post(self,request):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            newObject = None
+            try:
+                newObject = form.save(commit= False)
+                newObject.dcic_alias = newObject.name
+                newObject.save()
+            
+            except(forms.ValidationError):
+                newObject = None
+                
+            if newObject:
+                return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
+        else:
+            pageContext = {'form': form, 'field':self.field}
+            form.fields["genomicRegions_genome_assembly"].queryset = Choice.objects.filter(choice_type="genomicRegions_genome_assembly")
+            form.fields["genomicRegions_chromosome"].queryset = Choice.objects.filter(choice_type="genomicRegions_chromosome")
+            return render(request, "popup.html", pageContext)
+        
+        
 
 
 @class_login_required
@@ -668,7 +717,7 @@ class AddProtocol(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
-                newObject.dcic_alias = dcic_idGen()
+                newObject.dcic_alias = newObject.name
                 newObject.save()
            
             except(forms.ValidationError):
@@ -686,7 +735,7 @@ class AddTreatmentRnai(View):
     field = "TreatmentRNAi"
     def get(self,request):
         form = self.form_class()
-        form.fields["treatmentRnai_rnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_rnai_type")
+        form.fields["treatmentRnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_type")
         pageContext = {'form': form, 'field':self.field}
         return render(request, "popup.html", pageContext)
     
@@ -697,7 +746,7 @@ class AddTreatmentRnai(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
-                newObject.dcic_alias = dcic_idGen()
+                newObject.dcic_alias = newObject.treatmentRnai_name
                 newObject.save()
                 #modifications = request.POST.getlist('modifications')
            
@@ -708,7 +757,7 @@ class AddTreatmentRnai(View):
                 return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
 
         else:
-            form.fields["treatmentRnai_rnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_rnai_type")
+            form.fields["treatmentRnai_type"].queryset = Choice.objects.filter(choice_type="treatmentRnai_type")
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
 
@@ -730,7 +779,7 @@ class AddTreatmentChemical(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
-                newObject.dcic_alias = dcic_idGen()
+                newObject.dcic_alias = newObject.treatmentChemical_name
                 newObject.save()
             
             except(forms.ValidationError):
@@ -788,7 +837,7 @@ class AddDocument(View):
             newObject = None
             try:
                 newObject = form.save(commit= False)
-                newObject.dcic_alias = dcic_idGen()
+                newObject.dcic_alias = newObject.name
                 newObject.save()
                 
             except(forms.ValidationError):
@@ -821,7 +870,7 @@ class AddPublication(View):
             newObject = None
             try:
                 newObject = form.save(commit= False)
-                newObject.dcic_alias = dcic_idGen()
+                newObject.dcic_alias = newObject.name
                 newObject.save()
                 
             except(forms.ValidationError):
@@ -938,6 +987,7 @@ class AddSeqencingFile(View):
         form = self.form_class()
         form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
         form.fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
+        form.fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
         return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
     
     def post(self,request):
@@ -949,12 +999,14 @@ class AddSeqencingFile(View):
             file.sequencingFile_sha256sum = "diuwdiued788798"
             file.sequencingFile_md5sum = "hewifu9283ydhjhkj"
             file.sequencingFile_exp = Experiment.objects.get(pk = self.request.session['experimentId'] )
-            file.dcic_alias = dcic_idGen()
+            aliasList=[file.project.project_name,file.sequencingFile_exp.experiment_name,file.sequencingFile_name]
+            file.dcic_alias = "_".join(aliasList)
             file.save()
             return HttpResponseRedirect('/detailExperiment/'+self.request.session['experimentId'])
         else:
             form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
             form.fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
+            form.fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
             return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
 
 @class_login_required        
@@ -1002,7 +1054,8 @@ class AddExperimentSet(View):
         if form.is_valid():
             expSet = form.save(commit=False)
             expSet.project = Project.objects.get(pk=request.session['projectId'])
-            expSet.dcic_alias = dcic_idGen()
+            aliasList=[expSet.project.project_name,expSet.experimentSet_name]
+            expSet.dcic_alias = "_".join(aliasList)
             expSet.save()
             expSetExp = request.POST.getlist('experimentSet_exp')
             for exp in expSetExp:
@@ -1050,6 +1103,7 @@ class AddImageObjects(View):
     def get(self,request):
         form = self.form_class()
         pageContext = {'form': form, 'field':self.field}
+        form.fields["imageObjects_type"].queryset = Choice.objects.filter(choice_type="imageObjects_type")
         return render(request, "popup.html", pageContext)
     
     def post(self,request):
@@ -1059,7 +1113,8 @@ class AddImageObjects(View):
             try:
                 newObject = form.save(commit=False)
                 newObject.project = Project.objects.get(pk=request.session['projectId'])
-                newObject.dcic_alias = dcic_idGen()
+                aliasList=[newObject.project.project_name,newObject.imageObjects_name]
+                newObject.dcic_alias = "_".join(aliasList)
                 newObject.save()
             except(forms.ValidationError):
                 newObject = None
@@ -1069,6 +1124,7 @@ class AddImageObjects(View):
 
         else:
             pageContext = {'form': form, 'field':self.field}
+            form.fields["imageObjects_type"].queryset = Choice.objects.filter(choice_type="imageObjects_type")
             return render(request, "popup.html", pageContext)
 
 
@@ -1142,7 +1198,8 @@ def constructForm(request):
     if request.method == 'POST' and request.is_ajax():
         pk = request.POST.get('pk')
         obj = JsonObjField.objects.get(pk=pk)
-        return HttpResponse(json.dumps({'field_set': obj.field_set, 'model':obj.field_type}), content_type="application/json")
+        orderedValues= orderByNumber(obj.field_set)
+        return HttpResponse(json.dumps({'field_set': orderedValues, 'model':obj.field_type}), content_type="application/json")
     else :
         return render_to_response('error.html', locals())
  

@@ -133,6 +133,15 @@
   }
 
 }(this));
+function makeReq() {
+	if($('#oldForm').is(':checked')){
+		$(".makeRequire").prop('required',false);
+	}
+	if($('#newForm').is(':checked')){
+		$(".makeRequire").prop('required',true);
+	}
+}
+
 </script>
 <div class="bodyContent container">
 	    {% if messages %}
@@ -144,12 +153,12 @@
 		{% csrf_token %}
 		<h1>{{form_class}}</h1>
 		{% if  isExisting %}
-		<input type="radio" name="selectForm" value="old">&nbsp;&nbsp;Choose Existing One<br/><br/>
+		<input type="radio" id="oldForm" name="selectForm" onclick="makeReq()" value="old">&nbsp;&nbsp;Choose Existing One<br/><br/>
 			{% for objects in existing %}
 				{{objects.name}}&nbsp;&nbsp;
 				{{objects}}
 			{% endfor %}
-			<br/><br/><input type="radio" name="selectForm"  value="new" checked="checked">&nbsp;&nbsp;OR Fill a new one<br/><br/>
+			<br/><br/><input type="radio" id="newForm" name="selectForm"  onclick="makeReq()" value="new" checked="checked">&nbsp;&nbsp;OR Fill a new one<br/><br/>
 		{% endif %}
 		
 		 {% if form %}
@@ -170,6 +179,9 @@
 					  {% endif %}
 			  	</div>
 				{% endfor %}
+				{% if jsonObj %}
+					  	<input type="text" class ="hidden" id = "jso" value="{{jsonObj}}">
+				{% endif %}
 				<div class="inner"></div>
 			{% endif %}
 			<input type="submit" value="Submit" />

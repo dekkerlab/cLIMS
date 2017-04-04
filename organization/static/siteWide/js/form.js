@@ -17,7 +17,13 @@ $(function() {
 //		    	$("."+model).append( form );
 		    	$(".inner").empty();
 		    	$(".inner").append( form );
-//		    	var valuesJson = eval('(' + $( "#jsonForm").val() + ')');
+		    	if($('#oldForm').is(':checked')){
+					$(".makeRequire").prop('required',false);
+				}
+				if($('#newForm').is(':checked')){
+					$(".makeRequire").prop('required',true);
+				}
+//		    	var valuesJson = eval('(' + $( "#jso").val() + ')');
 //		    	console.log(valuesJson);
 //				for (var k in valuesJson) {
 //					$( "select[name='"+k+"']" ).val("'"+valuesJson[k]+"'");
@@ -26,7 +32,7 @@ $(function() {
 				
 		    },
 		    error: function(ts) { 
-                alert("Incorrect Choice");
+               console.log("No value selected in JsonObjectField")
             }
 		});
 });
@@ -41,6 +47,12 @@ $(function() {
     			 choices = jsObj[key].choices;
     			 len = Object.keys(choices).length;
     			 form += "<select name="+key+">";
+    			 if(jsObj[key].required == "yes"){
+        			 form += "class='makeRequire' >";
+        		 }
+        		 else{
+        			 form += ">";
+        		 }
     			 for (i = 1; i <= len; i++) {
     				 optionValue = jsObj[key].choices[i]
     				 form += "<option value='"+optionValue+"'>"+optionValue+"</option>";
@@ -48,11 +60,26 @@ $(function() {
     			 form += "</select>";
     		 }
     		 else {
-    			 form += "<input maxlength='200' name="+key+" type='text'>"
+    			 if(jsObj[key].data  == "float"){
+    				 form += "<input maxlength='200' name="+key+" type=number step=0.01 >" ;
+    			 }
+    			 else{
+    				 form += "<input maxlength='200' name="+key+" type='"+jsObj[key].data+"'"
+    			 }
+    			 if(jsObj[key].required == "yes"){
+        			 form += "class='makeRequire' >";
+        		 }
+        		 else{
+        			 form += ">";
+        		 }
     		 }
+    		 
     		}
 	    return form;
 	}
+	
+	
+	
 	
 	 
 	//$( "span:contains('Biosample modification')" ).append('<a href="/addModification/" title="Add another Modification"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
@@ -69,7 +96,8 @@ $(function() {
 	$( ".formLabel:contains('Biosource SOP cell line')" ).append('<a href="/addProtocol/" class="add-another" id="add_id_protocol" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Modifications')" ).append('<a href="/addModification/" class="add-another" id="add_id_modifications" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('constructs')" ).append('<a href="/addConstruct/" class="add-another" id="add_id_constructs" onclick="return showAddAnotherPopup(this);"></a>');
-	$( ".formLabel:contains('target')" ).append('<a href="/addTarget/" class="add-another" id="add_id_target" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('Treatmentrnai target')" ).append('<a href="/addTarget/" class="add-another" id="add_id_treatmentRnai_target" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('Targeted region')" ).append('<a href="/addGenomicRegions/" class="add-another" id="add_id_targeted_region" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Imageobjects')" ).append('<a href="/addImageObjects/" class="add-another" id="add_id_imageObjects" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('treatmentrnai')" ).append('<a href="/addTreatmentRnai/" class="add-another" id="add_id_biosample_TreatmentRnai" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('treatmentchemical')" ).append('<a href="/addTreatmentChemical/" class="add-another" id="add_id_biosample_TreatmentChemical" onclick="return showAddAnotherPopup(this);"></a>');
@@ -78,7 +106,11 @@ $(function() {
 	$( ".formLabel:contains('Construct Map')" ).append('<a href="/addDocument/" class="add-another" id="add_id_document" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('File format specifications')" ).append('<a href="/addDocument/" class="add-another" id="add_id_file_format_specifications" onclick="return showAddAnotherPopup(this);"></a>');
 	
-	
+	//if (window.location.href.indexOf("/addBiosample/") > -1) {
+		$( ".jsonForm select" ).change();
+		
+		
+	//}
 	
 	//$( "span:contains('References')" ).append('<a href="/addPublication/" target="_blank" title="Add another Publication"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');
 //	$( "span:contains('constructs')" ).append('<a href="/addConstruct/" target="_blank" title="Add another Construct"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a>');

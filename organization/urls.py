@@ -46,6 +46,7 @@ urlpatterns = [
     url(r'^addModification/$', AddModification.as_view(), name='addModification'),
     url(r'^addTarget/$', AddTarget.as_view(), name='addTarget'),
     url(r'^addConstruct/$', AddConstruct.as_view(), name='addConstruct'),
+    url(r'^addGenomicRegions/$', AddGenomicRegions.as_view(), name='addGenomicRegions'),
     url(r'^addProtocol/$', AddProtocol.as_view(), name='addProtocol'),
     url(r'^addDocument/$', AddDocument.as_view(), name='addDocument'),
     url(r'^addTreatmentRnai/$', AddTreatmentRnai.as_view(), name='addTreatmentRnai'),
