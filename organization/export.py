@@ -508,9 +508,8 @@ def populateDict(request):
             singleProtocol = []
             singleProtocol.append(labName +"Protocol_" +str(proto.dcic_alias)+"_"+str(proto.pk))
             singleProtocol.append(proto.description)
-            if(proto.document):
-                singleProtocol.append(labName +"Document_"+str(proto.document.dcic_alias)+"_"+str(proto.document.pk))
-                appendDocument(proto.document.pk, dcicExcelSheet)
+            if(proto.attachment):
+                singleProtocol.append(str(proto.attachment))
             else:
                 singleProtocol.append("")
             dcicExcelSheet['Protocol'].append(singleProtocol)
@@ -870,9 +869,8 @@ def populateDict(request):
                 singleProtocol = []
                 singleProtocol.append(labName +"Protocol_" +str(proto.dcic_alias)+"_"+str(proto.pk))
                 singleProtocol.append(proto.description)
-                if(proto.document):
-                    singleProtocol.append(labName +"Document_"+str(proto.document.dcic_alias)+"_"+str(proto.document.pk))
-                    appendDocument(proto.document.pk, dcicExcelSheet)
+                if(proto.attachment):
+                    singleProtocol.append(str(proto.attachment))
                 else:
                     singleProtocol.append("")
                 dcicExcelSheet['Protocol'].append(singleProtocol)
