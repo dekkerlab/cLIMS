@@ -117,7 +117,7 @@ class Enzyme(References):
      
 class Protocol(UserOwner):
     name =  models.CharField(max_length=50, null=False, default="", validators=[alphanumeric])
-    document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name='proDoc',null=True, blank=True)
+    attachment = models.FileField(upload_to='uploads/', null=True, blank=True)
     enzyme = models.ForeignKey(Enzyme, on_delete=models.CASCADE, related_name='proEnzyme',null=True, blank=True)
     description = models.CharField(max_length=200,  null=True, blank=True)
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
