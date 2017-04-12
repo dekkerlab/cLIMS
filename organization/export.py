@@ -248,7 +248,10 @@ def appendPublication(pKey, dcicExcelSheet):
     singlePub.append(labName +"Publication_"+str(pub.dcic_alias)+"_"+str(pub.pk))
     singlePub.append(str(pub.publication_title))
     singlePub.append(str(pub.publication_id))
-    singlePub.append(str(pub.attachment))
+    if(pub.attachment):
+        singlePub.append(str(FILEUPLOADPATH)+str(pub.attachment))
+    else:
+        singlePub.append("")
     if(pub.publication_categories):
         singlePub.append(str(pub.publication_categories))
     else:
@@ -273,7 +276,10 @@ def appendDocument(pKey, dcicExcelSheet):
     singleDocument.append(labName +"Document_"+str(doc.dcic_alias)+"_"+str(doc.pk))
     singleDocument.append(doc.description)
     singleDocument.append(str(doc.type))
-    singleDocument.append(str(FILEUPLOADPATH)+str(doc.attachment))
+    if(doc.attachment):
+        singleDocument.append(str(FILEUPLOADPATH)+str(doc.attachment))
+    else:
+        singleDocument.append("")
     singleDocument.append(str(doc.url))
     if(doc.references):
         singleDocument.append(labName +"Publication_"+str(doc.references.dcic_alias)+"_"+str(doc.references.pk))
@@ -509,7 +515,7 @@ def populateDict(request):
             singleProtocol.append(labName +"Protocol_" +str(proto.dcic_alias)+"_"+str(proto.pk))
             singleProtocol.append(proto.description)
             if(proto.attachment):
-                singleProtocol.append(str(proto.attachment))
+                singleProtocol.append(str(FILEUPLOADPATH)+str(proto.attachment))
             else:
                 singleProtocol.append("")
             dcicExcelSheet['Protocol'].append(singleProtocol)
@@ -870,7 +876,7 @@ def populateDict(request):
                 singleProtocol.append(labName +"Protocol_" +str(proto.dcic_alias)+"_"+str(proto.pk))
                 singleProtocol.append(proto.description)
                 if(proto.attachment):
-                    singleProtocol.append(str(proto.attachment))
+                    singleProtocol.append(str(FILEUPLOADPATH)+str(proto.attachment))
                 else:
                     singleProtocol.append("")
                 dcicExcelSheet['Protocol'].append(singleProtocol)
