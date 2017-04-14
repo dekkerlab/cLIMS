@@ -67,7 +67,7 @@ class Experiment(References):
     
 
 class ExperimentSet(models.Model):
-    experimentSet_name = models.CharField(max_length=100, null=False, default="", validators=[alphanumeric])
+    experimentSet_name = models.CharField(max_length=100, null=False, default="", unique=True, db_index=True,  validators=[alphanumeric])
     project =  models.ForeignKey('organization.Project',related_name='expSetProject', on_delete=models.CASCADE,)
     experimentSet_type = models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='setChoice', help_text="The categorization of the set of experiments.")
     experimentSet_exp = models.ManyToManyField(Experiment, related_name='setExp')
@@ -79,7 +79,7 @@ class ExperimentSet(models.Model):
         return self.experimentSet_name
     
 class Publication(models.Model):
-    name = models.CharField(max_length=100, null=False, default="", db_index=True, validators=[alphanumeric])
+    name = models.CharField(max_length=100, null=False, default="", unique=True, db_index=True, validators=[alphanumeric])
     publication_title = models.CharField(max_length=200, null=False, default="", help_text="Title of the publication or communication.")
     publication_id = models.CharField(max_length=200,  null=False, default="", help_text="PMID or doi for the publication.")
     attachment = models.FileField(upload_to='uploads/')
@@ -102,7 +102,7 @@ class Award(models.Model):
         return self.award_name
 
 class Tag(models.Model):
-    tag_name = models.CharField(max_length=100, null=False, default="", db_index=True, validators=[alphanumeric])
+    tag_name = models.CharField(max_length=100, null=False, default="", unique=True, db_index=True, validators=[alphanumeric])
     project =  models.ForeignKey('organization.Project',related_name='tagProject', on_delete=models.CASCADE,)
     tag_exp = models.ManyToManyField(Experiment, related_name='tagExp')
     tag_user = models.ForeignKey(User, related_name='tagUser', on_delete=models.CASCADE,)
