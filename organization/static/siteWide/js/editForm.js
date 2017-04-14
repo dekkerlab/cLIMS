@@ -55,7 +55,7 @@ $(function() {
     		 }
     		 else {
     			 if(jsObj[key].data  == "float"){
-    				 form += "<input maxlength='200' name="+key+" type=number step=0.01 >" ;
+    				 form += "<input maxlength='200' name="+key+" type=number step=0.01 " ;
     			 }
     			 else{
     				 form += "<input maxlength='200' name="+key+" type='"+jsObj[key].data+"'"
