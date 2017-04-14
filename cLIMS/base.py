@@ -15,6 +15,8 @@ Created on Oct 7, 2016
 # openpyxl
 # xlutils
 # xlwt
+#To create database run the command ( pg_dump clims_db > clims.sql; ) from the cLims base folder where manage.py resides
+
 ###########################
 
 DATABASE_NAME='clims_db'
@@ -24,5 +26,5 @@ HOST=''
 PORT=''
 #WORKSPACEPATH = "/Users/nanda/Documents/EclipseWorkspace/clims/cLIMS/"
 WORKSPACEPATH = "/djangoProject/cLIMS/"
-#FILEUPLOADPATH = "/Users/nanda/Documents/EclipseWorkspace/clims/cLIMS/"
+#FILEUPLOADPATH = "/Users/nanda/Documents/EclipseWorkspace/clims/cLIMS/media/"
 FILEUPLOADPATH = "/djangoProject/cLIMS/media/"
