@@ -596,9 +596,10 @@ def populateDict(request):
                 singleBcc.append("")
             singleBcc.append(bcc["passage_number"])
             if(sample.protocol):
-                if(sample.protocol.document):
-                    singleBcc.append(labName +"Document_"+str(sample.protocol.document.dcic_alias)+"_"+str(sample.protocol.document.pk))
-                    appendDocument(sample.protocol.document.pk, dcicExcelSheet)
+                if(sample.protocol.attachment):
+                    singleBcc.append(str(FILEUPLOADPATH)+str(sample.protocol.attachment))
+                else:
+                    singleBcc.append("")
             else:
                 singleBcc.append("")
             
@@ -746,7 +747,7 @@ def populateDict(request):
                 if(str(biosource.biosource_individual.individual_type)=="IndividualMouse"):
                     singleIndi.append(indiJson["mouse_life_stage"])
                     singleIndi.append(indiJson["mouse_strain"])
-                    singleIndi.append(indi.individual_vendor)
+                    singleIndi.append(str(indi.individual_vendor.dcic_alias))
                 elif(str(biosource.biosource_individual.individual_type)=="IndividualHuman"):
                     singleIndi.append(indiJson["ethnicity"])
                     singleIndi.append(indiJson["health_status"])

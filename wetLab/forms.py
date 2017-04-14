@@ -24,15 +24,7 @@ class ModificationForm(ModelForm):
         model = Modification
         exclude = ('userOwner','constructs','modification_genomicRegions','target','dcic_alias')
         fields = ['modification_name','modification_type','modification_vendor','modification_gRNA','references','document','url','dbxrefs','modification_description']
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(ModificationForm, self).__init__(*args, **kwargs)
+  
 
 class ConstructForm(ModelForm):
     use_required_attribute = False
@@ -40,30 +32,14 @@ class ConstructForm(ModelForm):
     class Meta:
         model = Construct
         exclude = ('dcic_alias',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(ConstructForm, self).__init__(*args, **kwargs)
+    
 
 class GenomicRegionsForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = GenomicRegions
         exclude = ('dcic_alias',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(GenomicRegionsForm, self).__init__(*args, **kwargs)
+   
 
 class TargetForm(ModelForm):
     use_required_attribute = False
@@ -73,23 +49,15 @@ class TargetForm(ModelForm):
         model = Target
         exclude = ('dcic_alias',)
         fields = ['name','targeted_genes','targeted_region','references','document','url','dbxrefs']
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(TargetForm, self).__init__(*args, **kwargs)
+    
 
 class IndividualForm(ModelForm):
     use_required_attribute = False
     document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
     references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
     
-    def __init__(self, *args, **kwargs):
-        super(IndividualForm, self).__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super(IndividualForm, self).__init__(*args, **kwargs)
         #add_related_field_wrapper(self, 'documents')
     class Meta:
         model = Individual
@@ -108,16 +76,7 @@ class DocumentForm(ModelForm):
     class Meta:
         model = Document
         exclude = ('dcic_alias',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(DocumentForm, self).__init__(*args, **kwargs)
-
+   
 
 
 class ProtocolForm(ModelForm):
@@ -125,15 +84,7 @@ class ProtocolForm(ModelForm):
     class Meta:
         model = Protocol
         exclude = ('protocol_fields','userOwner','dcic_alias',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(ProtocolForm, self).__init__(*args, **kwargs)
+    
 
 class BiosourceForm(ModelForm):
     use_required_attribute = False
@@ -151,15 +102,7 @@ class BiosourceForm(ModelForm):
         fields = ['biosource_name','biosource_type','biosource_cell_line','biosource_cell_line_tier','protocol','biosource_vendor',
                   'cell_line_termid', 'modifications', 'biosource_tissue','references','document','url','dbxrefs','biosource_description']
 
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(BiosourceForm, self).__init__(*args, **kwargs)
+    
 
 class BiosampleForm(ModelForm):
     use_required_attribute = False
@@ -178,15 +121,7 @@ class BiosampleForm(ModelForm):
         fields = ['biosample_name','modifications','protocol','biosample_TreatmentRnai',
                   'biosample_TreatmentChemical','biosample_OtherTreatment','imageObjects','biosample_type',
                   'references','document','url','dbxrefs','biosample_description']
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(BiosampleForm, self).__init__(*args, **kwargs)
+    
  
 class TreatmentRnaiForm(ModelForm):
     use_required_attribute = False
@@ -200,15 +135,7 @@ class TreatmentRnaiForm(ModelForm):
         exclude = ('userOwner','dcic_alias',)
         fields = ['treatmentRnai_name','treatmentRnai_type','constructs','treatmentRnai_vendor','treatmentRnai_target','treatmentRnai_nucleotide_seq',
                   'references','document','url','dbxrefs','treatmentRnai_description']
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
   
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(TreatmentRnaiForm, self).__init__(*args, **kwargs)
 
 class TreatmentChemicalForm(ModelForm):
     use_required_attribute = False
@@ -220,15 +147,7 @@ class TreatmentChemicalForm(ModelForm):
         exclude = ('userOwner','dcic_alias',)
         fields = ['treatmentChemical_name','treatmentChemical_chemical','treatmentChemical_concentration','treatmentChemical_concentration_units','treatmentChemical_duration','treatmentChemical_duration_units',
                   'treatmentChemical_temperature','references','document','url','dbxrefs','treatmentChemical_description']
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
-  
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(TreatmentChemicalForm, self).__init__(*args, **kwargs)
+    
 
 class OtherForm(ModelForm):
     use_required_attribute = False
@@ -239,29 +158,21 @@ class OtherForm(ModelForm):
         model = OtherTreatment
         exclude = ('userOwner',)
         fields = ['name','references','documents','url','dbxrefs','description']
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
-  
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(OtherForm, self).__init__(*args, **kwargs)
+    
 
 class BarcodeForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Barcode
         exclude = ('',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(BarcodeForm, self).__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         self.helper = FormHelper()
+#         self.helper.form_id = 'id-exampleForm'
+#         self.helper.form_class = 'blueForms'
+#         self.helper.form_method = 'post'
+#         self.helper.form_action = 'submit_survey'
+#  
+#         self.helper.add_input(Submit('submit', 'Submit'))
+#         super(BarcodeForm, self).__init__(*args, **kwargs)
         
         

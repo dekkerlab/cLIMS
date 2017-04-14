@@ -18,18 +18,7 @@ class SequencingRunForm(ModelForm):
     class Meta:
         model = SequencingRun
         exclude = ('project','run_approved','run_submitted')
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(SequencingRunForm, self).__init__(*args, **kwargs)
-        self.fields['run_submission_date'].widget = widgets.AdminDateWidget()
-        self.fields['run_retrieval_date'].widget = widgets.AdminDateWidget()
-
+    
 class SequencingRunSearchForm(BaseSearchForm):
     use_required_attribute = False
     formName = 'SequencingRunSearchForm'
@@ -54,15 +43,7 @@ class SeqencingFileForm(ModelForm):
     class Meta:
         model = SeqencingFile
         exclude = ('sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp','project','dcic_alias')
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(SeqencingFileForm, self).__init__(*args, **kwargs)
+    
 
 class SeqencingFileSearchForm(BaseSearchForm):
     use_required_attribute = False
@@ -85,44 +66,19 @@ class FileSetForm(ModelForm):
     class Meta:
         model = FileSet
         exclude = ('project',)
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(FileSetForm, self).__init__(*args, **kwargs)
-
+   
 class AnalysisForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Analysis
         exclude = ('analysis_exp','analysis_fields')
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(AnalysisForm, self).__init__(*args, **kwargs)
+    
 
 class ImageObjectsForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = ImageObjects
         exclude = ('project','dcic_alias')
-    def __init__(self, *args, **kwargs):
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-exampleForm'
-        self.helper.form_class = 'blueForms'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
- 
-        self.helper.add_input(Submit('submit', 'Submit'))
-        super(ImageObjectsForm, self).__init__(*args, **kwargs)
+   
         
 
