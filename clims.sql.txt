@@ -2969,7 +2969,7 @@ SELECT pg_catalog.setval('auth_permission_id_seq', 105, true);
 --
 
 COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
-1	pbkdf2_sha256$24000$1VbMhZ3D4RHA$DKhlG233NtW1FE5DcsWI0ybclwFJMpxp2KazWUzHko4=	2017-04-04 15:58:41.784364-04	t	admin			nand@gmail.com	t	t	2017-02-07 15:45:09-05
+1	pbkdf2_sha256$24000$1VbMhZ3D4RHA$DKhlG233NtW1FE5DcsWI0ybclwFJMpxp2KazWUzHko4=	2017-04-17 09:53:23.065661-04	t	admin			nand@gmail.com	t	t	2017-02-07 15:45:09-05
 \.
 
 
@@ -3520,6 +3520,30 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 502	2017-04-04 16:16:09.777048-04	2	Hi-C Analysis	2	Changed field_set.	7	1
 503	2017-04-04 16:17:32.095751-04	1	5C Analysis	2	Changed field_set.	7	1
 504	2017-04-04 16:20:18.664827-04	7	CaptureC Exp Protocol	2	No fields changed.	7	1
+505	2017-04-14 14:52:53.771324-04	8	BiosampleProtocol	2	Changed attachment.	29	1
+506	2017-04-14 17:25:05.159658-04	5	Test-project	3		9	1
+507	2017-04-14 17:25:47.360979-04	14	ttyjut	3		34	1
+508	2017-04-14 17:25:47.364695-04	13	i87i7uyiyu	3		34	1
+509	2017-04-14 17:25:47.366338-04	12	vrvtr	3		34	1
+510	2017-04-14 17:25:47.367593-04	10	dvfedv	3		34	1
+511	2017-04-14 17:25:47.368811-04	9	Sample54	3		34	1
+512	2017-04-14 17:25:47.370063-04	1	Sample1	3		34	1
+513	2017-04-14 17:26:10.651127-04	11	yytu	3		30	1
+514	2017-04-14 17:26:10.654852-04	9	bio1-tdye	3		30	1
+515	2017-04-14 17:26:10.655923-04	1	bio1	3		30	1
+516	2017-04-14 17:31:53.966664-04	7	csdc ed	3		12	1
+517	2017-04-14 17:31:53.970622-04	6	csdc ed	3		12	1
+518	2017-04-14 17:31:53.971807-04	5	csdc ed	3		12	1
+519	2017-04-14 17:31:53.97297-04	2	gtgt	3		12	1
+520	2017-04-14 17:48:28.590044-04	4	NewRefer	3		12	1
+521	2017-04-14 17:48:28.594095-04	3	jtyjjytjtyjtyj	3		12	1
+522	2017-04-14 17:49:26.52807-04	12	Genome222	3		24	1
+523	2017-04-14 17:49:26.531818-04	11	Mod1_Target122	3		24	1
+524	2017-04-14 17:49:26.533077-04	3	g1	3		24	1
+525	2017-04-14 17:49:26.534269-04	2	g2	3		24	1
+526	2017-04-14 17:49:26.535264-04	1	g3	3		24	1
+527	2017-04-14 17:50:09.990649-04	13	HFF	3		27	1
+528	2017-04-14 17:50:09.994354-04	10	cssd	3		27	1
 \.
 
 
@@ -3527,7 +3551,7 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('django_admin_log_id_seq', 504, true);
+SELECT pg_catalog.setval('django_admin_log_id_seq', 528, true);
 
 
 --
@@ -3778,6 +3802,11 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 191	wetLab	0063_auto_20170403_2124	2017-04-03 17:24:42.362973-04
 192	dryLab	0060_imageobjects_description	2017-04-03 17:59:52.184251-04
 193	wetLab	0064_auto_20170412_0156	2017-04-11 21:57:59.551226-04
+194	dryLab	0061_auto_20170414_2127	2017-04-14 17:27:28.098725-04
+195	organization	0056_auto_20170414_2127	2017-04-14 17:48:52.488653-04
+196	organization	0057_auto_20170414_2132	2017-04-14 17:48:52.583844-04
+197	wetLab	0065_auto_20170414_2127	2017-04-14 17:50:38.459099-04
+198	wetLab	0066_auto_20170414_2132	2017-04-14 17:50:39.223384-04
 \.
 
 
@@ -3785,7 +3814,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 193, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 198, true);
 
 
 --
@@ -3817,6 +3846,8 @@ vc1aatkhebv58tnx5e9o439h4dqowjpk	ZWU2NTVhMmFiODNmZjQ5MGJmYzZiNWVlYWExYWIyY2RjODE
 e0drlthh44hqi5z470ru2uoe5qeh906n	Y2FiNDA0YTRjM2I5NDQwZGViOTU1NmEyZTI1NDU3OTczOTJmZjAyYTp7ImJpb3NhbXBsZVBLIjoiNiIsIl9hdXRoX3VzZXJfaWQiOiIxIiwicHJvamVjdElkIjoiMyIsImN1cnJlbnRHcm91cCI6ImFkbWluIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJpbmRpdmlkdWFsUEsiOiI2IiwiZXhwZXJpbWVudElkIjoiMTkiLCJfYXV0aF91c2VyX2hhc2giOiIzOGEyNjNlZWZjZjIyMTAyZDA4NzQ3N2Q1MjkxYzAzMDFjODM2YjEwIiwicHJvamVjdF9vd25lcklkIjoxLCJiaW9zb3VyY2VQSyI6IjYifQ==	2017-04-12 17:08:47.869877-04
 t2t00lsnk2qqmz2deutbwcuvuslze53h	Yzk4ZThhYzM2NjFiYzkwMzVhNjQzODc2ODJkY2VlYjBlZDM1M2I3YTp7ImJpb3NhbXBsZVBLIjoiOCIsInByb2plY3RJZCI6IjQiLCJfYXV0aF91c2VyX2lkIjoiMSIsInJ1bklkIjo3LCJiaW9zb3VyY2VQSyI6IjgiLCJpbmRpdmlkdWFsUEsiOiI4IiwicHJvamVjdF9vd25lcklkIjoxLCJjdXJyZW50R3JvdXAiOiJhZG1pbiIsIl9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsImV4cGVyaW1lbnRJZCI6IjIxIn0=	2017-04-13 17:59:35.471186-04
 3bxsodzp8cv6785ds3i8fw0oduqio027	ZjRjYTk3OGE4MTRiYjEyNTAxODM3YzI0NTJkNDU5YmFlMzZlYzg1NTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwicHJvamVjdF9vd25lcklkIjoxLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsInByb2plY3RJZCI6IjQiLCJfYXV0aF91c2VyX2hhc2giOiIzOGEyNjNlZWZjZjIyMTAyZDA4NzQ3N2Q1MjkxYzAzMDFjODM2YjEwIiwiY3VycmVudEdyb3VwIjoiYWRtaW4ifQ==	2017-04-14 13:42:38.623343-04
+wyxr4mdtu8t8wk6gmchp8w367rx0u74b	MDdmYWVmOWJiZGFlMWJhNjYyYWM2ZGU1YzRjYWJhYmRiMjEzMzIwODp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiYmlvc2FtcGxlUEsiOiIzIiwiYmlvc291cmNlUEsiOiIzIiwicHJvamVjdF9vd25lcklkIjoxLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAiLCJpbmRpdmlkdWFsUEsiOjEzLCJjdXJyZW50R3JvdXAiOiJhZG1pbiIsInByb2plY3RJZCI6IjUiLCJydW5JZCI6OX0=	2017-04-28 17:24:17.642371-04
+a1sz24lfizfu4pgsrfhzsx9xlzppoojz	NmUzYjA2NGU5MWRhODkzOGVjZDkwMjRjZGZjNGU3MzMyNmFlNTRjYTp7InByb2plY3RJZCI6IjQiLCJwcm9qZWN0X293bmVySWQiOjEsImN1cnJlbnRHcm91cCI6ImFkbWluIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAifQ==	2017-05-01 09:53:30.679192-04
 \.
 
 
@@ -3885,7 +3916,6 @@ SELECT pg_catalog.setval('"dryLab_fileset_id_seq"', 1, false);
 --
 
 COPY "dryLab_imageobjects" (id, "imageObjects_images", project_id, "imageObjects_name", dcic_alias, "imageObjects_type_id", description) FROM stdin;
-5	uploads/Dino-HiC-D7plus-Comb__Symbiodinium_microadriaticum__genome__C-20000-raw.removedbinslessthan20000.balancedScaffold1_WuKHmAt.png	5	Image1	Test-project_Image1	134	jwehkjhwf
 \.
 
 
@@ -3951,7 +3981,7 @@ COPY "dryLab_sequencingrun" (id, run_name, project_id, run_retrieval_date, run_s
 -- Name: dryLab_sequencingrun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_sequencingrun_id_seq"', 7, true);
+SELECT pg_catalog.setval('"dryLab_sequencingrun_id_seq"', 9, true);
 
 
 --
@@ -3970,7 +4000,7 @@ COPY "dryLab_sequencingrun_run_Experiment" (id, sequencingrun_id, experiment_id)
 -- Name: dryLab_sequencingrun_run_Experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_sequencingrun_run_Experiment_id_seq"', 11, true);
+SELECT pg_catalog.setval('"dryLab_sequencingrun_run_Experiment_id_seq"', 13, true);
 
 
 --
@@ -4175,12 +4205,9 @@ COPY organization_experiment (id, experiment_name, experiment_biosample_id, proj
 4	exp1	3	2	4	HFF FA crosslinked on beads HindIII digested	2		\N	\N		"{\\"tagging_method\\": \\"C\\", \\"follows_sop\\": \\"Yes\\", \\"digestion_temperature\\": \\"37\\", \\"ligation_volume\\": \\"7500\\", \\"average_fragment_size\\": \\"350\\", \\"digestion_time\\": \\"960\\", \\"crosslinking_method\\": \\"1%\\", \\"fragment_size_range\\": \\"250-450\\", \\"ligation_temperature\\": \\"16\\", \\"experiment_type\\": \\"in\\", \\"fragmentation_method\\": \\"sonication\\", \\"biotin_removed\\": \\"Yes\\", \\"dbxrefs\\": \\"\\", \\"ligation_time\\": \\"240\\", \\"enzyme_lot_number\\": \\"\\", \\"fragment_size_selection_method\\": \\"SPRI\\", \\"crosslinking_temperature\\": \\"22\\", \\"library_preparation_date\\": \\"2016-03-01\\", \\"crosslinking_time\\": \\"10\\"}"	6		20000000	cells	e10
 11	New exp	3	2	2		1		\N	\N		"{\\"tagging_method\\": \\"\\", \\"fragmentation_method\\": \\"see protocol document\\", \\"dbxrefs\\": \\"\\", \\"digestion_time\\": \\"960\\", \\"library_preparation_date\\": \\"\\", \\"ligation_time\\": \\"\\", \\"fragment_size_selection_method\\": \\"see document\\", \\"crosslinking_temperature\\": \\"\\", \\"crosslinking_time\\": \\"\\", \\"average_fragment_size\\": \\"\\", \\"follows_sop\\": \\"Yes\\", \\"ligation_temperature\\": \\"\\", \\"experiment_type\\": \\"in situ Hi-C\\", \\"fragment_size_range\\": \\"\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"digestion_temperature\\": \\"333\\", \\"ligation_volume\\": \\"\\", \\"biotin_removed\\": \\"Yes\\", \\"enzyme_lot_number\\": \\"\\"}"	6		4	mg	e8
 21	ENCLB222WYT	7	4	6		2		\N	\N		"{\\"digestion_time\\": \\"1260\\", \\"experiment_type\\": \\"dilution Hi-C\\", \\"tagging_method\\": \\"dCTP\\", \\"ligation_volume\\": \\"8\\", \\"ligation_temperature\\": \\"\\", \\"ligation_time\\": \\"\\", \\"fragment_size_selection_method\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"biotin_removed\\": \\"Yes\\", \\"fragment_size_range\\": \\"100-300\\", \\"dbxrefs\\": \\"\\", \\"crosslinking_temperature\\": \\"\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"library_preparation_date\\": \\"2016-04-19\\", \\"average_fragment_size\\": \\"200\\", \\"digestion_temperature\\": \\"37\\", \\"enzyme_lot_number\\": \\"\\", \\"fragmentation_method\\": \\"n/a\\", \\"crosslinking_time\\": \\"\\"}"	6		10000000	cells	C61NP5
-26	reerg	3	5	6		2		\N	\N		"{\\"ligation_time\\": \\"\\", \\"crosslinking_time\\": \\"\\", \\"fragment_size_selection_method\\": \\"\\", \\"biotin_removed\\": \\"\\", \\"dbxrefs\\": \\"\\", \\"experiment_type\\": \\"\\", \\"fragmentation_method\\": \\"\\", \\"library_preparation_date\\": \\"\\", \\"average_fragment_size\\": \\"4\\", \\"crosslinking_method\\": \\"\\", \\"follows_sop\\": \\"\\", \\"crosslinking_temperature\\": \\"\\", \\"digestion_temperature\\": \\"\\", \\"tagging_method\\": \\"\\", \\"digestion_time\\": \\"\\", \\"ligation_volume\\": \\"\\", \\"ligation_temperature\\": \\"\\", \\"enzyme_lot_number\\": \\"\\", \\"fragment_size_range\\": \\"\\"}"	6		5	cells	Test-project_reerg
 20	ENCLB571HTP	7	4	6		2		\N	\N	https://www.encodeproject.org/experiments/ENCSR444WCZ/	"{\\"digestion_time\\": \\"1260\\", \\"experiment_type\\": \\"dilution Hi-C\\", \\"tagging_method\\": \\"dCTP\\", \\"ligation_volume\\": \\"8\\", \\"ligation_temperature\\": \\"\\", \\"ligation_time\\": \\"\\", \\"fragment_size_selection_method\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"biotin_removed\\": \\"Yes\\", \\"fragment_size_range\\": \\"100-300\\", \\"dbxrefs\\": \\"\\", \\"crosslinking_temperature\\": \\"\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"library_preparation_date\\": \\"2016-04-19\\", \\"average_fragment_size\\": \\"200\\", \\"digestion_temperature\\": \\"37\\", \\"enzyme_lot_number\\": \\"\\", \\"fragmentation_method\\": \\"n/a\\", \\"crosslinking_time\\": \\"\\"}"	6		10000000	cells	NL8O2O
 22	ENCLB118KAE	8	4	6		2		\N	\N		"{\\"fragmentation_method\\": \\"n/a\\", \\"average_fragment_size\\": \\"200\\", \\"experiment_type\\": \\"dilution Hi-C\\", \\"digestion_temperature\\": \\"37\\", \\"ligation_time\\": \\"\\", \\"fragment_size_range\\": \\"100-300\\", \\"enzyme_lot_number\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"biotin_removed\\": \\"Yes\\", \\"dbxrefs\\": \\"\\", \\"ligation_temperature\\": \\"\\", \\"crosslinking_time\\": \\"\\", \\"fragment_size_selection_method\\": \\"\\", \\"tagging_method\\": \\"dCTP\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"library_preparation_date\\": \\"2016-04-19\\", \\"ligation_volume\\": \\"8\\", \\"digestion_time\\": \\"1260\\", \\"crosslinking_temperature\\": \\"\\"}"	6		10000000	cells	S9G6CB
-24	sccs111	9	5	6		2		\N	\N		"{\\"fragment_size_selection_method\\": \\"gel\\", \\"biotin_removed\\": \\"Yes\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"tagging_method\\": \\"dCTP\\", \\"dbxrefs\\": \\"\\", \\"experiment_type\\": \\"in situ Hi-C\\", \\"fragment_size_range\\": \\"250-450\\", \\"library_preparation_date\\": \\"2014-05-09\\", \\"enzyme_lot_number\\": \\"\\", \\"follows_sop\\": \\"Yes\\", \\"digestion_time\\": \\"1260\\", \\"average_fragment_size\\": \\"350\\", \\"ligation_temperature\\": \\"16\\", \\"fragmentation_method\\": \\"sonication\\", \\"digestion_temperature\\": \\"37\\", \\"crosslinking_time\\": \\"10\\", \\"crosslinking_temperature\\": \\"22\\", \\"ligation_time\\": \\"240\\", \\"ligation_volume\\": \\"8\\"}"	6		4	cells	Test-project_sccs111
 23	ENCLB104ZTM	8	4	6		2		\N	\N		"{\\"tagging_method\\": \\"dCTP\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"digestion_time\\": \\"1260\\", \\"ligation_temperature\\": \\"\\", \\"crosslinking_temperature\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"fragment_size_selection_method\\": \\"\\", \\"library_preparation_date\\": \\"2016-04-19\\", \\"fragment_size_range\\": \\"100-300\\", \\"digestion_temperature\\": \\"37\\", \\"enzyme_lot_number\\": \\"\\", \\"ligation_time\\": \\"\\", \\"fragmentation_method\\": \\"n/a\\", \\"crosslinking_time\\": \\"\\", \\"dbxrefs\\": \\"\\", \\"ligation_volume\\": \\"8\\", \\"average_fragment_size\\": \\"200\\", \\"experiment_type\\": \\"dilution Hi-C\\", \\"biotin_removed\\": \\"Yes\\"}"	6		10000000	cells	X7DTAB
-25	Exp	9	5	6		2		\N	\N		"{\\"average_fragment_size\\": \\"350\\", \\"experiment_type\\": \\"in situ Hi-C\\", \\"biotin_removed\\": \\"Yes\\", \\"enzyme_lot_number\\": \\"\\", \\"digestion_temperature\\": \\"37\\", \\"ligation_time\\": \\"240\\", \\"crosslinking_time\\": \\"10\\", \\"crosslinking_temperature\\": \\"22\\", \\"follows_sop\\": \\"Yes\\", \\"tagging_method\\": \\"dCTP\\", \\"digestion_time\\": \\"1260\\", \\"ligation_volume\\": \\"8\\", \\"ligation_temperature\\": \\"16\\", \\"fragmentation_method\\": \\"sonication\\", \\"fragment_size_range\\": \\"250-450\\", \\"dbxrefs\\": \\"\\", \\"fragment_size_selection_method\\": \\"gel\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"library_preparation_date\\": \\"2014-05-09\\"}"	6		4	cells	Test-project_Exp
 \.
 
 
@@ -4195,7 +4222,7 @@ SELECT pg_catalog.setval('"organization_experiment_experiment_imageObjects_id_se
 -- Name: organization_experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_experiment_id_seq', 26, true);
+SELECT pg_catalog.setval('organization_experiment_id_seq', 29, true);
 
 
 --
@@ -4268,7 +4295,6 @@ SELECT pg_catalog.setval('organization_jsonobjfield_id_seq', 7, true);
 COPY organization_project (id, project_name, project_notes, project_active, project_owner_id, dcic_alias) FROM stdin;
 2	U54-HFF-FA	HFF Project	t	1	p2
 4	Encode	For submitting all the encode data to 4DN	t	1	XMXPTC
-5	Test-project	test	t	1	['Test-project']
 \.
 
 
@@ -4299,11 +4325,7 @@ SELECT pg_catalog.setval('organization_project_project_contributor_id_seq', 1, t
 --
 
 COPY organization_publication (id, publication_categories_id, publication_title, exp_sets_prod_in_pub_id, exp_sets_used_in_pub_id, publication_id, publication_published_by_id, attachment, dcic_alias, name) FROM stdin;
-4	111	NewRefer	\N	\N	34234	122	1	o1	
-3	113	jtyjjytjtyjtyj	\N	\N	35435	123	1	o2	
-2	111	gtgt	\N	\N	212	122	1	03	
 1	119	Software tools for visualizing Hi-C data.	\N	\N	28159004	122	1	o5	
-5	111	csdc ed	\N	\N	231	122	uploads/Genome_Res.-2017-van_de_Werken-gr.213751.116.pdf	Pub1	Pub1
 \.
 
 
@@ -4311,7 +4333,7 @@ COPY organization_publication (id, publication_categories_id, publication_title,
 -- Name: organization_publication_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_publication_id_seq', 5, true);
+SELECT pg_catalog.setval('organization_publication_id_seq', 7, true);
 
 
 --
@@ -4366,11 +4388,8 @@ SELECT pg_catalog.setval('"wetLab_barcode_id_seq"', 3, true);
 
 COPY "wetLab_biosample" (id, biosample_fields, biosample_biosource_id, biosample_individual_id, protocol_id, biosample_type_id, biosample_name, "userOwner_id", dbxrefs, document_id, references_id, url, biosample_description, dcic_alias) FROM stdin;
 3	"{\\"culture_start_date\\": \\"2017-01-04\\", \\"karyotype\\": \\"46\\", \\"synchronization_stage\\": \\"\\", \\"passage_number\\": \\"5\\", \\"follows_sop\\": \\"Yes\\", \\"culture_duration\\": \\"19\\", \\"dbxrefs\\": \\"\\", \\"culture_harvest_date\\": \\"2017-01-20\\", \\"culture_duration_units\\": \\"days\\", \\"differentiation_state\\": \\"\\"}"	3	3	\N	5	HFF	1		\N	\N		20% FBS,10k cell subculture according to HFFc6 SOP	s4
-1	"{\\"passage_number\\": \\"32\\", \\"culture_harvest_date\\": \\"4/4/2016\\", \\"dbxrefs\\": \\"Iuiui\\", \\"differentiation_state\\": \\"Diffrentiated\\", \\"follows_sop\\": \\"Yes\\", \\"culture_duration\\": \\"33\\", \\"culture_duration_units\\": \\"minutes\\", \\"synchronization_stage\\": \\"prophase\\", \\"culture_start_date\\": \\"07/07/2016\\", \\"karyotype\\": \\"hg38\\"}"	1	1	1	5	Sample1	1	Iuiui	\N	\N	http://www.google.com	YTytytyt	s6
 7	"{\\"culture_start_date\\": \\"2016-05-13\\", \\"dbxrefs\\": \\"\\", \\"culture_duration\\": \\"\\", \\"culture_duration_units\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"differentiation_state\\": \\"\\", \\"karyotype\\": \\"\\", \\"synchronization_stage\\": \\"\\", \\"passage_number\\": \\"\\", \\"culture_harvest_date\\": \\"\\"}"	7	7	\N	5	A549 - sample	1		\N	\N	https://www.encodeproject.org/biosamples/ENCBS009OIC/	HiC experiment done on A549	RD4CK9
 8	"{\\"differentiation_state\\": \\"\\", \\"passage_number\\": \\"\\", \\"culture_duration\\": \\"\\", \\"synchronization_stage\\": \\"\\", \\"karyotype\\": \\"\\", \\"dbxrefs\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"culture_harvest_date\\": \\"\\", \\"culture_start_date\\": \\"2016-04-19\\", \\"culture_duration_units\\": \\"\\"}"	8	8	7	5	NCI-H460 - sample	1		\N	\N			DO699V
-9	"{\\"dbxrefs\\": \\"\\", \\"karyotype\\": \\"46\\", \\"culture_harvest_date\\": \\"2017-01-20\\", \\"culture_duration\\": \\"19\\", \\"culture_duration_units\\": \\"minutes\\", \\"follows_sop\\": \\"Yes\\", \\"synchronization_stage\\": \\"NS\\", \\"differentiation_state\\": \\"Prophase\\", \\"culture_start_date\\": \\"2017-01-04\\", \\"passage_number\\": \\"5\\"}"	9	9	8	5	Sample54	1		\N	\N		cdc	bio1-tdye_Sample54
-10	"{\\"karyotype\\": \\"\\", \\"culture_harvest_date\\": \\"\\", \\"synchronization_stage\\": \\"\\", \\"dbxrefs\\": \\"\\", \\"follows_sop\\": \\"\\", \\"culture_start_date\\": \\"\\", \\"culture_duration\\": \\"\\", \\"culture_duration_units\\": \\"\\", \\"passage_number\\": \\"\\", \\"differentiation_state\\": \\"\\"}"	3	3	\N	5	dvfedv	1		\N	\N			cl_HFF_dvfedv
 \.
 
 
@@ -4394,7 +4413,6 @@ SELECT pg_catalog.setval('"wetLab_biosample_biosample_OtherTreatment_id_seq"', 2
 --
 
 COPY "wetLab_biosample_biosample_TreatmentChemical" (id, biosample_id, treatmentchemical_id) FROM stdin;
-6	9	3
 \.
 
 
@@ -4410,7 +4428,6 @@ SELECT pg_catalog.setval('"wetLab_biosample_biosample_TreatmentChemical_id_seq"'
 --
 
 COPY "wetLab_biosample_biosample_TreatmentRnai" (id, biosample_id, treatmentrnai_id) FROM stdin;
-3	9	2
 \.
 
 
@@ -4432,7 +4449,7 @@ SELECT pg_catalog.setval('"wetLab_biosample_biosample_imageObjects_id_seq"', 5, 
 -- Name: wetLab_biosample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_biosample_id_seq"', 10, true);
+SELECT pg_catalog.setval('"wetLab_biosample_id_seq"', 14, true);
 
 
 --
@@ -4440,7 +4457,6 @@ SELECT pg_catalog.setval('"wetLab_biosample_id_seq"', 10, true);
 --
 
 COPY "wetLab_biosample_imageObjects" (id, biosample_id, imageobjects_id) FROM stdin;
-5	9	5
 \.
 
 
@@ -4450,7 +4466,6 @@ COPY "wetLab_biosample_imageObjects" (id, biosample_id, imageobjects_id) FROM st
 
 COPY "wetLab_biosample_modifications" (id, biosample_id, modification_id) FROM stdin;
 4	3	12
-5	9	13
 \.
 
 
@@ -4467,10 +4482,8 @@ SELECT pg_catalog.setval('"wetLab_biosample_modifications_id_seq"', 5, true);
 
 COPY "wetLab_biosource" (id, biosource_tissue, biosource_individual_id, biosource_type_id, biosource_vendor_id, biosource_description, biosource_name, biosource_cell_line, biosource_cell_line_tier_id, dbxrefs, document_id, references_id, url, protocol_id, cell_line_termid, dcic_alias) FROM stdin;
 3	foreskin	3	28	1	Human Foreskin Fibroblasts	cl_HFF	HFF	35		\N	\N	https://www.ncbi.nlm.nih.gov/pubmed/15024073	3		b4
-1		1	28	\N		bio1	NewCell	35		\N	\N		1		b6
 7	Lung	7	28	7	Homo sapiens A549 immortalized cell line	A549	A549	\N		\N	\N	http://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=EFO_0001086	\N	EFO:0001086	TLMVTF
 8	Lung	8	28	7	Derived from metastatic site: Pleural effusion.	NCI-H460	NCI-H460	\N		\N	\N	http://web.expasy.org/cellosaurus/CVCL_0459	\N	EFO:0003044	75D0ET
-9	lung	9	29	7	Desc	bio1-tdye	HFF	35		\N	\N		\N	EFO:0003044	bio1-tdye
 \.
 
 
@@ -4478,7 +4491,7 @@ COPY "wetLab_biosource" (id, biosource_tissue, biosource_individual_id, biosourc
 -- Name: wetLab_biosource_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_biosource_id_seq"', 9, true);
+SELECT pg_catalog.setval('"wetLab_biosource_id_seq"', 11, true);
 
 
 --
@@ -4486,7 +4499,6 @@ SELECT pg_catalog.setval('"wetLab_biosource_id_seq"', 9, true);
 --
 
 COPY "wetLab_biosource_modifications" (id, biosource_id, modification_id) FROM stdin;
-4	9	13
 \.
 
 
@@ -4565,11 +4577,6 @@ SELECT pg_catalog.setval('"wetLab_enzyme_id_seq"', 8, true);
 --
 
 COPY "wetLab_genomicregions" (id, "genomicRegions_start_coordinate", "genomicRegions_end_coordinate", "genomicRegions_location_description", "genomicRegions_start_location", "genomicRegions_end_location", "genomicRegions_chromosome_id", "genomicRegions_genome_assembly_id", dcic_alias, name) FROM stdin;
-3	3	4	wdwdwd	234	3333	40	64	g1	
-2	\N	\N				\N	65	g2	
-1	\N	\N				\N	63	g3	
-11	\N	\N				\N	63	Mod1_Target122	Target122
-12	2	6	rgrt	212312	3213213	46	64	Genome222	Genome222
 \.
 
 
@@ -4589,8 +4596,6 @@ COPY "wetLab_individual" (id, individual_fields, individual_type_id, individual_
 1	"{\\"age\\": \\"23\\", \\"sex\\": \\"male\\", \\"life_stage\\": \\"fetal\\", \\"age_units\\": \\"day\\", \\"health_status\\": \\"healthy\\", \\"ethnicity\\": \\"caucasian\\"}"	4	HeLaS3human	1		1	1	http://www.google.com	1	i6
 7	"{\\"ethnicity\\": \\"Caucasian\\", \\"age_units\\": \\"year\\", \\"age\\": \\"58\\", \\"health_status\\": \\"Lung Cancer\\", \\"sex\\": \\"male\\", \\"life_stage\\": \\"adult\\"}"	4	Homo sapiens A549	7		\N	\N		1	6EHXF1
 8	"{\\"ethnicity\\": \\"\\", \\"life_stage\\": \\"adult\\", \\"age_units\\": \\"year\\", \\"sex\\": \\"male\\", \\"age\\": \\"37\\", \\"health_status\\": \\"Large cell lung carcinoma\\"}"	4	Homo sapiens NCI-H460	7		\N	\N		1	8K32UA
-9	"{\\"health_status\\": \\"cancer\\", \\"age_units\\": \\"week\\", \\"life_stage\\": \\"fetal\\", \\"sex\\": \\"male\\", \\"ethnicity\\": \\"Caucasian\\", \\"age\\": \\"0\\"}"	4	Indi1	7		\N	5		1	Indi1
-10	"{\\"age\\": \\"\\", \\"sex\\": \\"\\", \\"age_units\\": \\"\\", \\"life_stage\\": \\"\\", \\"ethnicity\\": \\"\\", \\"health_status\\": \\"\\"}"	4	cssd	\N		\N	\N		1	cssd
 \.
 
 
@@ -4598,7 +4603,7 @@ COPY "wetLab_individual" (id, individual_fields, individual_type_id, individual_
 -- Name: wetLab_individual_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_individual_id_seq"', 10, true);
+SELECT pg_catalog.setval('"wetLab_individual_id_seq"', 15, true);
 
 
 --
@@ -4607,7 +4612,6 @@ SELECT pg_catalog.setval('"wetLab_individual_id_seq"', 10, true);
 
 COPY "wetLab_modification" (id, modification_type_id, modification_description, modification_name, "userOwner_id", dbxrefs, document_id, "modification_gRNA", modification_vendor_id, references_id, url, constructs_id, "modification_genomicRegions_id", target_id, dcic_alias) FROM stdin;
 12	26	http://www.clontech.com/xxclt_ibcGetAttachment.jsp?cItemId=17661	pLXSN-hTERT	1		\N		4	\N	http://www.clontech.com/xxclt_ibcGetAttachment.jsp?cItemId=17661	11	\N	\N	K23NP1
-13	25	vfdvf	Mod1	1		\N		\N	\N		17	11	12	Mod1
 \.
 
 
@@ -4645,7 +4649,8 @@ COPY "wetLab_protocol" (id, description, name, "userOwner_id", enzyme_id, dcic_a
 3	HFF hTERT transformed growing conditions	hTERT	1	\N	I61NP4	\N
 2	cdloierfoiref	hic Protocol	1	1	M62NP0	\N
 1	SOP Protocol	P1111	1	2	C62MI5	\N
-8	xwexw	BiosampleProtocol	1	2	BiosampleProtocol	\N
+9		htrh	1	8	htrh	
+8	xwexw	BiosampleProtocol	1	2	BiosampleProtocol	uploads/Screen_Shot_2017-04-11_at_7.16.20_PM_Dx6pmaH.png
 \.
 
 
@@ -4653,7 +4658,7 @@ COPY "wetLab_protocol" (id, description, name, "userOwner_id", enzyme_id, dcic_a
 -- Name: wetLab_protocol_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_protocol_id_seq"', 8, true);
+SELECT pg_catalog.setval('"wetLab_protocol_id_seq"', 9, true);
 
 
 --
@@ -4661,8 +4666,6 @@ SELECT pg_catalog.setval('"wetLab_protocol_id_seq"', 8, true);
 --
 
 COPY "wetLab_target" (id, targeted_genes, dbxrefs, document_id, references_id, targeted_region_id, url, target_description, dcic_alias, name) FROM stdin;
-12			\N	\N	11		\N	Mod1_Target122	Target122
-13	xewer		\N	\N	12		\N	Targ43	Targ43
 \.
 
 
@@ -4694,7 +4697,6 @@ SELECT pg_catalog.setval('"wetLab_treatmentchemical_id_seq"', 3, true);
 --
 
 COPY "wetLab_treatmentrnai" (id, url, dbxrefs, "treatmentRnai_name", "treatmentRnai_nucleotide_seq", "treatmentRnai_description", document_id, references_id, "treatmentRnai_type_id", "treatmentRnai_vendor_id", "userOwner_id", constructs_id, dcic_alias, "treatmentRnai_target_id") FROM stdin;
-2			Treat111	sdfs	dvdsvdv	\N	\N	68	7	1	17	Treat111	13
 \.
 
 
@@ -4879,6 +4881,14 @@ ALTER TABLE ONLY "dryLab_analysis_analysis_file"
 
 
 --
+-- Name: dryLab_analysis_analysis_name_20dbf7ad_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "dryLab_analysis"
+    ADD CONSTRAINT "dryLab_analysis_analysis_name_20dbf7ad_uniq" UNIQUE (analysis_name);
+
+
+--
 -- Name: dryLab_analysis_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -4903,6 +4913,14 @@ ALTER TABLE ONLY "dryLab_fileset_fileSet_file"
 
 
 --
+-- Name: dryLab_fileset_fileSet_name_f3a5bda2_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "dryLab_fileset"
+    ADD CONSTRAINT "dryLab_fileset_fileSet_name_f3a5bda2_uniq" UNIQUE ("fileSet_name");
+
+
+--
 -- Name: dryLab_fileset_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -4916,6 +4934,14 @@ ALTER TABLE ONLY "dryLab_fileset"
 
 ALTER TABLE ONLY "dryLab_imageobjects"
     ADD CONSTRAINT "dryLab_imageobjects_imageObjects_alias_19448543_uniq" UNIQUE (dcic_alias);
+
+
+--
+-- Name: dryLab_imageobjects_imageObjects_name_b1000c8f_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "dryLab_imageobjects"
+    ADD CONSTRAINT "dryLab_imageobjects_imageObjects_name_b1000c8f_uniq" UNIQUE ("imageObjects_name");
 
 
 --
@@ -4951,6 +4977,14 @@ ALTER TABLE ONLY "dryLab_seqencingfile"
 
 
 --
+-- Name: dryLab_seqencingfile_sequencingFile_name_ec56c7d5_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "dryLab_seqencingfile"
+    ADD CONSTRAINT "dryLab_seqencingfile_sequencingFile_name_ec56c7d5_uniq" UNIQUE ("sequencingFile_name");
+
+
+--
 -- Name: dryLab_sequencingrun_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -4972,6 +5006,14 @@ ALTER TABLE ONLY "dryLab_sequencingrun_run_Experiment"
 
 ALTER TABLE ONLY "dryLab_sequencingrun_run_Experiment"
     ADD CONSTRAINT "dryLab_sequencingrun_run_Experiment_pkey" PRIMARY KEY (id);
+
+
+--
+-- Name: dryLab_sequencingrun_run_name_5d0c595d_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "dryLab_sequencingrun"
+    ADD CONSTRAINT "dryLab_sequencingrun_run_name_5d0c595d_uniq" UNIQUE (run_name);
 
 
 --
@@ -5087,6 +5129,14 @@ ALTER TABLE ONLY "organization_experimentset_experimentSet_exp"
 
 
 --
+-- Name: organization_experimentset_experimentSet_name_7acc1e2e_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY organization_experimentset
+    ADD CONSTRAINT "organization_experimentset_experimentSet_name_7acc1e2e_uniq" UNIQUE ("experimentSet_name");
+
+
+--
 -- Name: organization_experimentset_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -5151,6 +5201,14 @@ ALTER TABLE ONLY organization_publication
 
 
 --
+-- Name: organization_publication_name_53d815d2_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY organization_publication
+    ADD CONSTRAINT organization_publication_name_53d815d2_uniq UNIQUE (name);
+
+
+--
 -- Name: organization_publication_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -5180,6 +5238,14 @@ ALTER TABLE ONLY organization_tag_tag_exp
 
 ALTER TABLE ONLY organization_tag_tag_exp
     ADD CONSTRAINT organization_tag_tag_exp_tag_id_ed19486c_uniq UNIQUE (tag_id, experiment_id);
+
+
+--
+-- Name: organization_tag_tag_name_36d689a9_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY organization_tag
+    ADD CONSTRAINT organization_tag_tag_name_36d689a9_uniq UNIQUE (tag_name);
 
 
 --
@@ -5263,6 +5329,14 @@ ALTER TABLE ONLY "wetLab_biosample_imageObjects"
 
 
 --
+-- Name: wetLab_biosample_biosample_name_318b27af_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_biosample"
+    ADD CONSTRAINT "wetLab_biosample_biosample_name_318b27af_uniq" UNIQUE (biosample_name);
+
+
+--
 -- Name: wetLab_biosample_modifications_biosample_id_c12f7dab_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -5292,6 +5366,14 @@ ALTER TABLE ONLY "wetLab_biosample"
 
 ALTER TABLE ONLY "wetLab_biosource"
     ADD CONSTRAINT "wetLab_biosource_biosource_alias_11c58a18_uniq" UNIQUE (dcic_alias);
+
+
+--
+-- Name: wetLab_biosource_biosource_name_59b36778_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_biosource"
+    ADD CONSTRAINT "wetLab_biosource_biosource_name_59b36778_uniq" UNIQUE (biosource_name);
 
 
 --
@@ -5327,6 +5409,14 @@ ALTER TABLE ONLY "wetLab_construct"
 
 
 --
+-- Name: wetLab_construct_construct_name_f3188688_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_construct"
+    ADD CONSTRAINT "wetLab_construct_construct_name_f3188688_uniq" UNIQUE (construct_name);
+
+
+--
 -- Name: wetLab_construct_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -5340,6 +5430,14 @@ ALTER TABLE ONLY "wetLab_construct"
 
 ALTER TABLE ONLY "wetLab_document"
     ADD CONSTRAINT "wetLab_document_document_alias_17257f4e_uniq" UNIQUE (dcic_alias);
+
+
+--
+-- Name: wetLab_document_name_edbbc282_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_document"
+    ADD CONSTRAINT "wetLab_document_name_edbbc282_uniq" UNIQUE (name);
 
 
 --
@@ -5359,6 +5457,14 @@ ALTER TABLE ONLY "wetLab_enzyme"
 
 
 --
+-- Name: wetLab_enzyme_enzyme_name_2ade73e7_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_enzyme"
+    ADD CONSTRAINT "wetLab_enzyme_enzyme_name_2ade73e7_uniq" UNIQUE (enzyme_name);
+
+
+--
 -- Name: wetLab_enzyme_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -5372,6 +5478,14 @@ ALTER TABLE ONLY "wetLab_enzyme"
 
 ALTER TABLE ONLY "wetLab_genomicregions"
     ADD CONSTRAINT "wetLab_genomicregions_genomicRegions_alias_017e453e_uniq" UNIQUE (dcic_alias);
+
+
+--
+-- Name: wetLab_genomicregions_name_0f48ac25_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_genomicregions"
+    ADD CONSTRAINT "wetLab_genomicregions_name_0f48ac25_uniq" UNIQUE (name);
 
 
 --
@@ -5391,6 +5505,14 @@ ALTER TABLE ONLY "wetLab_individual"
 
 
 --
+-- Name: wetLab_individual_individual_name_215ac6af_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_individual"
+    ADD CONSTRAINT "wetLab_individual_individual_name_215ac6af_uniq" UNIQUE (individual_name);
+
+
+--
 -- Name: wetLab_individual_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -5404,6 +5526,14 @@ ALTER TABLE ONLY "wetLab_individual"
 
 ALTER TABLE ONLY "wetLab_modification"
     ADD CONSTRAINT "wetLab_modification_modification_alias_05369271_uniq" UNIQUE (dcic_alias);
+
+
+--
+-- Name: wetLab_modification_modification_name_9f9e3ce4_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_modification"
+    ADD CONSTRAINT "wetLab_modification_modification_name_9f9e3ce4_uniq" UNIQUE (modification_name);
 
 
 --
@@ -5423,6 +5553,14 @@ ALTER TABLE ONLY "wetLab_othertreatment"
 
 
 --
+-- Name: wetLab_protocol_name_d1228639_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_protocol"
+    ADD CONSTRAINT "wetLab_protocol_name_d1228639_uniq" UNIQUE (name);
+
+
+--
 -- Name: wetLab_protocol_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -5436,6 +5574,14 @@ ALTER TABLE ONLY "wetLab_protocol"
 
 ALTER TABLE ONLY "wetLab_protocol"
     ADD CONSTRAINT "wetLab_protocol_protocol_alias_c46a9080_uniq" UNIQUE (dcic_alias);
+
+
+--
+-- Name: wetLab_target_name_25f11b13_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_target"
+    ADD CONSTRAINT "wetLab_target_name_25f11b13_uniq" UNIQUE (name);
 
 
 --
@@ -5471,6 +5617,14 @@ ALTER TABLE ONLY "wetLab_treatmentchemical"
 
 
 --
+-- Name: wetLab_treatmentchemical_treatmentChemical_name_36ac1053_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_treatmentchemical"
+    ADD CONSTRAINT "wetLab_treatmentchemical_treatmentChemical_name_36ac1053_uniq" UNIQUE ("treatmentChemical_name");
+
+
+--
 -- Name: wetLab_treatmentrnai_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -5487,6 +5641,14 @@ ALTER TABLE ONLY "wetLab_treatmentrnai"
 
 
 --
+-- Name: wetLab_treatmentrnai_treatmentRnai_name_cd5cdc2a_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_treatmentrnai"
+    ADD CONSTRAINT "wetLab_treatmentrnai_treatmentRnai_name_cd5cdc2a_uniq" UNIQUE ("treatmentRnai_name");
+
+
+--
 -- Name: wetLab_vendor_pkey; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
 --
 
@@ -5500,6 +5662,14 @@ ALTER TABLE ONLY "wetLab_vendor"
 
 ALTER TABLE ONLY "wetLab_vendor"
     ADD CONSTRAINT "wetLab_vendor_vendor_alias_78cf242a_uniq" UNIQUE (dcic_alias);
+
+
+--
+-- Name: wetLab_vendor_vendor_title_4a7a9302_uniq; Type: CONSTRAINT; Schema: public; Owner: dekker_lab
+--
+
+ALTER TABLE ONLY "wetLab_vendor"
+    ADD CONSTRAINT "wetLab_vendor_vendor_title_4a7a9302_uniq" UNIQUE (vendor_title);
 
 
 --
@@ -5622,6 +5792,13 @@ CREATE INDEX "dryLab_analysis_analysis_file_3bef072e" ON "dryLab_analysis_analys
 
 
 --
+-- Name: dryLab_analysis_analysis_name_20dbf7ad_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "dryLab_analysis_analysis_name_20dbf7ad_like" ON "dryLab_analysis" USING btree (analysis_name varchar_pattern_ops);
+
+
+--
 -- Name: dryLab_fileset_17141920; Type: INDEX; Schema: public; Owner: dekker_lab
 --
 
@@ -5650,6 +5827,13 @@ CREATE INDEX "dryLab_fileset_fileSet_file_90f34791" ON "dryLab_fileset_fileSet_f
 
 
 --
+-- Name: dryLab_fileset_fileSet_name_f3a5bda2_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "dryLab_fileset_fileSet_name_f3a5bda2_like" ON "dryLab_fileset" USING btree ("fileSet_name" varchar_pattern_ops);
+
+
+--
 -- Name: dryLab_imageobjects_70404e8d; Type: INDEX; Schema: public; Owner: dekker_lab
 --
 
@@ -5668,6 +5852,13 @@ CREATE INDEX "dryLab_imageobjects_93a34043" ON "dryLab_imageobjects" USING btree
 --
 
 CREATE INDEX "dryLab_imageobjects_b098ad43" ON "dryLab_imageobjects" USING btree (project_id);
+
+
+--
+-- Name: dryLab_imageobjects_imageObjects_name_b1000c8f_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "dryLab_imageobjects_imageObjects_name_b1000c8f_like" ON "dryLab_imageobjects" USING btree ("imageObjects_name" varchar_pattern_ops);
 
 
 --
@@ -5734,6 +5925,13 @@ CREATE INDEX "dryLab_seqencingfile_file_classification_id_743729b7_uniq" ON "dry
 
 
 --
+-- Name: dryLab_seqencingfile_sequencingFile_name_ec56c7d5_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "dryLab_seqencingfile_sequencingFile_name_ec56c7d5_like" ON "dryLab_seqencingfile" USING btree ("sequencingFile_name" varchar_pattern_ops);
+
+
+--
 -- Name: dryLab_sequencingrun_04f9c0d5; Type: INDEX; Schema: public; Owner: dekker_lab
 --
 
@@ -5773,6 +5971,13 @@ CREATE INDEX "dryLab_sequencingrun_run_Experiment_abd1812d" ON "dryLab_sequencin
 --
 
 CREATE INDEX "dryLab_sequencingrun_run_Experiment_fd70df03" ON "dryLab_sequencingrun_run_Experiment" USING btree (sequencingrun_id);
+
+
+--
+-- Name: dryLab_sequencingrun_run_name_5d0c595d_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "dryLab_sequencingrun_run_name_5d0c595d_like" ON "dryLab_sequencingrun" USING btree (run_name varchar_pattern_ops);
 
 
 --
@@ -5955,6 +6160,13 @@ CREATE INDEX "organization_experimentset_experimentSet_exp_81f690dc" ON "organiz
 --
 
 CREATE INDEX "organization_experimentset_experimentSet_exp_abd1812d" ON "organization_experimentset_experimentSet_exp" USING btree (experiment_id);
+
+
+--
+-- Name: organization_experimentset_experimentSet_name_7acc1e2e_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "organization_experimentset_experimentSet_name_7acc1e2e_like" ON organization_experimentset USING btree ("experimentSet_name" varchar_pattern_ops);
 
 
 --
@@ -6203,6 +6415,13 @@ CREATE INDEX "wetLab_biosample_biosample_imageObjects_ed620ae6" ON "wetLab_biosa
 
 
 --
+-- Name: wetLab_biosample_biosample_name_318b27af_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_biosample_biosample_name_318b27af_like" ON "wetLab_biosample" USING btree (biosample_name varchar_pattern_ops);
+
+
+--
 -- Name: wetLab_biosample_modifications_d3e67576; Type: INDEX; Schema: public; Owner: dekker_lab
 --
 
@@ -6249,6 +6468,13 @@ CREATE INDEX "wetLab_biosource_b8031b35" ON "wetLab_biosource" USING btree (refe
 --
 
 CREATE INDEX "wetLab_biosource_be92d870" ON "wetLab_biosource" USING btree (protocol_id);
+
+
+--
+-- Name: wetLab_biosource_biosource_name_59b36778_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_biosource_biosource_name_59b36778_like" ON "wetLab_biosource" USING btree (biosource_name varchar_pattern_ops);
 
 
 --
@@ -6322,6 +6548,13 @@ CREATE INDEX "wetLab_construct_c6afd5d5" ON "wetLab_construct" USING btree (cons
 
 
 --
+-- Name: wetLab_construct_construct_name_f3188688_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_construct_construct_name_f3188688_like" ON "wetLab_construct" USING btree (construct_name varchar_pattern_ops);
+
+
+--
 -- Name: wetLab_document_bafc53fc; Type: INDEX; Schema: public; Owner: dekker_lab
 --
 
@@ -6340,6 +6573,13 @@ CREATE INDEX "wetLab_document_bd49ca7f" ON "wetLab_document" USING btree (type_i
 --
 
 CREATE INDEX "wetLab_document_db7620b1" ON "wetLab_document" USING btree (references_id);
+
+
+--
+-- Name: wetLab_document_name_edbbc282_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_document_name_edbbc282_like" ON "wetLab_document" USING btree (name varchar_pattern_ops);
 
 
 --
@@ -6371,6 +6611,13 @@ CREATE INDEX "wetLab_enzyme_b8031b35" ON "wetLab_enzyme" USING btree (references
 
 
 --
+-- Name: wetLab_enzyme_enzyme_name_2ade73e7_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_enzyme_enzyme_name_2ade73e7_like" ON "wetLab_enzyme" USING btree (enzyme_name varchar_pattern_ops);
+
+
+--
 -- Name: wetLab_genomicregions_377a64c1; Type: INDEX; Schema: public; Owner: dekker_lab
 --
 
@@ -6389,6 +6636,13 @@ CREATE INDEX "wetLab_genomicregions_a8bc63f4" ON "wetLab_genomicregions" USING b
 --
 
 CREATE INDEX "wetLab_genomicregions_de491e0b" ON "wetLab_genomicregions" USING btree ("genomicRegions_chromosome_id");
+
+
+--
+-- Name: wetLab_genomicregions_name_0f48ac25_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_genomicregions_name_0f48ac25_like" ON "wetLab_genomicregions" USING btree (name varchar_pattern_ops);
 
 
 --
@@ -6431,6 +6685,13 @@ CREATE INDEX "wetLab_individual_b8031b35" ON "wetLab_individual" USING btree (re
 --
 
 CREATE INDEX "wetLab_individual_d32231a1" ON "wetLab_individual" USING btree (individual_type_id);
+
+
+--
+-- Name: wetLab_individual_individual_name_215ac6af_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_individual_individual_name_215ac6af_like" ON "wetLab_individual" USING btree (individual_name varchar_pattern_ops);
 
 
 --
@@ -6497,6 +6758,13 @@ CREATE INDEX "wetLab_modification_de622e85" ON "wetLab_modification" USING btree
 
 
 --
+-- Name: wetLab_modification_modification_name_9f9e3ce4_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_modification_modification_name_9f9e3ce4_like" ON "wetLab_modification" USING btree (modification_name varchar_pattern_ops);
+
+
+--
 -- Name: wetLab_othertreatment_26ba2bd2; Type: INDEX; Schema: public; Owner: dekker_lab
 --
 
@@ -6539,6 +6807,13 @@ CREATE INDEX "wetLab_protocol_5ab06c9a" ON "wetLab_protocol" USING btree ("userO
 
 
 --
+-- Name: wetLab_protocol_name_d1228639_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_protocol_name_d1228639_like" ON "wetLab_protocol" USING btree (name varchar_pattern_ops);
+
+
+--
 -- Name: wetLab_target_30fe3183; Type: INDEX; Schema: public; Owner: dekker_lab
 --
 
@@ -6564,6 +6839,13 @@ CREATE INDEX "wetLab_target_ca8977b1" ON "wetLab_target" USING btree (dcic_alias
 --
 
 CREATE INDEX "wetLab_target_e7fafc10" ON "wetLab_target" USING btree (document_id);
+
+
+--
+-- Name: wetLab_target_name_25f11b13_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_target_name_25f11b13_like" ON "wetLab_target" USING btree (name varchar_pattern_ops);
 
 
 --
@@ -6606,6 +6888,13 @@ CREATE INDEX "wetLab_treatmentchemical_ec91958a" ON "wetLab_treatmentchemical" U
 --
 
 CREATE INDEX "wetLab_treatmentchemical_f2b3aebb" ON "wetLab_treatmentchemical" USING btree (dcic_alias);
+
+
+--
+-- Name: wetLab_treatmentchemical_treatmentChemical_name_36ac1053_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_treatmentchemical_treatmentChemical_name_36ac1053_like" ON "wetLab_treatmentchemical" USING btree ("treatmentChemical_name" varchar_pattern_ops);
 
 
 --
@@ -6665,10 +6954,24 @@ CREATE INDEX "wetLab_treatmentrnai_e7f25567" ON "wetLab_treatmentrnai" USING btr
 
 
 --
+-- Name: wetLab_treatmentrnai_treatmentRnai_name_cd5cdc2a_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_treatmentrnai_treatmentRnai_name_cd5cdc2a_like" ON "wetLab_treatmentrnai" USING btree ("treatmentRnai_name" varchar_pattern_ops);
+
+
+--
 -- Name: wetLab_vendor_2961f6f6; Type: INDEX; Schema: public; Owner: dekker_lab
 --
 
 CREATE INDEX "wetLab_vendor_2961f6f6" ON "wetLab_vendor" USING btree (dcic_alias);
+
+
+--
+-- Name: wetLab_vendor_vendor_title_4a7a9302_like; Type: INDEX; Schema: public; Owner: dekker_lab
+--
+
+CREATE INDEX "wetLab_vendor_vendor_title_4a7a9302_like" ON "wetLab_vendor" USING btree (vendor_title varchar_pattern_ops);
 
 
 --
