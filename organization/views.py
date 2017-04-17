@@ -996,8 +996,8 @@ class AddSeqencingFile(View):
             file = form.save(commit=False)
             file.project = Project.objects.get(pk=request.session['projectId'])
             file.sequencingFile_backupPath = "/s4s/" + file.sequencingFile_mainPath
-            file.sequencingFile_sha256sum = "diuwdiued788798"
-            file.sequencingFile_md5sum = "hewifu9283ydhjhkj"
+            file.sequencingFile_sha256sum = ""
+            file.sequencingFile_md5sum = ""
             file.sequencingFile_exp = Experiment.objects.get(pk = self.request.session['experimentId'] )
             aliasList=[file.project.project_name,file.sequencingFile_exp.experiment_name,file.sequencingFile_name]
             file.dcic_alias = "_".join(aliasList)
