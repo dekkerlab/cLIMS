@@ -1601,7 +1601,7 @@ CREATE TABLE "wetLab_document" (
     references_id integer,
     url character varying(200),
     dcic_alias character varying(500) NOT NULL,
-    name character varying(50)
+    name character varying(50) NOT NULL
 );
 
 
@@ -2969,7 +2969,7 @@ SELECT pg_catalog.setval('auth_permission_id_seq', 105, true);
 --
 
 COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
-1	pbkdf2_sha256$24000$1VbMhZ3D4RHA$DKhlG233NtW1FE5DcsWI0ybclwFJMpxp2KazWUzHko4=	2017-04-17 09:53:23.065661-04	t	admin			nand@gmail.com	t	t	2017-02-07 15:45:09-05
+1	pbkdf2_sha256$24000$1VbMhZ3D4RHA$DKhlG233NtW1FE5DcsWI0ybclwFJMpxp2KazWUzHko4=	2017-04-18 10:59:38.515351-04	t	admin			nand@gmail.com	t	t	2017-02-07 15:45:09-05
 \.
 
 
@@ -3544,6 +3544,46 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 526	2017-04-14 17:49:26.535264-04	1	g3	3		24	1
 527	2017-04-14 17:50:09.990649-04	13	HFF	3		27	1
 528	2017-04-14 17:50:09.994354-04	10	cssd	3		27	1
+529	2017-04-18 11:08:38.588995-04	8	NCI-H460	3		30	1
+530	2017-04-18 11:08:38.59637-04	7	A549	3		30	1
+531	2017-04-18 11:08:38.597916-04	3	cl_HFF	3		30	1
+532	2017-04-18 11:12:46.758172-04	1	cell isolation	2	Changed name.	21	1
+533	2017-04-18 11:13:01.330212-04	8	Library protocol for ENCODE Hi-C experiments from the Dekker lab	2	Changed name.	21	1
+534	2017-04-18 11:13:14.065802-04	7	Propagation of SK-N-DZ	2	Changed name.	21	1
+535	2017-04-18 11:13:23.830271-04	6	hTERT Protocol	2	Changed name.	21	1
+536	2017-04-18 11:13:31.787677-04	5	Pro_dilutionhic	2	Changed name.	21	1
+537	2017-04-18 11:13:39.559517-04	2	SOP Protocol Doc	2	Changed name.	21	1
+538	2017-04-18 11:14:00.419713-04	9	Propagation of NCI-H460	2	Changed name.	21	1
+539	2017-04-18 11:14:07.275728-04	11	scsd	3		21	1
+540	2017-04-18 11:30:11.245125-04	15	Sample1	2	Changed protocol.	34	1
+541	2017-04-18 12:04:11.195705-04	6	TestProject	3		9	1
+542	2017-04-18 12:04:11.200249-04	4	Encode	3		9	1
+543	2017-04-18 12:04:20.976359-04	2	U54-HFF-FA	3		9	1
+544	2017-04-18 12:04:57.935583-04	8	HFF Discovery	3		12	1
+545	2017-04-18 12:04:57.939469-04	1	Software tools for visualizing Hi-C data.	3		12	1
+546	2017-04-18 12:05:13.819493-04	3	grtr	3		35	1
+547	2017-04-18 12:05:27.393212-04	17	C1	3		23	1
+548	2017-04-18 12:05:27.396814-04	11	Construct-pLXSN-hTERT	3		23	1
+549	2017-04-18 12:05:37.047247-04	12	NewReferDocument	3		21	1
+550	2017-04-18 12:05:37.051259-04	9	NCL-H460	3		21	1
+551	2017-04-18 12:05:37.053015-04	8	cellEncode	3		21	1
+552	2017-04-18 12:05:37.054298-04	7	sk-N-DZ	3		21	1
+553	2017-04-18 12:05:37.055506-04	6	hteret	3		21	1
+554	2017-04-18 12:05:37.05674-04	5	prodil	3		21	1
+555	2017-04-18 12:05:37.058083-04	1	Cell-isolation	3		21	1
+556	2017-04-18 12:05:56.482898-04	8	Homo sapiens NCI-H460	3		27	1
+557	2017-04-18 12:05:56.486398-04	7	Homo sapiens A549	3		27	1
+558	2017-04-18 12:05:56.487694-04	3	HFF	3		27	1
+559	2017-04-18 12:06:16.219416-04	9	htrh	3		29	1
+560	2017-04-18 12:06:16.2234-04	8	BiosampleProtocol	3		29	1
+561	2017-04-18 12:06:16.224834-04	7	NCI-H460 cell protocol	3		29	1
+562	2017-04-18 12:06:16.226042-04	6	ENCODE Hi-C experiments	3		29	1
+563	2017-04-18 12:06:16.227194-04	5	Propagation of SK-N-DZ	3		29	1
+564	2017-04-18 12:06:16.22857-04	4	Pro_dilutionhic	3		29	1
+565	2017-04-18 12:06:16.229824-04	3	hTERT	3		29	1
+566	2017-04-18 12:06:16.23097-04	2	hic Protocol	3		29	1
+567	2017-04-18 12:06:16.232158-04	1	P1111	3		29	1
+568	2017-04-18 12:06:27.562648-04	3	CHEBI:28262	3		32	1
 \.
 
 
@@ -3551,7 +3591,7 @@ COPY django_admin_log (id, action_time, object_id, object_repr, action_flag, cha
 -- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('django_admin_log_id_seq', 528, true);
+SELECT pg_catalog.setval('django_admin_log_id_seq', 568, true);
 
 
 --
@@ -3807,6 +3847,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 196	organization	0057_auto_20170414_2132	2017-04-14 17:48:52.583844-04
 197	wetLab	0065_auto_20170414_2127	2017-04-14 17:50:38.459099-04
 198	wetLab	0066_auto_20170414_2132	2017-04-14 17:50:39.223384-04
+199	wetLab	0067_auto_20170418_1515	2017-04-18 11:16:00.829064-04
 \.
 
 
@@ -3814,7 +3855,7 @@ COPY django_migrations (id, app, name, applied) FROM stdin;
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('django_migrations_id_seq', 198, true);
+SELECT pg_catalog.setval('django_migrations_id_seq', 199, true);
 
 
 --
@@ -3839,15 +3880,16 @@ mwuaf8k8w3mt92x3lavlcs8zjs954lwn	NzIxNzI3MjIxM2NmZGRhZjJlMDE2M2Y2YzQzNDE5MDI5YTM
 s8dbf8z2z4h5v6kf0xls19dvm40mz6ok	NjU3MDU2MThhNDJkOTgyODJkNGNjYTdmNTA2ZWZhNWNmM2Q0NjdjYTp7Il9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAiLCJwcm9qZWN0SWQiOiIzIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJwcm9qZWN0X293bmVySWQiOjEsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiaW5kaXZpZHVhbFBLIjo0LCJjdXJyZW50R3JvdXAiOiJhZG1pbiJ9	2017-04-08 21:02:55.936097-04
 czzvvcmjuat54892hgf5r7stui15l40j	NjQxMmYwODgzZjY5ZDMxNzE1MTNkMmI1OGY1YjhjNmQ3MzMwOWMwNzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiYmlvc2FtcGxlUEsiOiIyIiwiYmlvc291cmNlUEsiOiIyIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJpbmRpdmlkdWFsUEsiOiIyIiwiY3VycmVudEdyb3VwIjoiYWRtaW4iLCJwcm9qZWN0SWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiMzhhMjYzZWVmY2YyMjEwMmQwODc0NzdkNTI5MWMwMzAxYzgzNmIxMCIsInByb2plY3Rfb3duZXJJZCI6MX0=	2017-03-02 20:57:23.913467-05
 5d4kw8hbkazeprdrepnk1rly7xvwtbo8	ZjBkODhhOTlkNWY2ZjRkMTMzNmUwNDg4MWE4NjQwY2U2Yjc4NDA2ODp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwicHJvamVjdElkIjoiNSIsImN1cnJlbnRHcm91cCI6ImFkbWluIiwiYmlvc291cmNlUEsiOiIzIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2hhc2giOiIzOGEyNjNlZWZjZjIyMTAyZDA4NzQ3N2Q1MjkxYzAzMDFjODM2YjEwIiwicHJvamVjdF9vd25lcklkIjoxLCJpbmRpdmlkdWFsUEsiOiIzIn0=	2017-04-18 15:52:33.442521-04
+a1sz24lfizfu4pgsrfhzsx9xlzppoojz	MGZmNzUwMDMxZTY1MDc4M2NlMTU1NDk2YzhlMGE1NWE3MzQ5OTY5NTp7InByb2plY3RJZCI6IjQiLCJpbmRpdmlkdWFsUEsiOiIzIiwicHJvamVjdF9vd25lcklkIjoxLCJfYXV0aF91c2VyX2hhc2giOiIzOGEyNjNlZWZjZjIyMTAyZDA4NzQ3N2Q1MjkxYzAzMDFjODM2YjEwIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJjdXJyZW50R3JvdXAiOiJhZG1pbiIsImJpb3NhbXBsZVBLIjoiMyIsIl9hdXRoX3VzZXJfaWQiOiIxIiwiYmlvc291cmNlUEsiOiIzIn0=	2017-05-01 12:56:46.901171-04
 1e7jbsduegv6zg3er183u091jnqa285k	ZGY1ZmFiNTc3Zjk5YmQ4MmNjNzM1NDYxZmU1MzdlMDVhYzMyN2U1Njp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiaW5kaXZpZHVhbFBLIjoiMyIsInByb2plY3RJZCI6IjUiLCJjdXJyZW50R3JvdXAiOiJhZG1pbiIsImJpb3NhbXBsZVBLIjoiMyIsImJpb3NvdXJjZVBLIjoiMyIsIl9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9oYXNoIjoiMzhhMjYzZWVmY2YyMjEwMmQwODc0NzdkNTI5MWMwMzAxYzgzNmIxMCIsInByb2plY3Rfb3duZXJJZCI6MSwiZXhwZXJpbWVudElkIjoiMjQifQ==	2017-04-18 15:57:15.404051-04
 mzhjrl2ckfftxxh7p8pulukohtkp055q	N2IxMTM5YWIxODY3YmI3NDMwZGI3YjI4MGNjNjU2OGE5YWMzYjY2Zjp7Il9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAiLCJjdXJyZW50R3JvdXAiOiJhZG1pbiIsInByb2plY3RJZCI6IjMiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsImV4cGVyaW1lbnRJZCI6IjE3IiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJwcm9qZWN0X293bmVySWQiOjF9	2017-04-10 17:33:46.599729-04
 w0246eucypd88iq3detb3v4msco4km6n	ZWQ2YmY3ZmEzNDcxZGE2NTE4ZDljZjE5ZmNmMTA4ZTMxZDdiOWM4Yzp7ImJpb3NvdXJjZVBLIjo5LCJwcm9qZWN0SWQiOiI1IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJpbmRpdmlkdWFsUEsiOjksImV4cGVyaW1lbnRJZCI6IjI0IiwicHJvamVjdF9vd25lcklkIjoxLCJfYXV0aF91c2VyX2lkIjoiMSIsImN1cnJlbnRHcm91cCI6ImFkbWluIiwiYmlvc2FtcGxlUEsiOjksIl9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAifQ==	2017-04-17 18:03:56.486678-04
+x30bmr6osaogilldxmw3h69kv2ybfhov	Zjg0M2JlNzlmNWFlYmE4OTA4YzMwNTMyMmQ4MTQ3YThlMDczZDJhYjp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwicHJvamVjdF9vd25lcklkIjoxLCJleHBlcmltZW50SWQiOiIzMCIsIl9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAiLCJfYXV0aF91c2VyX2lkIjoiMSIsInByb2plY3RJZCI6IjIiLCJiaW9zb3VyY2VQSyI6MTIsImJpb3NhbXBsZVBLIjoxNSwiaW5kaXZpZHVhbFBLIjoxNiwiY3VycmVudEdyb3VwIjoiYWRtaW4iLCJydW5JZCI6MTB9	2017-05-02 12:03:39.69702-04
 vc1aatkhebv58tnx5e9o439h4dqowjpk	ZWU2NTVhMmFiODNmZjQ5MGJmYzZiNWVlYWExYWIyY2RjODE1YmU1ZDp7InByb2plY3Rfb3duZXJJZCI6MSwicHJvamVjdElkIjoiNSIsImN1cnJlbnRHcm91cCI6ImFkbWluIiwiYmlvc2FtcGxlUEsiOiIzIiwiX2F1dGhfdXNlcl9oYXNoIjoiMzhhMjYzZWVmY2YyMjEwMmQwODc0NzdkNTI5MWMwMzAxYzgzNmIxMCIsIl9hdXRoX3VzZXJfaWQiOiIxIiwiZXhwZXJpbWVudElkIjoiMjYiLCJpbmRpdmlkdWFsUEsiOiIzIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJiaW9zb3VyY2VQSyI6IjMifQ==	2017-04-18 20:53:41.473377-04
 e0drlthh44hqi5z470ru2uoe5qeh906n	Y2FiNDA0YTRjM2I5NDQwZGViOTU1NmEyZTI1NDU3OTczOTJmZjAyYTp7ImJpb3NhbXBsZVBLIjoiNiIsIl9hdXRoX3VzZXJfaWQiOiIxIiwicHJvamVjdElkIjoiMyIsImN1cnJlbnRHcm91cCI6ImFkbWluIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJpbmRpdmlkdWFsUEsiOiI2IiwiZXhwZXJpbWVudElkIjoiMTkiLCJfYXV0aF91c2VyX2hhc2giOiIzOGEyNjNlZWZjZjIyMTAyZDA4NzQ3N2Q1MjkxYzAzMDFjODM2YjEwIiwicHJvamVjdF9vd25lcklkIjoxLCJiaW9zb3VyY2VQSyI6IjYifQ==	2017-04-12 17:08:47.869877-04
 t2t00lsnk2qqmz2deutbwcuvuslze53h	Yzk4ZThhYzM2NjFiYzkwMzVhNjQzODc2ODJkY2VlYjBlZDM1M2I3YTp7ImJpb3NhbXBsZVBLIjoiOCIsInByb2plY3RJZCI6IjQiLCJfYXV0aF91c2VyX2lkIjoiMSIsInJ1bklkIjo3LCJiaW9zb3VyY2VQSyI6IjgiLCJpbmRpdmlkdWFsUEsiOiI4IiwicHJvamVjdF9vd25lcklkIjoxLCJjdXJyZW50R3JvdXAiOiJhZG1pbiIsIl9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsImV4cGVyaW1lbnRJZCI6IjIxIn0=	2017-04-13 17:59:35.471186-04
 3bxsodzp8cv6785ds3i8fw0oduqio027	ZjRjYTk3OGE4MTRiYjEyNTAxODM3YzI0NTJkNDU5YmFlMzZlYzg1NTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwicHJvamVjdF9vd25lcklkIjoxLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsInByb2plY3RJZCI6IjQiLCJfYXV0aF91c2VyX2hhc2giOiIzOGEyNjNlZWZjZjIyMTAyZDA4NzQ3N2Q1MjkxYzAzMDFjODM2YjEwIiwiY3VycmVudEdyb3VwIjoiYWRtaW4ifQ==	2017-04-14 13:42:38.623343-04
 wyxr4mdtu8t8wk6gmchp8w367rx0u74b	MDdmYWVmOWJiZGFlMWJhNjYyYWM2ZGU1YzRjYWJhYmRiMjEzMzIwODp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiYmlvc2FtcGxlUEsiOiIzIiwiYmlvc291cmNlUEsiOiIzIiwicHJvamVjdF9vd25lcklkIjoxLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAiLCJpbmRpdmlkdWFsUEsiOjEzLCJjdXJyZW50R3JvdXAiOiJhZG1pbiIsInByb2plY3RJZCI6IjUiLCJydW5JZCI6OX0=	2017-04-28 17:24:17.642371-04
-a1sz24lfizfu4pgsrfhzsx9xlzppoojz	NmUzYjA2NGU5MWRhODkzOGVjZDkwMjRjZGZjNGU3MzMyNmFlNTRjYTp7InByb2plY3RJZCI6IjQiLCJwcm9qZWN0X293bmVySWQiOjEsImN1cnJlbnRHcm91cCI6ImFkbWluIiwiX2F1dGhfdXNlcl9pZCI6IjEiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6IjM4YTI2M2VlZmNmMjIxMDJkMDg3NDc3ZDUyOTFjMDMwMWM4MzZiMTAifQ==	2017-05-01 09:53:30.679192-04
 \.
 
 
@@ -3923,7 +3965,7 @@ COPY "dryLab_imageobjects" (id, "imageObjects_images", project_id, "imageObjects
 -- Name: dryLab_imageobjects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_imageobjects_id_seq"', 5, true);
+SELECT pg_catalog.setval('"dryLab_imageobjects_id_seq"', 6, true);
 
 
 --
@@ -3946,16 +3988,6 @@ SELECT pg_catalog.setval('"dryLab_images_id_seq"', 4, true);
 --
 
 COPY "dryLab_seqencingfile" (id, "sequencingFile_mainPath", "sequencingFile_backupPath", "sequencingFile_sha256sum", "sequencingFile_md5sum", "sequencingFile_name", "sequencingFile_run_id", "sequencingFile_exp_id", project_id, dbxrefs, file_classification_id, file_format_id, file_format_specifications_id, paired_end, read_length, barcode_in_read, flowcell_details_chunk, flowcell_details_lane, file_barcode_id, dcic_alias) FROM stdin;
-9	U54-HFF-FA-20160722-DpnII_S15_L008_R1_001.fastq.gz	/s4s/U54-HFF-FA-20160722-DpnII_S15_L008_R1_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	U54-HFF-FA-20160722-DpnII_S15_L008_R1_001.fastq.gz	3	5	2		133	126	\N	1	50	\N		8	\N	f13
-8	U54-HFF-beads-030116-L002_S1_L001_R2_001.fastq.gz	/s4s/U54-HFF-beads-030116-L002_S1_L001_R2_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	U54-HFF-beads-030116-L002_S1_L001_R2_001.fastq.gz	2	4	2		133	126	\N	2	50	\N		2	\N	f14
-7	U54-HFF-beads-030116-L002_S1_L001_R1_001.fastq.gz	/s4s/U54-HFF-beads-030116-L002_S1_L001_R1_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	U54-HFF-beads-030116-L002_S1_L001_R1_001.fastq.gz	2	4	2		133	126	\N	1	50	\N		2	\N	f15
-6	U54-HFF-beads-030116-L001_S1_L001_R2_001.fastq.gz	/s4s/U54-HFF-beads-030116-L001_S1_L001_R2_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	U54-HFF-beads-030116-L001_S1_L001_R2_001.fastq.gz	2	4	2		133	126	\N	2	50	\N		2	\N	f16
-5	U54-HFF-beads-030116-L001_S1_L001_R1_001.fastq.gz	/s4s/U54-HFF-beads-030116-L001_S1_L001_R1_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	U54-HFF-beads-030116-L001_S1_L001_R1_001.fastq.gz	2	4	2		133	126	\N	1	50	\N		2	\N	f17
-10	U54-HFF-FA-20160722-DpnII_S15_L008_R2_001.fastq.gz	/s4s/U54-HFF-FA-20160722-DpnII_S15_L008_R2_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	U54-HFF-FA-20160722-DpnII_S15_L008_R2_001.fastq.gz	3	5	2		133	126	\N	2	50	\N		8	\N	f11
-25	/data/purcarom/hic-Dekker/fastq/ENCODE3-A549-HindIII__19FEB15_PE50_ENCODE3UW__Sample_ENCODE-A549C-HindIII-R1__ENCODE3-A549-HindIII_NoIndex_L007_R2_001.fastq.gz	/s4s//data/purcarom/hic-Dekker/fastq/ENCODE3-A549-HindIII__19FEB15_PE50_ENCODE3UW__Sample_ENCODE-A549C-HindIII-R1__ENCODE3-A549-HindIII_NoIndex_L007_R2_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	ENCFF319AST	7	20	4		133	126	\N	2	50	\N			\N	R654Y4
-26	/data/purcarom/hic-Dekker/fastq/ENCODE3-A549-HindIII__19FEB15_PE50_ENCODE3UW__Sample_ENCODE-A549C-HindIII-R1__ENCODE3-A549-HindIII_NoIndex_L007_R1_001.fastq.gz	/s4s//data/purcarom/hic-Dekker/fastq/ENCODE3-A549-HindIII__19FEB15_PE50_ENCODE3UW__Sample_ENCODE-A549C-HindIII-R1__ENCODE3-A549-HindIII_NoIndex_L007_R1_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	ENCFF478EAB	7	20	4		133	126	\N	1	50	\N			\N	DTP8XQ
-27	/data/purcarom/hic-Dekker/fastq/ENCODE3-A549-HindIII__19FEB15_PE50_ENCODE3UW__Sample_ENCODE-A549D-HindIII-R2__ENCODE3-A549-HindIII_NoIndex_L008_R1_001.fastq.gz	/s4s//data/purcarom/hic-Dekker/fastq/ENCODE3-A549-HindIII__19FEB15_PE50_ENCODE3UW__Sample_ENCODE-A549D-HindIII-R2__ENCODE3-A549-HindIII_NoIndex_L008_R1_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	ENCFF805BPJ	7	21	4		133	126	\N	1	50	\N			\N	7QUP39
-28	/data/purcarom/hic-Dekker/fastq/ENCODE3-A549-HindIII__19FEB15_PE50_ENCODE3UW__Sample_ENCODE-A549D-HindIII-R2__ENCODE3-A549-HindIII_NoIndex_L008_R2_001.fastq.gz	/s4s//data/purcarom/hic-Dekker/fastq/ENCODE3-A549-HindIII__19FEB15_PE50_ENCODE3UW__Sample_ENCODE-A549D-HindIII-R2__ENCODE3-A549-HindIII_NoIndex_L008_R2_001.fastq.gz	diuwdiued788798	hewifu9283ydhjhkj	ENCFF582XKW	7	21	4		133	126	\N	2	50	\N			\N	XK7XI9
 \.
 
 
@@ -3963,7 +3995,7 @@ COPY "dryLab_seqencingfile" (id, "sequencingFile_mainPath", "sequencingFile_back
 -- Name: dryLab_seqencingfile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_seqencingfile_id_seq"', 28, true);
+SELECT pg_catalog.setval('"dryLab_seqencingfile_id_seq"', 29, true);
 
 
 --
@@ -3971,9 +4003,6 @@ SELECT pg_catalog.setval('"dryLab_seqencingfile_id_seq"', 28, true);
 --
 
 COPY "dryLab_sequencingrun" (id, run_name, project_id, run_retrieval_date, run_submission_date, run_approved, run_submitted, run_sequencing_center_id, run_sequencing_instrument_id, run_sequencing_machine_id) FROM stdin;
-3	27JUL16_PE50_HFF3KBB	2	\N	2016-07-22	t	t	101	99	124
-2	21DEC16_C-Monster-HHHMFBB	2	\N	2016-03-01	t	t	101	99	124
-7	ENCSR444WCZ	4	\N	2016-04-19	f	f	101	131	\N
 \.
 
 
@@ -3981,7 +4010,7 @@ COPY "dryLab_sequencingrun" (id, run_name, project_id, run_retrieval_date, run_s
 -- Name: dryLab_sequencingrun_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_sequencingrun_id_seq"', 9, true);
+SELECT pg_catalog.setval('"dryLab_sequencingrun_id_seq"', 10, true);
 
 
 --
@@ -3989,10 +4018,6 @@ SELECT pg_catalog.setval('"dryLab_sequencingrun_id_seq"', 9, true);
 --
 
 COPY "dryLab_sequencingrun_run_Experiment" (id, sequencingrun_id, experiment_id) FROM stdin;
-2	2	4
-3	3	5
-10	7	21
-11	7	20
 \.
 
 
@@ -4000,7 +4025,7 @@ COPY "dryLab_sequencingrun_run_Experiment" (id, sequencingrun_id, experiment_id)
 -- Name: dryLab_sequencingrun_run_Experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"dryLab_sequencingrun_run_Experiment_id_seq"', 13, true);
+SELECT pg_catalog.setval('"dryLab_sequencingrun_run_Experiment_id_seq"', 14, true);
 
 
 --
@@ -4201,13 +4226,6 @@ SELECT pg_catalog.setval('organization_choice_id_seq', 136, true);
 --
 
 COPY organization_experiment (id, experiment_name, experiment_biosample_id, project_id, protocol_id, experiment_description, experiment_enzyme_id, dbxrefs, document_id, references_id, url, experiment_fields, type_id, variation, biosample_quantity, biosample_quantity_units, dcic_alias) FROM stdin;
-5	exp2	3	2	4	HFF FA crosslinked on beads DpnII digested	1		\N	\N		"{\\"tagging_method\\": \\"A\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"average_fragment_size\\": \\"350\\", \\"biotin_removed\\": \\"Yes\\", \\"dbxrefs\\": \\"\\", \\"crosslinking_time\\": \\"10\\", \\"digestion_time\\": \\"960\\", \\"ligation_time\\": \\"240\\", \\"digestion_temperature\\": \\"37\\", \\"library_preparation_date\\": \\"2016-07-22\\", \\"ligation_temperature\\": \\"16\\", \\"ligation_volume\\": \\"7500\\", \\"enzyme_lot_number\\": \\"\\", \\"fragment_size_range\\": \\"250-450\\", \\"follows_sop\\": \\"Yes\\", \\"crosslinking_temperature\\": \\"22\\", \\"fragment_size_selection_method\\": \\"SPRI beads\\", \\"experiment_type\\": \\"in situ Hi-C\\", \\"fragmentation_method\\": \\"sonication\\"}"	6		20000000	cells	e9
-4	exp1	3	2	4	HFF FA crosslinked on beads HindIII digested	2		\N	\N		"{\\"tagging_method\\": \\"C\\", \\"follows_sop\\": \\"Yes\\", \\"digestion_temperature\\": \\"37\\", \\"ligation_volume\\": \\"7500\\", \\"average_fragment_size\\": \\"350\\", \\"digestion_time\\": \\"960\\", \\"crosslinking_method\\": \\"1%\\", \\"fragment_size_range\\": \\"250-450\\", \\"ligation_temperature\\": \\"16\\", \\"experiment_type\\": \\"in\\", \\"fragmentation_method\\": \\"sonication\\", \\"biotin_removed\\": \\"Yes\\", \\"dbxrefs\\": \\"\\", \\"ligation_time\\": \\"240\\", \\"enzyme_lot_number\\": \\"\\", \\"fragment_size_selection_method\\": \\"SPRI\\", \\"crosslinking_temperature\\": \\"22\\", \\"library_preparation_date\\": \\"2016-03-01\\", \\"crosslinking_time\\": \\"10\\"}"	6		20000000	cells	e10
-11	New exp	3	2	2		1		\N	\N		"{\\"tagging_method\\": \\"\\", \\"fragmentation_method\\": \\"see protocol document\\", \\"dbxrefs\\": \\"\\", \\"digestion_time\\": \\"960\\", \\"library_preparation_date\\": \\"\\", \\"ligation_time\\": \\"\\", \\"fragment_size_selection_method\\": \\"see document\\", \\"crosslinking_temperature\\": \\"\\", \\"crosslinking_time\\": \\"\\", \\"average_fragment_size\\": \\"\\", \\"follows_sop\\": \\"Yes\\", \\"ligation_temperature\\": \\"\\", \\"experiment_type\\": \\"in situ Hi-C\\", \\"fragment_size_range\\": \\"\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"digestion_temperature\\": \\"333\\", \\"ligation_volume\\": \\"\\", \\"biotin_removed\\": \\"Yes\\", \\"enzyme_lot_number\\": \\"\\"}"	6		4	mg	e8
-21	ENCLB222WYT	7	4	6		2		\N	\N		"{\\"digestion_time\\": \\"1260\\", \\"experiment_type\\": \\"dilution Hi-C\\", \\"tagging_method\\": \\"dCTP\\", \\"ligation_volume\\": \\"8\\", \\"ligation_temperature\\": \\"\\", \\"ligation_time\\": \\"\\", \\"fragment_size_selection_method\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"biotin_removed\\": \\"Yes\\", \\"fragment_size_range\\": \\"100-300\\", \\"dbxrefs\\": \\"\\", \\"crosslinking_temperature\\": \\"\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"library_preparation_date\\": \\"2016-04-19\\", \\"average_fragment_size\\": \\"200\\", \\"digestion_temperature\\": \\"37\\", \\"enzyme_lot_number\\": \\"\\", \\"fragmentation_method\\": \\"n/a\\", \\"crosslinking_time\\": \\"\\"}"	6		10000000	cells	C61NP5
-20	ENCLB571HTP	7	4	6		2		\N	\N	https://www.encodeproject.org/experiments/ENCSR444WCZ/	"{\\"digestion_time\\": \\"1260\\", \\"experiment_type\\": \\"dilution Hi-C\\", \\"tagging_method\\": \\"dCTP\\", \\"ligation_volume\\": \\"8\\", \\"ligation_temperature\\": \\"\\", \\"ligation_time\\": \\"\\", \\"fragment_size_selection_method\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"biotin_removed\\": \\"Yes\\", \\"fragment_size_range\\": \\"100-300\\", \\"dbxrefs\\": \\"\\", \\"crosslinking_temperature\\": \\"\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"library_preparation_date\\": \\"2016-04-19\\", \\"average_fragment_size\\": \\"200\\", \\"digestion_temperature\\": \\"37\\", \\"enzyme_lot_number\\": \\"\\", \\"fragmentation_method\\": \\"n/a\\", \\"crosslinking_time\\": \\"\\"}"	6		10000000	cells	NL8O2O
-22	ENCLB118KAE	8	4	6		2		\N	\N		"{\\"fragmentation_method\\": \\"n/a\\", \\"average_fragment_size\\": \\"200\\", \\"experiment_type\\": \\"dilution Hi-C\\", \\"digestion_temperature\\": \\"37\\", \\"ligation_time\\": \\"\\", \\"fragment_size_range\\": \\"100-300\\", \\"enzyme_lot_number\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"biotin_removed\\": \\"Yes\\", \\"dbxrefs\\": \\"\\", \\"ligation_temperature\\": \\"\\", \\"crosslinking_time\\": \\"\\", \\"fragment_size_selection_method\\": \\"\\", \\"tagging_method\\": \\"dCTP\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"library_preparation_date\\": \\"2016-04-19\\", \\"ligation_volume\\": \\"8\\", \\"digestion_time\\": \\"1260\\", \\"crosslinking_temperature\\": \\"\\"}"	6		10000000	cells	S9G6CB
-23	ENCLB104ZTM	8	4	6		2		\N	\N		"{\\"tagging_method\\": \\"dCTP\\", \\"crosslinking_method\\": \\"1% Formaldehyde\\", \\"digestion_time\\": \\"1260\\", \\"ligation_temperature\\": \\"\\", \\"crosslinking_temperature\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"fragment_size_selection_method\\": \\"\\", \\"library_preparation_date\\": \\"2016-04-19\\", \\"fragment_size_range\\": \\"100-300\\", \\"digestion_temperature\\": \\"37\\", \\"enzyme_lot_number\\": \\"\\", \\"ligation_time\\": \\"\\", \\"fragmentation_method\\": \\"n/a\\", \\"crosslinking_time\\": \\"\\", \\"dbxrefs\\": \\"\\", \\"ligation_volume\\": \\"8\\", \\"average_fragment_size\\": \\"200\\", \\"experiment_type\\": \\"dilution Hi-C\\", \\"biotin_removed\\": \\"Yes\\"}"	6		10000000	cells	X7DTAB
 \.
 
 
@@ -4222,7 +4240,7 @@ SELECT pg_catalog.setval('"organization_experiment_experiment_imageObjects_id_se
 -- Name: organization_experiment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_experiment_id_seq', 29, true);
+SELECT pg_catalog.setval('organization_experiment_id_seq', 30, true);
 
 
 --
@@ -4238,7 +4256,6 @@ COPY "organization_experiment_imageObjects" (id, experiment_id, imageobjects_id)
 --
 
 COPY organization_experimentset (id, "experimentSet_type_id", "experimentSet_name", project_id, description, document_id, dcic_alias) FROM stdin;
-3	107	repset1	2	Desc	\N	s4
 \.
 
 
@@ -4247,8 +4264,6 @@ COPY organization_experimentset (id, "experimentSet_type_id", "experimentSet_nam
 --
 
 COPY "organization_experimentset_experimentSet_exp" (id, experimentset_id, experiment_id) FROM stdin;
-3	3	5
-4	3	4
 \.
 
 
@@ -4293,8 +4308,6 @@ SELECT pg_catalog.setval('organization_jsonobjfield_id_seq', 7, true);
 --
 
 COPY organization_project (id, project_name, project_notes, project_active, project_owner_id, dcic_alias) FROM stdin;
-2	U54-HFF-FA	HFF Project	t	1	p2
-4	Encode	For submitting all the encode data to 4DN	t	1	XMXPTC
 \.
 
 
@@ -4302,7 +4315,7 @@ COPY organization_project (id, project_name, project_notes, project_active, proj
 -- Name: organization_project_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_project_id_seq', 5, true);
+SELECT pg_catalog.setval('organization_project_id_seq', 6, true);
 
 
 --
@@ -4325,7 +4338,6 @@ SELECT pg_catalog.setval('organization_project_project_contributor_id_seq', 1, t
 --
 
 COPY organization_publication (id, publication_categories_id, publication_title, exp_sets_prod_in_pub_id, exp_sets_used_in_pub_id, publication_id, publication_published_by_id, attachment, dcic_alias, name) FROM stdin;
-1	119	Software tools for visualizing Hi-C data.	\N	\N	28159004	122	1	o5	
 \.
 
 
@@ -4333,7 +4345,7 @@ COPY organization_publication (id, publication_categories_id, publication_title,
 -- Name: organization_publication_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('organization_publication_id_seq', 7, true);
+SELECT pg_catalog.setval('organization_publication_id_seq', 8, true);
 
 
 --
@@ -4371,7 +4383,6 @@ SELECT pg_catalog.setval('organization_tag_tag_exp_id_seq', 1, false);
 --
 
 COPY "wetLab_barcode" (id, barcode_name, barcode_position, barcode_index_id) FROM stdin;
-3	grtr	oouhu	91
 \.
 
 
@@ -4387,9 +4398,6 @@ SELECT pg_catalog.setval('"wetLab_barcode_id_seq"', 3, true);
 --
 
 COPY "wetLab_biosample" (id, biosample_fields, biosample_biosource_id, biosample_individual_id, protocol_id, biosample_type_id, biosample_name, "userOwner_id", dbxrefs, document_id, references_id, url, biosample_description, dcic_alias) FROM stdin;
-3	"{\\"culture_start_date\\": \\"2017-01-04\\", \\"karyotype\\": \\"46\\", \\"synchronization_stage\\": \\"\\", \\"passage_number\\": \\"5\\", \\"follows_sop\\": \\"Yes\\", \\"culture_duration\\": \\"19\\", \\"dbxrefs\\": \\"\\", \\"culture_harvest_date\\": \\"2017-01-20\\", \\"culture_duration_units\\": \\"days\\", \\"differentiation_state\\": \\"\\"}"	3	3	\N	5	HFF	1		\N	\N		20% FBS,10k cell subculture according to HFFc6 SOP	s4
-7	"{\\"culture_start_date\\": \\"2016-05-13\\", \\"dbxrefs\\": \\"\\", \\"culture_duration\\": \\"\\", \\"culture_duration_units\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"differentiation_state\\": \\"\\", \\"karyotype\\": \\"\\", \\"synchronization_stage\\": \\"\\", \\"passage_number\\": \\"\\", \\"culture_harvest_date\\": \\"\\"}"	7	7	\N	5	A549 - sample	1		\N	\N	https://www.encodeproject.org/biosamples/ENCBS009OIC/	HiC experiment done on A549	RD4CK9
-8	"{\\"differentiation_state\\": \\"\\", \\"passage_number\\": \\"\\", \\"culture_duration\\": \\"\\", \\"synchronization_stage\\": \\"\\", \\"karyotype\\": \\"\\", \\"dbxrefs\\": \\"\\", \\"follows_sop\\": \\"No\\", \\"culture_harvest_date\\": \\"\\", \\"culture_start_date\\": \\"2016-04-19\\", \\"culture_duration_units\\": \\"\\"}"	8	8	7	5	NCI-H460 - sample	1		\N	\N			DO699V
 \.
 
 
@@ -4442,14 +4450,14 @@ SELECT pg_catalog.setval('"wetLab_biosample_biosample_TreatmentRnai_id_seq"', 3,
 -- Name: wetLab_biosample_biosample_imageObjects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_biosample_biosample_imageObjects_id_seq"', 5, true);
+SELECT pg_catalog.setval('"wetLab_biosample_biosample_imageObjects_id_seq"', 6, true);
 
 
 --
 -- Name: wetLab_biosample_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_biosample_id_seq"', 14, true);
+SELECT pg_catalog.setval('"wetLab_biosample_id_seq"', 15, true);
 
 
 --
@@ -4465,7 +4473,6 @@ COPY "wetLab_biosample_imageObjects" (id, biosample_id, imageobjects_id) FROM st
 --
 
 COPY "wetLab_biosample_modifications" (id, biosample_id, modification_id) FROM stdin;
-4	3	12
 \.
 
 
@@ -4481,9 +4488,6 @@ SELECT pg_catalog.setval('"wetLab_biosample_modifications_id_seq"', 5, true);
 --
 
 COPY "wetLab_biosource" (id, biosource_tissue, biosource_individual_id, biosource_type_id, biosource_vendor_id, biosource_description, biosource_name, biosource_cell_line, biosource_cell_line_tier_id, dbxrefs, document_id, references_id, url, protocol_id, cell_line_termid, dcic_alias) FROM stdin;
-3	foreskin	3	28	1	Human Foreskin Fibroblasts	cl_HFF	HFF	35		\N	\N	https://www.ncbi.nlm.nih.gov/pubmed/15024073	3		b4
-7	Lung	7	28	7	Homo sapiens A549 immortalized cell line	A549	A549	\N		\N	\N	http://www.ebi.ac.uk/ols/ontologies/efo/terms?short_form=EFO_0001086	\N	EFO:0001086	TLMVTF
-8	Lung	8	28	7	Derived from metastatic site: Pleural effusion.	NCI-H460	NCI-H460	\N		\N	\N	http://web.expasy.org/cellosaurus/CVCL_0459	\N	EFO:0003044	75D0ET
 \.
 
 
@@ -4491,7 +4495,7 @@ COPY "wetLab_biosource" (id, biosource_tissue, biosource_individual_id, biosourc
 -- Name: wetLab_biosource_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_biosource_id_seq"', 11, true);
+SELECT pg_catalog.setval('"wetLab_biosource_id_seq"', 12, true);
 
 
 --
@@ -4514,8 +4518,6 @@ SELECT pg_catalog.setval('"wetLab_biosource_modifications_id_seq"', 4, true);
 --
 
 COPY "wetLab_construct" (id, construct_name, construct_description, "construct_designed_to_Target", construct_insert_sequence, construct_tag, construct_vector_backbone, construct_type_id, construct_vendor_id, document_id, references_id, url, dcic_alias) FROM stdin;
-11	Construct-pLXSN-hTERT	Retroviral vector co-expressing hTert derived from HeLa cDNA with a neomycin-resistance marker	hTert			pLXSN	130	6	\N	\N	http://www.clontech.com/xxclt_ibcGetAttachment.jsp?cItemId=17661	c1
-17	C1						22	\N	\N	\N		Mod1_C1
 \.
 
 
@@ -4531,14 +4533,6 @@ SELECT pg_catalog.setval('"wetLab_construct_id_seq"', 17, true);
 --
 
 COPY "wetLab_document" (id, description, attachment, type_id, references_id, url, dcic_alias, name) FROM stdin;
-9	Propagation of NCI-H460	uploads/NCI-H460_SOP_V1.pdf	5	\N		C62UI6	\N
-8	Library protocol for ENCODE Hi-C experiments from the Dekker lab	uploads/HiC_protocol_Ye_10M.pdf	21	\N	https://www.encodeproject.org/experiments/ENCSR105KFX/	G10NP4	\N
-7	Propagation of SK-N-DZ	uploads/SK-N-DZ_SOP_V2.pdf	5	\N	https://www.encodeproject.org/biosamples/ENCBS373BOT/	P11NP4	\N
-6	hTERT Protocol	uploads/protocol2.pdf	13	\N		O17NP4	\N
-5	Pro_dilutionhic	uploads/protocol1.pdf	13	\N		L17NP4	\N
-2	SOP Protocol Doc	uploads/Screen_Shot_2017-02-01_at_10.25.03_PM.png	21	1		F17IP4	\N
-1	cell isolation	uploads/The_Flippen_Group.pdf	2	\N	http://www.google.com	K27NP8	\N
-11	scsd	uploads/HiC_protocol_Ye_10M_1.pdf	4	\N		Docu	Docu
 \.
 
 
@@ -4546,7 +4540,7 @@ COPY "wetLab_document" (id, description, attachment, type_id, references_id, url
 -- Name: wetLab_document_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_document_id_seq"', 11, true);
+SELECT pg_catalog.setval('"wetLab_document_id_seq"', 12, true);
 
 
 --
@@ -4592,10 +4586,6 @@ SELECT pg_catalog.setval('"wetLab_genomicregions_id_seq"', 12, true);
 --
 
 COPY "wetLab_individual" (id, individual_fields, individual_type_id, individual_name, individual_vendor_id, dbxrefs, document_id, references_id, url, "userOwner_id", dcic_alias) FROM stdin;
-3	"{\\"ethnicity\\": \\"\\", \\"age\\": \\"0\\", \\"sex\\": \\"male\\", \\"life_stage\\": \\"newborn\\", \\"age_units\\": \\"year\\", \\"health_status\\": \\"\\"}"	4	HFF	\N		\N	\N	https://www.ncbi.nlm.nih.gov/pubmed/15024073	1	i4
-1	"{\\"age\\": \\"23\\", \\"sex\\": \\"male\\", \\"life_stage\\": \\"fetal\\", \\"age_units\\": \\"day\\", \\"health_status\\": \\"healthy\\", \\"ethnicity\\": \\"caucasian\\"}"	4	HeLaS3human	1		1	1	http://www.google.com	1	i6
-7	"{\\"ethnicity\\": \\"Caucasian\\", \\"age_units\\": \\"year\\", \\"age\\": \\"58\\", \\"health_status\\": \\"Lung Cancer\\", \\"sex\\": \\"male\\", \\"life_stage\\": \\"adult\\"}"	4	Homo sapiens A549	7		\N	\N		1	6EHXF1
-8	"{\\"ethnicity\\": \\"\\", \\"life_stage\\": \\"adult\\", \\"age_units\\": \\"year\\", \\"sex\\": \\"male\\", \\"age\\": \\"37\\", \\"health_status\\": \\"Large cell lung carcinoma\\"}"	4	Homo sapiens NCI-H460	7		\N	\N		1	8K32UA
 \.
 
 
@@ -4603,7 +4593,7 @@ COPY "wetLab_individual" (id, individual_fields, individual_type_id, individual_
 -- Name: wetLab_individual_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dekker_lab
 --
 
-SELECT pg_catalog.setval('"wetLab_individual_id_seq"', 15, true);
+SELECT pg_catalog.setval('"wetLab_individual_id_seq"', 16, true);
 
 
 --
@@ -4611,7 +4601,6 @@ SELECT pg_catalog.setval('"wetLab_individual_id_seq"', 15, true);
 --
 
 COPY "wetLab_modification" (id, modification_type_id, modification_description, modification_name, "userOwner_id", dbxrefs, document_id, "modification_gRNA", modification_vendor_id, references_id, url, constructs_id, "modification_genomicRegions_id", target_id, dcic_alias) FROM stdin;
-12	26	http://www.clontech.com/xxclt_ibcGetAttachment.jsp?cItemId=17661	pLXSN-hTERT	1		\N		4	\N	http://www.clontech.com/xxclt_ibcGetAttachment.jsp?cItemId=17661	11	\N	\N	K23NP1
 \.
 
 
@@ -4642,15 +4631,6 @@ SELECT pg_catalog.setval('"wetLab_othertreatment_id_seq"', 1, true);
 --
 
 COPY "wetLab_protocol" (id, description, name, "userOwner_id", enzyme_id, dcic_alias, attachment) FROM stdin;
-7	Propagation of NCI-H460, Human Large Cell Lung Carcinoma Cells Protocol	NCI-H460 cell protocol	1	\N	C62NP4	\N
-6		ENCODE Hi-C experiments	1	2	A62NP5	\N
-5	Propagation of SK-N-DZ, Human Neuroblastoma Cells Protocol	Propagation of SK-N-DZ	1	\N	F52NP4	\N
-4		Pro_dilutionhic	1	\N	T63NY5	\N
-3	HFF hTERT transformed growing conditions	hTERT	1	\N	I61NP4	\N
-2	cdloierfoiref	hic Protocol	1	1	M62NP0	\N
-1	SOP Protocol	P1111	1	2	C62MI5	\N
-9		htrh	1	8	htrh	
-8	xwexw	BiosampleProtocol	1	2	BiosampleProtocol	uploads/Screen_Shot_2017-04-11_at_7.16.20_PM_Dx6pmaH.png
 \.
 
 
@@ -4681,7 +4661,6 @@ SELECT pg_catalog.setval('"wetLab_target_id_seq"', 13, true);
 --
 
 COPY "wetLab_treatmentchemical" (id, url, dbxrefs, "treatmentChemical_name", "treatmentChemical_chemical", "treatmentChemical_concentration", "treatmentChemical_duration", "treatmentChemical_temperature", "treatmentChemical_description", document_id, references_id, "treatmentChemical_concentration_units_id", "treatmentChemical_duration_units_id", "userOwner_id", dcic_alias) FROM stdin;
-3			CHEBI:28262	dimethyl sulfoxide	0	72	0	dimethyl sulfoxide (CHEBI:28262) for 72 hour [2-1]	\N	\N	\N	81	1	c1
 \.
 
 
