@@ -12,7 +12,7 @@ from xlwt.compat import xrange
 from openpyxl.reader.excel import load_workbook
 from organization.excelRow import insert_rows
 from openpyxl.styles import Color, Fill
-from cLIMS.base import WORKSPACEPATH, FILEUPLOADPATH
+from cLIMS.base import WORKSPACEPATH, FILEUPLOADPATH, LABNAME
 from dryLab.models import *
 import json
 from _collections import OrderedDict, defaultdict
@@ -241,11 +241,11 @@ def initialize(tab,sheetTab):
     sheetTab.append(headers)
     return (sheetTab)
 
-labName = "dekker-lab:"
+
 def appendPublication(pKey, dcicExcelSheet):
     pub = Publication.objects.get(pk=pKey)
     singlePub = []
-    singlePub.append(labName +"Publication_"+str(pub.dcic_alias)+"_"+str(pub.pk))
+    singlePub.append(pub.dcic_alias)
     singlePub.append(str(pub.publication_title))
     singlePub.append(str(pub.publication_id))
     if(pub.attachment):
@@ -273,7 +273,7 @@ def appendPublication(pKey, dcicExcelSheet):
 def appendDocument(pKey, dcicExcelSheet):
     doc = Document.objects.get(pk=pKey)
     singleDocument = []
-    singleDocument.append(labName +"Document_"+str(doc.dcic_alias)+"_"+str(doc.pk))
+    singleDocument.append(doc.dcic_alias)
     singleDocument.append(doc.description)
     singleDocument.append(str(doc.type))
     if(doc.attachment):
@@ -282,7 +282,7 @@ def appendDocument(pKey, dcicExcelSheet):
         singleDocument.append("")
     singleDocument.append(str(doc.url))
     if(doc.references):
-        singleDocument.append(labName +"Publication_"+str(doc.references.dcic_alias)+"_"+str(doc.references.pk))
+        singleDocument.append(doc.references.dcic_alias)
         appendPublication(doc.references.pk,dcicExcelSheet)
     else:
         singleDocument.append("")
@@ -291,7 +291,7 @@ def appendDocument(pKey, dcicExcelSheet):
 def appendVendor(pKey,dcicExcelSheet):
     ven = Vendor.objects.get(pk=pKey)
     singleVendor = []
-    singleVendor.append(str(ven.dcic_alias))
+    singleVendor.append(ven.dcic_alias)
     singleVendor.append("")
     singleVendor.append(str(ven.vendor_title))
     if(ven.vendor_description != None):
@@ -304,7 +304,7 @@ def appendVendor(pKey,dcicExcelSheet):
 def appendEnzyme(pKey,dcicExcelSheet):
     enz = Enzyme.objects.get(pk=pKey)
     singleEnzyme = []
-    singleEnzyme.append(labName +"Enzyme_"+str(enz.dcic_alias)+"_"+str(enz.pk))
+    singleEnzyme.append(enz.dcic_alias)
     singleEnzyme.append(enz.enzyme_name)
     singleEnzyme.append(enz.enzyme_description)
     if(enz.enzyme_vendor):
@@ -318,7 +318,7 @@ def appendEnzyme(pKey,dcicExcelSheet):
     singleEnzyme.append(enz.enzyme_cutPos)
     singleEnzyme.append("")
     if(enz.document):
-        singleEnzyme.append(labName +"Document_"+str(enz.document.dcic_alias)+"_"+str(enz.document.pk))
+        singleEnzyme.append(enz.document.dcic_alias)
         appendDocument(enz.document.pk, dcicExcelSheet)
     else:
         singleEnzyme.append("")
@@ -328,7 +328,7 @@ def appendEnzyme(pKey,dcicExcelSheet):
 def appendImageObjects(pKey,dcicExcelSheet):
     img=ImageObjects.objects.get(pk=pKey)
     singleItem = []
-    singleItem.append(labName +"Image_"+str(img.dcic_alias)+"_"+str(img.pk))
+    singleItem.append(img.dcic_alias)
     singleItem.append(str(FILEUPLOADPATH)+str(img.imageObjects_images))
     singleItem.append(img.description)
     dcicExcelSheet['Image'].append(singleItem)
@@ -336,7 +336,7 @@ def appendImageObjects(pKey,dcicExcelSheet):
 def appendConstruct(pKey,dcicExcelSheet):
     construct = Construct.objects.get(pk=pKey)
     singleItem = []
-    singleItem.append(labName +"Construct_"+str(construct.dcic_alias)+"_"+str(construct.pk))
+    singleItem.append(construct.dcic_alias)
     singleItem.append(construct.construct_name)
     if(construct.construct_description != None):
         singleItem.append(construct.construct_description)
@@ -344,14 +344,14 @@ def appendConstruct(pKey,dcicExcelSheet):
         singleItem.append("")
     singleItem.append(str(construct.construct_type))
     if(construct.construct_vendor):
-        singleItem.append(str(construct.construct_vendor.dcic_alias))
+        singleItem.append(construct.construct_vendor.dcic_alias)
         appendVendor(construct.construct_vendor.pk,dcicExcelSheet)
     else:
         singleItem.append("")
     singleItem.append(construct.construct_designed_to_Target)
     singleItem.append(construct.construct_insert_sequence)
     if(construct.document):
-        singleItem.append(labName +"Document_"+str(construct.document.dcic_alias)+"_"+str(construct.document.pk))
+        singleItem.append(construct.document.dcic_alias)
         appendDocument(construct.document.pk, dcicExcelSheet)
     else:
         singleItem.append("")
@@ -359,7 +359,7 @@ def appendConstruct(pKey,dcicExcelSheet):
     singleItem.append(construct.construct_vector_backbone)
     singleItem.append("")
     if(construct.references):
-        singleItem.append(labName +"Publication_"+str(construct.references.dcic_alias)+"_"+str(construct.references.pk))
+        singleItem.append(construct.references.dcic_alias)
         appendPublication(construct.references.pk,dcicExcelSheet)
     else:
         singleItem.append("")
@@ -369,7 +369,7 @@ def appendConstruct(pKey,dcicExcelSheet):
 def appendTarget(pKey,dcicExcelSheet):
     target=Target.objects.get(pk=pKey)
     singleItem = []
-    singleItem.append(labName +"Target"+str(target.dcic_alias)+"_"+str(target.pk))
+    singleItem.append(target.dcic_alias)
     if(target.target_description != None):
         singleItem.append(str(target.target_description))
     else:
@@ -377,7 +377,7 @@ def appendTarget(pKey,dcicExcelSheet):
     singleItem.append(str(target.targeted_genes))
     singleItem.append(str(target.targeted_region))
     if(target.references):
-        singleItem.append(labName +"Publication_"+str(target.references.dcic_alias)+"_"+str(target.references.pk))
+        singleItem.append(target.references.dcic_alias)
         appendPublication(target.references.pk,dcicExcelSheet)
     else:
         singleItem.append("")
@@ -387,7 +387,7 @@ def appendTarget(pKey,dcicExcelSheet):
 def appendGenomicRegion(pKey,dcicExcelSheet):          
     genomicRegion = GenomicRegions.objects.get(pk=pKey)
     singleItem = []
-    singleItem.append(labName +"GenomicRegion_"+str(genomicRegion.dcic_alias)+"_"+str(genomicRegion.pk))
+    singleItem.append(genomicRegion.dcic_alias)
     if(genomicRegion.genomicRegions_genome_assembly):
         singleItem.append(str(genomicRegion.genomicRegions_genome_assembly))
     else:
@@ -406,14 +406,14 @@ def appendGenomicRegion(pKey,dcicExcelSheet):
 def appendModification(pKey,dcicExcelSheet):
     modificationObj = Modification.objects.get(pk=pKey)
     singleMod = []
-    singleMod.append(labName + "Modification_"+str(modificationObj.dcic_alias)+"_"+str(modificationObj.pk))
+    singleMod.append(modificationObj.dcic_alias)
     singleMod.append(modificationObj.modification_description)
     if(str(modificationObj.modification_type) != None):
         singleMod.append(str(modificationObj.modification_type))
     else:
         singleMod.append("")
     if(modificationObj.constructs):
-        singleMod.append(labName + "Constructs_"+str(modificationObj.constructs.dcic_alias)+"_"+str(modificationObj.constructs.pk))
+        singleMod.append(modificationObj.constructs.dcic_alias)
         appendConstruct(modificationObj.constructs.pk, dcicExcelSheet)
     else:
         singleMod.append("")
@@ -424,17 +424,17 @@ def appendModification(pKey,dcicExcelSheet):
         singleMod.append("")
     singleMod.append(modificationObj.modification_gRNA)
     if(modificationObj.modification_genomicRegions):
-        singleMod.append(labName +"GenomicRegions_"+str(modificationObj.modification_genomicRegions.dcic_alias)+"_"+str(modificationObj.modification_genomicRegions.pk))
+        singleMod.append(modificationObj.modification_genomicRegions.dcic_alias)
         appendGenomicRegion(modificationObj.modification_genomicRegions.pk, dcicExcelSheet)
     else:
         singleMod.append("")
     if(modificationObj.target):
-        singleMod.append(labName +"Target_"+str(modificationObj.target.dcic_alias)+"_"+str(modificationObj.target.pk))
+        singleMod.append(modificationObj.target.dcic_alias)
         appendTarget(modificationObj.target.pk, dcicExcelSheet)
     else:
         singleMod.append("")
     if(modificationObj.references):
-        singleMod.append(labName +"Publication_"+str(modificationObj.references.dcic_alias)+"_"+str(modificationObj.references.pk))
+        singleMod.append(modificationObj.references.dcic_alias)
         appendPublication(modificationObj.references.pk,dcicExcelSheet)
     else:
         singleMod.append("")
@@ -444,7 +444,7 @@ def appendModification(pKey,dcicExcelSheet):
 
 def appendBioRep(expPk,singleExp):
     exp = Experiment.objects.get(pk=expPk)
-    expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample)
+    expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample,project=exp.project)
     
     expFields=json.loads(exp.experiment_fields)
     bioReplicates = []
@@ -458,7 +458,7 @@ def appendBioRep(expPk,singleExp):
     
 def appendTechRep(expPk,singleExp):
     exp = Experiment.objects.get(pk=expPk)
-    expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample, protocol=exp.protocol, experiment_enzyme=exp.experiment_enzyme, type=exp.type)
+    expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample, protocol=exp.protocol, experiment_enzyme=exp.experiment_enzyme, type=exp.type,project=exp.project)
     
     expFields=json.loads(exp.experiment_fields)
     techReplicates = []
@@ -505,14 +505,14 @@ def populateDict(request):
     ##Biosample
     for sample in bioSample:
         singleSample = []
-        singleSample.append(labName +"Biosample_" +str(sample.dcic_alias)+"_"+str(sample.pk))
+        singleSample.append(sample.dcic_alias)
         singleSample.append(str(sample.biosample_description))
-        singleSample.append(labName +"Biosource_"+str(sample.biosample_biosource.dcic_alias)+"_"+str(sample.biosample_biosource.pk))
+        singleSample.append(sample.biosample_biosource.dcic_alias)
         if(sample.protocol):
-            singleSample.append(labName +"Protocol_"+str(sample.protocol.dcic_alias)+"_"+str(sample.protocol.pk))
+            singleSample.append(sample.protocol.dcic_alias)
             proto = Protocol.objects.get(pk=sample.protocol.pk)
             singleProtocol = []
-            singleProtocol.append(labName +"Protocol_" +str(proto.dcic_alias)+"_"+str(proto.pk))
+            singleProtocol.append(proto.dcic_alias)
             singleProtocol.append(proto.description)
             if(proto.attachment):
                 singleProtocol.append(str(FILEUPLOADPATH)+str(proto.attachment))
@@ -524,13 +524,15 @@ def populateDict(request):
         singleSample.append("")
         singleSample.append("")    
         if(sample.biosample_type):
-            singleSample.append(labName +"BiosampleCellCulture_"+str(sample.dcic_alias)+"_"+str(sample.pk))
+            ##BiosampleCellCulture is a special case for DCIC Alias since there is only one object Biosample for this
+            aliasList=sample.dcic_alias.split("_")
+            singleSample.append(LABNAME +"BiosampleCellCulture_"+str("_".join(aliasList[1:])))
         else:
             singleSample.append("")
         if(sample.modifications.all()):
             modList = []
             for mod in sample.modifications.all():
-                modList.append(labName + "Modification_"+str(mod.dcic_alias)+"_"+str(mod.pk))
+                modList.append(mod.dcic_alias)
                 appendModification(mod.pk,dcicExcelSheet)
             singleSample.append(",".join(modList))
         else:
@@ -541,16 +543,16 @@ def populateDict(request):
         treatmentList=[]
         if(sample.biosample_TreatmentRnai.all()):
             for rnaiTreat in sample.biosample_TreatmentRnai.all():
-                rnai.append(labName + "TreatmentRnai_"+str(rnaiTreat.dcic_alias)+"_"+str(rnaiTreat.pk))
+                rnai.append(rnaiTreat.dcic_alias)
             treatmentList.append(",".join(rnai))
         if(sample.biosample_TreatmentChemical.all()):
             for chemTreat in sample.biosample_TreatmentChemical.all():
-                chemical.append(labName + "TreatmentChemical_"+str(chemTreat.dcic_alias)+"_"+str(chemTreat.pk))
+                chemical.append(chemTreat.dcic_alias)
             treatmentList.append(",".join(chemical))
         singleSample.append(",".join(treatmentList))
         
         if(sample.references):
-            singleSample.append(labName +"Publication_"+str(sample.references.dcic_alias)+"_"+str(sample.references.pk))
+            singleSample.append(sample.references.dcic_alias)
             appendPublication(sample.references.pk,dcicExcelSheet)
         else:
             singleSample.append("")
@@ -565,12 +567,10 @@ def populateDict(request):
         if(sample.biosample_type):
             bcc=json.loads(sample.biosample_fields)
             singleBcc = []
-            singleBcc.append(labName +"BiosampleCellCulture_"+str(sample.dcic_alias)+"_"+str(sample.pk))
+            ##BiosampleCellCulture is a special case for DCIC Alias since there is only one object Biosample for this
+            aliasList=sample.dcic_alias.split("_")
+            singleBcc.append(LABNAME +"BiosampleCellCulture_"+str("_".join(aliasList[1:])))
             singleBcc.append(sample.biosample_description)
-            #jsonObj = JsonObjField.objects.get(field_name="BiosampleCellCulture")
-            #jsonFields = orderByNumber(jsonObj.field_set)
-            #jsonList = jsonFields.items()
-            #orders=list(map(lambda k: (int(k[1]['order'])), jsonList))
             singleBcc.append(bcc["culture_start_date"])
             singleBcc.append(bcc["culture_duration"])
             singleBcc.append(bcc["culture_duration_units"])
@@ -582,12 +582,12 @@ def populateDict(request):
                 image=ImageObjects.objects.filter(bioImg__pk=sample.pk)
                 for imgs in image:
                     if(imgs.imageObjects_type.choice_name=="karyotype_image"):
-                        singleBcc.append(labName +"Image_"+str(imgs.dcic_alias)+"_"+str(imgs.pk))
+                        singleBcc.append(imgs.dcic_alias)
                         appendImageObjects(imgs.pk,dcicExcelSheet)
                     else:
                         singleBcc.append("")
                     if(imgs.imageObjects_type.choice_name=="morphology_image"):
-                        singleBcc.append(labName +"Image_"+str(imgs.dcic_alias)+"_"+str(imgs.pk))
+                        singleBcc.append(imgs.dcic_alias)
                         appendImageObjects(imgs.pk,dcicExcelSheet)
                     else:
                         singleBcc.append("")
@@ -621,14 +621,14 @@ def populateDict(request):
             treatmentRnais = TreatmentRnai.objects.filter(biosamTreatmentRnai=sample.pk)
             for treatmentRnai in treatmentRnais:
                 singleItem = []
-                singleItem.append(labName +"TreatmentRnai_"+str(treatmentRnai.dcic_alias)+"_"+str(treatmentRnai.pk))
+                singleItem.append(treatmentRnai.dcic_alias)
                 singleItem.append(treatmentRnai.treatmentRnai_description)
                 if(treatmentRnai.treatmentRnai_type):
                     singleItem.append(str(treatmentRnai.treatmentRnai_type))
                 else:
                     singleItem.append("")
                 if(treatmentRnai.constructs):
-                    singleItem.append(labName +"Constructs_"+str(treatmentRnai.constructs.dcic_alias)+"_"+str(treatmentRnai.constructs.pk))
+                    singleItem.append(treatmentRnai.constructs.dcic_alias)
                     appendConstruct(treatmentRnai.constructs.pk, dcicExcelSheet)
                 else:
                     singleItem.append("")
@@ -638,7 +638,7 @@ def populateDict(request):
                 else:
                     singleItem.append("")
                 if(treatmentRnai.treatmentRnai_target):
-                    singleItem.append(labName +"Target_"+str(treatmentRnai.treatmentRnai_target.dcic_alias)+"_"+str(treatmentRnai.treatmentRnai_target.pk))
+                    singleItem.append(treatmentRnai.treatmentRnai_target.dcic_alias)
                     appendTarget(treatmentRnai.treatmentRnai_target.pk, dcicExcelSheet)
                 else:
                     singleItem.append("")
@@ -647,13 +647,13 @@ def populateDict(request):
                 else:
                     singleItem.append("")
                 if(treatmentRnai.document):
-                    singleItem.append(labName +"Document_"+str(treatmentRnai.document.dcic_alias)+"_"+str(treatmentRnai.document.pk))
+                    singleItem.append(treatmentRnai.document.dcic_alias)
                     appendDocument(treatmentRnai.document.pk, dcicExcelSheet)
                 else:
                     singleProtocol.append("")
                     
                 if(treatmentRnai.references):
-                    singleItem.append(labName +"Publication_"+str(treatmentRnai.references.dcic_alias)+"_"+str(treatmentRnai.references.pk))
+                    singleItem.append(treatmentRnai.references.dcic_alias)
                     appendPublication(treatmentRnai.references.pk,dcicExcelSheet)
                 else:
                     singleItem.append("")
@@ -665,7 +665,7 @@ def populateDict(request):
             treatmentChemicals = TreatmentChemical.objects.filter(biosamTreatmentChemical=sample.pk)
             for treatmentChemical in treatmentChemicals:
                 singleItem = []
-                singleItem.append(labName +"TreatmentChemical_"+str(treatmentChemical.dcic_alias)+"_"+str(treatmentChemical.pk))
+                singleItem.append(treatmentChemical.dcic_alias)
                 singleItem.append(treatmentChemical.treatmentChemical_description)
                 singleItem.append(treatmentChemical.treatmentChemical_chemical)
                 if(treatmentChemical.treatmentChemical_concentration != 0):
@@ -689,12 +689,12 @@ def populateDict(request):
                 else:
                     singleItem.append("")
                 if(treatmentChemical.document):
-                    singleItem.append(labName +"Document_"+str(treatmentChemical.document.dcic_alias)+"_"+str(treatmentChemical.document.pk))
+                    singleItem.append(treatmentChemical.document.dcic_alias)
                     appendDocument(treatmentChemical.document.pk, dcicExcelSheet)
                 else:
                     singleItem.append("")
                 if(treatmentChemical.references):
-                    singleItem.append(labName +"Publication_"+str(treatmentChemical.references.dcic_alias)+"_"+str(treatmentChemical.references.pk))
+                    singleItem.append(treatmentChemical.references.dcic_alias)
                     appendPublication(treatmentChemical.references.pk,dcicExcelSheet)
                 else:
                     singleItem.append("")
@@ -703,7 +703,7 @@ def populateDict(request):
         if(Biosource.objects.get(bioSource__pk=sample.pk)):
             biosource = Biosource.objects.get(bioSource__pk=sample.pk)
             singleBio = []
-            singleBio.append(labName +"Biosource_"+str(biosource.dcic_alias)+"_"+str(biosource.pk))
+            singleBio.append(biosource.dcic_alias)
             singleBio.append(biosource.biosource_description)
             singleBio.append(str(biosource.biosource_type))
             singleBio.append(str(biosource.biosource_cell_line))
@@ -736,11 +736,11 @@ def populateDict(request):
             singleBio.append(biosource.cell_line_termid)
             
             if(biosource.biosource_individual):
-                singleBio.append(labName +"Individual_"+str(biosource.biosource_individual.dcic_alias)+"_"+str(biosource.biosource_individual.pk))
+                singleBio.append(biosource.biosource_individual.dcic_alias)
                 indi = Individual.objects.get(pk=biosource.biosource_individual.pk)
                 indiJson = json.loads(indi.individual_fields)
                 singleIndi = []
-                singleIndi.append(labName +"Individual_"+str(indi.dcic_alias)+"_"+str(indi.pk))
+                singleIndi.append(indi.dcic_alias)
                 singleIndi.append(indiJson["age"])
                 singleIndi.append(indiJson["age_units"])
                 
@@ -761,7 +761,7 @@ def populateDict(request):
                 singleIndi.append(indiJson["sex"])
                 
                 if(indi.document):
-                    singleIndi.append(labName +"Document_"+str(indi.document.dcic_alias)+"_"+str(indi.document.pk))
+                    singleIndi.append(indi.document.dcic_alias)
                     appendDocument(indi.document.pk, dcicExcelSheet)
                 else:
                     singleIndi.append("")
@@ -781,7 +781,7 @@ def populateDict(request):
             if(biosource.modifications):
                 modList = []
                 for mod in biosource.modifications.all():
-                    modList.append(labName + "Modification_"+str(mod.dcic_alias)+"_"+str(mod.pk))
+                    modList.append(mod.dcic_alias)
                     appendModification(mod.pk, dcicExcelSheet)
                 singleBio.append(",".join(modList))
             else:
@@ -790,7 +790,7 @@ def populateDict(request):
             singleBio.append(biosource.biosource_tissue)    
             
             if(biosource.references):
-                singleBio.append(labName +"Publication_"+str(biosource.references.dcic_alias)+"_"+str(biosource.references.pk))
+                singleBio.append(biosource.references.dcic_alias)
                 appendPublication(biosource.references.pk,dcicExcelSheet)
                
             else:
@@ -805,7 +805,7 @@ def populateDict(request):
         expSet = ExperimentSet.objects.filter(experimentSet_exp=exp)
         if str(exp.type) == "Hi-C Exp Protocol":
             singleExp = []
-            singleExp.append(labName +"Experiment_" +str(exp.dcic_alias)+"_"+str(exp.pk))
+            singleExp.append(exp.dcic_alias)
             singleExp.append(str(exp.experiment_description))
             experiment_set_join= "" 
             replicate_set_join= ""
@@ -814,21 +814,21 @@ def populateDict(request):
                 replicate_set = []
                 for eSet in expSet:
                     ExpSet = []
-                    ExpSet.append(labName +"ExperimentSet_" +str(eSet.dcic_alias)+"_"+str(eSet.pk))
+                    ExpSet.append(eSet.dcic_alias)
                     ExpSet.append(str(eSet.description))
                     if(eSet.document):
-                        ExpSet.append(labName +"Document_"+str(eSet.document.dcic_alias)+"_"+str(eSet.document.pk))
+                        ExpSet.append(eSet.document.dcic_alias)
                         appendDocument(eSet.document.pk, dcicExcelSheet)
                     else:
                         ExpSet.append("")
                     if("replicates" in str(eSet.experimentSet_type)):
                         dcicExcelSheet['ExperimentSetReplicate'].append(ExpSet)
                         experiment_set = []
-                        replicate_set.append(labName +"ExperimentSet_"+str(eSet.dcic_alias)+"_"+str(eSet.pk))
+                        replicate_set.append(eSet.dcic_alias)
                     else:
                         ExpSet.insert(2,str(eSet.experimentSet_type))
                         dcicExcelSheet['ExperimentSet'].append(ExpSet)
-                        experiment_set.append(labName +"ExperimentSet_"+str(eSet.dcic_alias)+"_"+str(eSet.pk))
+                        experiment_set.append(eSet.dcic_alias)
                 experiment_set_join= ",".join(experiment_set)    
                 replicate_set_join= ",".join(replicate_set)
             
@@ -838,7 +838,7 @@ def populateDict(request):
 #             singleExp.append("") ####*bio_rep_no
 #             singleExp.append("") ####*tec_rep_no 
             singleExp.append(experiment_set_join)
-            singleExp.append(labName +"Biosample_" +str(exp.experiment_biosample.dcic_alias)+"_"+str(exp.experiment_biosample.pk))
+            singleExp.append(exp.experiment_biosample.dcic_alias)
             
             expFields=json.loads(exp.experiment_fields)
             
@@ -852,7 +852,7 @@ def populateDict(request):
             singleExp.append(str(expFields["crosslinking_time"]))
             
             if(exp.experiment_enzyme):
-                singleExp.append(labName +"Enzyme_" +str(exp.experiment_enzyme.dcic_alias)+"_"+str(exp.experiment_enzyme.pk))
+                singleExp.append(exp.experiment_enzyme.dcic_alias)
                 appendEnzyme(exp.experiment_enzyme.pk, dcicExcelSheet)
             else:
                 singleExp.append("")
@@ -871,10 +871,10 @@ def populateDict(request):
             singleExp.append(str(expFields["ligation_volume"]))
             
             if(exp.protocol):
-                singleExp.append(labName +"Protocol_" +str(exp.protocol.dcic_alias)+"_"+str(exp.protocol.pk))
+                singleExp.append(exp.protocol.dcic_alias)
                 proto = Protocol.objects.get(pk=exp.protocol.pk)
                 singleProtocol = []
-                singleProtocol.append(labName +"Protocol_" +str(proto.dcic_alias)+"_"+str(proto.pk))
+                singleProtocol.append(proto.dcic_alias)
                 singleProtocol.append(proto.description)
                 if(proto.attachment):
                     singleProtocol.append(str(FILEUPLOADPATH)+str(proto.attachment))
@@ -889,10 +889,10 @@ def populateDict(request):
                 files = SeqencingFile.objects.filter(sequencingFile_exp=exp.pk)
                 fileList = []
                 for f in files:
-                    fileList.append(labName +"File"+str(f.dcic_alias)+"_"+str(f.pk))
+                    fileList.append(f.dcic_alias)
                     singleFile = []
                     if(str(f.file_format)=="fasta"):
-                        singleFile.append(labName +"File_"+str(f.dcic_alias)+"_"+str(f.pk))
+                        singleFile.append(f.dcic_alias)
                         singleFile.append(str(f.file_format))
                         if(f.file_classification != None):
                             singleFile.append(str(f.file_classification))
@@ -905,11 +905,12 @@ def populateDict(request):
                         singleFile.append("")
                         singleFile.append("")
                         singleFile.append(f.dbxrefs)
+                        ##FileMainPATH is exported then manually remove it so that we know the path
                         singleFile.append(f.sequencingFile_mainPath)
                         
                         dcicExcelSheet['FileFasta'].append(singleFile)
                     elif(str(f.file_format)=="fastq"):
-                        singleFile.append(labName +"File_"+str(f.dcic_alias)+"_"+str(f.pk))
+                        singleFile.append(f.dcic_alias)
                         singleFile.append(str(f.file_format))
                         singleFile.append(str(f.file_classification))
                         if(f.file_format_specifications):
@@ -947,6 +948,7 @@ def populateDict(request):
                         singleFile.append("")
                         singleFile.append("")
                         singleFile.append(f.dbxrefs)
+                        ##FileMainPATH is exported then manually remove it so that we know the path
                         singleFile.append(f.sequencingFile_mainPath)
                         
                         dcicExcelSheet['FileFastq'].append(singleFile)
@@ -958,14 +960,14 @@ def populateDict(request):
             singleExp.append("")##experiment_relation.experiment
             
             if(exp.document):
-                singleExp.append(labName +"Document_"+str(exp.document.dcic_alias)+"_"+str(exp.document.pk))
+                singleExp.append(exp.document.dcic_alias)
                 appendDocument(exp.document.pk, dcicExcelSheet)
             else:
                 singleExp.append("")
             
             
             if(exp.references):
-                singleExp.append(labName +"Publication_"+str(exp.references.dcic_alias)+"_"+str(exp.references.pk))
+                singleExp.append(exp.references.dcic_alias)
                 appendPublication(exp.references.pk, dcicExcelSheet)
             else:
                 singleExp.append("")

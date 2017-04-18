@@ -16,12 +16,14 @@ Created on Oct 7, 2016
 # xlutils
 # xlwt
 #To create database run the command ( pg_dump clims_db > clims.sql; ) from the cLims base folder where manage.py resides
-
+#CNTTRY$9
 ###########################
 
 DATABASE_NAME='clims_db'
 DATABASE_USER='dekker_lab'
 DATABASE_PASSWORD='CHYYTS14#'
+LABNAME = "dekker-lab:"
+
 HOST=''
 PORT=''
 #WORKSPACEPATH = "/Users/nanda/Documents/EclipseWorkspace/clims/cLIMS/"

@@ -11,7 +11,7 @@ class UserOwner (models.Model):
         abstract = True
 
 class Document(models.Model):
-    name = models.CharField(max_length=50, null=True, blank=True, unique=True, db_index=True, help_text="Name of the document", validators=[alphanumeric])
+    name = models.CharField(max_length=50, null=False, default="", unique=True, db_index=True, help_text="Name of the document", validators=[alphanumeric])
     description = models.CharField(max_length=200, null=False, default="")
     type = models.ForeignKey('organization.Choice',related_name='docChoice',on_delete=models.CASCADE, help_text="The category that best describes the document.")
     attachment = models.FileField(upload_to='uploads/')
@@ -19,7 +19,7 @@ class Document(models.Model):
     url = models.URLField(max_length=200,  null=True, blank=True, help_text="An external resource with additional information about the object")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     def __str__(self):
-        return self.description
+        return self.name
         
 class References(models.Model):
     document = models.ForeignKey(Document, null=True, blank=True, on_delete=models.SET_NULL, help_text="Documents that provide additional information (not data file).")
@@ -66,7 +66,7 @@ class  GenomicRegions(models.Model):
     genomicRegions_end_location = models.CharField(max_length=200, null=True, blank=True, help_text="If the exact end coordinate is not know a description of the start location")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     def __str__(self):
-        return self.dcic_alias
+        return self.name
     class Meta:
         verbose_name_plural = 'GenomicRegions'
     

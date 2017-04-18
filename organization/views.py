@@ -18,7 +18,7 @@ from django.apps.registry import apps
 from _collections import defaultdict, OrderedDict
 import tarfile
 import os
-from cLIMS.base import WORKSPACEPATH
+from cLIMS.base import WORKSPACEPATH, LABNAME
 from organization.extractAnalysis import extractHiCAnalysis, extract5CAnalysis
 import itertools
 import re
@@ -106,8 +106,8 @@ class AddProject(View):
         if form.is_valid():
             result = form.save(commit= False)
             result.project_owner = request.user
-            aliasList=[result.project_name]
-            result.dcic_alias = aliasList
+            aliasList=["Project",result.project_name]
+            result.dcic_alias = LABNAME +"_".join(aliasList)
             result.save()
             project_contributor = request.POST.getlist('project_contributor')
             if(project_contributor):
@@ -381,10 +381,10 @@ class AddIndividual(View):
                 individual_type = request.POST.get('individual_type')
                 individual.userOwner = User.objects.get(pk=request.user.pk)
                 individual.individual_fields = createJSON(request, individual_type)
-                individual.dcic_alias = individual.individual_name
+                aliasList=["Individual",individual.individual_name]
+                individual.dcic_alias = LABNAME +"_".join(aliasList)
                 individual.save()
                 request.session['individualPK'] = individual.pk
-                print(individual.pk)
                 return HttpResponseRedirect('/addBiosource/')
             else:
                 existing = selectForm['Individual']
@@ -424,7 +424,8 @@ class AddBiosource(View):
                 biosource = form.save(commit=False)
                 individualPK = request.session['individualPK']
                 biosource.biosource_individual = Individual.objects.get(pk=individualPK)
-                biosource.dcic_alias = biosource.biosource_name
+                aliasList=["Biosource",biosource.biosource_name]
+                biosource.dcic_alias = LABNAME +"_".join(aliasList)
                 biosource.save()
                 modifications = request.POST.getlist('modifications')
                 for m in modifications:
@@ -482,8 +483,8 @@ class AddBiosample(View):
                 if(request.POST.get('biosample_type')):
                     biosample_type = request.POST.get('biosample_type')
                     biosample.biosample_fields = createJSON(request, biosample_type)
-                aliasList=[biosample.biosample_biosource.biosource_name,biosample.biosample_name]
-                biosample.dcic_alias = "_".join(aliasList)
+                aliasList=["Biosample",biosample.biosample_biosource.biosource_name,biosample.biosample_name]
+                biosample.dcic_alias = LABNAME +"_".join(aliasList)
                 biosample.save()
                 modifications = request.POST.getlist('modifications')
                 for m in modifications:
@@ -542,8 +543,8 @@ class AddExperiment(View):
             if(request.POST.get('type')):
                 exp_type = request.POST.get('type')
                 form.experiment_fields = createJSON(request, exp_type)
-            aliasList=[form.project.project_name,form.experiment_name]
-            form.dcic_alias = "_".join(aliasList)
+            aliasList=["Experiment",form.project.project_name,form.experiment_name]
+            form.dcic_alias = LABNAME +"_".join(aliasList)
             form.save()
             return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         else:
@@ -581,25 +582,26 @@ class AddModification(View):
             modification = form.save(commit= False)
             if(construct_form['construct_name'].value() != ""):
                 construct = construct_form.save(commit= False)
-                aliasList=[modification.modification_name,construct.construct_name]
-                construct.dcic_alias = "_".join(aliasList)
+                aliasList=["Construct",modification.modification_name,construct.construct_name]
+                construct.dcic_alias = LABNAME +"_".join(aliasList)
                 construct.save()
                 modification.constructs = construct
             if(regions_form['name'].value() != ""):
                 regions = regions_form.save(commit= False)
-                aliasList=[modification.modification_name,regions.name]
-                regions.dcic_alias = "_".join(aliasList)
+                aliasList=["GenomicRegion",modification.modification_name,regions.name]
+                regions.dcic_alias = LABNAME +"_".join(aliasList)
                 regions.save()
                 modification.modification_genomicRegions = regions
             if(target_form['name'].value() != ""):
                 target = target_form.save(commit= False)
                 target.targeted_region = regions
-                aliasList=[modification.modification_name,target.name]
-                target.dcic_alias = "_".join(aliasList)
+                aliasList=["Target",modification.modification_name,target.name]
+                target.dcic_alias = LABNAME +"_".join(aliasList)
                 target.save()
                 modification.target = target
             modification.userOwner = User.objects.get(pk=request.user.pk)
-            modification.dcic_alias = modification.modification_name
+            aliasList=["Modification",modification.modification_name]
+            modification.dcic_alias = LABNAME +"_".join(aliasList)
             modification.save()
             return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(modification._get_pk_val()), escape(modification)))
         else:
@@ -625,7 +627,8 @@ class AddConstruct(View):
             newObject = None
             try:
                 newObject = form.save(commit= False)
-                newObject.dcic_alias = newObject.construct_name
+                aliasList=["Construct",newObject.construct_name]
+                newObject.dcic_alias = LABNAME +"_".join(aliasList)
                 newObject.save()
             
             except(forms.ValidationError):
@@ -655,7 +658,8 @@ class AddTarget(View):
             newObject = None
             try:
                 newObject = form.save(commit= False)
-                newObject.dcic_alias = newObject.name
+                aliasList=["Target",newObject.name]
+                newObject.dcic_alias = LABNAME +"_".join(aliasList)
                 newObject.save()
             
             except(forms.ValidationError):
@@ -684,7 +688,8 @@ class AddGenomicRegions(View):
             newObject = None
             try:
                 newObject = form.save(commit= False)
-                newObject.dcic_alias = newObject.name
+                aliasList=["GenomicRegion",newObject.name]
+                newObject.dcic_alias = LABNAME +"_".join(aliasList)
                 newObject.save()
             
             except(forms.ValidationError):
@@ -717,7 +722,8 @@ class AddProtocol(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
-                newObject.dcic_alias = newObject.name
+                aliasList=["Protocol",newObject.name]
+                newObject.dcic_alias = LABNAME +"_".join(aliasList)
                 newObject.save()
            
             except(forms.ValidationError):
@@ -746,7 +752,8 @@ class AddTreatmentRnai(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
-                newObject.dcic_alias = newObject.treatmentRnai_name
+                aliasList=["TreatmentRNAi",newObject.treatmentRnai_name]
+                newObject.dcic_alias = LABNAME +"_".join(aliasList)
                 newObject.save()
                 #modifications = request.POST.getlist('modifications')
            
@@ -779,7 +786,8 @@ class AddTreatmentChemical(View):
             try:
                 newObject = form.save(commit= False)
                 newObject.userOwner = User.objects.get(pk=request.user.pk)
-                newObject.dcic_alias = newObject.treatmentChemical_name
+                aliasList=["TreatmentChemical",newObject.treatmentChemical_name]
+                newObject.dcic_alias = LABNAME +"_".join(aliasList)
                 newObject.save()
             
             except(forms.ValidationError):
@@ -837,7 +845,8 @@ class AddDocument(View):
             newObject = None
             try:
                 newObject = form.save(commit= False)
-                newObject.dcic_alias = newObject.name
+                aliasList=["Document",newObject.name]
+                newObject.dcic_alias = LABNAME +"_".join(aliasList)
                 newObject.save()
                 
             except(forms.ValidationError):
@@ -870,7 +879,8 @@ class AddPublication(View):
             newObject = None
             try:
                 newObject = form.save(commit= False)
-                newObject.dcic_alias = newObject.name
+                aliasList=["Publication",newObject.name]
+                newObject.dcic_alias = LABNAME +"_".join(aliasList)
                 newObject.save()
                 
             except(forms.ValidationError):
@@ -999,8 +1009,8 @@ class AddSeqencingFile(View):
             file.sequencingFile_sha256sum = ""
             file.sequencingFile_md5sum = ""
             file.sequencingFile_exp = Experiment.objects.get(pk = self.request.session['experimentId'] )
-            aliasList=[file.project.project_name,file.sequencingFile_exp.experiment_name,file.sequencingFile_name]
-            file.dcic_alias = "_".join(aliasList)
+            aliasList=["SeqencingFile",file.project.project_name,file.sequencingFile_exp.experiment_name,file.sequencingFile_name]
+            file.dcic_alias = LABNAME +"_".join(aliasList)
             file.save()
             return HttpResponseRedirect('/detailExperiment/'+self.request.session['experimentId'])
         else:
@@ -1054,8 +1064,8 @@ class AddExperimentSet(View):
         if form.is_valid():
             expSet = form.save(commit=False)
             expSet.project = Project.objects.get(pk=request.session['projectId'])
-            aliasList=[expSet.project.project_name,expSet.experimentSet_name]
-            expSet.dcic_alias = "_".join(aliasList)
+            aliasList=["ExperimentSet",expSet.project.project_name,expSet.experimentSet_name]
+            expSet.dcic_alias = LABNAME +"_".join(aliasList)
             expSet.save()
             expSetExp = request.POST.getlist('experimentSet_exp')
             for exp in expSetExp:
@@ -1113,8 +1123,8 @@ class AddImageObjects(View):
             try:
                 newObject = form.save(commit=False)
                 newObject.project = Project.objects.get(pk=request.session['projectId'])
-                aliasList=[newObject.project.project_name,newObject.imageObjects_name]
-                newObject.dcic_alias = "_".join(aliasList)
+                aliasList=["Image",newObject.project.project_name,newObject.imageObjects_name]
+                newObject.dcic_alias = LABNAME +"_".join(aliasList)
                 newObject.save()
             except(forms.ValidationError):
                 newObject = None

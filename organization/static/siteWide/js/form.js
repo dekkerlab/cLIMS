@@ -105,7 +105,7 @@ $(function() {
 	$( ".formLabel:contains('File barcode')" ).append('<a href="/addBarcode/" class="add-another" id="add_id_file_barcode" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Construct Map')" ).append('<a href="/addDocument/" class="add-another" id="add_id_document" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('File format specifications')" ).append('<a href="/addDocument/" class="add-another" id="add_id_file_format_specifications" onclick="return showAddAnotherPopup(this);"></a>');
-	$( ".vDateField" ).attr({'type':'date'});
+	$( "input[name*='date']" ).attr({'type':'date'});
 	//if (window.location.href.indexOf("/addBiosample/") > -1) {
 		$( ".jsonForm select" ).change();
 		
