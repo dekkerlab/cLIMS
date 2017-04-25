@@ -31,6 +31,7 @@ class Project(models.Model):
     project_notes = models.TextField( null=True, blank=True, help_text="Notes for the project.")
     project_active = models.BooleanField(default=True, help_text="Is project currently in progress?")
     dcic_alias = models.CharField(max_length=500, null=False, unique=True, db_index=True, default="", help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     
     def __str__(self):
         return self.project_name
@@ -61,9 +62,12 @@ class Experiment(References):
     experiment_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A short description of the experiment")
     imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='expImg' , blank=True, help_text="Lab gel and fragment analyzer images")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
+    finalize_dcic_submission = models.BooleanField(default=False, help_text="This object and related entries have been submitted to DCIC")
     
     def __str__(self):
         return self.experiment_name
+    
     
 
 class ExperimentSet(models.Model):
@@ -74,6 +78,7 @@ class ExperimentSet(models.Model):
     document = models.ForeignKey('wetLab.Document', on_delete=models.CASCADE, related_name='setDoc',null=True, blank=True)
     description =  models.CharField(max_length=200, null=False, default="")
     dcic_alias = models.CharField(max_length=500, null=False,  default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     
     def __str__(self):
         return self.experimentSet_name
@@ -88,6 +93,7 @@ class Publication(models.Model):
     publication_categories = models.ForeignKey('organization.Choice', null=True, on_delete=models.SET_NULL, related_name='pubCatChoice', help_text="The categorization of publications.")
     publication_published_by = models.ForeignKey('organization.Choice', null=True, on_delete=models.SET_NULL, related_name='pubByChoice', help_text="Publication publisher.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     
     def __str__(self):
         return self.publication_title

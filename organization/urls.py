@@ -109,7 +109,7 @@ urlpatterns = [
     url(r'^editImageObjects/(?P<pk>[0-9]+)/$', EditImageObjects.as_view(), name='editImageObjects'),
     url(r'^deleteImageObjects/(?P<pk>[0-9]+)/$', DeleteImageObjects.as_view(), name='deleteImageObjects'),
     url(r'^editBarcode/(?P<pk>[0-9]+)/$', EditBarcode.as_view(), name='editBarcode'),
-    url(r'^deleteBarcode/(?P<pk>[0-9]+)/$', DeleteBarcode.as_view(), name='deleteBarcode'),
+    url(r'^deleteBarcode/(?P<pk>[0-9]+)/$', DeleteBarcode.as_view(), name='deleteBarcode'), 
    
     
     
@@ -122,6 +122,8 @@ urlpatterns = [
     url(r'^exportExperiment/$', exportExperiment, name='exportExperiment'),
     url(r'^exportAnalysis/$', exportAnalysis, name='exportAnalysis'),
     url(r'^exportGEO/$', exportGEO, name='exportGEO'),
-    url(r'^exportDCIC/$', exportDCIC, name='exportDCIC'), 
+    url(r'^exportDCIC/$', exportDCIC, name='exportDCIC'),
+    url(r'^dcicView/$', DcicView.as_view(), name='dcicView'),
+    url(r'^dcicFinalizeSubmission/$', DcicFinalizeSubmission.as_view(), name='dcicFinalizeSubmission'),
     
     ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 

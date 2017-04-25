@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 	
     $(".divison").hover(function(){
@@ -92,6 +93,9 @@ $(document).ready(function(){
          
        	
        });
-        
+        $("#unselect").click(function(){
+        	alert("If nothing selected all experiments will be considered.")
+        	$('input:checkbox[name=dcic]').attr('checked',false);
+        });
     
 });

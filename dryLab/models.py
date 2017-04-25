@@ -16,6 +16,7 @@ class SequencingRun(models.Model):
     run_retrieval_date = models.DateField(null=True, blank=True,);
     run_approved = models.BooleanField(default=False)
     run_submitted = models.BooleanField(default=False)
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     
     def __str__(self):
         return self.run_name  
@@ -61,7 +62,7 @@ class SeqencingFile(models.Model):
     sequencingFile_exp = models.ForeignKey('organization.Experiment', related_name='fileExp', on_delete=models.CASCADE,)
     dbxrefs = models.CharField(max_length=500, null=True, blank=True, help_text="Unique identifiers from external resources, enter as a database name:identifier eg. HGNC:PARK2")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
-    
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.sequencingFile_name
 
@@ -105,6 +106,8 @@ class ImageObjects(models.Model):
     description = models.CharField(max_length=200, null=True, blank=True)
     project = models.ForeignKey('organization.Project', related_name='imgProject', on_delete=models.CASCADE,)
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
+    
     def __str__(self):
         return self.imageObjects_name
     class Meta:

@@ -17,7 +17,12 @@ class SequencingRunForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = SequencingRun
-        exclude = ('project','run_approved','run_submitted')
+        exclude = ('project','run_approved','run_submitted','update_dcic',)
+    
+    def save (self, *args, **kwargs):
+        if(self.changed_data != None):
+            self.instance.update_dcic=True
+        return super(SequencingRunForm, self).save(*args, **kwargs)
     
 class SequencingRunSearchForm(BaseSearchForm):
     use_required_attribute = False
@@ -42,7 +47,12 @@ class SeqencingFileForm(ModelForm):
     
     class Meta:
         model = SeqencingFile
-        exclude = ('sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp','project','dcic_alias')
+        exclude = ('sequencingFile_backupPath','sequencingFile_sha256sum','sequencingFile_md5sum','sequencingFile_exp','project','dcic_alias','update_dcic',)
+    
+    def save (self, *args, **kwargs):
+        if(self.changed_data != None):
+            self.instance.update_dcic=True
+        return super(SeqencingFileForm, self).save(*args, **kwargs)
     
 
 class SeqencingFileSearchForm(BaseSearchForm):
@@ -78,7 +88,11 @@ class ImageObjectsForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = ImageObjects
-        exclude = ('project','dcic_alias')
+        exclude = ('project','dcic_alias','update_dcic',)
+    def save (self, *args, **kwargs):
+        if(self.changed_data != None):
+            self.instance.update_dcic=True
+        return super(ImageObjectsForm, self).save(*args, **kwargs)
    
         
 

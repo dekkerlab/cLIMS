@@ -12,12 +12,19 @@ from django import forms
 from wetLab.models import Protocol, Document
 from wetLab.wrapper import SelectWithPop, MultipleSelectWithPop
 from dryLab.models import ImageObjects
+import json
+from organization.validators import compareJsonInitial
 
 class ProjectForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Project
-        exclude = ('project_owner','dcic_alias')
+        exclude = ('project_owner','dcic_alias','update_dcic',)
+    
+    def save (self, *args, **kwargs):
+        if(self.changed_data != None):
+            self.instance.update_dcic=True
+        return super(ProjectForm, self).save(*args, **kwargs)
     
 
 class ProjectSearchForm(BaseSearchForm):
@@ -47,9 +54,25 @@ class ExperimentForm(ModelForm):
     
     class Meta:
         model = Experiment
-        exclude = ('project','experiment_biosample','experiment_fields','dcic_alias')
+        exclude = ('project','experiment_biosample','experiment_fields','dcic_alias','update_dcic','finalize_dcic_submission',)
         fields = ['experiment_name','biosample_quantity','biosample_quantity_units','protocol','type','variation','experiment_enzyme',
                   'imageObjects','references','document','url','dbxrefs','experiment_description']
+    
+    def save (self, *args, **kwargs):
+        if(self.instance.pk):
+            idObj=self.instance.pk
+            initialFields=Experiment.objects.get(pk=idObj)
+            obj_json_fields = json.loads(initialFields.experiment_fields)
+            compareJsonInitial(obj_json_fields,self)
+        if(self.changed_data != None):
+            self.instance.update_dcic=True
+        return super(ExperimentForm, self).save(*args, **kwargs)
+      
+#     def clean(self):
+#         if(self.changed_data != None):
+#             print(self.changed_data)
+#             self.data["update_dcic"]=True
+
    
 
 class ExperimentSearchForm(BaseSearchForm):
@@ -68,19 +91,29 @@ class ExperimentSearchForm(BaseSearchForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(ExperimentSearchForm, self).__init__(*args, **kwargs)
+    
 
 class ExperimentSetForm(ModelForm):
     use_required_attribute = False
     document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
     class Meta:
         model = ExperimentSet
-        exclude = ('project',)
+        exclude = ('project','update_dcic','dcic_alias',)
+    
+    def save (self, *args, **kwargs):
+        if(self.changed_data != None):
+            self.instance.update_dcic=True
+        return super(ExperimentSetForm, self).save(*args, **kwargs)
     
 class PublicationForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Publication
-        exclude = ('dcic_alias',)
+        exclude = ('dcic_alias','update_dcic',)
+    def save (self, *args, **kwargs):
+        if(self.changed_data != None):
+            self.instance.update_dcic=True
+        return super(PublicationForm, self).save(*args, **kwargs)
     
 
 class AwardForm(ModelForm):

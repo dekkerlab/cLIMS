@@ -4,7 +4,7 @@ Created on Nov 15, 2016
 @author: nanda
 '''
 from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, HttpResponseRedirect
 from organization.models import *
 import csv
 import xlwt
@@ -19,6 +19,7 @@ from _collections import OrderedDict, defaultdict
 from wetLab.models import *
 import collections
 from openpyxl.utils.cell import get_column_letter
+from django.contrib import messages
 
 
 @login_required 
@@ -444,27 +445,36 @@ def appendModification(pKey,dcicExcelSheet):
 
 def appendBioRep(expPk,singleExp):
     exp = Experiment.objects.get(pk=expPk)
-    expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample,project=exp.project)
+    expSameBiosource = Experiment.objects.filter(experiment_biosample__biosample_biosource=exp.experiment_biosample.biosample_biosource,
+                                                 protocol=exp.protocol,experiment_enzyme=exp.experiment_enzyme, 
+                                                 type=exp.type,project=exp.project)
     
-    expFields=json.loads(exp.experiment_fields)
+    biosampleFields=json.loads(exp.experiment_biosample.biosample_fields)
     bioReplicates = []
+    fieldsToCheckBiosample=["synchronization_stage","karyotype"]
     
-    for e in expSameBiosample:
-        expSameFields=json.loads(e.experiment_fields)
-        if(sorted(expSameFields.items()) == sorted(expFields.items())):
-            bioReplicates.append(e.pk)
+    for e in expSameBiosource:
+        sameFieldsBiosample=json.loads(e.experiment_biosample.biosample_fields)
+        #if((sorted(expSameFields.items()) == sorted(expFields.items()))):
+        if(exp.type.field_name =="Hi-C Exp Protocol" or exp.type.field_name =="CaptureC Exp Protocol"):
+            if( all(biosampleFields[x] == sameFieldsBiosample[x] for x in fieldsToCheckBiosample)):
+                bioReplicates.append(e.pk)
     bio_rep_no = (sorted(bioReplicates)).index(expPk)+1
     singleExp.append(bio_rep_no)
     
 def appendTechRep(expPk,singleExp):
     exp = Experiment.objects.get(pk=expPk)
-    expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample, protocol=exp.protocol, experiment_enzyme=exp.experiment_enzyme, type=exp.type,project=exp.project)
+    expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample,project=exp.project)
     
     expFields=json.loads(exp.experiment_fields)
     techReplicates = []
+    fieldsToCheckExpHicCaptureC=["crosslinking_time","experiment_type","average_fragment_size","digestion_temperature",
+                                 "ligation_time","digestion_time","tagging_method","ligation_volume","crosslinking_method",
+                                 "fragmentation_method","ligation_temperature","crosslinking_temperature","biotin_removed",
+                                 "fragment_size_range"]
     for e in expSameBiosample:
         expSameFields=json.loads(e.experiment_fields)
-        if(sorted(expSameFields.items()) == sorted(expFields.items())):
+        if( all(expSameFields[x] == expFields[x] for x in fieldsToCheckExpHicCaptureC)):
             techReplicates.append(e.pk)
     
     tech_rep_no = (sorted(techReplicates)).index(expPk)+1
@@ -472,7 +482,7 @@ def appendTechRep(expPk,singleExp):
     singleExp.append(tech_rep_no)
     
     
-def populateDict(request):
+def populateDict(request, experimentList):
     projectId = request.session['projectId']
     bioSample = Biosample.objects.filter(expBio__project=projectId)
     dcicExcelSheet=defaultdict(list)
@@ -798,7 +808,7 @@ def populateDict(request):
             singleBio.append(biosource.url)
             dcicExcelSheet['Biosource'].append(singleBio)
     
-    experiments = Experiment.objects.filter(project=projectId)
+    experiments = experimentList
     
     ##Experiments
     for exp in experiments:
@@ -1035,34 +1045,46 @@ def removeDup(dcicExcelSheet):
                 
 @login_required 
 def exportDCIC(request):
-    # Create the HttpResponse object with the appropriate CSV header.
-    response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename=DCIC.xlsx'
-    file_path_new = WORKSPACEPATH+'/organization/static/siteWide/Metadata_entry_form_V3.xlsx'
-    wb = load_workbook(file_path_new)
+    expPks = request.POST.getlist('dcic')
+    if(len(expPks) != 0):
+        experiments = Experiment.objects.filter(pk__in=expPks)
+    else:
+        projectId = request.session['projectId']
+        experiments = Experiment.objects.filter(project=projectId)
+    if(all(ExperimentSet.objects.filter(experimentSet_exp=exp) for exp in experiments)):
+        # Create the HttpResponse object with the appropriate CSV header.
+        response = HttpResponse(content_type='application/ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=DCIC.xlsx'
+        file_path_new = WORKSPACEPATH+'/organization/static/siteWide/Metadata_entry_form_V3.xlsx'
+        wb = load_workbook(file_path_new)
+        
+        dcicExcelSheet = populateDict(request, experiments)
+        
+        dcicExcelSheetOrdered = collections.OrderedDict(dcicExcelSheet)
     
-    dcicExcelSheet = populateDict(request)
-    
-    dcicExcelSheetOrdered = collections.OrderedDict(dcicExcelSheet)
+        dcicExcelSheetDedup = removeDup(dcicExcelSheetOrdered)
+        
+        for key, valueList in dcicExcelSheetDedup.items():
+            ws = wb.get_sheet_by_name(key)
+            for r in reversed(list(ws.rows)):
+                values = [cell.value for cell in r]
+                if any(values):
+                    maxRow=r[0].row+1
+                    break
+            del valueList[0]
+            for v in valueList:
+                for i in range(0,len(v)):
+                    ws.cell(row=maxRow, column=i+2).value = v[i]
+                maxRow +=1
+        
+     
+        wb.save(response)
+        return response
+    else:
+        messages.error(request, 'Please add the all experiments into biological/technical replicate experiment set!')
+        return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
 
-    dcicExcelSheetDedup = removeDup(dcicExcelSheetOrdered)
-    
-    for key, valueList in dcicExcelSheetDedup.items():
-        ws = wb.get_sheet_by_name(key)
-        for r in reversed(list(ws.rows)):
-            values = [cell.value for cell in r]
-            if any(values):
-                maxRow=r[0].row+1
-                break
-        del valueList[0]
-        for v in valueList:
-            for i in range(0,len(v)):
-                ws.cell(row=maxRow, column=i+2).value = v[i]
-            maxRow +=1
-    
- 
-    wb.save(response)
-    return response
+        
     
     
 

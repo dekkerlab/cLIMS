@@ -18,6 +18,7 @@ class Document(models.Model):
     references = models.ForeignKey('organization.Publication', null=True, blank=True, on_delete=models.CASCADE, help_text="The publications that provide more information about the object.")
     url = models.URLField(max_length=200,  null=True, blank=True, help_text="An external resource with additional information about the object")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.name
         
@@ -35,6 +36,7 @@ class Vendor(models.Model):
     vendor_description = models.CharField(max_length=100, null=False, default="", help_text="A plain text description of the source.")
     vendor_url =  models.URLField(max_length=200, help_text="An external resource with additional information about the source.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.vendor_title    
     
@@ -51,6 +53,7 @@ class Construct(models.Model):
     references = models.ForeignKey('organization.Publication', null=True, blank=True, help_text="The publications that provide more information about the object.")
     url = models.URLField(max_length=200,  null=True, blank=True, help_text="An external resource with additional information about the object")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.construct_name
         
@@ -65,6 +68,7 @@ class  GenomicRegions(models.Model):
     genomicRegions_start_location = models.CharField(max_length=200, null=True, blank=True, help_text="If the exact start coordinate is not know a description of the start location")
     genomicRegions_end_location = models.CharField(max_length=200, null=True, blank=True, help_text="If the exact end coordinate is not know a description of the start location")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.name
     class Meta:
@@ -76,6 +80,7 @@ class  Target(References):
     targeted_region =  models.ForeignKey(GenomicRegions, null=True, blank=True, related_name='targetGenAsm', on_delete=models.CASCADE, help_text="The genome assembly, chromosome and coordinates of the region that is targeted")
     target_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A brief plain text description of the target.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.name
 
@@ -89,6 +94,7 @@ class Modification(UserOwner,References):
     target = models.ForeignKey(Target,related_name='modTarget',null=True, blank=True, help_text="The targeted gene or genomic region that is targeted by the modification.")
     modification_description = models.CharField(max_length=200,  null=False, default="", help_text="A brief plain text description of the modification.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.") 
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.modification_name
  
@@ -99,6 +105,7 @@ class Individual(References, UserOwner):
     individual_type = models.ForeignKey('organization.JsonObjField',related_name='indType',  help_text="JsonObjField")
     individual_fields = JSONField(null=True, blank=True)
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.individual_name
      
@@ -111,6 +118,7 @@ class Enzyme(References):
     enzyme_catalog_number = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     enzyme_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text description of the enzyme.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.enzyme_name
 
@@ -121,6 +129,7 @@ class Protocol(UserOwner):
     enzyme = models.ForeignKey(Enzyme, on_delete=models.CASCADE, related_name='proEnzyme',null=True, blank=True)
     description = models.CharField(max_length=200,  null=True, blank=True)
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.name
 
@@ -129,8 +138,8 @@ class Biosource(References):
     biosource_name = models.CharField(max_length=50, null=False, unique=True, db_index=True, default="", validators=[alphanumeric])
     biosource_type =  models.ForeignKey('organization.Choice', on_delete=models.CASCADE, related_name='sourceChoice', help_text="The categorization of the biosource.")
     biosource_cell_line = models.CharField(max_length=200,  null=True, blank=True, help_text="Ontology term for the cell line used.")
-    biosource_cell_line_tier = models.ForeignKey('organization.Choice', null=True, blank=True, on_delete=models.CASCADE, related_name='bioCellChoice', help_text="Tier into which the cell line has been classified")
-    protocol = models.ForeignKey(Protocol, null=True, blank=True, on_delete=models.SET_NULL, related_name='bioProtocol', verbose_name="biosource_SOP_cell_line", help_text="Standard operation protocol for the cell line as determined by 4DN Cells Working Group")
+    biosource_cell_line_tier = models.ForeignKey('organization.Choice', null=True, blank=True, on_delete=models.CASCADE, verbose_name="4DN cell line tier", related_name='bioCellChoice', help_text="Tier into which the cell line has been classified")
+    protocol = models.ForeignKey(Protocol, null=True, blank=True, on_delete=models.SET_NULL, related_name='bioProtocol', verbose_name="4DN SOP protocol", help_text="Standard operation protocol for the cell line as determined by 4DN Cells Working Group")
     biosource_vendor = models.ForeignKey(Vendor, null=True, blank=True, on_delete=models.SET_NULL, related_name='sourceVendor',help_text="The Lab or Vendor that provided the biosource.")
     cell_line_termid = models.CharField(max_length=100,  null=True, blank=True, help_text="EFO term ID for cell line.")
     biosource_individual = models.ForeignKey(Individual,on_delete=models.CASCADE, related_name='sourceInd', help_text="Information on donor or individual mouse or other organism.")
@@ -139,6 +148,7 @@ class Biosource(References):
     biosource_tissue  = models.CharField(max_length=100,  null=True, blank=True, help_text="Anatomy (UBERON) Ontology term for the tissue used.")
     biosource_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.biosource_name
  
@@ -152,6 +162,7 @@ class TreatmentRnai(References, UserOwner):
     treatmentRnai_nucleotide_seq =  models.CharField(max_length=50, null=True, blank=True, default="", help_text="The nucleotide sequence of the target region.")
     treatmentRnai_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.treatmentRnai_name
 
@@ -165,6 +176,7 @@ class TreatmentChemical(References, UserOwner):
     treatmentChemical_temperature = models.FloatField(max_length=10,null=False, default=0)
     treatmentChemical_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.treatmentChemical_name 
 
@@ -189,6 +201,7 @@ class Biosample(UserOwner, References):
     imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='bioImg', blank=True, help_text="Cell growth images")
     biosample_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
+    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
         return self.biosample_name
      

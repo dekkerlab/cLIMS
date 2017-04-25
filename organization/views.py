@@ -27,8 +27,7 @@ from django.template.context import RequestContext
 from organization.decorators import class_login_required
 from django.dispatch.dispatcher import receiver
 from django.contrib.auth.signals import user_logged_in
-import string
-import random
+from django.contrib import messages
 # Create your views here.
 
 @receiver(user_logged_in)
@@ -716,7 +715,7 @@ class AddProtocol(View):
         return render(request, "popup.html", pageContext)
     
     def post(self,request):
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             newObject = None
             try:
@@ -1284,3 +1283,38 @@ def searchView(request):
         if not bool(context):
             context['results']="No result"
     return render(request, 'searchResult.html', context)
+
+
+@class_login_required
+class DcicView(View):
+    template_name = 'dcicView.html'
+    error_page = 'error.html'
+    def get(self,request):
+        projectId = request.session['projectId']
+        context = {}
+        project = Project.objects.get(pk=projectId)
+        experiments=Experiment.objects.filter(project=projectId)
+        context['project']= project
+        context['experiments']= experiments
+        return render(request, self.template_name, context)
+    
+@class_login_required
+class DcicFinalizeSubmission(View):
+    template_name = 'dcicView.html'
+    error_page = 'error.html'
+    def post(self,request):
+        projectId = request.session['projectId']
+        expPks = request.POST.getlist('dcic')
+        if(len(expPks) != 0):
+            experiments = Experiment.objects.filter(pk__in=expPks)
+        else:
+            experiments = Experiment.objects.filter(project=projectId)
+        for e in experiments:
+            e.finalize_dcic_submission=True
+            e.save()
+        messages.success(request, 'All checked experiments have been marked as DCIC submitted')
+        return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
+        
+    
+    
+    

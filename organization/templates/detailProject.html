@@ -7,6 +7,7 @@
 
 {% if project %}
 <div class="bodyContent container">
+
 <table class="table">
 <thead>
   <tr>
@@ -56,6 +57,11 @@
 <span class="tableHead">
 	Experiment Details
 </span>
+{% if messages %}
+        {% for message in messages %}
+            <p class="alert alert-danger">{{message}}</p>
+        {% endfor %}
+{% endif %}
 <table class="table table-bordered table-hover table-responsive">
   	<tr>
 		<td><span class="rowHead">Experiment Name</span></td>
@@ -93,8 +99,8 @@
 	<a href="/exportGEO">
 		<button type="button" class="btn btn-success">Export- GEO</button>
 	</a>
-	<a href="/exportDCIC">
-		<button type="button" class="btn btn-success">Export- DCIC</button>
+	<a href="/dcicView">
+		<button type="button" class="btn btn-success">DCIC View</button>
 	</a>
 {% endif %}
  
