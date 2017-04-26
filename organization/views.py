@@ -1002,7 +1002,7 @@ class AddSeqencingFile(View):
         form = self.form_class()
         form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
         form.fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
-        form.fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
+        #form.fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
         return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
     
     def post(self,request):
@@ -1021,7 +1021,7 @@ class AddSeqencingFile(View):
         else:
             form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
             form.fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
-            form.fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
+            #form.fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
             return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
 
 @class_login_required        

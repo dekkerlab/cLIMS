@@ -503,7 +503,7 @@ class EditSequencingFile(UpdateView):
         context = super(EditSequencingFile , self).get_context_data(**kwargs)
         context['form'].fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=self.request.session['projectId'])
         context['form'].fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
-        context['form'].fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
+        #context['form'].fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context
