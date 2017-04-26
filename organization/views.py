@@ -28,6 +28,7 @@ from organization.decorators import class_login_required
 from django.dispatch.dispatcher import receiver
 from django.contrib.auth.signals import user_logged_in
 from django.contrib import messages
+from organization.export import exportDCIC
 # Create your views here.
 
 @receiver(user_logged_in)
@@ -1303,6 +1304,7 @@ class DcicFinalizeSubmission(View):
     template_name = 'dcicView.html'
     error_page = 'error.html'
     def post(self,request):
+        request.session['finalizeOnly'] = True
         projectId = request.session['projectId']
         expPks = request.POST.getlist('dcic')
         if(len(expPks) != 0):
@@ -1312,7 +1314,9 @@ class DcicFinalizeSubmission(View):
         for e in experiments:
             e.finalize_dcic_submission=True
             e.save()
+        exportDCIC(request)
         messages.success(request, 'All checked experiments have been marked as DCIC submitted')
+        request.session['finalizeOnly'] = False
         return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         
     

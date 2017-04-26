@@ -69,6 +69,8 @@
   		<td><span class="rowHead">Biosample</span></td>
   		<td><span class="rowHead">Protocol</span></td>
   		<td><span class="rowHead">Enzyme</span></td>
+  		<td><span class="rowHead">Needs DCIC Update</span></td>
+  		<td><span class="rowHead">DCIC Submitted</span></td>
   		<td></td>
   	</tr>
     {% for exp in experiments %}
@@ -78,7 +80,8 @@
 			<td>{{exp.experiment_biosample}}</td>
 			<td>{{exp.protocol}}</td>
 			<td>{{exp.experiment_enzyme}}</td>
-			
+			<td>{{exp.update_dcic}}</td>
+			<td>{{exp.finalize_dcic_submission}}</td>
 			<td>
 			<a href="/deleteExperiment/{{ exp.id }}">
 				<button type="button" class="btn btn-danger pull-right hidden show">Delete Experiment</button>

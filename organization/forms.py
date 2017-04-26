@@ -21,10 +21,6 @@ class ProjectForm(ModelForm):
         model = Project
         exclude = ('project_owner','dcic_alias','update_dcic',)
     
-    def save (self, *args, **kwargs):
-        if(self.changed_data != None):
-            self.instance.update_dcic=True
-        return super(ProjectForm, self).save(*args, **kwargs)
     
 
 class ProjectSearchForm(BaseSearchForm):

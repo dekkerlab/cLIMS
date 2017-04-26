@@ -31,7 +31,6 @@ class Project(models.Model):
     project_notes = models.TextField( null=True, blank=True, help_text="Notes for the project.")
     project_active = models.BooleanField(default=True, help_text="Is project currently in progress?")
     dcic_alias = models.CharField(max_length=500, null=False, unique=True, db_index=True, default="", help_text="Provide an alias name for the object for DCIC submission.")
-    update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     
     def __str__(self):
         return self.project_name
