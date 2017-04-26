@@ -946,10 +946,10 @@ def populateDict(request, experimentList):
                     if(str(f.file_format)=="fasta"):
                         singleFile.append(f.dcic_alias)
                         singleFile.append(str(f.file_format))
-                        if(f.file_classification != None):
-                            singleFile.append(str(f.file_classification))
-                        else:
-                            singleFile.append("")
+#                         if(f.file_classification != None):
+#                             singleFile.append(str(f.file_classification))
+#                         else:
+#                             singleFile.append("")
                         if(f.file_format_specifications):
                             singleFile.append(str(f.file_format_specifications))
                         else:
@@ -964,7 +964,7 @@ def populateDict(request, experimentList):
                     elif(str(f.file_format)=="fastq"):
                         singleFile.append(f.dcic_alias)
                         singleFile.append(str(f.file_format))
-                        singleFile.append(str(f.file_classification))
+                        #singleFile.append(str(f.file_classification))
                         if(f.file_format_specifications):
                             singleFile.append(str(f.file_format_specifications))
                         else:
