@@ -302,7 +302,6 @@ def appendVendor(pKey,dcicExcelSheet,finalizeOnly):
         update_dcic(ven)
     singleVendor = []
     singleVendor.append(ven.dcic_alias)
-    singleVendor.append("")
     singleVendor.append(str(ven.vendor_title))
     if(ven.vendor_description != None):
         singleVendor.append(str(ven.vendor_description))
@@ -324,11 +323,6 @@ def appendEnzyme(pKey,dcicExcelSheet,finalizeOnly):
         appendVendor(enz.enzyme_vendor.pk, dcicExcelSheet,finalizeOnly)
     else:
         singleEnzyme.append("")
-    singleEnzyme.append(enz.enzyme_catalog_number)
-    singleEnzyme.append(enz.enzyme_recogSeq)
-    singleEnzyme.append(enz.enzyme_siteLen)
-    singleEnzyme.append(enz.enzyme_cutPos)
-    singleEnzyme.append("")
     if(enz.document):
         singleEnzyme.append(enz.document.dcic_alias)
         appendDocument(enz.document.pk, dcicExcelSheet,finalizeOnly)
@@ -1132,7 +1126,6 @@ def exportDCIC(request):
          
             wb.save(response)
             return response
-    else:
         messages.error(request, 'Please add the all experiments into biological/technical replicate experiment set!')
         return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
 
