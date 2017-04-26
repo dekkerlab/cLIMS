@@ -86,6 +86,7 @@ $(function() {
 	$( ".formLabel:contains('References')" ).append('<a href="/addPublication/" class="add-another" id="add_id_references" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Protocol')" ).append('<a href="/addProtocol/" class="add-another" id="add_id_protocol" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Biosource SOP cell line')" ).append('<a href="/addProtocol/" class="add-another" id="add_id_protocol" onclick="return showAddAnotherPopup(this);"></a>');
+	$( ".formLabel:contains('4DN SOP protocol')" ).append('<a href="/addProtocol/" class="add-another" id="add_id_protocol" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Modifications')" ).append('<a href="/addModification/" class="add-another" id="add_id_modifications" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('constructs')" ).append('<a href="/addConstruct/" class="add-another" id="add_id_constructs" onclick="return showAddAnotherPopup(this);"></a>');
 	$( ".formLabel:contains('Treatmentrnai target')" ).append('<a href="/addTarget/" class="add-another" id="add_id_treatmentRnai_target" onclick="return showAddAnotherPopup(this);"></a>');
