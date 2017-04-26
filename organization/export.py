@@ -394,6 +394,12 @@ def appendTarget(pKey,dcicExcelSheet,finalizeOnly):
         singleItem.append("")
     singleItem.append(str(target.targeted_genes))
     singleItem.append(str(target.targeted_region))
+    singleItem.append(str(target.targeted_proteins))
+    singleItem.append(str(target.targeted_rnas))
+    if(target.targeted_structure!=None):
+        singleItem.append(str(target.targeted_structure))
+    else:
+        singleItem.append("")
     if(target.references):
         singleItem.append(target.references.dcic_alias)
         appendPublication(target.references.pk,dcicExcelSheet,finalizeOnly)
@@ -637,19 +643,11 @@ def populateDict(request, experimentList):
                 singleBcc.append("")
                 singleBcc.append("")
             singleBcc.append(bcc["passage_number"])
-            if(sample.protocol):
-                if(sample.protocol.attachment):
-                    singleBcc.append(str(FILEUPLOADPATH)+str(sample.protocol.attachment))
-                else:
-                    singleBcc.append("")
-            else:
-                singleBcc.append("")
-            
             singleBcc.append("") ##protocol_SOP_deviations
             singleBcc.append("") ##protocol_additional
             
             singleBcc.append(bcc["synchronization_stage"])
-            singleBcc.append(bcc["dbxrefs"])
+            singleBcc.append(sample.dbxrefs)
             
 #             for keys in jsonFields:
 #                 json_val = bcc[keys]

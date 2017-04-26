@@ -572,6 +572,7 @@ class AddModification(View):
         construct_form.fields["construct_type"].queryset = Choice.objects.filter(choice_type="construct_type")
         regions_form.fields["genomicRegions_genome_assembly"].queryset = Choice.objects.filter(choice_type="genomicRegions_genome_assembly")
         regions_form.fields["genomicRegions_chromosome"].queryset = Choice.objects.filter(choice_type="genomicRegions_chromosome")
+        target_form.fields["targeted_structure"].queryset = Choice.objects.filter(choice_type="targeted_structure")
         return render(request, self.template_name,{'form':form, 'construct_form':construct_form,'regions_form':regions_form, 'target_form':target_form})
     
     def post(self,request):
@@ -610,6 +611,7 @@ class AddModification(View):
             construct_form.fields["construct_type"].queryset = Choice.objects.filter(choice_type="construct_type")
             regions_form.fields["genomicRegions_genome_assembly"].queryset = Choice.objects.filter(choice_type="genomicRegions_genome_assembly")
             regions_form.fields["genomicRegions_chromosome"].queryset = Choice.objects.filter(choice_type="genomicRegions_chromosome")
+            target_form.fields["targeted_structure"].queryset = Choice.objects.filter(choice_type="targeted_structure")
             return render(request, self.template_name,{'form':form, 'construct_form':construct_form,'regions_form':regions_form, 'target_form':target_form})
 
 @class_login_required        
@@ -651,6 +653,7 @@ class AddTarget(View):
     def get(self,request):
         form = self.form_class()
         pageContext = {'form': form, 'field':self.field}
+        form.fields["targeted_structure"].queryset = Choice.objects.filter(choice_type="targeted_structure")
         return render(request, "popup.html", pageContext)
     
     def post(self,request):
@@ -670,6 +673,7 @@ class AddTarget(View):
                 return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
             pageContext = {'form': form, 'field':self.field}
+            form.fields["targeted_structure"].queryset = Choice.objects.filter(choice_type="targeted_structure")
             return render(request, "popup.html", pageContext)
 
 @class_login_required        

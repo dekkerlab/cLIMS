@@ -66,7 +66,7 @@ class TargetForm(ModelForm):
     class Meta:
         model = Target
         exclude = ('dcic_alias','update_dcic',)
-        fields = ['name','targeted_genes','targeted_region','references','document','url','dbxrefs']
+        fields = ['name','targeted_genes','targeted_region','targeted_proteins','targeted_rnas','targeted_structure','references','document','url','dbxrefs']
     
     def save (self, *args, **kwargs):
         if(self.changed_data != None):
@@ -160,7 +160,7 @@ class BiosampleForm(ModelForm):
     document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
     references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
     modifications = forms.ModelMultipleChoiceField(Modification.objects.all(), widget=MultipleSelectWithPop, required=False)
-    protocol= forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, required=False)
+    protocol= forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, required=False, label="Growth protocol")
     biosample_TreatmentRnai = forms.ModelMultipleChoiceField(TreatmentRnai.objects.all(), widget=MultipleSelectWithPop, required=False)
     biosample_TreatmentChemical= forms.ModelMultipleChoiceField(TreatmentChemical.objects.all(), widget=MultipleSelectWithPop, required=False)
     biosample_OtherTreatment= forms.ModelMultipleChoiceField(OtherTreatment.objects.all(), widget=MultipleSelectWithPop, required=False)

@@ -432,6 +432,7 @@ class EditTarget(UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(EditTarget , self).get_context_data(**kwargs)
+        context['form'].fields["targeted_structure"].queryset = Choice.objects.filter(choice_type="targeted_structure")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context    

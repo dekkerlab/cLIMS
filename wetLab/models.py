@@ -79,6 +79,9 @@ class  Target(References):
     targeted_genes = models.CharField(max_length=200, null=True, blank=True, help_text="The genes that are specifically targeted - can also be derived from genomic region info.")
     targeted_region =  models.ForeignKey(GenomicRegions, null=True, blank=True, related_name='targetGenAsm', on_delete=models.CASCADE, help_text="The genome assembly, chromosome and coordinates of the region that is targeted")
     target_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A brief plain text description of the target.")
+    targeted_proteins = models.CharField(max_length=200,  null=True, blank=True, help_text="Use UniProt Protein IDs or accession (e.g. H31_HUMAN)")
+    targeted_rnas = models.CharField(max_length=200,  null=True, blank=True, help_text="Use RefSeq identifiers (e.g. NM_003529.2)")
+    targeted_structure = models.ForeignKey('organization.Choice',null=True, blank=True, related_name='targetChoice',on_delete=models.SET_NULL, help_text="Choose from the list.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     def __str__(self):
@@ -192,7 +195,7 @@ class Biosample(UserOwner, References):
     biosample_biosource =  models.ForeignKey(Biosource, on_delete=models.CASCADE, related_name='bioSource', help_text="The cell lines or tissue types used in the experiment")
     biosample_individual =  models.ForeignKey(Individual,on_delete=models.CASCADE, related_name='bioIndi')
     modifications =  models.ManyToManyField(Modification, related_name='bioMod', blank=True, help_text="Expression or targeting vectors stably transfected to generate Crispr'ed or other genomic modification")
-    protocol =  models.ForeignKey(Protocol, null=True, blank=True, on_delete=models.CASCADE, related_name='bioMod', help_text="Information about biosample preparation protocols.")
+    protocol =  models.ForeignKey(Protocol, null=True, blank=True, on_delete=models.CASCADE, related_name='bioMod', verbose_name="Growth protocol", help_text="Information about biosample preparation protocols.")
     biosample_TreatmentRnai =  models.ManyToManyField(TreatmentRnai, blank=True, related_name='biosamTreatmentRnai', help_text="Select previously created treatment")
     biosample_TreatmentChemical =  models.ManyToManyField(TreatmentChemical, blank=True, related_name='biosamTreatmentChemical', help_text="Select previously created treatment")
     biosample_OtherTreatment =  models.ManyToManyField(OtherTreatment, blank=True, related_name='biosamOtherTreatment', help_text="Select previously created treatment")
