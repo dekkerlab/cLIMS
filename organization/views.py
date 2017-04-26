@@ -149,6 +149,7 @@ class DetailProject(View):
     error_page = 'error.html'
     def get(self,request,pk):
         request.session['projectId'] = pk
+        request.session['finalizeOnly'] = False
         context = {}
         prj = Project.objects.get(pk=pk)
         request.session['project_ownerId']=prj.project_owner.id
