@@ -30,7 +30,7 @@ class SeqencingFile(models.Model):
     sequencingFile_name = models.CharField(max_length=255, null=False, default="", unique=True, db_index=True, validators=[alphanumeric])
     project = models.ForeignKey('organization.Project', related_name='fileProject', on_delete=models.CASCADE,)
     file_format = models.ForeignKey('organization.Choice', null=True, blank=True, on_delete=models.CASCADE, related_name='fileChoice', help_text="Type of file format.")
-    file_classification = models.ForeignKey('organization.Choice', null=True, blank=True, on_delete=models.CASCADE, related_name='fileclassChoice', help_text="General classification group for the File (raw, processed, ancillary (eg. index files))")
+    #file_classification = models.ForeignKey('organization.Choice', null=True, blank=True, on_delete=models.CASCADE, related_name='fileclassChoice', help_text="General classification group for the File (raw, processed, ancillary (eg. index files))")
     #file_classification = models.CharField(max_length=200, null=True, blank=True, help_text="General classification group for the File (raw, processed, ancillary (eg. index files))")
     file_format_specifications = models.ForeignKey('wetLab.Document', null=True, blank=True, help_text="Text or pdf files that further explain the file format")
     file_barcode = models.ForeignKey('wetLab.Barcode', on_delete=models.SET_NULL, null=True, blank=True, help_text="Barcode attached to the file.")
