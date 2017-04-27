@@ -775,7 +775,8 @@ def populateDict(request, experimentList):
             else:
                 singleBio.append("")
             
-            singleBio.append(biosource.cell_line_termid)
+            #singleBio.append(biosource.cell_line_termid)
+            singleBio.append("") #cell_line_termid calculated
             
             if(biosource.biosource_individual):
                 singleBio.append(biosource.biosource_individual.dcic_alias)
