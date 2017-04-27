@@ -996,6 +996,7 @@ def populateDict(request, experimentList):
                         else:
                             singleFile.append("")
                         singleFile.append(str(f.paired_end))
+                        singleFile.append("") ##quality_metric
                         singleFile.append(str(f.read_length))
                         singleFile.append("")
                         singleFile.append("")

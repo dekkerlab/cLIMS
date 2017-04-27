@@ -245,7 +245,7 @@
         {% for values in expSet.experimentSet_exp.all %}
 	    			({{ forloop.counter }}) {{values}}<br/>
 	  	{% endfor %}
-	  	<span class="rowHead">Experiment Set Description</span>{{expSet.experimentSet_description | linebreaks}}
+	  	<span class="rowHead">Experiment Set Description</span>{{expSet.description | linebreaks}}
         </div>
       {% endfor %}
   		
