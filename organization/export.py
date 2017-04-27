@@ -747,10 +747,11 @@ def populateDict(request, experimentList):
             singleBio.append(biosource.biosource_description)
             singleBio.append(str(biosource.biosource_type))
             singleBio.append(str(biosource.biosource_cell_line))
-            if(biosource.biosource_cell_line_tier != None):
-                singleBio.append(str(biosource.biosource_cell_line_tier))
-            else:
-                singleBio.append("") 
+            singleBio.append("") ##cell_line_tier calculated
+#             if(biosource.biosource_cell_line_tier != None):
+#                 singleBio.append(str(biosource.biosource_cell_line_tier))
+#             else:
+#                 singleBio.append("") 
             ###Standard operation protocol 
 #             if(biosource.protocol):
 #                 singleBio.append(labName +"Protocol_"+str(biosource.protocol)+"_"+str(biosource.protocol.pk))
