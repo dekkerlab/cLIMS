@@ -466,37 +466,41 @@ def appendModification(pKey,dcicExcelSheet,finalizeOnly):
 
 def appendBioRep(expPk,singleExp):
     exp = Experiment.objects.get(pk=expPk)
-    expSameBiosource = Experiment.objects.filter(experiment_biosample__biosample_biosource=exp.experiment_biosample.biosample_biosource,
-                                                 protocol=exp.protocol,experiment_enzyme=exp.experiment_enzyme, 
-                                                 type=exp.type,project=exp.project)
+    expSameBiosource = Experiment.objects.filter(experiment_biosample__biosample_biosource=exp.experiment_biosample.biosample_biosource,project=exp.project)
+#                                                  protocol=exp.protocol,experiment_enzyme=exp.experiment_enzyme, 
+#                                                  type=exp.type,project=exp.project)
+
     
-    biosampleFields=json.loads(exp.experiment_biosample.biosample_fields)
+#     biosampleFields=json.loads(exp.experiment_biosample.biosample_fields)
     bioReplicates = []
-    fieldsToCheckBiosample=["synchronization_stage","karyotype"]
+    biosamPk = []
+#     fieldsToCheckBiosample=["synchronization_stage","karyotype"]
     
     for e in expSameBiosource:
-        sameFieldsBiosample=json.loads(e.experiment_biosample.biosample_fields)
+        biosamPk.append(e.experiment_biosample.pk)
+        bioReplicates=list(set(biosamPk))
+        #sameFieldsBiosample=json.loads(e.experiment_biosample.biosample_fields)
         #if((sorted(expSameFields.items()) == sorted(expFields.items()))):
-        if(exp.type.field_name =="Hi-C Exp Protocol" or exp.type.field_name =="CaptureC Exp Protocol"):
-            if( all(biosampleFields[x] == sameFieldsBiosample[x] for x in fieldsToCheckBiosample)):
-                bioReplicates.append(e.pk)
-    bio_rep_no = (sorted(bioReplicates)).index(expPk)+1
+#         if(exp.type.field_name =="Hi-C Exp Protocol" or exp.type.field_name =="CaptureC Exp Protocol"):
+#             if( all(biosampleFields[x] == sameFieldsBiosample[x] for x in fieldsToCheckBiosample)):
+#                 bioReplicates.append(e.pk)
+    bio_rep_no = (sorted(bioReplicates)).index(exp.experiment_biosample.pk)+1
     singleExp.append(bio_rep_no)
     
 def appendTechRep(expPk,singleExp):
     exp = Experiment.objects.get(pk=expPk)
     expSameBiosample = Experiment.objects.filter(experiment_biosample=exp.experiment_biosample,project=exp.project)
     
-    expFields=json.loads(exp.experiment_fields)
+#     expFields=json.loads(exp.experiment_fields)
     techReplicates = []
-    fieldsToCheckExpHicCaptureC=["crosslinking_time","experiment_type","average_fragment_size","digestion_temperature",
-                                 "ligation_time","digestion_time","tagging_method","ligation_volume","crosslinking_method",
-                                 "fragmentation_method","ligation_temperature","crosslinking_temperature","biotin_removed",
-                                 "fragment_size_range"]
+#     fieldsToCheckExpHicCaptureC=["crosslinking_time","experiment_type","average_fragment_size","digestion_temperature",
+#                                  "ligation_time","digestion_time","tagging_method","ligation_volume","crosslinking_method",
+#                                  "fragmentation_method","ligation_temperature","crosslinking_temperature","biotin_removed",
+#                                  "fragment_size_range"]
     for e in expSameBiosample:
-        expSameFields=json.loads(e.experiment_fields)
-        if( all(expSameFields[x] == expFields[x] for x in fieldsToCheckExpHicCaptureC)):
-            techReplicates.append(e.pk)
+#         expSameFields=json.loads(e.experiment_fields)
+#         if( all(expSameFields[x] == expFields[x] for x in fieldsToCheckExpHicCaptureC)):
+        techReplicates.append(e.pk)
     
     tech_rep_no = (sorted(techReplicates)).index(expPk)+1
     
@@ -997,11 +1001,23 @@ def populateDict(request, experimentList):
                             singleFile.append(str(f.sequencingFile_run.run_sequencing_instrument))
                         else:
                             singleFile.append("")
-                        singleFile.append(str(f.paired_end))
+                        if(f.read_length != None):
+                            singleFile.append(str(f.paired_end))
+                        else:
+                            singleFile.append("")
                         singleFile.append("") ##quality_metric
-                        singleFile.append(str(f.read_length))
-                        singleFile.append("")
-                        singleFile.append("")
+                        if(f.read_length != None):
+                            singleFile.append(str(f.read_length))
+                        else:
+                            singleFile.append("")
+                        if(f.relationship_type != None):
+                            singleFile.append(str(f.relationship_type))
+                        else:
+                            singleFile.append("")
+                        if(f.related_files != None):
+                            singleFile.append(str(f.related_files.dcic_alias))
+                        else:
+                            singleFile.append("")   
                         singleFile.append(f.dbxrefs)
                         ##FileMainPATH is exported then manually remove it so that we know the path
                         singleFile.append(f.sequencingFile_mainPath)

@@ -584,20 +584,20 @@ class AddModification(View):
             modification = form.save(commit= False)
             if(construct_form['construct_name'].value() != ""):
                 construct = construct_form.save(commit= False)
-                aliasList=["Construct",modification.modification_name,construct.construct_name]
+                aliasList=["Construct",construct.construct_name]
                 construct.dcic_alias = LABNAME +"_".join(aliasList)
                 construct.save()
                 modification.constructs = construct
             if(regions_form['name'].value() != ""):
                 regions = regions_form.save(commit= False)
-                aliasList=["GenomicRegion",modification.modification_name,regions.name]
+                aliasList=["GenomicRegion",regions.name]
                 regions.dcic_alias = LABNAME +"_".join(aliasList)
                 regions.save()
                 modification.modification_genomicRegions = regions
             if(target_form['name'].value() != ""):
                 target = target_form.save(commit= False)
                 target.targeted_region = regions
-                aliasList=["Target",modification.modification_name,target.name]
+                aliasList=["Target",target.name]
                 target.dcic_alias = LABNAME +"_".join(aliasList)
                 target.save()
                 modification.target = target
@@ -1002,6 +1002,8 @@ class AddSeqencingFile(View):
         form = self.form_class()
         form.fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=request.session['projectId'])
         form.fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
+        form.fields["relationship_type"].queryset = Choice.objects.filter(choice_type="relationship_type")
+        form.fields["related_files"].queryset = SeqencingFile.objects.filter(sequencingFile_exp=self.request.session['experimentId'])
         #form.fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
         return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
     

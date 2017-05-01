@@ -12,6 +12,7 @@ from organization.forms import *
 import json
 from organization.decorators import *
 from django.utils.decorators import method_decorator
+from cLIMS.base import LABNAME
 
 def createJSON(request, fieldTypePk):
     json_object = JsonObjField.objects.get(pk=fieldTypePk).field_set
@@ -31,6 +32,10 @@ class EditProject(UpdateView):
     
     def get_success_url(self):
         projectId = self.kwargs.get(self.pk_url_kwarg, None)
+        prj=Project.objects.get(pk=projectId)
+        aliasList=["Project",prj.project_name]
+        prj.dcic_alias = LABNAME +"_".join(aliasList)
+        prj.save()
         return reverse('detailProject', kwargs={'pk': projectId})
     
     def get_context_data(self, **kwargs):
@@ -64,6 +69,9 @@ class EditExperiment(UpdateView):
     def get_success_url(self):
         projectId = self.request.session['projectId']
         expe = Experiment.objects.get(pk=self.get_object().id)
+        aliasList=["Experiment",expe.project.project_name,expe.experiment_name]
+        expe.dcic_alias = LABNAME +"_".join(aliasList)
+        expe.save()
         if(self.request.POST.get('type')):
             exp_type = self.request.POST.get('type')
             expe.experiment_fields = createJSON(self.request, exp_type)
@@ -108,6 +116,8 @@ class EditIndividual(UpdateView):
         individual = Individual.objects.get(pk=self.get_object().id)
         individual_type = self.request.POST.get('individual_type')
         individual.individual_fields = createJSON(self.request, individual_type)
+        aliasList=["Individual",individual.individual_name]
+        individual.dcic_alias = LABNAME +"_".join(aliasList)
         individual.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
@@ -145,6 +155,10 @@ class EditBiosource(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        biosource = Biosource.objects.get(pk=self.get_object().id)
+        aliasList=["Biosource",biosource.biosource_name]
+        biosource.dcic_alias = LABNAME +"_".join(aliasList)
+        biosource.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -181,6 +195,9 @@ class EditBiosample(UpdateView):
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
         biosample = Biosample.objects.get(pk=self.get_object().id)
+        aliasList=["Biosample",biosample.biosample_biosource.biosource_name,biosample.biosample_name]
+        biosample.dcic_alias = LABNAME +"_".join(aliasList)
+        biosample.save()
         if(self.request.POST.get('biosample_type')):
             biosample_type = self.request.POST.get('biosample_type')
             biosample.biosample_fields = createJSON(self.request, biosample_type)
@@ -229,6 +246,10 @@ class EditTreatmentRnai(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        trt=TreatmentRnai.objects.get(pk=self.get_object().id)
+        aliasList=["TreatmentRNAi",trt.treatmentRnai_name]
+        trt.dcic_alias = LABNAME +"_".join(aliasList)
+        trt.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -262,6 +283,10 @@ class EditTreatmentChemical(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        trt=TreatmentRnai.objects.get(pk=self.get_object().id)
+        aliasList=["TreatmentChemical",trt.treatmentChemical_name]
+        trt.dcic_alias = LABNAME +"_".join(aliasList)
+        trt.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -328,6 +353,10 @@ class EditModification(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        modification = Modification.objects.get(pk=self.get_object().id)
+        aliasList=["Modification",modification.modification_name]
+        modification.dcic_alias = LABNAME +"_".join(aliasList)
+        modification.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -361,6 +390,10 @@ class EditConstruct(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        con = Construct.objects.get(pk=self.get_object().id)
+        aliasList=["Construct",con.construct_name]
+        con.dcic_alias = LABNAME +"_".join(aliasList)
+        con.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -394,6 +427,10 @@ class EditGenomicRegions(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        gen=GenomicRegions.objects.get(pk=self.get_object().id)
+        aliasList=["GenomicRegion",gen.name]
+        gen.dcic_alias = LABNAME +"_".join(aliasList)
+        gen.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -428,6 +465,10 @@ class EditTarget(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        tar=Target.objects.get(pk=self.get_object().id)
+        aliasList=["Target",tar.name]
+        tar.dcic_alias = LABNAME +"_".join(aliasList)
+        tar.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -497,12 +538,18 @@ class EditSequencingFile(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        file=SeqencingFile.objects.get(pk=self.get_object().id)
+        aliasList=["SeqencingFile",file.project.project_name,file.sequencingFile_exp.experiment_name,file.sequencingFile_name]
+        file.dcic_alias = LABNAME +"_".join(aliasList)
+        file.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
         context = super(EditSequencingFile , self).get_context_data(**kwargs)
         context['form'].fields["sequencingFile_run"].queryset = SequencingRun.objects.filter(project=self.request.session['projectId'])
         context['form'].fields["file_format"].queryset = Choice.objects.filter(choice_type="file_format")
+        context['form'].fields["relationship_type"].queryset = Choice.objects.filter(choice_type="relationship_type")
+        context['form'].fields["related_files"].queryset = SeqencingFile.objects.filter(sequencingFile_exp=self.request.session['experimentId'])
         #context['form'].fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
@@ -608,6 +655,10 @@ class EditExperimentSet(UpdateView):
     
     def get_success_url(self):
         projectId = self.request.session['projectId']
+        expSet=ExperimentSet.objects.get(pk=self.get_object().id)
+        aliasList=["ExperimentSet",expSet.project.project_name,expSet.experimentSet_name]
+        expSet.dcic_alias = LABNAME +"_".join(aliasList)
+        expSet.save()
         return reverse('detailProject', kwargs={'pk': projectId})
     
     def get_context_data(self, **kwargs):
@@ -674,6 +725,10 @@ class EditProtocol(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        prot=Protocol.objects.get(pk=self.get_object().id)
+        aliasList=["Protocol",prot.name]
+        prot.dcic_alias = LABNAME +"_".join(aliasList)
+        prot.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -707,6 +762,10 @@ class EditDocument(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        doc=Document.objects.get(pk=self.get_object().id)
+        aliasList=["Document",doc.name]
+        doc.dcic_alias = LABNAME +"_".join(aliasList)
+        doc.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -740,6 +799,10 @@ class EditPublication(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        pub=Publication.objects.get(pk=self.get_object().id)
+        aliasList=["Publication",pub.name]
+        pub.dcic_alias = LABNAME +"_".join(aliasList)
+        pub.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
@@ -773,6 +836,10 @@ class EditImageObjects(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
+        img=ImageObjects.objects.get(pk=self.get_object().id)
+        aliasList=["Image",img.project.project_name,img.imageObjects_name]
+        img.dcic_alias = LABNAME +"_".join(aliasList)
+        img.save()
         return reverse('detailExperiment', kwargs={'pk': experimentId})
     
     def get_context_data(self, **kwargs):
