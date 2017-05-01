@@ -718,7 +718,7 @@ def populateDict(request, experimentList):
                     singleItem.append(str(treatmentChemical.treatmentChemical_concentration_units))
                 else:
                     singleItem.append("")
-                if(treatmentChemical.treatmentChemical_duration != 0):
+                if(treatmentChemical.treatmentChemical_duration != None):
                     singleItem.append(str(treatmentChemical.treatmentChemical_duration))
                 else:
                     singleItem.append("")
@@ -726,7 +726,7 @@ def populateDict(request, experimentList):
                     singleItem.append(str(treatmentChemical.treatmentChemical_duration_units))
                 else:
                     singleItem.append("")
-                if(treatmentChemical.treatmentChemical_temperature != 0.0):
+                if(treatmentChemical.treatmentChemical_temperature != None):
                     singleItem.append(str(treatmentChemical.treatmentChemical_temperature))
                 else:
                     singleItem.append("")
