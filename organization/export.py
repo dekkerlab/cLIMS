@@ -722,7 +722,7 @@ def populateDict(request, experimentList):
                     singleItem.append(str(treatmentChemical.treatmentChemical_duration))
                 else:
                     singleItem.append("")
-                if(treatmentChemical.treatmentChemical_concentration_units != None):
+                if(treatmentChemical.treatmentChemical_duration_units != None):
                     singleItem.append(str(treatmentChemical.treatmentChemical_duration_units))
                 else:
                     singleItem.append("")
