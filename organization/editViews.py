@@ -283,7 +283,7 @@ class EditTreatmentChemical(UpdateView):
     
     def get_success_url(self):
         experimentId = self.request.session['experimentId']
-        trt=TreatmentRnai.objects.get(pk=self.get_object().id)
+        trt=TreatmentChemical.objects.get(pk=self.get_object().id)
         aliasList=["TreatmentChemical",trt.treatmentChemical_name]
         trt.dcic_alias = LABNAME +"_".join(aliasList)
         trt.save()
