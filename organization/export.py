@@ -630,9 +630,7 @@ def populateDict(request, experimentList):
                     if(imgs.imageObjects_type.choice_name=="karyotype_image"):
                         singleBcc.append(imgs.dcic_alias)
                         appendImageObjects(imgs.pk,dcicExcelSheet,finalizeOnly)
-                    else:
-                        singleBcc.append("")
-                    if(imgs.imageObjects_type.choice_name=="morphology_image"):
+                    elif(imgs.imageObjects_type.choice_name=="morphology_image"):
                         singleBcc.append(imgs.dcic_alias)
                         appendImageObjects(imgs.pk,dcicExcelSheet,finalizeOnly)
                     else:
