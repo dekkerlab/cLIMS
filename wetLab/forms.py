@@ -119,14 +119,9 @@ class ProtocolForm(ModelForm):
     use_required_attribute = False
     class Meta:
         model = Protocol
-        exclude = ('protocol_fields','userOwner','dcic_alias','update_dcic',)
+        exclude = ('userOwner','dcic_alias','update_dcic',)
     
     def save (self, *args, **kwargs):
-        if(self.instance.pk):
-            idObj=self.instance.pk
-            initialFields=Protocol.objects.get(pk=idObj)
-            obj_json_fields = json.loads(initialFields.protocol_fields)
-            compareJsonInitial(obj_json_fields,self)
         if(self.changed_data != None):
             self.instance.update_dcic=True
         return super(ProtocolForm, self).save(*args, **kwargs)
