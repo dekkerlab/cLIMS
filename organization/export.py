@@ -473,7 +473,7 @@ def appendBioRep(expPk,singleExp):
     
     biosampleFields=json.loads(exp.experiment_biosample.biosample_fields)
     bioReplicates = []
-    biosamPk = []
+    #biosamPk = []
     fieldsToCheckBiosample=["synchronization_stage","karyotype"]
     
     for e in expSameBiosource:
