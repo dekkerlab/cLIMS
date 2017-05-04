@@ -29,7 +29,7 @@
     {% for exp in experiments %}
 		<tr>
 			<td><input type="checkbox" name="dcic" value="{{exp.id}}" checked><br></td>
-			<td><a href="/detailExperiment/">{{exp.experiment_name}}</a></td>
+			<td><a href="/detailExperiment/{{exp.id}}">{{exp.experiment_name}}</a></td>
   		</tr>
     {% endfor %}
  </table>

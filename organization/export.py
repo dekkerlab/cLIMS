@@ -483,10 +483,10 @@ def appendBioRep(expPk,singleExp):
         #if((sorted(expSameFields.items()) == sorted(expFields.items()))):
         if(exp.type.field_name =="Hi-C Exp Protocol" or exp.type.field_name =="CaptureC Exp Protocol"):
             if( all(biosampleFields[x] == sameFieldsBiosample[x] for x in fieldsToCheckBiosample) 
-                and e.experiment_biosample.modifications==exp.experiment_biosample.modifications 
+                and set(e.experiment_biosample.modifications.all())==set(exp.experiment_biosample.modifications.all()) 
                 and e.experiment_biosample.protocol==exp.experiment_biosample.protocol
-                and e.experiment_biosample.biosample_TreatmentRnai==exp.experiment_biosample.biosample_TreatmentRnai
-                and e.experiment_biosample.biosample_TreatmentChemical==exp.experiment_biosample.biosample_TreatmentChemical):
+                and set(e.experiment_biosample.biosample_TreatmentRnai.all())==set(exp.experiment_biosample.biosample_TreatmentRnai.all())
+                and set(e.experiment_biosample.biosample_TreatmentChemical.all())==set(exp.experiment_biosample.biosample_TreatmentChemical.all())):
                 bioReplicates.append(e.experiment_biosample.pk)
         else:
             bioReplicates.append(0)
