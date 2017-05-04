@@ -986,10 +986,10 @@ def populateDict(request, experimentList):
                         else:
                             singleFile.append("")
                         singleFile.append(str(f.flowcell_details_chunk))
-                        if(f.sequencingFile_run):
-                            singleFile.append(str(f.sequencingFile_run))
-                        else:
-                            singleFile.append("")
+#                         if(f.sequencingFile_run):
+#                             singleFile.append(str(f.sequencingFile_run))
+#                         else:
+                        singleFile.append("")##flowcell_details.flowcell 
                         singleFile.append(str(f.flowcell_details_lane))
                         if(f.sequencingFile_run.run_sequencing_machine != None):
                             singleFile.append(str(f.sequencingFile_run.run_sequencing_machine))
