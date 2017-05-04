@@ -466,24 +466,30 @@ def appendModification(pKey,dcicExcelSheet,finalizeOnly):
 
 def appendBioRep(expPk,singleExp):
     exp = Experiment.objects.get(pk=expPk)
-    expSameBiosource = Experiment.objects.filter(experiment_biosample__biosample_biosource=exp.experiment_biosample.biosample_biosource,project=exp.project)
-#                                                  protocol=exp.protocol,experiment_enzyme=exp.experiment_enzyme, 
-#                                                  type=exp.type,project=exp.project)
+    expSameBiosource = Experiment.objects.filter(experiment_biosample__biosample_biosource=exp.experiment_biosample.biosample_biosource,
+                                                protocol=exp.protocol,experiment_enzyme=exp.experiment_enzyme, 
+                                                type=exp.type,project=exp.project)
 
     
-#     biosampleFields=json.loads(exp.experiment_biosample.biosample_fields)
+    biosampleFields=json.loads(exp.experiment_biosample.biosample_fields)
     bioReplicates = []
     biosamPk = []
-#     fieldsToCheckBiosample=["synchronization_stage","karyotype"]
+    fieldsToCheckBiosample=["synchronization_stage","karyotype"]
     
     for e in expSameBiosource:
-        biosamPk.append(e.experiment_biosample.pk)
-        bioReplicates=list(set(biosamPk))
-        #sameFieldsBiosample=json.loads(e.experiment_biosample.biosample_fields)
+        #biosamPk.append(e.experiment_biosample.pk)
+        #bioReplicates=list(set(biosamPk))
+        sameFieldsBiosample=json.loads(e.experiment_biosample.biosample_fields)
         #if((sorted(expSameFields.items()) == sorted(expFields.items()))):
-#         if(exp.type.field_name =="Hi-C Exp Protocol" or exp.type.field_name =="CaptureC Exp Protocol"):
-#             if( all(biosampleFields[x] == sameFieldsBiosample[x] for x in fieldsToCheckBiosample)):
-#                 bioReplicates.append(e.pk)
+        if(exp.type.field_name =="Hi-C Exp Protocol" or exp.type.field_name =="CaptureC Exp Protocol"):
+            if( all(biosampleFields[x] == sameFieldsBiosample[x] for x in fieldsToCheckBiosample) 
+                and e.experiment_biosample.modifications==exp.experiment_biosample.modifications 
+                and e.experiment_biosample.protocol==exp.experiment_biosample.protocol
+                and e.experiment_biosample.biosample_TreatmentRnai==exp.experiment_biosample.biosample_TreatmentRnai
+                and e.experiment_biosample.biosample_TreatmentChemical==exp.experiment_biosample.biosample_TreatmentChemical):
+                bioReplicates.append(e.experiment_biosample.pk)
+        else:
+            bioReplicates.append(0)
     bio_rep_no = (sorted(bioReplicates)).index(exp.experiment_biosample.pk)+1
     singleExp.append(bio_rep_no)
     
