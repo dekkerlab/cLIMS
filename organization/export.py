@@ -843,7 +843,8 @@ def populateDict(request, experimentList):
             else:
                 singleBio.append("")
                 
-            singleBio.append(biosource.biosource_tissue)    
+            #singleBio.append(biosource.biosource_tissue)    
+            singleBio.append("")
             
             if(biosource.references):
                 singleBio.append(biosource.references.dcic_alias)

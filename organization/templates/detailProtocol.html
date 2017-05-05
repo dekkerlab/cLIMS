@@ -19,8 +19,8 @@
 	<br/>
 	
     	<span class="rowHead">Protocol Document:</span>
-    	{% if not  protocol.document == None %}
-    		<a href="/detailDocument/{{ protocol.document.id}}">{{ protocol.document }}</a>
+    	{% if not  protocol.document == None %} 
+    		<a href="/media/{{ protocol.attachment }}">{{ protocol.attachment }}</a>
     	{% endif %}<br/>
     	<span class="rowHead">Protocol Enzyme:</span>
     	{% if not protocol.enzyme == None %}
