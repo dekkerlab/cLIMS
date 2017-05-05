@@ -560,6 +560,8 @@ def populateDict(request, experimentList):
             singleProtocol = []
             singleProtocol.append(proto.dcic_alias)
             singleProtocol.append(proto.description)
+            if(proto.enzyme):
+                appendEnzyme(proto.enzyme.pk, dcicExcelSheet,finalizeOnly)
             if(proto.attachment):
                 singleProtocol.append(str(FILEUPLOADPATH)+str(proto.attachment))
             else:
@@ -759,24 +761,27 @@ def populateDict(request, experimentList):
 #             if(biosource.biosource_cell_line_tier != None):
 #                 singleBio.append(str(biosource.biosource_cell_line_tier))
 #             else:
-#                 singleBio.append("") 
+#                 singleBio.append("")
+                
+                
             ###Standard operation protocol 
-#             if(biosource.protocol):
-#                 singleBio.append(labName +"Protocol_"+str(biosource.protocol)+"_"+str(biosource.protocol.pk))
-#                 proto = Protocol.objects.get(pk=biosource.protocol.pk)
-#                 if(finalizeOnly):
-#                     update_dcic(proto)
-#                 singleProtocol = []
-#                 singleProtocol.append(labName +"Protocol_" +str(proto.name)+"_"+str(proto.pk))
-#                 singleProtocol.append(proto.description)
-#                 if(proto.enzyme):
-#                     appendEnzyme(proto.enzyme.pk, dcicExcelSheet,finalizeOnly)
-#                 if(proto.document):
-#                     singleProtocol.append(labName +"Document_"+str(proto.document)+"_"+str(proto.document.pk))
-#                     appendDocument(proto.document.pk, dcicExcelSheet,finalizeOnly)
-#                 dcicExcelSheet['Protocol'].append(singleProtocol)
-#             else:
-            singleBio.append("")
+            if(biosource.protocol):
+                singleBio.append(biosource.protocol.dcic_alias)
+                proto = Protocol.objects.get(pk=biosource.protocol.pk)
+                if(finalizeOnly):
+                    update_dcic(proto)
+                singleProtocol = []
+                singleProtocol.append(proto.dcic_alias)
+                singleProtocol.append(proto.description)
+                if(proto.enzyme):
+                    appendEnzyme(proto.enzyme.pk, dcicExcelSheet,finalizeOnly)
+                if(proto.attachment):
+                    singleProtocol.append(str(FILEUPLOADPATH)+str(proto.attachment))
+                else:
+                    singleProtocol.append("")
+                dcicExcelSheet['Protocol'].append(singleProtocol)
+            else:
+                singleBio.append("")
                 
             if(biosource.biosource_vendor):
                 singleBio.append(str(biosource.biosource_vendor.dcic_alias))
