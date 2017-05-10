@@ -1155,6 +1155,7 @@ def exportDCIC(request):
          
             wb.save(response)
             return response
+    else:
         messages.error(request, 'Please add the all experiments into biological/technical replicate experiment set!')
         return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
 
