@@ -1125,6 +1125,10 @@ def exportDCIC(request):
     if(all(ExperimentSet.objects.filter(experimentSet_exp=exp) for exp in experiments)):
         if(request.session['finalizeOnly']):
             dcicExcelSheet = populateDict(request, experiments)
+            for e in experiments:
+                e.finalize_dcic_submission=True
+                e.save()
+            messages.success(request, 'All checked experiments have been marked as DCIC submitted')
             return
         else:
             # Create the HttpResponse object with the appropriate CSV header.

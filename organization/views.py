@@ -1312,17 +1312,7 @@ class DcicFinalizeSubmission(View):
     error_page = 'error.html'
     def post(self,request):
         request.session['finalizeOnly'] = True
-        projectId = request.session['projectId']
-        expPks = request.POST.getlist('dcic')
-        if(len(expPks) != 0):
-            experiments = Experiment.objects.filter(pk__in=expPks)
-        else:
-            experiments = Experiment.objects.filter(project=projectId)
-        for e in experiments:
-            e.finalize_dcic_submission=True
-            e.save()
         exportDCIC(request)
-        messages.success(request, 'All checked experiments have been marked as DCIC submitted')
         request.session['finalizeOnly'] = False
         return HttpResponseRedirect('/detailProject/'+request.session['projectId'])
         
