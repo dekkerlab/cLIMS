@@ -9,7 +9,7 @@
   {% csrf_token %}
 
   <input type="submit" value="Yes, delete." />
-  <a href="{% url 'detailExperiment' request.session.experimentId %}">No, cancel.</a>
+  <a href="{% url 'detailProject' request.session.projectId %}">No, cancel.</a>
 </form>
 </div>
 {% endblock %} 
