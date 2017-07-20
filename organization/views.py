@@ -1314,7 +1314,7 @@ class DcicView(View):
         projectId = request.session['projectId']
         context = {}
         project = Project.objects.get(pk=projectId)
-        experiments=Experiment.objects.filter(project=projectId)
+        experiments=Experiment.objects.filter(project=projectId).order_by('-pk')
         context['project']= project
         context['experiments']= experiments
         return render(request, self.template_name, context)
