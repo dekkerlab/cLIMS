@@ -155,7 +155,7 @@ class DetailProject(View):
         request.session['project_ownerId']=prj.project_owner.id
     #     units = Lane.objects.filter(project=pk)
     #     files = DeepSeqFile.objects.filter(project=pk)
-        experiments = Experiment.objects.filter(project=pk)
+        experiments = Experiment.objects.filter(project=pk).order_by('-pk')
         sequencingRuns = SequencingRun.objects.filter(project=pk)
         experimentSets = ExperimentSet.objects.filter(project=pk)
         fileSets = FileSet.objects.filter(project=pk)
@@ -172,6 +172,19 @@ class DetailProject(View):
         context['tags']= tags
         return render(request, self.template_name, context)
 
+def addUnits(jsonValue):
+    jsonValueLoad=json.loads(jsonValue)
+    newJsonDict={}
+    for keys in jsonValueLoad:
+        values=jsonValueLoad[keys]
+        if("units" in keys):
+            splitKey=keys.split("_units")
+            att=jsonValueLoad[splitKey[0]]
+            unit=values
+            newJsonDict[splitKey[0]]=att+" "+unit
+        else:
+            newJsonDict[keys]=values
+    return (newJsonDict)
 
 @class_login_required
 class DetailExperiment(View):
@@ -218,9 +231,9 @@ class DetailExperiment(View):
             analysis = Analysis.objects.filter(analysis_exp=pk)
 
         for i in individual:
-            i.individual_fields = json.loads(i.individual_fields)
+            i.individual_fields = addUnits(i.individual_fields)
         if(biosample.biosample_fields):
-            biosample.biosample_fields = json.loads(biosample.biosample_fields)   
+            biosample.biosample_fields = addUnits(biosample.biosample_fields)   
            
         context['experiment']= experiment
         context['biosample']= biosample
