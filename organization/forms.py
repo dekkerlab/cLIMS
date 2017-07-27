@@ -43,10 +43,10 @@ class ProjectSearchForm(BaseSearchForm):
         
 class ExperimentForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
-    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop,required=False)
-    protocol = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop)
-    imageObjects = forms.ModelMultipleChoiceField (ImageObjects.objects.all(), widget=MultipleSelectWithPop, required=False)
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label_suffix='addDocumens')
+    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop,required=False, label_suffix='addPublication')
+    protocol = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, label_suffix='addProtocol', label="Experiment protocol")
+    imageObjects = forms.ModelMultipleChoiceField (ImageObjects.objects.all(), widget=MultipleSelectWithPop, required=False, label_suffix='addImageObjects')
     
     class Meta:
         model = Experiment
@@ -91,7 +91,7 @@ class ExperimentSearchForm(BaseSearchForm):
 
 class ExperimentSetForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label_suffix='addDocumens')
     class Meta:
         model = ExperimentSet
         exclude = ('project','update_dcic','dcic_alias',)

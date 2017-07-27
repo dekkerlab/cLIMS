@@ -19,8 +19,8 @@ from organization.validators import compareJsonInitial
 
 class ModificationForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
-    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop,required=False)
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label_suffix='addDocumens')
+    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop,required=False, label_suffix='addPublication')
     
     class Meta:
         model = Modification
@@ -36,7 +36,8 @@ class ModificationForm(ModelForm):
 
 class ConstructForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label="Construct Map", help_text="Map of the construct - document")
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label="Construct Map", help_text="Map of the construct - document", 
+                                      label_suffix='addDocumens')
     class Meta:
         model = Construct
         exclude = ('dcic_alias','update_dcic',)
@@ -61,7 +62,7 @@ class GenomicRegionsForm(ModelForm):
 
 class TargetForm(ModelForm):
     use_required_attribute = False
-    targeted_region = forms.ModelChoiceField(GenomicRegions.objects.all(), widget=SelectWithPop, required=False)
+    targeted_region = forms.ModelChoiceField(GenomicRegions.objects.all(), widget=SelectWithPop, required=False, label_suffix='addGenomicRegions')
     
     class Meta:
         model = Target
@@ -76,8 +77,8 @@ class TargetForm(ModelForm):
 
 class IndividualForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
-    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label_suffix='addDocumens')
+    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False, label_suffix='addPublication')
     
 #     def __init__(self, *args, **kwargs):
 #         super(IndividualForm, self).__init__(*args, **kwargs)
@@ -130,12 +131,13 @@ class ProtocolForm(ModelForm):
 
 class BiosourceForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
-    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label_suffix='addDocumens')
+    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False, label_suffix='addPublication')
     protocol = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop,required=False, label="4DN SOP protocol", 
-                                      help_text='Standard operation protocol for the cell line as determined by 4DN Cells Working Group' )
+                                      help_text='Standard operation protocol for the cell line as determined by 4DN Cells Working Group', label_suffix='addProtocol')
     modifications = forms.ModelMultipleChoiceField(Modification.objects.all(), widget=MultipleSelectWithPop, required=False,
-                                                   help_text='Expression or targeting vectors stably transfected to generate Crispr\'ed or other genomic modification')
+                                                   help_text='Expression or targeting vectors stably transfected to generate Crispr\'ed or other genomic modification',
+                                                   label_suffix='addModification')
     
     
     class Meta:
@@ -152,20 +154,32 @@ class BiosourceForm(ModelForm):
 
 class BiosampleForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
-    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
-    modifications = forms.ModelMultipleChoiceField(Modification.objects.all(), widget=MultipleSelectWithPop, required=False)
-    protocol= forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, required=False, label="Growth protocol")
-    biosample_TreatmentRnai = forms.ModelMultipleChoiceField(TreatmentRnai.objects.all(), widget=MultipleSelectWithPop, required=False)
-    biosample_TreatmentChemical= forms.ModelMultipleChoiceField(TreatmentChemical.objects.all(), widget=MultipleSelectWithPop, required=False)
-    biosample_OtherTreatment= forms.ModelMultipleChoiceField(OtherTreatment.objects.all(), widget=MultipleSelectWithPop, required=False)
-    imageObjects = forms.ModelMultipleChoiceField (ImageObjects.objects.all(), widget=MultipleSelectWithPop, required=False)
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label_suffix='addDocumens')
+    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False, label_suffix='addPublication')
+    modifications = forms.ModelMultipleChoiceField(Modification.objects.all(), widget=MultipleSelectWithPop, required=False,
+                                                   help_text="Expression or targeting vectors stably transfected to generate Crispr'ed or other genomic modification.", 
+                                                   label_suffix='addModification')
+    protocol= forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, required=False, label="Growth protocol",
+                                     help_text="Information about biosample preparation protocols.",
+                                     label_suffix='addProtocol')
+    biosample_TreatmentRnai = forms.ModelMultipleChoiceField(TreatmentRnai.objects.all(), widget=MultipleSelectWithPop, required=False,
+                                                             help_text="Select previously created treatment", label_suffix='addTreatmentRnai')
+    biosample_TreatmentChemical= forms.ModelMultipleChoiceField(TreatmentChemical.objects.all(), widget=MultipleSelectWithPop, required=False,
+                                                                help_text="Select previously created treatment", label_suffix='addTreatmentChemical')
+    biosample_OtherTreatment= forms.ModelMultipleChoiceField(OtherTreatment.objects.all(), widget=MultipleSelectWithPop, required=False,
+                                                             help_text="Select previously created treatment", label_suffix='addOther')
+    imageObjects = forms.ModelMultipleChoiceField (ImageObjects.objects.all(), widget=MultipleSelectWithPop, required=False,
+                                                    help_text="Cell growth images, karyotype_image, morphology_image.", label_suffix='addImageObjects')
+    authentication_docs = forms.ModelMultipleChoiceField (Protocol.objects.all(), widget=MultipleSelectWithPop, required=False,
+                                                           label="authentication_docs",
+                                                           label_suffix='addProtocol',
+                                                           help_text="Images or Documents that authenticate the experiment e.g. Fragment Analyzer document, Gel images.")
     
     class Meta:
         model = Biosample
         exclude = ('biosample_fields','userOwner','biosample_biosource', 'biosample_individual','dcic_alias','update_dcic',)
         fields = ['biosample_name','modifications','protocol','biosample_TreatmentRnai',
-                  'biosample_TreatmentChemical','biosample_OtherTreatment','imageObjects','biosample_type',
+                  'biosample_TreatmentChemical','biosample_OtherTreatment','imageObjects','authentication_docs','biosample_type',
                   'references','document','url','dbxrefs','biosample_description']
     
     def save (self, *args, **kwargs):
@@ -181,10 +195,10 @@ class BiosampleForm(ModelForm):
  
 class TreatmentRnaiForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
-    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
-    constructs = forms.ModelChoiceField(Construct.objects.all(), widget=SelectWithPop, required=False)
-    treatmentRnai_target = forms.ModelChoiceField(Target.objects.all(), widget=SelectWithPop, required=False)
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label_suffix='addDocumens')
+    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False, label_suffix='addPublication')
+    constructs = forms.ModelChoiceField(Construct.objects.all(), widget=SelectWithPop, required=False, label_suffix='addConstruct')
+    treatmentRnai_target = forms.ModelChoiceField(Target.objects.all(), widget=SelectWithPop, required=False, label_suffix='addTarget')
     
     class Meta:
         model = TreatmentRnai
@@ -200,8 +214,8 @@ class TreatmentRnaiForm(ModelForm):
 
 class TreatmentChemicalForm(ModelForm):
     use_required_attribute = False
-    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
-    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
+    document = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label_suffix='addDocumens')
+    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False, label_suffix='addPublication')
     
     class Meta:
         model = TreatmentChemical
@@ -217,8 +231,8 @@ class TreatmentChemicalForm(ModelForm):
 
 class OtherForm(ModelForm):
     use_required_attribute = False
-    documents = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False)
-    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False)
+    documents = forms.ModelChoiceField(Document.objects.all(), widget=SelectWithPop, required=False, label_suffix='addDocumens')
+    references = forms.ModelChoiceField(Publication.objects.all(), widget=SelectWithPop, required=False, label_suffix='addPublication')
     
     class Meta:
         model = OtherTreatment

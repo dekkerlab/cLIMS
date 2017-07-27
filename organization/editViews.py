@@ -217,6 +217,7 @@ class EditBiosample(UpdateView):
         context['form'].fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
         context['form'].fields["imageObjects"].queryset = ImageObjects.objects.filter(project=self.request.session['projectId'])
         context['form'].fields["modifications"].queryset = Modification.objects.filter(userOwner=self.request.user.pk)
+        context['form'].fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -733,6 +734,7 @@ class EditProtocol(UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(EditProtocol , self).get_context_data(**kwargs)
+        context['form'].fields["protocol_type"].queryset = Choice.objects.filter(choice_type="protocol_type")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context  

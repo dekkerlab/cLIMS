@@ -462,7 +462,102 @@ def appendModification(pKey,dcicExcelSheet,finalizeOnly):
         singleMod.append("")
     singleMod.append(modificationObj.url)
     dcicExcelSheet['Modification'].append(singleMod)
+    
 
+
+def appendProtocol(pKey,dcicExcelSheet,finalizeOnly):
+    protocolObj = Protocol.objects.get(pk=pKey)
+    if(finalizeOnly):
+        update_dcic(protocolObj)
+    singleProtocol = []
+    singleProtocol.append(protocolObj.dcic_alias)
+    singleProtocol.append(protocolObj.description)
+    if(protocolObj.enzyme):
+        appendEnzyme(protocolObj.enzyme.pk, dcicExcelSheet,finalizeOnly)
+    if(protocolObj.attachment):
+        singleProtocol.append(str(FILEUPLOADPATH)+str(protocolObj.attachment))
+    else:
+        singleProtocol.append("")
+    dcicExcelSheet['Protocol'].append(singleProtocol)
+
+
+def appendFiles(pKey,dcicExcelSheet,finalizeOnly):
+    f = SeqencingFile.objects.get(pk=pKey)
+    singleFile = []
+    if(str(f.file_format)=="fasta"):
+        singleFile.append(f.dcic_alias)
+        singleFile.append(str(f.file_format))
+#                         if(f.file_classification != None):
+#                             singleFile.append(str(f.file_classification))
+#                         else:
+#                             singleFile.append("")
+        if(f.file_format_specifications):
+            singleFile.append(str(f.file_format_specifications))
+        else:
+            singleFile.append("")
+        singleFile.append("")
+        singleFile.append("")
+        singleFile.append(f.dbxrefs)
+        ##FileMainPATH is exported then manually remove it so that we know the path
+        singleFile.append(f.sequencingFile_mainPath)
+        
+        dcicExcelSheet['FileFasta'].append(singleFile)
+    elif(str(f.file_format)=="fastq"):
+        singleFile.append(f.dcic_alias)
+        singleFile.append(str(f.file_format))
+        #singleFile.append(str(f.file_classification))
+        if(f.file_format_specifications):
+            singleFile.append(str(f.file_format_specifications))
+        else:
+            singleFile.append("")
+        if(f.file_barcode):
+            singleFile.append(str(f.file_barcode.barcode_index))
+        else:
+            singleFile.append("")
+        if(f.barcode_in_read):
+            singleFile.append(str(f.barcode_in_read))
+        else:
+            singleFile.append("")
+        if(f.file_barcode):
+            singleFile.append(str(f.file_barcode.barcode_position))
+        else:
+            singleFile.append("")
+        singleFile.append(str(f.flowcell_details_chunk))
+#                         if(f.sequencingFile_run):
+#                             singleFile.append(str(f.sequencingFile_run))
+#                         else:
+        singleFile.append("")##flowcell_details.flowcell 
+        singleFile.append(str(f.flowcell_details_lane))
+        if(f.sequencingFile_run.run_sequencing_machine != None):
+            singleFile.append(str(f.sequencingFile_run.run_sequencing_machine))
+        else:
+            singleFile.append("")
+        if(f.sequencingFile_run.run_sequencing_instrument != None):
+            singleFile.append(str(f.sequencingFile_run.run_sequencing_instrument))
+        else:
+            singleFile.append("")
+        if(f.read_length != None):
+            singleFile.append(str(f.paired_end))
+        else:
+            singleFile.append("")
+        singleFile.append("") ##quality_metric
+        if(f.read_length != None):
+            singleFile.append(str(f.read_length))
+        else:
+            singleFile.append("")
+        if(f.relationship_type != None):
+            singleFile.append(str(f.relationship_type))
+        else:
+            singleFile.append("")
+        if(f.related_files != None):
+            singleFile.append(str(f.related_files.dcic_alias))
+        else:
+            singleFile.append("")   
+        singleFile.append(f.dbxrefs)
+        ##FileMainPATH is exported then manually remove it so that we know the path
+        singleFile.append(f.sequencingFile_mainPath)
+        
+        dcicExcelSheet['FileFastq'].append(singleFile)
 
 def appendBioRep(expPk,singleExp):
     exp = Experiment.objects.get(pk=expPk)
@@ -481,7 +576,7 @@ def appendBioRep(expPk,singleExp):
         #bioReplicates=list(set(biosamPk))
         sameFieldsBiosample=json.loads(e.experiment_biosample.biosample_fields)
         #if((sorted(expSameFields.items()) == sorted(expFields.items()))):
-        if(exp.type.field_name =="Hi-C Exp Protocol" or exp.type.field_name =="CaptureC Exp Protocol"):
+        if(exp.type.field_name in ["Hi-C Exp Protocol","CaptureC Exp Protocol","ATAC-seq Protocol"]):
             if( all(biosampleFields[x] == sameFieldsBiosample[x] for x in fieldsToCheckBiosample) 
                 and set(e.experiment_biosample.modifications.all())==set(exp.experiment_biosample.modifications.all()) 
                 and e.experiment_biosample.protocol==exp.experiment_biosample.protocol
@@ -490,6 +585,7 @@ def appendBioRep(expPk,singleExp):
                 bioReplicates.append(e.experiment_biosample.pk)
         else:
             bioReplicates.append(0)
+
     bio_rep_no = (sorted(bioReplicates)).index(exp.experiment_biosample.pk)+1
     singleExp.append(bio_rep_no)
     
@@ -521,7 +617,7 @@ def populateDict(request, experimentList):
 
     tabNames = ("Document","Protocol","Publication","IndividualMouse","IndividualHuman","Vendor","Enzyme","Biosource","Construct","TreatmentRnai",
                 "TreatmentChemical","GenomicRegion","Target","Modification","Image","BiosampleCellCulture","Biosample","FileFastq","FileFasta",
-                "ExperimentHiC","ExperimentSetReplicate","ExperimentSet")
+                "ExperimentHiC","ExperimentCaptureC","ExperimentAtacseq","ExperimentSetReplicate","ExperimentSet")
     
     for tab in tabNames:
         dcicExcelSheet[tab] = initialize(tab, dcicExcelSheet[tab])
@@ -554,19 +650,7 @@ def populateDict(request, experimentList):
         singleSample.append(sample.biosample_biosource.dcic_alias)
         if(sample.protocol):
             singleSample.append(sample.protocol.dcic_alias)
-            proto = Protocol.objects.get(pk=sample.protocol.pk)
-            if(finalizeOnly):
-                update_dcic(proto)
-            singleProtocol = []
-            singleProtocol.append(proto.dcic_alias)
-            singleProtocol.append(proto.description)
-            if(proto.enzyme):
-                appendEnzyme(proto.enzyme.pk, dcicExcelSheet,finalizeOnly)
-            if(proto.attachment):
-                singleProtocol.append(str(FILEUPLOADPATH)+str(proto.attachment))
-            else:
-                singleProtocol.append("")
-            dcicExcelSheet['Protocol'].append(singleProtocol)
+            appendProtocol(sample.protocol.pk,dcicExcelSheet,finalizeOnly)
         else:
             singleSample.append("")
         singleSample.append("")
@@ -626,10 +710,13 @@ def populateDict(request, experimentList):
             singleBcc.append(LABNAME +"BiosampleCellCulture_"+str("_".join(aliasList[1:])))
             singleBcc.append(sample.biosample_description)
             singleBcc.append(bcc["culture_start_date"])
+            singleBcc.append(bcc["cell_line_lot_number"])
             singleBcc.append(bcc["culture_duration"])
             singleBcc.append(bcc["culture_duration_units"])
             singleBcc.append(bcc["culture_harvest_date"])
             singleBcc.append(bcc["differentiation_state"])
+            singleBcc.append(bcc["doubling_number"])
+            singleBcc.append(bcc["doubling_time"])
             singleBcc.append(bcc["follows_sop"])
             singleBcc.append(bcc["karyotype"])
             if(ImageObjects.objects.filter(bioImg__pk=sample.pk)):
@@ -647,7 +734,7 @@ def populateDict(request, experimentList):
                 singleBcc.append("")
                 singleBcc.append("")
             singleBcc.append(bcc["passage_number"])
-            singleBcc.append("") ##protocol_SOP_deviations
+#             singleBcc.append("") ##protocol_SOP_deviations
             singleBcc.append("") ##protocol_additional
             
             singleBcc.append(bcc["synchronization_stage"])
@@ -696,7 +783,7 @@ def populateDict(request, experimentList):
                     singleItem.append(treatmentRnai.document.dcic_alias)
                     appendDocument(treatmentRnai.document.pk, dcicExcelSheet,finalizeOnly)
                 else:
-                    singleProtocol.append("")
+                    singleItem.append("")
                     
                 if(treatmentRnai.references):
                     singleItem.append(treatmentRnai.references.dcic_alias)
@@ -767,19 +854,7 @@ def populateDict(request, experimentList):
             ###Standard operation protocol 
             if(biosource.protocol):
                 singleBio.append(biosource.protocol.dcic_alias)
-                proto = Protocol.objects.get(pk=biosource.protocol.pk)
-                if(finalizeOnly):
-                    update_dcic(proto)
-                singleProtocol = []
-                singleProtocol.append(proto.dcic_alias)
-                singleProtocol.append(proto.description)
-                if(proto.enzyme):
-                    appendEnzyme(proto.enzyme.pk, dcicExcelSheet,finalizeOnly)
-                if(proto.attachment):
-                    singleProtocol.append(str(FILEUPLOADPATH)+str(proto.attachment))
-                else:
-                    singleProtocol.append("")
-                dcicExcelSheet['Protocol'].append(singleProtocol)
+                appendProtocol(biosource.protocol.pk, dcicExcelSheet, finalizeOnly)
             else:
                 singleBio.append("")
                 
@@ -938,105 +1013,26 @@ def populateDict(request, experimentList):
             
             if(exp.protocol):
                 singleExp.append(exp.protocol.dcic_alias)
-                proto = Protocol.objects.get(pk=exp.protocol.pk)
-                singleProtocol = []
-                singleProtocol.append(proto.dcic_alias)
-                singleProtocol.append(proto.description)
-                if(proto.attachment):
-                    singleProtocol.append(str(FILEUPLOADPATH)+str(proto.attachment))
-                else:
-                    singleProtocol.append("")
-                dcicExcelSheet['Protocol'].append(singleProtocol)
+                appendProtocol(exp.protocol.pk, dcicExcelSheet, finalizeOnly)
             
             singleExp.append("") ###protocol_variation
             singleExp.append(expFields["tagging_method"])
             
             if(SeqencingFile.objects.filter(sequencingFile_exp=exp.pk)):
                 files = SeqencingFile.objects.filter(sequencingFile_exp=exp.pk)
-                fileList = []
-                for f in files:
-                    if(finalizeOnly):
-                        update_dcic(f)
-                    fileList.append(f.dcic_alias)
-                    singleFile = []
-                    if(str(f.file_format)=="fasta"):
-                        singleFile.append(f.dcic_alias)
-                        singleFile.append(str(f.file_format))
-#                         if(f.file_classification != None):
-#                             singleFile.append(str(f.file_classification))
-#                         else:
-#                             singleFile.append("")
-                        if(f.file_format_specifications):
-                            singleFile.append(str(f.file_format_specifications))
-                        else:
-                            singleFile.append("")
-                        singleFile.append("")
-                        singleFile.append("")
-                        singleFile.append(f.dbxrefs)
-                        ##FileMainPATH is exported then manually remove it so that we know the path
-                        singleFile.append(f.sequencingFile_mainPath)
-                        
-                        dcicExcelSheet['FileFasta'].append(singleFile)
-                    elif(str(f.file_format)=="fastq"):
-                        singleFile.append(f.dcic_alias)
-                        singleFile.append(str(f.file_format))
-                        #singleFile.append(str(f.file_classification))
-                        if(f.file_format_specifications):
-                            singleFile.append(str(f.file_format_specifications))
-                        else:
-                            singleFile.append("")
-                        if(f.file_barcode):
-                            singleFile.append(str(f.file_barcode.barcode_index))
-                        else:
-                            singleFile.append("")
-                        if(f.barcode_in_read):
-                            singleFile.append(str(f.barcode_in_read))
-                        else:
-                            singleFile.append("")
-                        if(f.file_barcode):
-                            singleFile.append(str(f.file_barcode.barcode_position))
-                        else:
-                            singleFile.append("")
-                        singleFile.append(str(f.flowcell_details_chunk))
-#                         if(f.sequencingFile_run):
-#                             singleFile.append(str(f.sequencingFile_run))
-#                         else:
-                        singleFile.append("")##flowcell_details.flowcell 
-                        singleFile.append(str(f.flowcell_details_lane))
-                        if(f.sequencingFile_run.run_sequencing_machine != None):
-                            singleFile.append(str(f.sequencingFile_run.run_sequencing_machine))
-                        else:
-                            singleFile.append("")
-                        if(f.sequencingFile_run.run_sequencing_instrument != None):
-                            singleFile.append(str(f.sequencingFile_run.run_sequencing_instrument))
-                        else:
-                            singleFile.append("")
-                        if(f.read_length != None):
-                            singleFile.append(str(f.paired_end))
-                        else:
-                            singleFile.append("")
-                        singleFile.append("") ##quality_metric
-                        if(f.read_length != None):
-                            singleFile.append(str(f.read_length))
-                        else:
-                            singleFile.append("")
-                        if(f.relationship_type != None):
-                            singleFile.append(str(f.relationship_type))
-                        else:
-                            singleFile.append("")
-                        if(f.related_files != None):
-                            singleFile.append(str(f.related_files.dcic_alias))
-                        else:
-                            singleFile.append("")   
-                        singleFile.append(f.dbxrefs)
-                        ##FileMainPATH is exported then manually remove it so that we know the path
-                        singleFile.append(f.sequencingFile_mainPath)
-                        
-                        dcicExcelSheet['FileFastq'].append(singleFile)
-                singleExp.append(",".join(fileList))
-            
+                if(files.all()):
+                    fileList = []
+                    for f in files:
+                        if(finalizeOnly):
+                            update_dcic(f)
+                        fileList.append(f.dcic_alias)
+                        appendFiles(f.pk,dcicExcelSheet,finalizeOnly)
+                    singleExp.append(",".join(fileList))
+                else:
+                    singleExp.append("")
             else:
                 singleExp.append("")
+
             singleExp.append("")##experiment_relation.relationship_type
             singleExp.append("")##experiment_relation.experiment
             
@@ -1055,6 +1051,261 @@ def populateDict(request, experimentList):
             
             singleExp.append(exp.dbxrefs)
             dcicExcelSheet['ExperimentHiC'].append(singleExp)
+ #--------------
+            
+        if str(exp.type) == "CaptureC Exp Protocol":
+            singleExp = []
+            singleExp.append(exp.dcic_alias)
+            singleExp.append(str(exp.experiment_description))
+            experiment_set_join= "" 
+            replicate_set_join= ""
+            if(expSet):
+                experiment_set = []
+                replicate_set = []
+                for eSet in expSet:
+                    if(finalizeOnly):
+                        update_dcic(eSet)
+                    ExpSet = []
+                    ExpSet.append(eSet.dcic_alias)
+                    ExpSet.append(str(eSet.description))
+                    if(eSet.document):
+                        ExpSet.append(eSet.document.dcic_alias)
+                        appendDocument(eSet.document.pk, dcicExcelSheet,finalizeOnly)
+                    else:
+                        ExpSet.append("")
+                    if("replicates" in str(eSet.experimentSet_type)):
+                        dcicExcelSheet['ExperimentSetReplicate'].append(ExpSet)
+                        experiment_set = []
+                        replicate_set.append(eSet.dcic_alias)
+                    else:
+                        ExpSet.insert(2,str(eSet.experimentSet_type))
+                        dcicExcelSheet['ExperimentSet'].append(ExpSet)
+                        experiment_set.append(eSet.dcic_alias)
+                experiment_set_join= ",".join(experiment_set)    
+                replicate_set_join= ",".join(replicate_set)
+            
+            singleExp.append(replicate_set_join)
+            appendBioRep(exp.pk,singleExp)
+            appendTechRep(exp.pk,singleExp)
+#             singleExp.append("") ####*bio_rep_no
+#             singleExp.append("") ####*tec_rep_no 
+            singleExp.append(experiment_set_join)
+            singleExp.append(exp.experiment_biosample.dcic_alias)
+            
+            expFields=json.loads(exp.experiment_fields)
+            
+            singleExp.append(expFields["experiment_type"])
+            singleExp.append(str(exp.biosample_quantity))
+            singleExp.append(str(exp.biosample_quantity_units))
+            
+            singleExp.append(str(expFields["biotin_removed"]))
+            singleExp.append(str(expFields["crosslinking_method"]))
+            singleExp.append(str(expFields["crosslinking_temperature"]))
+            singleExp.append(str(expFields["crosslinking_time"]))
+            
+            if(exp.experiment_enzyme):
+                singleExp.append(exp.experiment_enzyme.dcic_alias)
+                appendEnzyme(exp.experiment_enzyme.pk, dcicExcelSheet,finalizeOnly)
+            else:
+                singleExp.append("")
+                
+            singleExp.append(str(expFields["digestion_temperature"]))
+            singleExp.append(str(expFields["digestion_time"]))
+            singleExp.append(str(expFields["enzyme_lot_number"]))
+            singleExp.append(str(expFields["follows_sop"]))
+            singleExp.append(str(expFields["average_fragment_size"]))
+            singleExp.append(str(expFields["fragment_size_range"]))
+            singleExp.append(str(expFields["fragment_size_selection_method"]))
+            singleExp.append(str(expFields["fragmentation_method"]))
+            singleExp.append(str(expFields["library_preparation_date"]))
+            singleExp.append(str(expFields["ligation_temperature"]))
+            singleExp.append(str(expFields["ligation_time"]))
+            singleExp.append(str(expFields["ligation_volume"]))
+            
+            if(exp.protocol):
+                singleExp.append(exp.protocol.dcic_alias)
+                appendProtocol(exp.protocol.pk, dcicExcelSheet, finalizeOnly)
+            
+            singleExp.append("") ###protocol_variation
+            singleExp.append(expFields["tagging_method"])
+            
+            if(SeqencingFile.objects.filter(sequencingFile_exp=exp.pk)):
+                files = SeqencingFile.objects.filter(sequencingFile_exp=exp.pk)
+                if(files.all()):
+                    fileList = []
+                    for f in files:
+                        if(finalizeOnly):
+                            update_dcic(f)
+                        fileList.append(f.dcic_alias)
+                        appendFiles(f.pk,dcicExcelSheet,finalizeOnly)
+                    singleExp.append(",".join(fileList))
+                else:
+                    singleExp.append("")
+            else:
+                singleExp.append("")
+
+            singleExp.append("")##experiment_relation.relationship_type
+            singleExp.append("")##experiment_relation.experiment
+            
+            if(exp.document):
+                singleExp.append(exp.document.dcic_alias)
+                appendDocument(exp.document.pk, dcicExcelSheet,finalizeOnly)
+            else:
+                singleExp.append("")
+            
+            
+            if(exp.references):
+                singleExp.append(exp.references.dcic_alias)
+                appendPublication(exp.references.pk, dcicExcelSheet,finalizeOnly)
+            else:
+                singleExp.append("")
+            
+            singleExp.append(exp.dbxrefs)
+            dcicExcelSheet['ExperimentCaptureC'].append(singleExp)
+            
+        #   ----------
+        elif str(exp.type) == "ATAC-seq Protocol":
+            singleExp = []
+            singleExp.append(exp.dcic_alias)
+            singleExp.append(str(exp.experiment_description))
+            experiment_set_join= "" 
+            replicate_set_join= ""
+            if(expSet):
+                experiment_set = []
+                replicate_set = []
+                for eSet in expSet:
+                    if(finalizeOnly):
+                        update_dcic(eSet)
+                    ExpSet = []
+                    ExpSet.append(eSet.dcic_alias)
+                    ExpSet.append(str(eSet.description))
+                    if(eSet.document):
+                        ExpSet.append(eSet.document.dcic_alias)
+                        appendDocument(eSet.document.pk, dcicExcelSheet,finalizeOnly)
+                    else:
+                        ExpSet.append("")
+                    if("replicates" in str(eSet.experimentSet_type)):
+                        dcicExcelSheet['ExperimentSetReplicate'].append(ExpSet)
+                        experiment_set = []
+                        replicate_set.append(eSet.dcic_alias)
+                    else:
+                        ExpSet.insert(2,str(eSet.experimentSet_type))
+                        dcicExcelSheet['ExperimentSet'].append(ExpSet)
+                        experiment_set.append(eSet.dcic_alias)
+                experiment_set_join= ",".join(experiment_set)    
+                replicate_set_join= ",".join(replicate_set)
+            
+            singleExp.append(replicate_set_join)
+            appendBioRep(exp.pk,singleExp)
+            appendTechRep(exp.pk,singleExp)
+#             singleExp.append("") ####*bio_rep_no
+#             singleExp.append("") ####*tec_rep_no 
+            singleExp.append(experiment_set_join)
+            singleExp.append(exp.experiment_biosample.dcic_alias)
+            
+            expFields=json.loads(exp.experiment_fields)
+            
+            singleExp.append(expFields["experiment_type"])
+            
+            if(Protocol.objects.filter(pk=exp.protocol.pk, protocol_type__choice_name="Authentication document")):
+                singleExp.append(exp.protocol.dcic_alias)
+                proto = Protocol.objects.filter(pk=exp.protocol.pk, protocol_type__choice_name="Authentication document")
+                if(proto.all()):
+                    protoList = []
+                    for p in proto.all():
+                        if(finalizeOnly):
+                            update_dcic(p)
+                        protoList.append(p.dcic_alias)
+                        appendProtocol(p.pk,dcicExcelSheet,finalizeOnly)
+                    singleExp.append(",".join(protoList))
+                else:
+                    singleExp.append("")
+            else:
+                    singleExp.append("")
+            
+            
+            singleExp.append(str(exp.biosample_quantity))
+            singleExp.append(str(exp.biosample_quantity_units))
+            
+            
+            if(str(expFields["enzyme_incubation_time"]) != None):
+                singleExp.append(str(expFields["enzyme_incubation_time"]))
+            else:
+                singleExp.append("")
+                
+            if(str(expFields["enzyme_lot_number"]) != None):
+                singleExp.append(str(expFields["enzyme_lot_number"]))
+            else:
+                singleExp.append("")
+            
+            singleExp.append(str(expFields["follows_sop"]))
+            
+            if(str(expFields["incubation_temperature"]) != None):
+                singleExp.append(str(expFields["incubation_temperature"]))
+            else:
+                singleExp.append("")
+            
+            if(str(expFields["library_preparation_date"]) != None):
+                singleExp.append(str(expFields["library_preparation_date"]))
+            else:
+                singleExp.append("")
+            
+            if(str(expFields["pcr_cycles"]) != None):
+                singleExp.append(str(expFields["pcr_cycles"]))
+            else:
+                singleExp.append("")
+            singleExp.append(str(expFields["primer_removal_method"]))
+            
+            if(exp.protocol):
+                singleExp.append(exp.protocol.dcic_alias)
+                appendProtocol(exp.protocol.pk, dcicExcelSheet, finalizeOnly)
+            else:
+                singleExp.append("")
+            
+            singleExp.append("") ###protocol_variation
+            
+            if(exp.experiment_enzyme):
+                singleExp.append(exp.experiment_enzyme.dcic_alias)
+                appendEnzyme(exp.experiment_enzyme.pk, dcicExcelSheet,finalizeOnly)
+            else:
+                singleExp.append("")
+                
+            
+            if(SeqencingFile.objects.filter(sequencingFile_exp=exp.pk)):
+                files = SeqencingFile.objects.filter(sequencingFile_exp=exp.pk)
+                if(files.all()):
+                    fileList = []
+                    for f in files:
+                        if(finalizeOnly):
+                            update_dcic(f)
+                        fileList.append(f.dcic_alias)
+                        appendFiles(f.pk,dcicExcelSheet,finalizeOnly)
+                    singleExp.append(",".join(fileList))
+                else:
+                    singleExp.append("")
+            else:
+                singleExp.append("")
+                
+                
+            singleExp.append("")##experiment_relation.relationship_type
+            singleExp.append("")##experiment_relation.experiment
+            
+            if(exp.document):
+                singleExp.append(exp.document.dcic_alias)
+                appendDocument(exp.document.pk, dcicExcelSheet,finalizeOnly)
+            else:
+                singleExp.append("")
+            
+            
+            if(exp.references):
+                singleExp.append(exp.references.dcic_alias)
+                appendPublication(exp.references.pk, dcicExcelSheet,finalizeOnly)
+            else:
+                singleExp.append("")
+            
+            singleExp.append(exp.dbxrefs)
+            dcicExcelSheet['ExperimentAtacseq'].append(singleExp)
+        # -------
         
             
 #             jsonObj = JsonObjField.objects.get(field_name="Hi-C Protocol")

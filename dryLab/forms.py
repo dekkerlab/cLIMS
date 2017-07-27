@@ -43,7 +43,7 @@ class SequencingRunSearchForm(BaseSearchForm):
 
 class SeqencingFileForm(ModelForm):
     use_required_attribute = False
-    file_barcode = forms.ModelChoiceField(Barcode.objects.all(), widget=SelectWithPop, required=False)
+    file_barcode = forms.ModelChoiceField(Barcode.objects.all(), widget=SelectWithPop, required=False, label_suffix='addBarcode')
     
     class Meta:
         model = SeqencingFile

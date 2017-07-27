@@ -477,6 +477,7 @@ class AddBiosample(View):
         form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
         form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
         form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
+        form.fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
         return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
     
     def post(self,request):
@@ -532,6 +533,7 @@ class AddBiosample(View):
                 form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
                 form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
                 form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
+                form.fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
 
 
@@ -731,6 +733,7 @@ class AddProtocol(View):
     def get(self,request):
         form = self.form_class()
         pageContext = {'form': form, 'field':self.field}
+        form.fields["protocol_type"].queryset = Choice.objects.filter(choice_type="protocol_type")
         return render(request, "popup.html", pageContext)
     
     def post(self,request):
@@ -751,6 +754,7 @@ class AddProtocol(View):
                 return HttpResponse('<script type="text/javascript">opener.dismissAddAnotherPopup(window, "%s", "%s");</script>' %(escape(newObject._get_pk_val()), escape(newObject)))
         else:
             pageContext = {'form': form, 'field':self.field}
+            form.fields["protocol_type"].queryset = Choice.objects.filter(choice_type="protocol_type")
             return render(request, "popup.html", pageContext)
 
 @class_login_required        
