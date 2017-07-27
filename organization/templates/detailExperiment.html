@@ -225,6 +225,14 @@
 {% if not biosample.protocol  == None %}
 <span class="rowHead">Biosample Protocol: </span><a href="/detailProtocol/{{ biosample.protocol.id }}">{{ biosample.protocol }}</a><br/>
 {% endif %}
+
+{% if biosample.authentication_docs.all%}
+<span class="rowHead">Authentication Docs: </span><br/>
+{% for values in biosample.authentication_docs.all %}
+	    	({{ forloop.counter }}) <a href="/detailProtocol/{{ values.id }}">{{values}}</a><br/>
+{% endfor %}
+{% endif %}
+
 {% if biosample.biosample_TreatmentRnai.all%}
 <span class="rowHead">Biosample Treatment RNAi: </span><br/>
 {% for values in biosample.biosample_TreatmentRnai.all %}
