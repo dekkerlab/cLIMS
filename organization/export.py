@@ -1237,7 +1237,7 @@ def populateDict(request, experimentList):
             
             singleExp.append(expFields["experiment_type"])
             
-            if(Protocol.objects.filter(pk=exp.protocol.pk, protocol_type__choice_name="Authentication document")):
+            if(Protocol.objects.filter(protocol_type__choice_name="Authentication document", expAddProto__pk=exp.pk)):
                 proto = Protocol.objects.filter(pk=exp.protocol.pk, protocol_type__choice_name="Authentication document")
                 if(proto.all()):
                     protoList = []
