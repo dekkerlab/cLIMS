@@ -745,7 +745,21 @@ def populateDict(request, experimentList):
             singleBcc.append(bcc["passage_number"])
             
 #             singleBcc.append("") ##protocol_SOP_deviations
-            singleBcc.append("") ##protocol_additional
+                ##protocol_additional
+            if(Protocol.objects.filter(bioAddProto__pk=sample.pk)):
+                proto = Protocol.objects.filter(bioAddProto__pk=sample.pk)
+                if(proto.all()):
+                    protoList = []
+                    for p in proto.all():
+                        if(finalizeOnly):
+                            update_dcic(p)
+                        protoList.append(p.dcic_alias)
+                        appendProtocol(p.pk,dcicExcelSheet,finalizeOnly)
+                    singleBcc.append(",".join(protoList))
+                else:
+                    singleBcc.append("")
+            else:
+                    singleBcc.append("")
             
             singleBcc.append(bcc["synchronization_stage"])
             

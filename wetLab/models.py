@@ -203,8 +203,8 @@ class Biosample(UserOwner, References):
     biosample_type =  models.ForeignKey('organization.JsonObjField',on_delete=models.CASCADE, related_name='biotype', null=False, default="", verbose_name="BiosampleCellCulture Details",help_text="JsonObjField")
     biosample_fields = JSONField(  null=True, blank=True)
     imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='bioImg', blank=True, help_text="Cell growth images, karyotype_image, morphology_image.")
-    authentication_docs =  models.ManyToManyField(Protocol,blank=True, related_name='bioAddProto', verbose_name="authentication_docs", 
-                                                   help_text="Attach any authentication document for your biosample here. e.g. Fragment Analyzer document, Gel images."
+    protocols_additional =  models.ManyToManyField(Protocol,blank=True, related_name='bioAddProto', 
+                                                   help_text="Protocols describing deviations from 4DN SOPs, including additional culture manipulations eg. stem cell differentiation or cell cycle synchronization if they do not follow recommended 4DN SOPs"
                                                    )
     biosample_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A plain text for catalog description.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")

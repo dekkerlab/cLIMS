@@ -477,7 +477,6 @@ class AddBiosample(View):
         form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
         form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
         form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
-        form.fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
         return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
     
     def post(self,request):
@@ -533,7 +532,6 @@ class AddBiosample(View):
                 form.fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
                 form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
                 form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
-                form.fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
 
 
@@ -547,6 +545,7 @@ class AddExperiment(View):
         form = self.form_class()
         form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
         form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Experiment")
+        form.fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
         return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
     
     def post(self,request):
@@ -566,6 +565,7 @@ class AddExperiment(View):
         else:
             form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
             form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Experiment")
+            form.fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
             return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
 
 

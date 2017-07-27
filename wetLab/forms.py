@@ -170,16 +170,16 @@ class BiosampleForm(ModelForm):
                                                              help_text="Select previously created treatment", label_suffix='addOther')
     imageObjects = forms.ModelMultipleChoiceField (ImageObjects.objects.all(), widget=MultipleSelectWithPop, required=False,
                                                     help_text="Cell growth images, karyotype_image, morphology_image.", label_suffix='addImageObjects')
-    authentication_docs = forms.ModelMultipleChoiceField (Protocol.objects.all(), widget=MultipleSelectWithPop, required=False,
-                                                           label="authentication_docs",
+    protocols_additional = forms.ModelMultipleChoiceField (Protocol.objects.all(), widget=MultipleSelectWithPop, required=False,
                                                            label_suffix='addProtocol',
-                                                           help_text="Images or Documents that authenticate the experiment e.g. Fragment Analyzer document, Gel images.")
+                                                           help_text="Protocols describing deviations from 4DN SOPs, including additional culture manipulations eg. stem cell differentiation \
+                                                           or cell cycle synchronization if they do not follow recommended 4DN SOPs")
     
     class Meta:
         model = Biosample
         exclude = ('biosample_fields','userOwner','biosample_biosource', 'biosample_individual','dcic_alias','update_dcic',)
         fields = ['biosample_name','modifications','protocol','biosample_TreatmentRnai',
-                  'biosample_TreatmentChemical','biosample_OtherTreatment','imageObjects','authentication_docs','biosample_type',
+                  'biosample_TreatmentChemical','biosample_OtherTreatment','imageObjects','protocols_additional','biosample_type',
                   'references','document','url','dbxrefs','biosample_description']
     
     def save (self, *args, **kwargs):

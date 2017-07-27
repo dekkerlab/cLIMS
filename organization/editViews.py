@@ -84,6 +84,7 @@ class EditExperiment(UpdateView):
         if(obj.experiment_fields):
             context['jsonObj']= json.loads(obj.experiment_fields)
         context['form'].fields["type"].queryset = JsonObjField.objects.filter(field_type="Experiment")
+        context['form'].fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
         context['action'] = reverse('editProject',
                                 kwargs={'pk': self.get_object().id})
         return context
@@ -217,7 +218,6 @@ class EditBiosample(UpdateView):
         context['form'].fields["biosample_type"].queryset = JsonObjField.objects.filter(field_type="Biosample")
         context['form'].fields["imageObjects"].queryset = ImageObjects.objects.filter(project=self.request.session['projectId'])
         context['form'].fields["modifications"].queryset = Modification.objects.filter(userOwner=self.request.user.pk)
-        context['form'].fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
         context['action'] = reverse('detailExperiment',
                                 kwargs={'pk': self.get_object().id})
         return context

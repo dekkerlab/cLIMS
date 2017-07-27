@@ -59,7 +59,10 @@ class Experiment(References):
     variation = models.TextField( null=True, blank=True, verbose_name="protocol_variations")
     experiment_enzyme = models.ForeignKey('wetLab.Enzyme',related_name='expEnz', on_delete=models.CASCADE,help_text="The enzyme used for digestion of the DNA.")
     experiment_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A short description of the experiment")
-    imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='expImg' , blank=True, help_text="Lab gel and fragment analyzer images")
+    authentication_docs =  models.ManyToManyField('wetLab.Protocol',blank=True, related_name='expAddProto', 
+                                                   help_text="Attach any authentication document for your biosample here. e.g. Fragment Analyzer document, Gel images."
+                                                   )
+    imageObjects = models.ManyToManyField( 'dryLab.ImageObjects', related_name='expImg' , blank=True, help_text="additional images.")
     dcic_alias = models.CharField(max_length=500, null=False, default="", unique=True, db_index=True, help_text="Provide an alias name for the object for DCIC submission.")
     update_dcic = models.BooleanField(default=False, help_text="This object needs to be updated at DCIC.")
     finalize_dcic_submission = models.BooleanField(default=False, help_text="This object and related entries have been submitted to DCIC")
