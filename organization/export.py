@@ -472,6 +472,10 @@ def appendProtocol(pKey,dcicExcelSheet,finalizeOnly):
     singleProtocol = []
     singleProtocol.append(protocolObj.dcic_alias)
     singleProtocol.append(protocolObj.description)
+    if(protocolObj.protocol_type != None):
+        singleProtocol.append(protocolObj.protocol_type.choice_name)
+    else:
+        singleProtocol.append("")
     if(protocolObj.enzyme):
         appendEnzyme(protocolObj.enzyme.pk, dcicExcelSheet,finalizeOnly)
     if(protocolObj.attachment):
@@ -877,7 +881,7 @@ def populateDict(request, experimentList):
                 singleBio.append("")
             
             #singleBio.append(biosource.cell_line_termid)
-            singleBio.append("") #cell_line_termid calculated
+            #singleBio.append("") #cell_line_termid calculated
             
             if(biosource.biosource_individual):
                 singleBio.append(biosource.biosource_individual.dcic_alias)
@@ -1220,7 +1224,6 @@ def populateDict(request, experimentList):
             singleExp.append(expFields["experiment_type"])
             
             if(Protocol.objects.filter(pk=exp.protocol.pk, protocol_type__choice_name="Authentication document")):
-                singleExp.append(exp.protocol.dcic_alias)
                 proto = Protocol.objects.filter(pk=exp.protocol.pk, protocol_type__choice_name="Authentication document")
                 if(proto.all()):
                     protoList = []
@@ -1252,17 +1255,17 @@ def populateDict(request, experimentList):
             
             singleExp.append(str(expFields["follows_sop"]))
             
-            if(str(expFields["incubation_temperature"]) != None):
+            if(expFields["incubation_temperature"] != None):
                 singleExp.append(str(expFields["incubation_temperature"]))
             else:
                 singleExp.append("")
             
-            if(str(expFields["library_preparation_date"]) != None):
+            if(expFields["library_preparation_date"] != None):
                 singleExp.append(str(expFields["library_preparation_date"]))
             else:
                 singleExp.append("")
             
-            if(str(expFields["pcr_cycles"]) != None):
+            if(expFields["pcr_cycles"] != None):
                 singleExp.append(str(expFields["pcr_cycles"]))
             else:
                 singleExp.append("")
