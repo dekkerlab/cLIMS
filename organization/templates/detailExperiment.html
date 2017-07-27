@@ -45,6 +45,13 @@
 <span class="rowHead">Needs DCIC Update: </span>{{ experiment.update_dcic }}<br/>
 <span class="rowHead">DCIC Submitted: </span>{{ experiment.finalize_dcic_submission }}<br/>
 
+{% if experiment.authentication_docs.all%}
+<span class="rowHead">Authentication Docs: </span><br/>
+{% for values in experiment.authentication_docs.all %}
+	    	({{ forloop.counter }}) <a href="/detailProtocol/{{ values.id }}">{{values}}</a><br/>
+{% endfor %}
+{% endif %}
+
 {% if not experiment.document  == None %}
 	<span class="rowHead">Experiment Documents: </span><a href="/detailDocument/{{experiment.document.id}}">{{experiment.document}}</a><br/>
 {% endif %}
@@ -226,12 +233,14 @@
 <span class="rowHead">Biosample Protocol: </span><a href="/detailProtocol/{{ biosample.protocol.id }}">{{ biosample.protocol }}</a><br/>
 {% endif %}
 
-{% if biosample.authentication_docs.all%}
-<span class="rowHead">Authentication Docs: </span><br/>
-{% for values in biosample.authentication_docs.all %}
+
+{% if biosample.protocols_additional.all%}
+<span class="rowHead">Additional Protocol: </span><br/>
+{% for values in biosample.protocols_additional.all %}
 	    	({{ forloop.counter }}) <a href="/detailProtocol/{{ values.id }}">{{values}}</a><br/>
 {% endfor %}
 {% endif %}
+
 
 {% if biosample.biosample_TreatmentRnai.all%}
 <span class="rowHead">Biosample Treatment RNAi: </span><br/>
