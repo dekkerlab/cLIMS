@@ -732,7 +732,7 @@ def populateDict(request, experimentList):
                         singleBcc.append(imgs.dcic_alias)
                         appendImageObjects(imgs.pk,dcicExcelSheet,finalizeOnly)
                         imgC+=2
-                for i in range(0,(imgC-2)):
+                for i in range(0,(2-imgC)):
                     singleBcc.append("")
             else:
                 singleBcc.append("")
