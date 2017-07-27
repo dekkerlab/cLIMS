@@ -700,25 +700,61 @@ def populateDict(request, experimentList):
             singleSample.append("")
         
         dcicExcelSheet['Biosample'].append(singleSample)
-        
+
         ##Biosamplecellculture
         if(sample.biosample_type):
             bcc=json.loads(sample.biosample_fields)
             singleBcc = []
             ##BiosampleCellCulture is a special case for DCIC Alias since there is only one object Biosample for this
             aliasList=sample.dcic_alias.split("_")
+            
             singleBcc.append(LABNAME +"BiosampleCellCulture_"+str("_".join(aliasList[1:])))
             singleBcc.append(sample.biosample_description)
-            singleBcc.append(bcc["culture_start_date"])
-            singleBcc.append(bcc["cell_line_lot_number"])
-            singleBcc.append(bcc["culture_duration"])
-            singleBcc.append(bcc["culture_duration_units"])
-            singleBcc.append(bcc["culture_harvest_date"])
-            singleBcc.append(bcc["differentiation_state"])
-            singleBcc.append(bcc["doubling_number"])
-            singleBcc.append(bcc["doubling_time"])
-            singleBcc.append(bcc["follows_sop"])
-            singleBcc.append(bcc["karyotype"])
+            if(bcc["culture_start_date"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["culture_start_date"])
+                
+            if(bcc["cell_line_lot_number"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["cell_line_lot_number"])
+            
+            if(bcc["culture_duration"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["culture_duration"])
+            
+            if(bcc["culture_harvest_date"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["culture_harvest_date"])
+            
+            if(bcc["differentiation_state"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["differentiation_state"])
+            
+            if(bcc["doubling_number"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["doubling_number"])
+            
+            if(bcc["doubling_time"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["doubling_time"])
+            
+            if(bcc["follows_sop"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["follows_sop"])
+            
+            if(bcc["karyotype"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["karyotype"])
+
             if(ImageObjects.objects.filter(bioImg__pk=sample.pk)):
                 image=ImageObjects.objects.filter(bioImg__pk=sample.pk)
                 for imgs in image:
@@ -733,12 +769,26 @@ def populateDict(request, experimentList):
             else:
                 singleBcc.append("")
                 singleBcc.append("")
-            singleBcc.append(bcc["passage_number"])
+            
+            if(bcc["passage_number"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["passage_number"])
+            
 #             singleBcc.append("") ##protocol_SOP_deviations
             singleBcc.append("") ##protocol_additional
             
-            singleBcc.append(bcc["synchronization_stage"])
-            singleBcc.append(sample.dbxrefs)
+            if(bcc["synchronization_stage"]==""):
+                singleBcc.append("")
+            else:
+                singleBcc.append(bcc["synchronization_stage"])
+            
+            if(sample.dbxrefs != None ):
+                singleBcc.append(sample.dbxrefs)
+            else:
+                singleBcc.append("")
+            
+            
             
 #             for keys in jsonFields:
 #                 json_val = bcc[keys]
