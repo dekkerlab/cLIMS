@@ -490,6 +490,7 @@ def appendFiles(pKey,dcicExcelSheet,finalizeOnly):
     singleFile = []
     if(str(f.file_format)=="fasta"):
         singleFile.append(f.dcic_alias)
+        singleFile.append("") #description
         singleFile.append(str(f.file_format))
 #                         if(f.file_classification != None):
 #                             singleFile.append(str(f.file_classification))
@@ -508,6 +509,7 @@ def appendFiles(pKey,dcicExcelSheet,finalizeOnly):
         dcicExcelSheet['FileFasta'].append(singleFile)
     elif(str(f.file_format)=="fastq"):
         singleFile.append(f.dcic_alias)
+        singleFile.append("") #description
         singleFile.append(str(f.file_format))
         #singleFile.append(str(f.file_classification))
         if(f.file_format_specifications):
@@ -544,7 +546,7 @@ def appendFiles(pKey,dcicExcelSheet,finalizeOnly):
             singleFile.append(str(f.paired_end))
         else:
             singleFile.append("")
-        singleFile.append("") ##quality_metric
+        #singleFile.append("") ##quality_metric
         if(f.read_length != None):
             singleFile.append(str(f.read_length))
         else:
