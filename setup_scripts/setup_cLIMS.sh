@@ -28,8 +28,6 @@ sudo chmod -R 777 media/
 
 sudo python3 /djangoProject/cLIMS/manage.py collectstatic
 
-sudo rm -r cLIMS
-sudo rm download_from_git_config_apache2.sh  local_postgresql_setup.sh  setup_main.sh  ubuntu1604_install_requirements.sh
 sudo rm $input_variable.sql.txt
 
 sudo /etc/init.d/apache2 start
