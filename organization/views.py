@@ -174,17 +174,15 @@ class DetailProject(View):
 
 def addUnits(jsonValue):
     jsonValueLoad=json.loads(jsonValue)
-    newJsonDict={}
-    for keys in jsonValueLoad:
+    for keys in list(jsonValueLoad):
         values=jsonValueLoad[keys]
         if("units" in keys):
             splitKey=keys.split("_units")
             att=jsonValueLoad[splitKey[0]]
             unit=values
-            newJsonDict[splitKey[0]]=att+" "+unit
-        else:
-            newJsonDict[keys]=values
-    return (newJsonDict)
+            jsonValueLoad[splitKey[0]]=att+" "+unit
+            del jsonValueLoad[keys]
+    return (jsonValueLoad)
 
 @class_login_required
 class DetailExperiment(View):

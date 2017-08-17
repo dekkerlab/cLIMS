@@ -1,6 +1,10 @@
 
 $(document).ready(function(){
 	
+	 $('.paginationTable').dataTable({
+		 "ordering": false
+	 });
+	
     $(".divison").hover(function(){
         $(this).css("background-color", "yellow");
         }, function(){
