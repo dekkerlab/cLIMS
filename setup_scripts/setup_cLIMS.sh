@@ -24,7 +24,7 @@ cat $input_variable.sql.txt | sudo -u postgres psql clims_db
 
 sudo rm -r /djangoProject/cLIMS/media/*
 sudo aws s3 cp s3://dekkerlab-web/media-backups /djangoProject/cLIMS/media --recursive
-sudo chmod -R 777 media/
+sudo chmod -R 777 /djangoProject/cLIMS/media/
 
 sudo python3 /djangoProject/cLIMS/manage.py collectstatic
 
