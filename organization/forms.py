@@ -50,12 +50,12 @@ class ExperimentForm(ModelForm):
     authentication_docs = forms.ModelMultipleChoiceField (Protocol.objects.all(), widget=MultipleSelectWithPop, required=False,
                                                            label_suffix='addProtocol',
                                                            help_text="Images or Documents that authenticate the experiment e.g. Fragment Analyzer document, Gel images.")
-    #variation = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, label_suffix='addProtocol', label="Protocol Variations")
+    variation = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, label_suffix='addProtocol', label="Protocol Variations")
     
     class Meta:
         model = Experiment
         exclude = ('project','experiment_biosample','experiment_fields','dcic_alias','update_dcic','finalize_dcic_submission',)
-        fields = ['experiment_name','biosample_quantity','biosample_quantity_units','protocol','type','experiment_enzyme',
+        fields = ['experiment_name','biosample_quantity','biosample_quantity_units','protocol','type','variation','experiment_enzyme',
                   'authentication_docs','imageObjects','references','document','url','dbxrefs','experiment_description']
     
     def save (self, *args, **kwargs):

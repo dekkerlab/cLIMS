@@ -57,7 +57,7 @@ class Experiment(References):
     type = models.ForeignKey('organization.JsonObjField', on_delete=models.CASCADE, related_name='expType', help_text="JsonObjField")
     experiment_fields = JSONField(null=True, blank=True)
     #variation = models.TextField( null=True, blank=True, verbose_name="protocol_variations")
-    #variation = models.ForeignKey('wetLab.Protocol',related_name='expProVar', verbose_name="protocol_variations", blank=True, null=True)
+    variation = models.ForeignKey('wetLab.Protocol',related_name='expProVar', verbose_name="protocol_variations", blank=True, null=True)
     experiment_enzyme = models.ForeignKey('wetLab.Enzyme',related_name='expEnz', on_delete=models.CASCADE,help_text="The enzyme used for digestion of the DNA.")
     experiment_description = models.CharField(max_length=200,  null=True, blank=True, help_text="A short description of the experiment")
     authentication_docs =  models.ManyToManyField('wetLab.Protocol',blank=True, related_name='expAddProto', 
