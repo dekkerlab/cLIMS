@@ -29,12 +29,12 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+#SECURE_SSL_REDIRECT = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
-os.environ['wsgi.url_scheme'] = 'https'
+#os.environ['wsgi.url_scheme'] = 'https'
 
 # Application definition
 
@@ -141,8 +141,10 @@ STATIC_URL = '/static/'
 
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('login')
+
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 Error_URL = reverse_lazy('error')
+Error_URL_view = reverse_lazy('error_view_only')
  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

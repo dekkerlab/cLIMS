@@ -11,6 +11,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/static/siteWide/js/datatables.min.js"></script>
+<script type="text/javascript" src="/static/siteWide/js/baseCustom.js"></script>
+
 <!-- Bootstrap Core CSS -->
     <link href="/static/siteWide/css/bootstrap.min.css" rel="stylesheet">
 
@@ -77,4 +79,9 @@
     {% block content %}
      {% endblock %}
 </body>
+{% if request.session.view_only_user  ==  True%}
+	<input type="hidden" id="hdnSession" value=True />
+{% else %}
+	<input type="hidden" id="hdnSession" value=False />
+{% endif %}
 </html>

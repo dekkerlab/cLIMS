@@ -17,7 +17,7 @@
 {% comment %}
  {% if sequencingRun.run_Add_Barcode == "Yes" %}
     	<a href="/addBarcode/{{ object.id }}">
-			<button type="button" class="btn btn-success pull-right">Add/Delete Barcode</button>
+			<button type="button" class="btn btn-success pull-right view_only">Add/Delete Barcode</button>
 	</a>
 	{% endif %}
 {% endcomment %}
@@ -25,7 +25,7 @@
 
 
     <a href="#">
-		<button type="button" class="btn btn-warning edit pull-right">Edit</button>
+		<button type="button" class="btn btn-warning edit pull-right view_only">Edit</button>
 	</a>
 	 <a href="/deleteSequencingRun/{{ sequencingRun.id }}">
 		<button type="button" class="btn btn-danger pull-right hidden show">Delete Run</button>

@@ -54,7 +54,7 @@ class ExperimentForm(ModelForm):
     class Meta:
         model = Experiment
         exclude = ('project','experiment_biosample','experiment_fields','dcic_alias','update_dcic','finalize_dcic_submission',)
-        fields = ['experiment_name','biosample_quantity','biosample_quantity_units','protocol','type','variation','experiment_enzyme',
+        fields = ['experiment_name','biosample_quantity','biosample_quantity_units','protocol','type','experiment_enzyme',
                   'authentication_docs','imageObjects','references','document','url','dbxrefs','experiment_description']
     
     def save (self, *args, **kwargs):

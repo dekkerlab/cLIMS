@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^$', views.login,{'template_name': 'registration/login.html'},name='login'),
     url(r'^logout/$', auth_views.logout,{'template_name': 'registration/logout.html'}, name='logout'),
     url(r'^error/$', ErrorView.as_view(), name='error'),
+    url(r'^error_view/$', ErrorViewOnly.as_view(), name='error_view_only'),
 #     url(r'^$', RedirectView.as_view(pattern_name='login',permanent=False)),
     url(r'^home/$', HomeView.as_view(), name='home'),
     

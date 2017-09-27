@@ -1,7 +1,8 @@
 from django.contrib.auth.views import login as contrib_login
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect, render_to_response,\
+    get_object_or_404
 from django.views.generic.base import View
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -24,21 +25,30 @@ import itertools
 import re
 from django.utils.html import escape
 from django.template.context import RequestContext
-from organization.decorators import class_login_required
+from organization.decorators import class_login_required, require_permission,\
+    view_only
 from django.dispatch.dispatcher import receiver
 from django.contrib.auth.signals import user_logged_in
 from django.contrib import messages
 from organization.export import exportDCIC
+from django.utils.decorators import method_decorator
+import organization
+from django.contrib.auth.models import Permission
 # Create your views here.
 
 @receiver(user_logged_in)
 def sig_user_logged_in(sender, user, request, **kwargs):
-        if('Member' in map(str, request.user.groups.all())):
-            request.session['currentGroup'] = "member"
-        elif('Collaborator' in map(str, request.user.groups.all())):
-            request.session['currentGroup'] = "collaborator"
-        elif ('Admin' in map(str, request.user.groups.all()) or 'Principal Investigator' in map(str, request.user.groups.all())):
-            request.session['currentGroup'] = "admin"
+    for i in request.user.groups.all():
+        if("view_only_user" in [x.codename for x in i.permissions.all()]):
+            request.session['view_only_user'] = True
+        else:
+            request.session['view_only_user'] = False
+    if('Member' in map(str, request.user.groups.all())):
+        request.session['currentGroup'] = "member"
+    elif('Collaborator' in map(str, request.user.groups.all())):
+        request.session['currentGroup'] = "collaborator"
+    elif ('Admin' in map(str, request.user.groups.all()) or 'Principal Investigator' in map(str, request.user.groups.all())):
+        request.session['currentGroup'] = "admin"
 
 
 def login(request, **kwargs):
@@ -89,6 +99,12 @@ class ErrorView(View):
         context = {}
         context['project_owner']=project_owner
         return render(request, self.error_page, context)
+    
+@class_login_required
+class ErrorViewOnly(View):
+    error_page = 'viewOnlyError.html'
+    def get(self,request):
+        return render(request, self.error_page)
         
 
 @class_login_required 
@@ -117,6 +133,10 @@ class AddProject(View):
             return HttpResponseRedirect('/showProject/')
         else:
             return render(request, self.template_name,{'form':form})
+    
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 @class_login_required
 class ShowProject(View):
@@ -171,6 +191,7 @@ class DetailProject(View):
         context['fileSets']= fileSets
         context['tags']= tags
         return render(request, self.template_name, context)
+    
 
 def addUnits(jsonValue):
     jsonValueLoad=json.loads(jsonValue)
@@ -404,7 +425,10 @@ class AddIndividual(View):
                 isExisting = (selectForm.fields["Individual"].queryset.count() > 0)
                 form.fields["individual_type"].queryset = JsonObjField.objects.filter(field_type="Individual")
                 return render(request, self.template_name,{'form':form, 'form_class':"Individual", 'existing':existing,'isExisting':isExisting})
-
+    
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 @class_login_required
 class AddBiosource(View): 
@@ -453,7 +477,10 @@ class AddBiosource(View):
                 form.fields["biosource_cell_line_tier"].queryset = Choice.objects.filter(choice_type="biosource_cell_line_tier")
                 form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosource", 'existing':existing,'isExisting':isExisting})
-
+    
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 @class_login_required
 class AddBiosample(View): 
@@ -531,7 +558,10 @@ class AddBiosample(View):
                 form.fields["imageObjects"].queryset = ImageObjects.objects.filter(project=request.session['projectId'])
                 form.fields["modifications"].queryset = Modification.objects.filter(userOwner=request.user.pk)
                 return render(request, self.template_name,{'form':form, 'form_class':"Biosample", 'existing':existing,'isExisting':isExisting})
-
+    
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 @class_login_required        
 class AddExperiment(View): 
@@ -565,7 +595,9 @@ class AddExperiment(View):
             form.fields["type"].queryset = JsonObjField.objects.filter(field_type="Experiment")
             form.fields["authentication_docs"].queryset = Protocol.objects.filter(protocol_type__choice_name="Authentication document")
             return render(request, self.template_name,{'form':form, 'form_class':"Experiment"})
-
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 @class_login_required
 class AddModification(View): 
@@ -626,7 +658,11 @@ class AddModification(View):
             regions_form.fields["genomicRegions_chromosome"].queryset = Choice.objects.filter(choice_type="genomicRegions_chromosome")
             target_form.fields["targeted_structure"].queryset = Choice.objects.filter(choice_type="targeted_structure")
             return render(request, self.template_name,{'form':form, 'construct_form':construct_form,'regions_form':regions_form, 'target_form':target_form})
-
+    
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 @class_login_required        
 class AddConstruct(View): 
     form_class = ConstructForm
@@ -657,8 +693,11 @@ class AddConstruct(View):
             form.fields["construct_type"].queryset = Choice.objects.filter(choice_type="construct_type")
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
-
-
+    
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
 @class_login_required        
 class AddTarget(View): 
     form_class = TargetForm
@@ -688,6 +727,10 @@ class AddTarget(View):
             pageContext = {'form': form, 'field':self.field}
             form.fields["targeted_structure"].queryset = Choice.objects.filter(choice_type="targeted_structure")
             return render(request, "popup.html", pageContext)
+
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 @class_login_required        
 class AddGenomicRegions(View): 
@@ -720,7 +763,9 @@ class AddGenomicRegions(View):
             form.fields["genomicRegions_genome_assembly"].queryset = Choice.objects.filter(choice_type="genomicRegions_genome_assembly")
             form.fields["genomicRegions_chromosome"].queryset = Choice.objects.filter(choice_type="genomicRegions_chromosome")
             return render(request, "popup.html", pageContext)
-        
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)        
         
 
 
@@ -755,6 +800,10 @@ class AddProtocol(View):
             form.fields["protocol_type"].queryset = Choice.objects.filter(choice_type="protocol_type")
             return render(request, "popup.html", pageContext)
 
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+
 @class_login_required        
 class AddTreatmentRnai(View): 
     form_class = TreatmentRnaiForm
@@ -788,6 +837,11 @@ class AddTreatmentRnai(View):
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
 
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
+
 @class_login_required        
 class AddTreatmentChemical(View): 
     form_class = TreatmentChemicalForm
@@ -820,6 +874,10 @@ class AddTreatmentChemical(View):
             form.fields["treatmentChemical_duration_units"].queryset = Choice.objects.filter(choice_type="treatmentChemical_duration_units")
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
+    
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 @class_login_required        
 class AddOther(View): 
@@ -847,6 +905,10 @@ class AddOther(View):
         else:
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
+
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
         
 
 @class_login_required
@@ -878,6 +940,10 @@ class AddDocument(View):
             form.fields["type"].queryset = Choice.objects.filter(choice_type="document_type")
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
+
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
         
 
 @class_login_required
@@ -916,6 +982,11 @@ class AddPublication(View):
             pageContext = {'form': form, 'field':self.field}
             return render(request, "popup.html", pageContext)
 
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
+
 @class_login_required
 class AddSequencingRun(View): 
     template_name = 'customForm.html'
@@ -950,6 +1021,10 @@ class AddSequencingRun(View):
             form.fields["run_sequencing_instrument"].queryset = Choice.objects.filter(choice_type="run_sequencing_instrument")
             return render(request, self.template_name,{'form':form, 'form_class':"SequencingRun"})
 
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+
 @class_login_required
 class AddBarcode(View):
     form_class = BarcodeForm
@@ -977,6 +1052,9 @@ class AddBarcode(View):
             pageContext = {'form': form, 'field':self.field}
             form.fields["barcode_index"].queryset = Choice.objects.filter(choice_type="barcode")
             return render(request, "popup.html", pageContext)
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 #     
 #     template_name = 'barcodeForm.html'
 #     error_page = 'error.html'
@@ -1041,6 +1119,10 @@ class AddSeqencingFile(View):
             #form.fields["file_classification"].queryset = Choice.objects.filter(choice_type="file_classification")
             return render(request, self.template_name,{'form':form, 'form_class':"SeqencingFile"})
 
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+
 @class_login_required        
 class AddFileSet(View): 
     template_name = 'customForm.html'
@@ -1068,6 +1150,10 @@ class AddFileSet(View):
             form.fields["fileset_type"].queryset = Choice.objects.filter(choice_type="fileset_type")
             form.fields["fileSet_file"].queryset = SeqencingFile.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"FileSet"})
+
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 @class_login_required        
 class AddExperimentSet(View): 
@@ -1100,6 +1186,11 @@ class AddExperimentSet(View):
             form.fields["experimentSet_exp"].queryset = Experiment.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"ExperimentSet"})
 
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
+    
+
 @class_login_required
 class AddTag(View): 
     template_name = 'customForm.html'
@@ -1127,6 +1218,10 @@ class AddTag(View):
         else:
             form.fields["tag_exp"].queryset = Experiment.objects.filter(project=request.session['projectId'])
             return render(request, self.template_name,{'form':form, 'form_class':"Tag"})
+
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 @class_login_required
 class AddImageObjects(View): 
@@ -1158,6 +1253,10 @@ class AddImageObjects(View):
             pageContext = {'form': form, 'field':self.field}
             form.fields["imageObjects_type"].queryset = Choice.objects.filter(choice_type="imageObjects_type")
             return render(request, "popup.html", pageContext)
+
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
 
 def log_file(members):
@@ -1223,6 +1322,10 @@ class AddAnalysis(View):
             form.fields["analysis_type"].queryset = JsonObjField.objects.filter(field_type="Analysis")
             form.fields["analysis_file"].queryset = SeqencingFile.objects.filter(sequencingFile_exp=self.request.session['experimentId'] )
             return render(request, self.template_name,{'form':form, 'form_class':"Analysis"})
+
+    @method_decorator(view_only)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request,  *args, **kwargs)
 
             
 @csrf_exempt                

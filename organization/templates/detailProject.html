@@ -14,13 +14,13 @@
     <th class="tableHead">{{ project.project_name }} 
     <span class="pull-right">
     <a href="/addIndividual">
-		<button type="button" class="btn btn-success">Experiment Wizard</button>
+		<button type="button" class="btn btn-success view_only">Experiment Wizard</button>
 	</a>
      <a href="/addSequencingRun">
-		<button type="button" class="btn btn-success">Sequencing Run Wizard</button>
+		<button type="button" class="btn btn-success view_only">Sequencing Run Wizard</button>
 	</a>
 	<a href="#">
-		<button  type="button" class="btn btn-warning edit">Edit</button>
+		<button  type="button" class="btn btn-warning edit view_only">Edit</button>
 	</a>
 	</span>
 	</th>
@@ -205,7 +205,7 @@
     </li>
   </ul>
 <div class="tab-content">
-  <div id="add" class="tab-pane fade in active">
+  <div id="add" class="tab-pane fade in active view_only">
     <h3>Add Tags and Sets</h3>
     <a href="/addTag">
 		<button type="button" class="btn btn-success">Tag Experiments</button>
