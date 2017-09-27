@@ -14,12 +14,12 @@ from django.contrib.auth.models import Permission, User
 from django.contrib.contenttypes.models import ContentType
  
  
-content_type = ContentType.objects.get_for_model(User)
-permission = Permission.objects.create(
-    codename='view_only_user',
-    name='Can only view', 
-    content_type=content_type,
-) 
+# content_type = ContentType.objects.get_for_model(User)
+# permission = Permission.objects.create(
+#     codename='view_only_user',
+#     name='Can only view', 
+#     content_type=content_type,
+# ) 
 
 def require_permission(view):
     def new_view(request, *args, **kwargs):
