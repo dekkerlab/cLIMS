@@ -39,7 +39,12 @@
 <span class="rowHead">Biosample Quantity: </span>{{ experiment.biosample_quantity }}<br/>
 <span class="rowHead">Biosample Quantity Units: </span>{{ experiment.biosample_quantity_units }}<br/>
 <span class="rowHead">Protocol: </span><a href="/detailProtocol/{{ experiment.protocol.id }}">{{ experiment.protocol }}</a><br/>
-<span class="rowHead">Protocol Variations: </span><a href="/detailProtocol/{{ experiment.variation.id }}">{{ experiment.variation }}</a><br/>
+<span class="rowHead">Protocol Variations: </span><br/>
+{% if not experiment.variation  == None %}
+	<a href="/detailProtocol/{{ experiment.variation.id }}">{{ experiment.variation }}</a><br/>
+{% endif %}
+
+
 <span class="rowHead">Type: </span>{{ experiment.type }}<br/>
 <span class="rowHead">Enzyme: </span>{{ experiment.experiment_enzyme }}<br/>
 <span class="rowHead">Needs DCIC Update: </span>{{ experiment.update_dcic }}<br/>

@@ -1047,7 +1047,13 @@ def populateDict(request, experimentList):
                 singleExp.append(exp.protocol.dcic_alias)
                 appendProtocol(exp.protocol.pk, dcicExcelSheet, finalizeOnly)
             
-            singleExp.append("") ###protocol_variation
+            
+            
+            if(exp.variation):
+                singleExp.append(exp.variation.dcic_alias)
+            else:
+                singleExp.append("") ###protocol_variation
+            
             singleExp.append(expFields["tagging_method"])
             
             if(SeqencingFile.objects.filter(sequencingFile_exp=exp.pk)):
