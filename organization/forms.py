@@ -50,7 +50,7 @@ class ExperimentForm(ModelForm):
     authentication_docs = forms.ModelMultipleChoiceField (Protocol.objects.all(), widget=MultipleSelectWithPop, required=False,
                                                            label_suffix='addProtocol',
                                                            help_text="Images or Documents that authenticate the experiment e.g. Fragment Analyzer document, Gel images.")
-    variation = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, label_suffix='addProtocol', label="Protocol Variations")
+    variation = forms.ModelChoiceField(Protocol.objects.all(), widget=SelectWithPop, label_suffix='addProtocol', required=False, label="Protocol Variations")
     
     class Meta:
         model = Experiment
