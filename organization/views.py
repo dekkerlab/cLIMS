@@ -245,9 +245,9 @@ class DetailExperiment(View):
             modification = Modification.objects.filter(bioMod__pk=biosample.pk)
            
         if((SeqencingFile.objects.filter(sequencingFile_exp=pk))):
-            seqencingFiles = SeqencingFile.objects.filter(sequencingFile_exp=pk).order_by('-pk')
+            seqencingFiles = SeqencingFile.objects.filter(sequencingFile_exp=pk).order_by('pk')
         if((Analysis.objects.filter(analysis_exp=pk))):
-            analysis = Analysis.objects.filter(analysis_exp=pk).order_by('-pk')
+            analysis = Analysis.objects.filter(analysis_exp=pk).order_by('pk')
 
         for i in individual:
             i.individual_fields = addUnits(i.individual_fields)
