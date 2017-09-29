@@ -22,6 +22,7 @@ $(function() {
 				for (var k in valuesJson) {
 					$( "select[name='"+k+"']" ).val(""+valuesJson[k]+"");
 					$( "input[name='"+k+"']" ).val(""+valuesJson[k]+"");
+					$( "textarea[name='"+k+"']" ).val(""+valuesJson[k]+"");
 				}
 				
 		    },
@@ -56,6 +57,9 @@ $(function() {
     		 else {
     			 if(jsObj[key].data  == "float"){
     				 form += "<input maxlength='1000' name="+key+" type=number step=0.01 " ;
+    			 }
+    			 else if(jsObj[key].data  == "textarea"){
+    				 form += "<textarea name="+key+" rows='5' cols='30'> </textarea" ;
     			 }
     			 else{
     				 form += "<input maxlength='1000' name="+key+" type='"+jsObj[key].data+"'"
@@ -101,6 +105,7 @@ $(function() {
 					for (var k in valuesJson) {
 						$( "select[name='"+k+"']" ).val(""+valuesJson[k]+"");
 						$( "input[name='"+k+"']" ).val(""+valuesJson[k]+"");
+						$( "textarea[name='"+k+"']" ).val(""+valuesJson[k]+"");
 					}
 					
 			    },

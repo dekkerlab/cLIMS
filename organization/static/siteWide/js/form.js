@@ -63,6 +63,10 @@ $(function() {
     			 if(jsObj[key].data  == "float"){
     				 form += "<input maxlength='1000' name="+key+" type=number step=0.01 " ;
     			 }
+    			 else if(jsObj[key].data  == "textarea"){
+    				 console.log(key)
+    				 form += "<textarea name="+key+" rows='5' cols='30'> </textarea" ;
+    			 }
     			 else{
     				 form += "<input maxlength='1000' name="+key+" type='"+jsObj[key].data+"'"
     			 }
