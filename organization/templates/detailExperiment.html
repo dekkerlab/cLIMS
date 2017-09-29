@@ -34,6 +34,8 @@
 
 {% if experiment %}
 <span class="rowHead">Project Name: </span>{{experiment.project}}<br/>
+<span class="rowHead">Biological replicate number: </span>{{experiment.bio_rep_no}}<br/>
+<span class="rowHead">Technical replicate number: </span>{{experiment.tec_rep_no}}<br/>
 <span class="rowHead">Biosource: </span>{{experiment.experiment_biosample.biosample_biosource}}<br/>
 <span class="rowHead">Biosample: </span>{{ experiment.experiment_biosample }}<br/>
 <span class="rowHead">Biosample Quantity: </span>{{ experiment.biosample_quantity }}<br/>

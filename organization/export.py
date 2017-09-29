@@ -1006,10 +1006,10 @@ def populateDict(request, experimentList):
                 replicate_set_join= ",".join(replicate_set)
             
             singleExp.append(replicate_set_join)
-            appendBioRep(exp.pk,singleExp)
-            appendTechRep(exp.pk,singleExp)
-#             singleExp.append("") ####*bio_rep_no
-#             singleExp.append("") ####*tec_rep_no 
+            #appendBioRep(exp.pk,singleExp)
+            #appendTechRep(exp.pk,singleExp)
+            singleExp.append(exp.bio_rep_no) ####*bio_rep_no
+            singleExp.append(exp.tec_rep_no) ####*tec_rep_no 
             singleExp.append(experiment_set_join)
             singleExp.append(exp.experiment_biosample.dcic_alias)
             
