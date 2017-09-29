@@ -107,11 +107,11 @@
 <span class="rowHead">Individual Name: </span>{{individual.individual_name}}<br/>
 <span class="rowHead">Individual Vendor: </span>{{individual.individual_vendor}}<br/>
 <span class="rowHead">Individual URL: </span>{{individual.url}}<br/>
-{% if not biosource.document  == None %}
+{% if not individual.document  == None %}
 <span class="rowHead">Individual Documents: </span><a href="/detailDocument/{{individual.document.id}}">{{individual.document}}</a><br/>
 {% endif %}
 
-{% if not biosource.references  == None %}
+{% if not individual.references  == None %}
 <span class="rowHead">Individual References: </span><a href="/detailPublication/{{ individual.references.id }}">{{individual.references}}</a><br/>
 {% endif %}
 

@@ -74,17 +74,17 @@ class HomeView(View):
         context['currentUserName']= request.user.username
         if('Member' in map(str, request.user.groups.all())):
             request.session['currentGroup'] = "member"
-            prj = Project.objects.filter((Q(project_owner=request.user.id) | Q(project_contributor=request.user.id)) , project_active="True").distinct()
+            prj = Project.objects.filter((Q(project_owner=request.user.id) | Q(project_contributor=request.user.id)) , project_active="True").distinct().order_by('-pk')
             context['projects']= prj
             return render(request, self.template_name, context)
         elif('Collaborator' in map(str, request.user.groups.all())):
             request.session['currentGroup'] = "collaborator"
-            prj = Project.objects.filter((Q(project_contributor=request.user.id)) , project_active="True") 
+            prj = Project.objects.filter((Q(project_contributor=request.user.id)) , project_active="True").order_by('-pk') 
             context['projects']= prj
             return render(request, self.template_name, context)
         elif ('Admin' in map(str, request.user.groups.all()) or 'Principal Investigator' in map(str, request.user.groups.all())):
             request.session['currentGroup'] = "admin"
-            prj = Project.objects.filter(project_active="True")
+            prj = Project.objects.filter(project_active="True").order_by('-pk')
             context['projects']= prj
             return render(request, self.template_name, context)
         else:
@@ -147,11 +147,11 @@ class ShowProject(View):
         userType = request.session['currentGroup']
         userId = request.user.id
         if (userType == "member"):
-            obj = Project.objects.filter(Q(project_owner=userId) |  Q(project_contributor=userId)).distinct()
+            obj = Project.objects.filter(Q(project_owner=userId) |  Q(project_contributor=userId)).distinct().order_by('-pk')
         elif (userType == "collaborator"):
-            obj = Project.objects.filter(Q(project_contributor=userId))
+            obj = Project.objects.filter(Q(project_contributor=userId)).order_by('-pk')
         elif (userType == "admin"):
-            obj = Project.objects.all()
+            obj = Project.objects.all().order_by('-pk')
         else:
             raise ValidationError
         context = {
@@ -245,9 +245,9 @@ class DetailExperiment(View):
             modification = Modification.objects.filter(bioMod__pk=biosample.pk)
            
         if((SeqencingFile.objects.filter(sequencingFile_exp=pk))):
-            seqencingFiles = SeqencingFile.objects.filter(sequencingFile_exp=pk)
+            seqencingFiles = SeqencingFile.objects.filter(sequencingFile_exp=pk).order_by('-pk')
         if((Analysis.objects.filter(analysis_exp=pk))):
-            analysis = Analysis.objects.filter(analysis_exp=pk)
+            analysis = Analysis.objects.filter(analysis_exp=pk).order_by('-pk')
 
         for i in individual:
             i.individual_fields = addUnits(i.individual_fields)
