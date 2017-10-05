@@ -736,19 +736,21 @@ def populateDict(request, experimentList):
             singleBcc.append(bcc["karyotype"])
 
             if(ImageObjects.objects.filter(bioImg__pk=sample.pk)):
-                imgC=0
                 image=ImageObjects.objects.filter(bioImg__pk=sample.pk)
-                for imgs in image:
-                    if(imgs.imageObjects_type.choice_name=="karyotype_image"):
-                        singleBcc.append(imgs.dcic_alias)
-                        appendImageObjects(imgs.pk,dcicExcelSheet,finalizeOnly)
-                        imgC+=1
-                    elif(imgs.imageObjects_type.choice_name=="morphology_image"):
-                        singleBcc.append(imgs.dcic_alias)
-                        appendImageObjects(imgs.pk,dcicExcelSheet,finalizeOnly)
-                        imgC+=2
-                for i in range(0,(2-imgC)):
+                ig1 =[ imgs for imgs in image if imgs.imageObjects_type.choice_name=="karyotype_image"]
+                if(ig1):
+                    singleBcc.append(ig1[0].dcic_alias)
+                    appendImageObjects(ig1[0].pk,dcicExcelSheet,finalizeOnly)
+                else:
                     singleBcc.append("")
+                
+                ig2 =[ imgs for imgs in image if imgs.imageObjects_type.choice_name=="morphology_image"]
+                if(ig2):
+                    singleBcc.append(ig2[0].dcic_alias)
+                    appendImageObjects(ig2[0].pk,dcicExcelSheet,finalizeOnly)
+                else:
+                    singleBcc.append("")    
+                
             else:
                 singleBcc.append("")
                 singleBcc.append("")
@@ -1170,7 +1172,10 @@ def populateDict(request, experimentList):
                 singleExp.append(exp.protocol.dcic_alias)
                 appendProtocol(exp.protocol.pk, dcicExcelSheet, finalizeOnly)
             
-            singleExp.append("") ###protocol_variation
+            if(exp.variation):
+                singleExp.append(exp.variation.dcic_alias)
+            else:
+                singleExp.append("") ###protocol_variation
             singleExp.append(expFields["tagging_method"])
             
             if(SeqencingFile.objects.filter(sequencingFile_exp=exp.pk)):
@@ -1305,7 +1310,10 @@ def populateDict(request, experimentList):
             else:
                 singleExp.append("")
             
-            singleExp.append("") ###protocol_variation
+            if(exp.variation):
+                singleExp.append(exp.variation.dcic_alias)
+            else:
+                singleExp.append("") ###protocol_variation
             
             if(exp.experiment_enzyme):
                 singleExp.append(exp.experiment_enzyme.dcic_alias)
