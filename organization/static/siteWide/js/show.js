@@ -101,5 +101,8 @@ $(document).ready(function(){
         	alert("If nothing selected all experiments will be considered.")
         	$('input:checkbox[name=dcic]').attr('checked',false);
         });
+        $("#checkAll").change(function () {
+            $("input:checkbox").prop('checked', $(this).prop("checked"));
+        });
     
 });
