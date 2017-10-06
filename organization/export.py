@@ -548,7 +548,7 @@ def appendFiles(pKey,dcicExcelSheet,finalizeOnly):
             singleFile.append(str(f.sequencingFile_run.run_sequencing_instrument))
         else:
             singleFile.append("")
-        if(f.read_length != None):
+        if(f.paired_end != None):
             singleFile.append(str(f.paired_end))
         else:
             singleFile.append("")
@@ -568,7 +568,6 @@ def appendFiles(pKey,dcicExcelSheet,finalizeOnly):
         singleFile.append(f.dbxrefs)
         ##FileMainPATH is exported then manually remove it so that we know the path
         singleFile.append(f.sequencingFile_mainPath)
-        
         appendFilterdcic(dcicExcelSheet,'FileFastq',singleFile)
 
 def appendBioRep(expPk,singleExp):
@@ -1406,9 +1405,9 @@ def removeDup(dcicExcelSheet):
         newValueList = []
         pk = []
         for v in valueList:
-            if(v[0].split("_")[-1] not in pk):
+            if(v[0] not in pk):
                 newValueList .append(v)
-                pk.append(v[0].split("_")[-1])
+                pk.append(v[0])
             else:
                 continue
 #         pos = dict((x, duplicates(pk, x)) for x in set(pk) if pk.count(x) > 1)    
@@ -1442,7 +1441,7 @@ def exportDCIC(request):
             dcicExcelSheet = populateDict(request, experiments)
             
             dcicExcelSheetOrdered = collections.OrderedDict(dcicExcelSheet)
-        
+            
             dcicExcelSheetDedup = removeDup(dcicExcelSheetOrdered)
             
             for key, valueList in dcicExcelSheetDedup.items():
