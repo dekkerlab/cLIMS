@@ -487,6 +487,11 @@ def appendProtocol(pKey,dcicExcelSheet,finalizeOnly):
         singleProtocol.append(str(FILEUPLOADPATH)+str(protocolObj.attachment))
     else:
         singleProtocol.append("")
+    if(protocolObj.protocol_classification != None):
+        singleProtocol.append(protocolObj.protocol_classification.choice_name)
+    else:
+        singleProtocol.append("")
+    
     appendFilterdcic(dcicExcelSheet,'Protocol',singleProtocol)
 
 
@@ -725,6 +730,22 @@ def populateDict(request, experimentList):
             singleBcc.append(LABNAME +"BiosampleCellCulture_"+str("_".join(aliasList[1:])))
             singleBcc.append(sample.biosample_description)
             singleBcc.append(bcc["culture_start_date"])
+            
+            
+            ##authentication_protocols
+            authDocs=[]
+            if(sample.authentication_protocols.all()):
+                for authDoc in sample.authentication_protocols.all():
+                    if(finalizeOnly):
+                        update_dcic(authDoc)
+                    authDocs.append(authDoc.dcic_alias)
+                    appendProtocol(authDoc.pk,dcicExcelSheet,finalizeOnly)
+                singleBcc.append(",".join(authDocs))
+            
+            else:
+                    singleBcc.append("")
+            
+            
             singleBcc.append(bcc["cell_line_lot_number"])
             singleBcc.append(bcc["culture_duration"])
             singleBcc.append(bcc["culture_harvest_date"])
@@ -736,23 +757,16 @@ def populateDict(request, experimentList):
 
             if(ImageObjects.objects.filter(bioImg__pk=sample.pk)):
                 image=ImageObjects.objects.filter(bioImg__pk=sample.pk)
-                ig1 =[ imgs for imgs in image if imgs.imageObjects_type.choice_name=="karyotype_image"]
+                ig1 =[ imgs for imgs in image if imgs.imageObjects_type.choice_name=="morphology_image"]
                 if(ig1):
                     singleBcc.append(ig1[0].dcic_alias)
                     appendImageObjects(ig1[0].pk,dcicExcelSheet,finalizeOnly)
-                else:
-                    singleBcc.append("")
-                
-                ig2 =[ imgs for imgs in image if imgs.imageObjects_type.choice_name=="morphology_image"]
-                if(ig2):
-                    singleBcc.append(ig2[0].dcic_alias)
-                    appendImageObjects(ig2[0].pk,dcicExcelSheet,finalizeOnly)
                 else:
                     singleBcc.append("")    
                 
             else:
                 singleBcc.append("")
-                singleBcc.append("")
+                
             
             singleBcc.append(bcc["passage_number"])
             
