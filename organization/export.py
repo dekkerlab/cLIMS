@@ -1311,6 +1311,7 @@ def populateDict(request, experimentList):
             
             if(exp.variation):
                 singleExp.append(exp.variation.dcic_alias)
+                appendProtocol(exp.variation.pk,dcicExcelSheet,finalizeOnly)
             else:
                 singleExp.append("") ###protocol_variation
             
